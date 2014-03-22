@@ -1,4 +1,32 @@
 // functions for validating forms
+
+/* check whether valid email according to RFC822 
+ * Licensed under a Creative Commons Attribute-ShareAlike 2.5 License,
+ * or the GPL */ 
+function isRFC822ValidEmail(sEmail) {
+  var sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
+  var sDtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]';
+  var sAtom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]+';
+  var sQuotedPair = '\\x5c[\\x00-\\x7f]';
+  var sDomainLiteral = '\\x5b(' + sDtext + '|' + sQuotedPair + ')*\\x5d';
+  var sQuotedString = '\\x22(' + sQtext + '|' + sQuotedPair + ')*\\x22';
+  var sDomain_ref = sAtom;
+  var sSubDomain = '(' + sDomain_ref + '|' + sDomainLiteral + ')';
+  var sWord = '(' + sAtom + '|' + sQuotedString + ')';
+  var sDomain = sSubDomain + '(\\x2e' + sSubDomain + ')*';
+  var sLocalPart = sWord + '(\\x2e' + sWord + ')*';
+  var sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email address spec
+  var sValidEmail = '^' + sAddrSpec + '$'; // as whole string
+  
+  var reValidEmail = new RegExp(sValidEmail);
+  
+  if (reValidEmail.test(sEmail)) {
+    return true;
+  }
+  
+  return false;
+}
+
 function validateLoginForm()
 {
 	var isValid = true;
@@ -6,11 +34,7 @@ function validateLoginForm()
 	var password=document.getElementById('password').value.trim();
 	var emptyFieldError = '<span class="help-block" id="empty_error">This field cannot be empty!</span>';
 
-	$('#username_group .help-block#room_exist_error').remove();
-		
 	if (username.length == 0) {
-		var cssclass = $('#username_group').attr('class');
-		cssclass = cssclass + ' has-error'
 		$('#username_group').addClass('has-error has-feedback');
 		if ($('#username_group .help-block#empty_error').length == 0) { 
 			$('#username_group').append(emptyFieldError);
@@ -22,7 +46,6 @@ function validateLoginForm()
 	}
 	if (password.length == 0) {
 		$('#password_group').addClass('has-error');
-		$('#password_group .help-block#shortpass_error').remove();
 		if ($('#password_group .help-block#empty_error').length == 0) {
 			$('#password_group').append(emptyFieldError);
 		}
@@ -30,23 +53,20 @@ function validateLoginForm()
 	} else {
 		$('#password_group').removeClass('has-error');
 		$('#password_group .help-block#empty_error').remove();
-		$('#password_group .help-block#shortpass_error').remove();
 	}
 	return isValid;
 }
+
 function validateSignupForm()
 {
 	var isValid = true;
 	var username=document.getElementById('username').value.trim();
+	var email=document.getElementById('email').value.trim();
 	var password=document.getElementById('password').value.trim();
 	var emptyFieldError = '<span class="help-block" id="empty_error">This field cannot be empty!</span>';
-	var shortPassError = '<span class="help-block" id="shortpass_error">Password must be at least 8 characters long.</span>';
-
-	$('#username_group .help-block#room_exist_error').remove();
+	var invalidEmailError = '<span class="help-block" id="invalidemail_error">Please enter a valid email address.</span>';	
 		
 	if (username.length == 0) {
-		var cssclass = $('#username_group').attr('class');
-		cssclass = cssclass + ' has-error'
 		$('#username_group').addClass('has-error has-feedback');
 		if ($('#username_group .help-block#empty_error').length == 0) { 
 			$('#username_group').append(emptyFieldError);
@@ -74,6 +94,26 @@ function validateSignupForm()
 		$('#password_group').removeClass('has-error');
 		$('#password_group .help-block#empty_error').remove();
 		$('#password_group .help-block#shortpass_error').remove();
+	}
+	if (email.length == 0) {
+		console.log('length 0');
+		$('#email_group').addClass('has-error');
+		$('#email_group .help-block#invalidemail_error').remove();
+		if ($('#email_group .help-block#empty_error').length == 0) {
+			$('#email_group').append(emptyFieldError);
+		}
+		isValid = false;
+	} else if (!isRFC822ValidEmail(email)) {
+		$('#email_group').addClass('has-error');
+		$('#email_group .help-block#empty_error').remove();
+		if ($('#email_group .help-block#invalidemail_error').length == 0) {
+			$('#email_group').append(invalidEmailError);
+		}
+		isValid = false;
+	} else {
+		$('#email_group').removeClass('has-error');
+		$('#email_group .help-block#empty_error').remove();
+		$('#email_group .help-block#invalidemail_error').remove();
 	}
 	return isValid;
 }
