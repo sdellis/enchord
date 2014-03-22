@@ -1,3 +1,4 @@
+<div ng-include src="'partials/header.html'"></div>
 <!-- idk what to put for action right now -->
 <form action="#" role="form" method="post">
 	<div class="form-group" id="username_group">
@@ -9,5 +10,6 @@
 		<input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
 	</div>
 	<!-- You're gonna want to do something here -->
-	<button type="submit" onclick="#" class="btn btn-default">Register</button>
+	<button type="submit" onclick="return validateSignupForm()" class="btn btn-default">Register</button>
 </form>
+<div ng-include src="'partials/footer.html'"></div>
