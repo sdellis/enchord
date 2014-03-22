@@ -14,9 +14,16 @@ enchordControllers.controller('AboutController', ['$scope',
 	}]);
 
 // Search page controller
-enchordControllers.controller('SearchController', ['$scope', '$routeParams',
-	function($scope, $routeParams) {
+enchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',
+	function($scope, $window, $routeParams) {
 		$scope.query = $routeParams.query;
+		// redirect to search page
+		$scope.search = function(query) {
+			console.log(query);
+			if (query != undefined && query.length > 0) {
+				$window.location.href = '#/search/' + query;
+			}
+		};
 	}]);
 
 // Song page (view) controller
