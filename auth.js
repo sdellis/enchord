@@ -1,13 +1,19 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+var Schema = require('./schemas/user');
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		if (username === 'admin' && password === 'jemah') {
-			return done(null, {username: 'admin'});
-		}
-
-		return done(null, false);
+		Schema.findOne({ user: username }, function(err, user) {
+			if (err) {
+				return done(err);
+			}
+			if (user.password == password) {
+				return done(null, {username: user});
+			} else {
+				return done(null, false, {message: 'Incorrect username and password pair.'});
+			}
+		});
 	}
 ));
 

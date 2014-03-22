@@ -47,9 +47,11 @@ db.mongoose.once('open', function callback() {
 	app.get('/', routes.index);
 	app.get('/users', user.list);
 
-	app.post('/login', passport.authenticate('local', { successRedirect: '#/',
-														failureReirect: '#/login'
-													 }));
+	app.post('/login', passport.authenticate('local', { successRedirect: '#/', failureReirect: '#/login'}));
+	app.post('/signup', routes.signup);
+	app.get('/loggedin', function(req, res) {
+		res.send(req.isAuthenticated() ? req.user : '0');
+	});
 });
 
 http.createServer(app).listen(app.get('port'), function(){
