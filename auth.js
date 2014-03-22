@@ -1,6 +1,7 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var Schema = require('./schemas/user');
+var passwordHash = require('password-hash');
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -8,7 +9,7 @@ passport.use(new LocalStrategy(
 			if (err) {
 				return done(err);
 			}
-			if (user.password == password) {
+			if (passwordHash.verify(password, user.password)) {
 				return done(null, {username: user});
 			} else {
 				return done(null, false, {message: 'Incorrect username and password pair.'});

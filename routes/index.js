@@ -1,5 +1,5 @@
 var Schema = require('../schemas/user');
-
+var passwordHash = require('password-hash');
 /*
  * GET home page.
  */
@@ -17,7 +17,7 @@ exports.signup = function(req, res) {
 	var User = new Schema({
 		user: req.body.username,
 		email: req.body.email,
-		password: req.body.password
+		password: passwordHash.generate(req.body.password)
 	});
 	User.save(function (err, product, numberAffected) {
 		if (err) {
