@@ -1,3 +1,4 @@
+// Module
 var enchord = angular.module('enchord', [
 	'ngRoute',
 	'enchordControllers'
@@ -24,6 +25,19 @@ enchord.config(['$routeProvider', function($routeProvider) {
 		controller: 'ViewController',
 		templateUrl: 'partials/view_song.html'
 	})
+	.when('/edit/:songId',
+	{
+		controller: 'EditSongController',
+		templateUrl: 'partials/edit_song.html',
+		resolve: {
+			loggedin: function($q, $http, $location) {
+			var deferred = $q.defer();
+			if(isLoggedIn($http) == false)
+				$location.path('/login');
+			deferred.resolve();
+			return deferred.promise;
+		}}
+	})
 	.when('/login',
 	{
 		controller: 'LoginController',
@@ -38,3 +52,25 @@ enchord.config(['$routeProvider', function($routeProvider) {
 		redirectTo: '/'
 	});
 }]);
+
+// Helper methods for module
+function isLoggedIn($http){
+	$http.get('/loggedin').
+	success(function(data){
+		if (data == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	});
+}
+/*function isLoggedIn($http) {
+	$http.get('/loggedin').
+	success(function(data){
+		if (data == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+};*/

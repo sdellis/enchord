@@ -32,6 +32,12 @@ enchordControllers.controller('ViewController', ['$scope', '$routeParams',
 		$scope.song = {songId: $routeParams.songId, title: 'Temp'}
 	}]);
 
+// Song page (edit) controller
+enchordControllers.controller('EditSongController', ['$scope', '$routeParams',
+	function($scope, $routeParams){ 
+		$scope.song = {songId: $routeParams.songId, title: 'Temp'}
+	}]);
+
 // Signup controller
 enchordControllers.controller('SignupController', ['$scope',
 	function($scope){
