@@ -1,5 +1,6 @@
 var Schema = require('../schemas/user');
 var passwordHash = require('password-hash');
+var passport = require('../auth.js');
 /*
  * GET home page.
  */
@@ -26,6 +27,23 @@ exports.signup = function(req, res) {
 			return;
 		}
 		console.log('success!');
+		passport.authenticate('local')(req, res, function () {
+			res.redirect('#/');
+
+		});	
+		/*req.login(User, function(err) {
+			if (err) throw err;
+			res.redirect('#/');
+		});  */
+		
 	})
-	res.redirect('#/');
+	//passport.authenticate('local', { successRedirect: '#/', failureReirect: '#/login'})
+
+	//res.redirect('#/');
 }
+
+/*exports.logout = function(req, res) {
+	req.session.destroy(function(){
+		res.reirect('#/');
+	});
+}*/

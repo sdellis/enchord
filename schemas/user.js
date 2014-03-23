@@ -15,7 +15,12 @@ var User = new Schema({
 		set: toLower,
 		index: {unique: true}
 	},
-	email: String,
+	email: { 
+		type: String,
+		validate: [validatePrescenseOf, 'a Email is required'],
+		set: toLower,
+		index: {unique: true}
+	},
 	password: String
 });
 

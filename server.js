@@ -52,6 +52,8 @@ db.mongoose.once('open', function callback() {
 	app.get('/loggedin', function(req, res) {
 		res.send(req.isAuthenticated() ? req.user : '0');
 	});
+
+	//app.get('/logout', routes.logout);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
