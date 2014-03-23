@@ -63,9 +63,12 @@ function validateSignupForm()
 	var username=document.getElementById('username').value.trim();
 	var email=document.getElementById('email').value.trim();
 	var password=document.getElementById('password').value.trim();
+	var passwordRepeat=document.getElementById('password_repeat').value.trim();
 	var emptyFieldError = '<span class="help-block" id="empty_error">This field cannot be empty!</span>';
 	var invalidEmailError = '<span class="help-block" id="invalidemail_error">Please enter a valid email address.</span>';	
-		
+	var shortPassError = '<span class="help-block" id="shortpass_error">Password must be at least 8 characters long.</span>';
+	var passwordMatchError = '<span class="help-block" id="passwordmatch_error">Your passwords do not match!</span>';
+
 	if (username.length == 0) {
 		$('#username_group').addClass('has-error has-feedback');
 		if ($('#username_group .help-block#empty_error').length == 0) { 
@@ -96,7 +99,6 @@ function validateSignupForm()
 		$('#password_group .help-block#shortpass_error').remove();
 	}
 	if (email.length == 0) {
-		console.log('length 0');
 		$('#email_group').addClass('has-error');
 		$('#email_group .help-block#invalidemail_error').remove();
 		if ($('#email_group .help-block#empty_error').length == 0) {
@@ -114,6 +116,25 @@ function validateSignupForm()
 		$('#email_group').removeClass('has-error');
 		$('#email_group .help-block#empty_error').remove();
 		$('#email_group .help-block#invalidemail_error').remove();
+	}
+	if (passwordRepeat.length==0) {
+		$('#password_repeat_group').addClass('has-error');
+		$('#password_repeat_group .help-block#passwordmatch_error').remove();
+		if ($('#password_repeat_group .help-block#empty_error').length == 0) {
+			$('#password_repeat_group').append(emptyFieldError);
+		}
+		isValid = false;
+	} else if (password.length >= 8 && passwordRepeat != password) {
+		$('#password_repeat_group').addClass('has-error');
+		$('#password_repeat_group .help-block#empty_error').remove();
+		if ($('#password_repeat_group .help-block#passwordmatch_error').length == 0) {
+			$('#password_repeat_group').append(passwordMatchError);
+		}
+		isValid = false;
+	} else {
+		$('#password_repeat_group').removeClass('has-error');
+		$('#password_repeat_group .help-block#empty_error').remove();
+		$('#password_repeat_group .help-block#passwordmatch_error').remove();
 	}
 	return isValid;
 }

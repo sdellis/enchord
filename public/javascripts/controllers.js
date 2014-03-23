@@ -13,7 +13,7 @@ enchordControllers.controller('AboutController', ['$scope',
 	function($scope){
 	}]);
 
-// Search page controller
+// Search page controller CHANGE TO LOCATION PATH
 enchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',
 	function($scope, $window, $routeParams) {
 		$scope.query = $routeParams.query;
