@@ -33,6 +33,7 @@ enchord.config(['$routeProvider', function($routeProvider) {
 			loggedin: function($q, $http, $location) {
 			var deferred = $q.defer();
 			if(isLoggedIn($http) == false)
+				console.log(false)
 				$location.path('/login');
 			deferred.resolve();
 			return deferred.promise;
