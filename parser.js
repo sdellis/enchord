@@ -1,10 +1,36 @@
 var fs = require('fs');
 
+/* returns distance to closing brace 
+	-1 if closing brace is not found 
+	pass original line and index of opening brace*/
+function braces(line, obrace) {
+	length = line.length
+	for (var i = obrace + 1; i < length; i++) {
+		if (line.charAt(i) == '}')
+			return i;
+	}
+	return -1;
+}
 
-/* assuming {chord}lyric format */
+function err(linenum, errno) {
+
+}
+
+/* assuming [chord]lyric format */
 // do something with font variable later
-function parseLine(oneLine, font) {
-	/* var newLine = '';
+function parseLine(oneLine, linenum, font) {
+	for (var i = 0 i < len; i++) {
+		close = -1;
+		if (oneLine[i] == '{') {
+			close = braces(oneLine, i);
+			if (close == -1)
+				//do something
+		} else if (oneLine[i] == '}') {
+			// front brace missing
+		}
+		
+	}
+	/*var newLine = '';
 
 	var chordLine = '';
 	var lyricLine = '';

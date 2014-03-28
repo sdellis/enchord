@@ -1,0 +1,39 @@
+{meta}
+title: Everyday
+artist: Joel Houston
+album: 
+year: 
+genre: Worship
+sections: i, v{2}, pc, c, b, t
+order: i v1 pc c v2 b t
+<comments to self>
+{/meta}
+
+<capo>
+
+{start i}
+[E]    [B]    [G#m7]    [F#7]    [<x2>]
+{end i}
+
+{start v1}
+[E]What to [B]say Lord <play softly>
+It's [G#m7]you who [F#7]gave me life and [E]I
+Can't ex[B]plain just how  [G#m7]
+Much You [F#7]mean to me now [E]that
+You have [B]saved me ....
+{end v1}
+
+{start v2}
+...
+{end v2}
+
+{start c <special ital/bold/indent>}
+...
+{end c}
+
+{start b}
+{tab}
+{end tab}
+...
+{end b}
+
