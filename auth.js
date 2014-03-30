@@ -3,7 +3,7 @@ var LocalStrategy = require('passport-local');
 var Schema = require('./schemas/user');
 var passwordHash = require('password-hash');
 
-passport.use(new LocalStrategy( //{passReqToCallback: true},
+passport.use('local-login', new LocalStrategy( //{passReqToCallback: true},
 	function(username, password, done) {
 		Schema.findOne({ user: username }, function(err, user) {
 			if (err) {
@@ -17,6 +17,8 @@ passport.use(new LocalStrategy( //{passReqToCallback: true},
 		});
 	}
 ));
+
+// add local-signup strategy
 
 passport.serializeUser(function(user, done) {
 	done(null, user.username);

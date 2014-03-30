@@ -4,7 +4,7 @@ var enchord = angular.module('enchord', [
 	'enchordControllers'
 ]);
 
-enchord.config(['$routeProvider', function($routeProvider) {
+/*enchord.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/',
 	{
 		controller: 'HomeController',
@@ -52,19 +52,9 @@ enchord.config(['$routeProvider', function($routeProvider) {
 	.otherwise({
 		redirectTo: '/'
 	});
-}]);
+}]); */
 
-// Helper methods for module
-function isLoggedIn($http){
-	$http.get('/loggedin').
-	success(function(data){
-		if (data == 0) {
-			return false;
-		} else {
-			return true;
-		}
-	});
-}
+
 /*function isLoggedIn($http) {
 	$http.get('/loggedin').
 	success(function(data){
