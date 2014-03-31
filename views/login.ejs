@@ -4,6 +4,7 @@
   <head>
     <% include head.ejs %>
   </head>
+<<<<<<< HEAD
   <body ng-controller="LoginController">
   	<% if (message.length > 0) { %>
 		<div class="alert alert-danger"><%= message %></div>
@@ -30,18 +31,7 @@
         <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary">Submit</button>
         
     </form>
-  <!--	<form name="loginForm" action="/login" role="form" method="post" novalidate>
-	<div class="form-group" ng-class="{'has-error': loginForm.username.$invalid && !loginForm.username.$pristine}" id="username_group">
-		<label class="control-label" for="username">Username</label>
-		<input type="text" class="form-control" id="username" name="username" placeholder="Username" ng-required="true" />
-		<span ng-show="loginForm.name.$invalid && !loginForm.name.$pristine" class="help-block">Please input your username</span>
-	</div>
-	<div class="form-group" id="password_group">
-		<label class="control-label" for="password">Password</label>
-		<input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-	</div>
-	<!-- You're gonna want to do something here -->
-	<!--<button type="submit" onclick="return validateLoginForm()" class="btn btn-default">Login</button>
-</form>-->
+	<p>Need an account? <a href="/signup">Signup</a></p>
+	<p>Or go <a href="/">home</a>.</p>
   </body>
 </html>
