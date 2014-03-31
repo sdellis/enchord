@@ -10,7 +10,7 @@ module.exports = function(app, passport, db) {
 			res.render('about.ejs', {title:"enchord"});
 		});
 
-		app.get('/login', function(req, res){
+		app.get('/login', protectLogin, function(req, res){
 			res.render('login.ejs', {title: "enchord", message: req.flash('loginMessage')});
 		});
 		app.post('/login', passport.authenticate('local-login', {
@@ -27,7 +27,7 @@ module.exports = function(app, passport, db) {
 			failureFlash : true // allow flash messages
 		}));
 		app.get('/members', isLoggedIn, function(req, res) {
-			res.render('profile.ejs', {title:"Members"});
+			res.render('profile.ejs', {title:"Members", user:req.user});
 		});
 
 		app.get('/logout', function(req, res) {
@@ -43,4 +43,12 @@ function isLoggedIn(req, res, next){
 	if (req.isAuthenticated())
 		return next();
 	res.redirect('/login');
+}
+
+// Middle ware to prevent access to login page if already logged in
+function protectLogin(req, res, next) {
+	// console.log(req.isAuthenticated())
+	if (!req.isAuthenticated())
+		return next();
+	res.redirect('/members');
 }
