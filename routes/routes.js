@@ -166,10 +166,7 @@ function isLoggedIn(req, res, next){
 	res.redirect('/login');
 }
 
-<<<<<<< HEAD
 // Middleware to protect login page
-=======
->>>>>>> dfec0f45581bed1fd7ea3e0b83a683d0892117c9
 function protectLogin(req, res, next) {
 	if (!req.isAuthenticated())
 		return next();
