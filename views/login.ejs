@@ -5,10 +5,10 @@
     <% include head.ejs %>
   </head>
   <body ng-controller="LoginController">
+    <!-- show any messages that come back with authentication -->
   	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
-  	 <!-- pass in the variable if our form is valid or invalid -->
+		  <div class="alert alert-danger"><%= message %></div>
+	  <% } %>
     <form action="/login" method="post" name="loginForm" novalidate>
         
         <!-- USERNAME -->
@@ -27,7 +27,7 @@
             <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">Enter your password</span>
         </div>
         
-        <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary">Submit</button>
+        <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-default">Login</button>
         
     </form>
 	<p>Need an account? <a href="/signup">Signup</a></p>
