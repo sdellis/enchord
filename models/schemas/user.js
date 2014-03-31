@@ -10,18 +10,39 @@ var toLower = function(string){
 }
 
 var User = mongoose.Schema({
-	user: { type: String,
-		validate: [validatePrescenseOf, 'a Username is required'],
-		set: toLower,
-		index: {unique: true}
+	local: {
+		user: { 
+			type: String,
+			validate: [validatePrescenseOf, 'a Username is required'],
+			set: toLower,
+			//index: {unique: true}
+		},
+		email: { 
+			type: String,
+			validate: [validatePrescenseOf, 'a Email is required'],
+			set: toLower,
+			//index: {unique: true}
+		},
+		password: String
 	},
-	email: { 
-		type: String,
-		validate: [validatePrescenseOf, 'a Email is required'],
-		set: toLower,
-		index: {unique: true}
-	},
-	password: String
+	facebook         : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    },
+    twitter          : {
+        id           : String,
+        token        : String,
+        displayName  : String,
+        username     : String
+    },
+    google           : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    }
 });
 
 User.methods.generateHash = function(password) {
