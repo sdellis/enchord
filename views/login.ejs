@@ -1,21 +1,47 @@
 <!DOCTYPE html>
-<!--<html lang='en' ng-app='enchord'>-->
-<html lang='en'>
+<html lang='en' ng-app='enchord'>
+<!--<html lang='en'>-->
   <head>
     <% include head.ejs %>
   </head>
-  <body>
-  	<form action="/login" role="form" method="post">
-	<div class="form-group" id="username_group">
+  <body ng-controller="LoginController">
+  	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+  	 <!-- pass in the variable if our form is valid or invalid -->
+    <form action="/login" method="post" name="loginForm" novalidate>
+        
+        <!-- USERNAME -->
+        <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
+            <label class="control-label" for="username">Username</label>
+            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="20" placeholder="Username" required>
+            <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</span>
+            <span ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</span>
+            <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</span>
+        </div>
+            
+        <!-- PASSWORD -->
+        <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+            <label class="control-label" for="password">Password</label>
+            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Password" required>
+            <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">Enter your password</span>
+        </div>
+        
+        <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary">Submit</button>
+        
+    </form>
+  <!--	<form name="loginForm" action="/login" role="form" method="post" novalidate>
+	<div class="form-group" ng-class="{'has-error': loginForm.username.$invalid && !loginForm.username.$pristine}" id="username_group">
 		<label class="control-label" for="username">Username</label>
-		<input type="text" class="form-control" id="username" name="username" placeholder="Username" />
+		<input type="text" class="form-control" id="username" name="username" placeholder="Username" ng-required="true" />
+		<span ng-show="loginForm.name.$invalid && !loginForm.name.$pristine" class="help-block">Please input your username</span>
 	</div>
 	<div class="form-group" id="password_group">
 		<label class="control-label" for="password">Password</label>
 		<input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
 	</div>
 	<!-- You're gonna want to do something here -->
-	<button type="submit" onclick="return validateLoginForm()" class="btn btn-default">Login</button>
-</form>
+	<!--<button type="submit" onclick="return validateLoginForm()" class="btn btn-default">Login</button>
+</form>-->
   </body>
 </html>

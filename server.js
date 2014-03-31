@@ -12,6 +12,7 @@ var db = require('./models/db');
 var MongoStore = require('connect-mongo')(express);
 
 var passport = require('./auth.js');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(express.session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
@@ -50,12 +52,23 @@ db.mongoose.once('open', function callback() {
 	
 	app.get('/about', function(req, res){res.render('about.ejs', {title:"enchord"})});
 
-	app.get('/login', function(req, res){res.render('login.ejs', {title:"enchord"})});
+	app.get('/login', function(req, res){res.render('login.ejs', {title:"enchord", message: message})/*req.flash("loginMessage")})*/});
 	app.post('/login', 
 		passport.authenticate('local-login', 
 			{successRedirect: '/members', 
 			failureReirect: '/login'
 		}));
+	/*app.post('/login', function(req, res, next) {
+  	passport.authenticate('local-login', function(err, user, info) {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    if (! user) {
+     	return res.send({ success : false, message : 'authentication failed' });
+    }
+    	return res.send({ success : true, message : 'authentication succeeded' });
+  	})(req, res, next);
+	});*/
 	app.get('/signup', function(req, res){res.render('signup.ejs', {title:"enchord"})});
 	app.post('/signup', routes.signup); // change to passport
 	app.get('/members', isLoggedIn, function(req, res) {res.render('profile.ejs', {title:"Members"})});
