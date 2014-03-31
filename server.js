@@ -15,6 +15,12 @@ var MongoStore = require('connect-mongo')(express);
 
 require('./config/passport')(passport);
 
+// var forgot = require('password-reset')({
+// 	uri: 'http://localhost:8000/password_reset',
+// 	from: 'password-robot@localhost',
+// 	host: 'localhost', port : 25,
+// });
+
 // all environments
 //app.set('port', process.env.PORT || 3000);
 app.configure(function() {
@@ -35,6 +41,7 @@ app.configure(function() {
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(flash());
+	// app.use(forgot.middleware);
 });
 
 //app.use(express.json());

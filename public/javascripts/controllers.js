@@ -41,13 +41,32 @@ enchordControllers.controller('EditSongController', ['$scope', '$routeParams',
 // Signup controller
 enchordControllers.controller('SignupController', ['$scope',
 	function($scope){
+		$scope.passMatch = true;
+		// check that passwords match
+		$scope.checkPass = function() {
+			$scope.passMatch = $scope.signupForm.password.$viewValue == $scope.signupForm.password_repeat.$viewValue;
+			// console.log($scope.signupForm.password_repeat.$viewValue);
+			// console.log($scope.passMatch)
+		}
 	}]);
+// .directive('validPasswordC', function () {
+//     return {
+//         require: 'ngModel',
+//         link: function (scope, elm, attrs, ctrl) {
+//             ctrl.$parsers.unshift(function (viewValue, $scope) {
+//                 var noMatch = (viewValue != scope.signupForm.password.$viewValue || viewValue != scope.signupForm.password_repeat.$viewValue)
+//                 console.log(noMatch)
+//                 ctrl.$setValidity('noMatch', !noMatch)
+//             })
+//         }
+//     }
+// });
 
 // Login controller
 enchordControllers.controller('LoginController', ['$scope',
 	function($scope){
-		$scope.u_error = false;
-		$scope.p_error = false;
-		$scope.error_message = "";
+		// $scope.u_error = false;
+		// $scope.p_error = false;
+		// $scope.error_message = "";
 
 	}]);
