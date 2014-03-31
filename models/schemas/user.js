@@ -50,7 +50,7 @@ User.methods.generateHash = function(password) {
 }
 
 User.methods.validPassword = function(password) {
-	return passwordHash.verify(password, this.password);
+	return passwordHash.verify(password, this.local.password);
 }
 
 
