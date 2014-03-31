@@ -46,4 +46,8 @@ enchordControllers.controller('SignupController', ['$scope',
 // Login controller
 enchordControllers.controller('LoginController', ['$scope',
 	function($scope){
+		$scope.u_error = false;
+		$scope.p_error = false;
+		$scope.error_message = "";
+
 	}]);
