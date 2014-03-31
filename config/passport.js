@@ -28,7 +28,7 @@ module.exports = function(passport) {
 		console.log(req.body.email);
 		//because asynchronous
 		process.nextTick(function() {
-			User.findOne({ 'user' : username }, function(err, user) {
+			User.findOne({ 'local.user' : username }, function(err, user) {
 				console.log(user);
 				if (err)
 					return done(err, req.flash('signupMessage', 'Unknown server error'));
@@ -37,11 +37,11 @@ module.exports = function(passport) {
 					return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
 				} else {
 					console.log('here');
-					User.findOne({ 'email': req.body.email}, function(err2, user2) {
-						console.log(user2);
-						if (err2)
-							return done(err2);
-						if (user2) {
+					User.findOne({ 'local.email': req.body.email}, function(err, user) {
+						console.log(user);
+						if (err)
+							return done(err);
+						if (user) {
 							console.log('email exists');
 							return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 						} else {
@@ -70,10 +70,39 @@ module.exports = function(passport) {
 		passReqToCallback: true
 	},
 	function(req, username, password, done) {
-		User.findOne({ 'local.user': username }, function(err, user) {
-			console.log(username);
-			console.log(password);
-			console.log(user);
+		if (isRFC822ValidEmail(username)) {
+			User.findOne({ 'local.email' : username }, function(err, user) {
+			
+				if (err) 
+					return done(err);
+				if (!user){
+					console.log('no user');
+					return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
+				}
+				if (!user.validPassword(password)) {
+					console.log('no password');
+					return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
+				}
+				return done(null, user);			
+			});
+		} else {
+			User.findOne({ 'local.user' : username }, function(err, user) {
+				
+				if (err) 
+					return done(err);
+				if (!user){
+					console.log('no user');
+					return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
+				}
+				if (!user.validPassword(password)) {
+					console.log('no password');
+					return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
+				}
+				return done(null, user);			
+			});	
+		}
+		/* User.findOne({ field : username }, function(err, user) {
+			
 			if (err) 
 				return done(err);
 			if (!user){
@@ -85,7 +114,7 @@ module.exports = function(passport) {
 				return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
 			}
 			return done(null, user);			
-		});
+		});*/
 	}));
 
 	passport.use(new FacebookStrategy({
@@ -248,4 +277,28 @@ module.exports = function(passport) {
 		}
 
     }));
+}
+
+function isRFC822ValidEmail(sEmail) {
+  var sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
+  var sDtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]';
+  var sAtom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]+';
+  var sQuotedPair = '\\x5c[\\x00-\\x7f]';
+  var sDomainLiteral = '\\x5b(' + sDtext + '|' + sQuotedPair + ')*\\x5d';
+  var sQuotedString = '\\x22(' + sQtext + '|' + sQuotedPair + ')*\\x22';
+  var sDomain_ref = sAtom;
+  var sSubDomain = '(' + sDomain_ref + '|' + sDomainLiteral + ')';
+  var sWord = '(' + sAtom + '|' + sQuotedString + ')';
+  var sDomain = sSubDomain + '(\\x2e' + sSubDomain + ')*';
+  var sLocalPart = sWord + '(\\x2e' + sWord + ')*';
+  var sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email address spec
+  var sValidEmail = '^' + sAddrSpec + '$'; // as whole string
+  
+  var reValidEmail = new RegExp(sValidEmail);
+  
+  if (reValidEmail.test(sEmail)) {
+    return true;
+  }
+  
+  return false;
 }
