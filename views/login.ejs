@@ -5,6 +5,9 @@
     <% include head.ejs %>
   </head>
   <body>
+  	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
   	<form action="/login" role="form" method="post">
 	<div class="form-group" id="username_group">
 		<label class="control-label" for="username">Username</label>
@@ -16,6 +19,9 @@
 	</div>
 	<!-- You're gonna want to do something here -->
 	<button type="submit" onclick="return validateLoginForm()" class="btn btn-default">Login</button>
-</form>
+	</form>
+	
+	<p>Need an account? <a href="/signup">Signup</a></p>
+	<p>Or go <a href="/">home</a>.</p>
   </body>
 </html>

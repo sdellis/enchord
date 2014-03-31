@@ -6,6 +6,10 @@
   </head>
   <body>
 	<form action="/signup" role="form" method="post">
+		<!-- show any messages that come back with authentication -->
+		<% if (message.length > 0) { %>
+			<div class="alert alert-danger"><%= message %></div>
+		<% } %>
 		<div class="form-group" id="username_group">
 			<label class="control-label" for="username">Username</label>
 			<input type="text" class="form-control" id="username" name="username" placeholder="Username" />
@@ -25,5 +29,8 @@
 		<!-- You're gonna want to do something here -->
 		<button type="submit" onclick="return validateSignupForm()" class="btn btn-default">Register</button>
 	</form>
+
+	<p>Already have an account? <a href="/login">Login</a></p>
+	<p>Or go <a href="/">home</a>.</p>
   </body>
 </html>
