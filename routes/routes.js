@@ -10,7 +10,7 @@ module.exports = function(app, passport, db) {
 			res.render('about.ejs', {title:"enchord"});
 		});
 
-		app.get('/login', function(req, res){
+		app.get('/login', protectLogin, function(req, res){
 			res.render('login.ejs', {title: "enchord", message: req.flash('loginMessage')});
 		});
 		app.post('/login', passport.authenticate('local-login', {
@@ -18,7 +18,7 @@ module.exports = function(app, passport, db) {
 			failureRedirect: '/login',
 			failureFlash : true // allow flash messages
 		}));
-		app.get('/signup', function(req, res){
+		app.get('/signup', protectLogin, function(req, res){
 			res.render('signup.ejs', {title: "enchord", message: req.flash('signupMessage')});
 		});
 		app.post('/signup', passport.authenticate('local-signup', {
@@ -50,7 +50,7 @@ module.exports = function(app, passport, db) {
 			successRedirect : '/members',
 			failureRedirect : '/login'
         }));
-
+		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {
         	res.render('connect-local.ejs', {message: req.flash('loginMessage')});
@@ -120,7 +120,7 @@ module.exports = function(app, passport, db) {
 	           res.redirect('/members');
 	        });
 	    });
-	    //copied from scotch.io
+	    //copied from scotch.io */
 
 		app.get('/logout', function(req, res) {
 			req.logout();
@@ -135,4 +135,10 @@ function isLoggedIn(req, res, next){
 	if (req.isAuthenticated())
 		return next();
 	res.redirect('/login');
+}
+
+function protectLogin(req, res, next) {
+	if (!req.isAuthenticated())
+		return next();
+	res.redirect('/members');
 }
