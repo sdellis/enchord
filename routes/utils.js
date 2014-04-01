@@ -15,13 +15,13 @@ exports.createSong = function(req, res) {
 			}
 			console.log(product);
 			console.log('success!');
-			res.render('editsong.ejs', {title: 'enchord', isNew: false, songid: product._id, message: 'successfully \
+			res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'successfully \
 			saved'});
 			});
 };
 
 exports.editSong = function(req, res) {
-	req.body._id
+	
 };
 
 exports.deleteSong = function(req, res) {
