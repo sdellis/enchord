@@ -44,7 +44,7 @@ exports.editSong = function(req, res) {
 		} 
 	});
 	
-	song.update({title: req.body.title, artist: req.body.artist, genre: req.body.genre}, function(err, numberAffected, rawResponse) {
+	songSchema.update(song, {title: req.body.title, artist: req.body.artist, genre: req.body.genre}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({status: 'fail'});
