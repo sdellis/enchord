@@ -15,7 +15,7 @@
         <div class="form-group" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }">
             <label class="control-label" for="title">Title*</label>
             
-            <input type="text" name="title" class="form-control" ng-model="user.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" value="<%= song.title %>" required>
+            <input type="text" name="title" class="form-control" ng-model="user.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-init="user.title = '<%= song.title %>'" required>
             <span ng-show="songEditForm.title.$error.required && !songEditForm.title.$pristine" class="help-block">Enter the title of the song</span>
             <span ng-show="songEditForm.title.$error.minlength" class="help-block">Title is too short</span>
             <span ng-show="songEditForm.title.$error.maxlength" class="help-block">Title is too long (sorry!)</span>
@@ -24,7 +24,7 @@
         <!-- ARTIST -->
         <div class="form-group" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }">
             <label class="control-label" for="artist">Artist*</label>
-            <input type="text" name="artist" class="form-control" ng-model="user.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" required>
+            <input type="text" name="artist" class="form-control" ng-model="user.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-init="user.artist = '<%= song.artist %>'" required>
             <span ng-show="songEditForm.artist.$error.required && !songEditForm.artist.$pristine" class="help-block">Enter the artist of the song</span>
             <span ng-show="songEditForm.artist.$error.minlength" class="help-block">Artist is too short</span>
             <span ng-show="songEditForm.artist.$error.maxlength" class="help-block">Artist is too long (sorry!)</span>
@@ -33,7 +33,7 @@
         <!-- GENRE -->
          <div class="form-group" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }">
             <label class="control-label" for="genre">Genre</label>
-            <input type="text" name="genre" class="form-control" ng-model="user.genre" placeholder="Genre">
+            <input type="text" name="genre" class="form-control" ng-model="user.genre" ng-init="user.genre = '<%= song.genre %>'" placeholder="Genre">
         </div>
 
         <!-- USER ID -->
@@ -41,8 +41,9 @@
 
         <!-- PRIVATE/PUBLIC SONG -->
 
-        <!-- SONG_ID? -->
-
+        <!-- SONG_ID -->
+        <input type="hidden" name="_id" value="<%= song._id %>">
+        
         <!-- CONTENT -->
         <!--<div class="form-group" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }">-->
         
