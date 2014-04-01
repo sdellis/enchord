@@ -55,7 +55,7 @@ module.exports = function(app, passport, db) {
 		app.post('/createsong', isLoggedIn, utils.newSong);
 		
 		app.get('/editsong', isLoggedIn, function(req, res) {
-			res.render('editsong.ejs', {title: 'enchord', isNew: 'true'});
+			res.render('editsong.ejs', {title: 'enchord', isNew: 'true', user: req.user, message: ''});
 		});
 		
 		app.post('/editsong', isLoggedIn, utils.editSong);
