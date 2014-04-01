@@ -1,8 +1,20 @@
 var songSchema = require('../models/schemas/song');
 
-exports.newSong = function(req, res) {
-	res.send('Hello');
-	
+exports.createSong = function(req, res) {
+	var song = new songSchema({
+		title: req.body.title,
+		artist: req.body.artist,
+		genre: req.body.genre,
+		});
+	song.save(function (err, product, numberAffected) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({status: 'fail'});
+				return;
+			}
+			console.log('success!');
+			});
+	res.render('editsong.ejs', {title: 'enchord', isNew: 'false', user: req.user, message: 'suc saved'});
 };
 
 exports.editSong = function(req, res) {
@@ -13,14 +25,35 @@ exports.deleteSong = function(req, res) {
 	
 };
 
+//req.body
+// : title. artist genre
+
+
 // get data from form
 	
-	// validate data
+// validate data
+	//check not empty (only title and artist required)
+	//
+// create object with data
+	//var Song = new songSchema({})
+// save data
+	/*
+	Room.save(function (err, product, numberAffected) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({status: 'fail'});
+				return;
+			}
+			console.log('success!');
+			res.render('room_admin.ejs', {roomid: product._id, roomname: product.roomname});
+	*/
+// make sure save is ok
 	
-	// create object with data
-	
-	// save data
-	
-	// make sure save is ok
-	
-	// redirect to new page based on results
+// redirect to new page based on results
+
+
+
+//get Song
+/*
+songSchema.find( {
+*/
