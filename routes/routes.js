@@ -52,7 +52,7 @@ module.exports = function(app, passport, db) {
 			failureRedirect : '/login'
         }));
 		
-		app.post('/createsong', isLoggedIn, utils.newSong);
+		app.post('/createsong', isLoggedIn, utils.createSong);
 		
 		app.get('/editsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: 'true', user: req.user, message: ''});
