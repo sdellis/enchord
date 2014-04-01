@@ -10,7 +10,7 @@
         
         <!-- TITLE -->
         <div class="form-group" ng-class="{ 'has-error' : signupForm.title.$invalid && !signupForm.title.$pristine }">
-            <label class="control-label" for="title">Title</label>
+            <label class="control-label" for="title">Title*</label>
             <input type="text" name="title" class="form-control" ng-model="user.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" required>
             <span ng-show="signupForm.title.$error.required && !signupForm.title.$pristine" class="help-block">Enter the title of the song</span>
             <span ng-show="signupForm.title.$error.minlength" class="help-block">Title is too short</span>
@@ -19,7 +19,7 @@
             
         <!-- ARTIST -->
         <div class="form-group" ng-class="{ 'has-error' : signupForm.artist.$invalid && !signupForm.artist.$pristine }">
-            <label class="control-label" for="artist">Artist</label>
+            <label class="control-label" for="artist">Artist*</label>
             <input type="text" name="artist" class="form-control" ng-model="user.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" required>
             <span ng-show="signupForm.artist.$error.required && !signupForm.artist.$pristine" class="help-block">Enter the artist of the song</span>
             <span ng-show="signupForm.artist.$error.minlength" class="help-block">Artist is too short</span>
@@ -29,7 +29,7 @@
         <!-- GENRE -->
          <div class="form-group" ng-class="{ 'has-error' : signupForm.genre.$invalid && !signupForm.genre.$pristine }">
             <label class="control-label" for="genre">Genre</label>
-            <input type="text" name="genre" class="form-control" ng-model="user.genre">
+            <input type="text" name="genre" class="form-control" ng-model="user.genre" placeholder="Genre">
         </div>
 
         <!-- USER ID -->
@@ -37,11 +37,16 @@
 
         <!-- PRIVATE/PUBLIC SONG -->
 
+        <!-- SONG_ID? -->
+
         <!-- CONTENT -->
         
         
-        <button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Create</button>    
-        <button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Save</button> 
+        <% if (isNew) { %>
+        	<button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Create</button>    
+        <% } else {%>
+        	<button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Save</button> 
+        <% } %>
     </form>
   </body>
 </html>
