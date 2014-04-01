@@ -1,4 +1,9 @@
 var utils = require('./utils');
+var songEmpty = {
+		title: '',
+		artist: '',
+		genre: '',
+		};
 
 module.exports = function(app, passport, db) {
 
@@ -55,7 +60,7 @@ module.exports = function(app, passport, db) {
 		app.post('/createsong', isLoggedIn, utils.createSong);
 		
 		app.get('/editsong', isLoggedIn, function(req, res) {
-			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: '', message: ''});
+			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
 		
 		app.post('/editsong', isLoggedIn, utils.editSong);

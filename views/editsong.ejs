@@ -15,7 +15,7 @@
         <div class="form-group" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }">
             <label class="control-label" for="title">Title*</label>
             
-            <input type="text" name="title" class="form-control" ng-model="user.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" <% if (product.length > 0) { %>value="<%= product %>"<% } %> required>
+            <input type="text" name="title" class="form-control" ng-model="user.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" value="<%= song.title %>" required>
             <span ng-show="songEditForm.title.$error.required && !songEditForm.title.$pristine" class="help-block">Enter the title of the song</span>
             <span ng-show="songEditForm.title.$error.minlength" class="help-block">Title is too short</span>
             <span ng-show="songEditForm.title.$error.maxlength" class="help-block">Title is too long (sorry!)</span>
