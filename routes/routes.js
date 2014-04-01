@@ -3,6 +3,7 @@ var songEmpty = {
 		title: '',
 		artist: '',
 		genre: '',
+		_id: ''
 		};
 
 module.exports = function(app, passport, db) {
