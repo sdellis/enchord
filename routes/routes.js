@@ -1,3 +1,4 @@
+var utils = require('./utils');
 
 module.exports = function(app, passport, db) {
 
@@ -50,6 +51,17 @@ module.exports = function(app, passport, db) {
 			successRedirect : '/members',
 			failureRedirect : '/login'
         }));
+		
+		app.post('/createsong', isLoggedIn, utils.newSong);
+		
+		app.get('/editsong', isLoggedIn, function(req, res) {
+			res.render('editsong.ejs', {title: 'enchord', isNew: 'true'});
+		});
+		
+		app.post('/editsong', isLoggedIn, utils.editSong);
+		
+		app.post('/deletesong', isLoggedIn, utils.deleteSong);
+		
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {
