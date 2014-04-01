@@ -1,3 +1,4 @@
+//Mongo
 var songSchema = require('../models/schemas/song');
 
 exports.createSong = function(req, res) {
@@ -12,13 +13,15 @@ exports.createSong = function(req, res) {
 				res.status(500).json({status: 'fail'});
 				return;
 			}
+			console.log(product);
 			console.log('success!');
+			res.render('editsong.ejs', {title: 'enchord', isNew: false, songid: product._id, message: 'successfully \
+			saved'});
 			});
-	res.render('editsong.ejs', {title: 'enchord', isNew: 'false', user: req.user, message: 'suc saved'});
 };
 
 exports.editSong = function(req, res) {
-	
+	req.body._id
 };
 
 exports.deleteSong = function(req, res) {
