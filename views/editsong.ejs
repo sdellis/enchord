@@ -6,7 +6,10 @@
   </head>
   <body ng-controller="SongEditController">
     <!-- TODO: show any messages that come back -->
-    <form method="post" name="signupForm" novalidate>
+    <% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+    <form <% if (isNew) { %>action="/createSong"<% } else { %>action="/dummy2"<% } %> method="post" name="signupForm" novalidate>
         
         <!-- TITLE -->
         <div class="form-group" ng-class="{ 'has-error' : signupForm.title.$invalid && !signupForm.title.$pristine }">
@@ -40,10 +43,10 @@
         <!-- SONG_ID? -->
 
         <!-- CONTENT -->
-        <div class="form-group" ng-class="{ 'has-error' : signupForm.genre.$invalid && !signupForm.genre.$pristine }">
+        <!--<div class="form-group" ng-class="{ 'has-error' : signupForm.genre.$invalid && !signupForm.genre.$pristine }">-->
         
         <% if (isNew) { %>
-        	<button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default" formaction="/createsong">Create</button>    
+        	<button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Create</button>    
         <% } else {%>
         	<button ng-disabled="signupForm.$invalid" type="submit" class="btn btn-default">Save</button> 
         <% } %>
