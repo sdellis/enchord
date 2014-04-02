@@ -24,11 +24,24 @@ function getithSection(i)
 	return sections[sectionOrder[i]];
 }
 
+// function printDoc()
+// {
+// console.log(getSection(''));
+// for( var i = 1; i <=sectionNum;i++) //for testing
+// 			console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
+// }
+
+// Return result as string
 function printDoc()
 {
-console.log(getSection(''));
-for( var i = 1; i <=sectionNum;i++) //for testing
-			console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
+	var result = "";
+	console.log(getSection(''));
+	result += getSection('');
+	for( var i = 1; i <=sectionNum;i++) { //for testing
+		console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
+		result += '<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '');
+	}
+	return result;
 }
 
 function setOrder(orderLine)
@@ -204,7 +217,8 @@ function parseLine(oneLine, linenum, font) {
 
 }
 
-function readLines(input, font) {
+// function readLines(input, font) {
+function readLines(input, callback) {
 	var remaining = '';
 	var linenum = 1;
 	input.on('data', function(data) {
@@ -214,7 +228,8 @@ function readLines(input, font) {
 		while (index > -1) {
 			var line = remaining.substring(last, index);
 			last = index + 1;
-			parseLine(line, linenum++, font);
+			// parseLine(line, linenum++, font);
+			parseLine(line, linenum++);
 			index = remaining.indexOf('\n', last);
 		}
 
@@ -223,13 +238,44 @@ function readLines(input, font) {
 
 	input.on('end', function() {
 		if (remaining.length > 0) {
-			parseLine(remaining,linenum, font);
+			// parseLine(remaining,linenum, font);
+			parseLine(remaining,linenum);
 		}
-		printDoc();
+		// printDoc();
+
+		// return string
+		callback(printDoc());
 	});
 	
 }
 
-var input = fs.createReadStream('lines.txt');
+// Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
+// TAKE IN STRING INSTEAD OF WRITING TEMP FILE
+exports.parseSong = function(data, callback) {
+	fs.writeFile('./tmp.txt', data, function(err) {
+		if(err) {
+			console.log(err);
+			return 'error';
+		} else {
+			console.log('success!');
+			var input = fs.createReadStream('tmp.txt');
+			var result = readLines(input, function(result) {
+				fs.unlink('./tmp.txt', function (err) {
+					if (err) {
+						console.log(err);
+						return 'error';
+					} else {
+						console.log('success delete file');
+						console.log('In parser: ' + result);	
+						callback(result);
+					}
+				});
+			});
+		}
+	});
+}
 
-readLines(input);
+// Don't use global variables
+// var input = fs.createReadStream('lines.txt');
+
+// readLines(input);

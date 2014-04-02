@@ -38,7 +38,15 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 		$scope.isNew = true;
 		$scope.hasError = false;
 		$scope.parse = function() {
-			$scope.song.result = $scope.song.data + " parsed";
+			$http({
+				method  : 'POST',
+				url     : '/parsesong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data + " parsed";
+			});
 		}
 		$scope.createsong = function() {
 			console.log("create " + $scope.song.title);

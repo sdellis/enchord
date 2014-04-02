@@ -1,4 +1,5 @@
 var utils = require('./utils');
+var parser = require('../parser');
 var songEmpty = {
 		title: '',
 		artist: '',
@@ -68,6 +69,13 @@ module.exports = function(app, passport, db) {
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
+		app.post('/parsesong', isLoggedIn, function(req, res) {
+			console.log(req.body.data);
+			parser.parseSong(req.body.data, function(parsedSong) {
+				console.log("In routes: " + parsedSong);
+				res.send(parsedSong);
+			});
+		});
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {
