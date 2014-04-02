@@ -1,0 +1,10 @@
+order: verse 1, chorus, intro
+This is a sample line without chords.
+{intro}
+This line has [G]chords
+This line [D]has two <uhoh >[G]chords
+{verse 1}
+This line has a <comment>
+{chorus}
+This line has no chords either.
+{verse 1}
