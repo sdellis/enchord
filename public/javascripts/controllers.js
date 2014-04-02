@@ -33,9 +33,83 @@ enchordControllers.controller('ViewController', ['$scope', '$routeParams',
 	}]);
 
 // Song page (edit) controller
-enchordControllers.controller('SongEditController', ['$scope', '$routeParams',
-	function($scope, $routeParams){ 
-		
+enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '$http', '$window',
+	function($scope, $routeParams, $http, $window){ 
+		$scope.isNew = true;
+		$scope.hasError = false;
+		$scope.parse = function() {
+			$scope.song.result = $scope.song.data + " parsed";
+		}
+		$scope.createsong = function() {
+			console.log("create " + $scope.song.title);
+			$http({
+				method  : 'POST',
+				url     : '/createsong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data){
+				console.log(data);
+				$scope.message = data.message;
+				$scope.hasError = data.hasError;
+				$scope.isNew = data.isNew;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
+		$scope.editsong = function() {
+			console.log("edit " + $scope.song.title);
+			$http({
+				method  : 'POST',
+				url     : '/editsong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data){
+				console.log(data);
+				$scope.message = data.message;
+				$scope.hasError = data.hasError;
+				$scope.isNew = data.isNew;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
+		$scope.deletesong = function() {
+			console.log("delete " + $scope.song.title);
+			$http({
+				method  : 'POST',
+				url     : '/deletesong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data){
+				console.log(data);
+				if (data.isDeleted == true) {
+					// redirect to different page later
+					$window.location.href = '/members';
+				}
+				$scope.message = data.message;
+				$scope.hasError = data.hasError;
+				$scope.isNew = data.isNew;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
 	}]);
 
 // Signup controller
