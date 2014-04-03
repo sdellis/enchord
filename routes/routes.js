@@ -2,6 +2,7 @@ var mailer = require('../config/nodemailer');
 var utils = require('./utils');
 var User = require('../models/schemas/user');
 var async = require('async');
+
 var parser = require('../parser');
 var songEmpty = {
 		title: '',

@@ -6,7 +6,7 @@
   </head>
   <body ng-controller="SignupController">
 		<!-- PASSWORD -->
-    <form action="/reset/:<%= tokens%>" method="post" name="loginForm" novalidate>
+    <form action="/reset/<%= tokens%>" method="post" name="loginForm" novalidate>
 		<div class="form-group" ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
             <label class="control-label" for="password"> New Password</label>
             <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="8" ng-maxlength="20" placeholder="Password" ng-change="checkPass()" required>
