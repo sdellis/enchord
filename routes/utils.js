@@ -6,29 +6,29 @@ var songEmpty = {
 		title: '',
 		artist: '',
 		genre: '',
+		data: ''
 		};
 
 exports.createSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
-		genre: req.body.genre
+		genre: req.body.genre,
+		data: req.body.data
 		});
 	if (song.title.trim() == '') {
 		console.log('empty title');
 		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
-		// res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: 'Empty title'});
 	}
 	if (song.artist.trim() == '') {
 		console.log('empty artist');
 		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
-		// res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: 'Empty artist'});
 	}
 		
 	song.save(function (err, product, numberAffected) {
 			if (err) {
 				console.log(err);
-				res.status(500).json({message: 'Internal server error', hasError: true});
+				res.status(500).json({message: 'Internal server error: Cannot create', hasError: true});
 				return;
 			}
 			console.log('success saved');
@@ -43,26 +43,43 @@ exports.editSong = function(req, res) {
 		title: req.body.title,
 		artist: req.body.artist,
 		genre: req.body.genre,
+		data: req.body.data,
 		_id: id
 		});
-	songSchema.update({_id: id}, {title: req.body.title, artist: req.body.artist, genre: req.body.genre, }, function(err, numberAffected, rawResponse) {
+	if (song.title.trim() == '') {
+		console.log('empty title');
+		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
+	}
+	if (song.artist.trim() == '') {
+		console.log('empty artist');
+		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
+	}	
+	
+	songSchema.update({_id: id}, {title: req.body.title, artist: req.body.artist, genre: req.body.genre, data: req.body.data}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
-			res.status(500).json({message: 'Internal server error 2', hasError: true});
+			res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
 			return;
 		}
 		console.log('success edit');
-		console.log(rawResponse);
 		res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
 		});
 };
 
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
+	//var testid = 'notgonnafindthis'; //not in db (on purpose)
+	/*var findsong = songSchema.findOne({title: testid}, function (err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'find error', hasError: true});
+			return;
+		}});
+	console.log(findsong);*/
 	songSchema.remove({_id: id}, function(err) {
 		if (err) {
 			console.log(err);
-			res.status(500).json({message: 'Internal server error 3', hasError: true});
+			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
 			return;
 		}
 		console.log('success delete');

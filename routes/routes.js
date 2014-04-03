@@ -8,6 +8,7 @@ var songEmpty = {
 		title: '',
 		artist: '',
 		genre: '',
+		data: '',
 		_id: ''
 		};
 
