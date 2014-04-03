@@ -21,7 +21,7 @@ enchordControllers.controller('SearchController', ['$scope', '$window', '$routeP
 		$scope.search = function(query) {
 			console.log(query);
 			if (query != undefined && query.length > 0) {
-				$window.location.href = '#/search/' + query;
+				$window.location.href = '/search/' + query;
 			}
 		};
 	}]);
@@ -50,6 +50,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 		}
 		$scope.createsong = function() {
 			console.log("create " + $scope.song.title);
+			console.log($scope.song);
 			$http({
 				method  : 'POST',
 				url     : '/createsong',

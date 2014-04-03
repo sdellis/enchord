@@ -9,7 +9,8 @@ var songEmpty = {
 		artist: '',
 		genre: '',
 		data: '',
-		_id: ''
+		_id: '',
+		type: 'public'
 		};
 
 module.exports = function(app, passport, db) {
@@ -111,7 +112,7 @@ module.exports = function(app, passport, db) {
 		app.get('/editsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
-		
+
 		app.post('/editsong', isLoggedIn, utils.editSong);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
@@ -122,6 +123,13 @@ module.exports = function(app, passport, db) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);
 			});
+		});
+
+		app.get('/search', function(req, res) {
+			res.render('search.ejs', {title: 'enchord', query: ''});
+		});
+		app.get('/search/:query', function(req, res) {
+			res.render('search.ejs', {title: 'enchord', query: req.params.query});
 		});
 		/*
         //authorize when already logged in

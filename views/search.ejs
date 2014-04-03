@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang='en' ng-app='enchord'>
+<!--<html lang='en'>-->
+  <head>
+    <% include head.ejs %>
+  </head>
+  <body ng-controller="SearchController">
+  	<form role="form">
+		<div class="form-group" id="query_group">
+			<input ng-model="query" type="text" class="form-control" id="query" name="query" placeholder="Search" ng-init="query = '<%= query %>'">
+			<button ng-click="search(query)" class="btn btn-default">Search</button>
+		</div>
+	</form>
+	<!-- Results should go here -->
+	Search query = {{query}}
+  </body>
+</html>

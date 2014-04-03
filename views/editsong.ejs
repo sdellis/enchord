@@ -47,7 +47,7 @@
             <div class="col-md-6">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.data.$invalid && !songEditForm.data.$pristine }">
                     <label class="control-label" for="data">Lyrics/Chords</label>
-                    <textarea name="data" class="form-control" ng-model="song.data" ng-maxlength="10000" ng-change="parse()"></textarea>
+                    <textarea name="data" class="form-control" ng-init="song.data = '<%= song.data %>'" ng-model="song.data" ng-maxlength="10000" ng-change="parse()"></textarea>
                     <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-init="song.artist = '<%= song.artist %>'" >-->
                     <span ng-show="songEditForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
                 </div>
@@ -59,6 +59,22 @@
                     <label class="control-label" for="result">Live View</label>
                     <textarea name="result" style="font-family:Courier" class="form-control" ng-model="song.result" disabled></textarea>
                 </div>
+            </div>
+        </div>
+
+        <!-- PUBLIC OR PRIVATE -->
+        <div class="row">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="type" ng-model="song.type" ng-init="song.type = '<%= song.type %>'" value="public" checked>
+                        Public
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="type" ng-model="song.type" value="private">
+                        Private
+                </label>
             </div>
         </div>
 
