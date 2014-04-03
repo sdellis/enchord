@@ -1,9 +1,9 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
-<<<<<<< HEAD
+
 var User = require('../models/schemas/user');
 var async = require('async');
-=======
+
 var parser = require('../parser');
 var songEmpty = {
 		title: '',
@@ -11,7 +11,7 @@ var songEmpty = {
 		genre: '',
 		_id: ''
 		};
->>>>>>> c80f95513ca4af36f6fc8d4f5c681d3a0716f299
+
 
 module.exports = function(app, passport, db) {
 

@@ -75,24 +75,31 @@ exports.confirm = function(req, res) {
 				if (err)
 					done(err);
 				if (!user) {
+					console.log('no user found');
 					req.flash('error', 'password reset token is invalid or has expired.');
 					return res.redirect('back');
 				} else {
+					console.log('user found');
 					if (resetPasswordExpires < Date.now()) {
+						console.log('here?');
 						req.flash('error', 'password reset token is invalid or has expired.');
 						return res.redirect('back');
 					}
+					user.local.password = user.generateHash(req.body.password);
+					user.local.resetPasswordToken = undefined;
+					user.local.resetPasswordExpires = undefined;
+
+					console.log(user);
+
+					user.save(function(err) {
+						req.logIn(user, function(err) {
+							done(err, user);
+						});
+					});
+
 				}
 
-				user.local.password = user.generateHash(req.body.password);
-				user.local.resetPasswordToken = undefined;
-				user.local.resetPasswordExpires = undefined;
-
-				user.save(function(err) {
-					req.logIn(user, function(err) {
-						done(err, user);
-					});
-				});
+				
 			});
 		},
 		function(user, done) {
