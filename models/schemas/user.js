@@ -23,7 +23,9 @@ var User = mongoose.Schema({
 			set: toLower,
 			//index: {unique: true}
 		},
-		password: String
+		password: String,
+		resetPasswordToken: String,
+		resetPasswordExpires: Number
 	},
 	facebook         : {
         id           : String,
