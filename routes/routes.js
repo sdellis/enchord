@@ -1,4 +1,7 @@
+var mailer = require('../config/nodemailer');
 var utils = require('./utils');
+var User = require('../models/schemas/user');
+var async = require('async');
 
 module.exports = function(app, passport, db) {
 
@@ -27,8 +30,46 @@ module.exports = function(app, passport, db) {
 			failureRedirect: '/signup',
 			failureFlash : true // allow flash messages
 		}));
+
+		app.get('/forgot', function(req, res) {
+			res.render('forgot.ejs', {
+				title: 'enchord',
+				user: req.user,
+				messageerror: req.flash('error'),
+				messageinfo: req.flash('info')
+			});
+		});
+
+		app.post('/forgot', mailer.sendmail);
+
+		app.get('/reset/:token', function(req, res) {
+			User.findOne({'local.resetPasswordToken': req.params.token}, function(err, user) {
+				console.log(user);
+				console.log(req.params.token);
+				if (err)
+					done(err);
+				if (!user) {
+					req.flash('messageerror', 'Password reset token is invalid or has expired.');
+					return res.redirect('/forgot');
+				} else {
+					if (user.local.resetPasswordExpires < Date.now()) {
+						console.log('confirm');
+						req.flash('messageerror', 'Password reset token is invalid or has expired.');
+						return res.redirect('/forgot');
+					}
+				}
+				res.render('reset.ejs', {
+					title: 'enchord',
+					user: req.user,
+					tokens: req.params.token
+				});
+			});
+		});
+
+		app.post('/reset/:token', mailer.confirm);
+
 		app.get('/members', isLoggedIn, function(req, res) {
-			res.render('profile.ejs', {title:"Members", user:req.user});
+			res.render('profile.ejs', {title:"Members", user:req.user, message: req.flash('success')});
 		});
 
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));

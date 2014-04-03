@@ -5,6 +5,9 @@
     <% include head.ejs %>
   </head>
   <body>
+  	<% if (message.length > 0) { %>
+      <div class="alert alert-danger"><%= messageerror %></div>
+    <% } %>
   	<h1>Members page</h1>
   	<!--<h2>Hi <%= user.user %>!</h2>
   	<p>This is your email: <%= user.email %></p>-->

@@ -1,0 +1,16 @@
+front end
+-integrate sign in sheets
+-design home page and forgot password pages
+-design edit song pages
+-have a layout for each of the links that we will have
+
+back end
+-put together all the different parts that we have so far
+-fix the parser
+-fix save and edit for new songs
+-finish forgot password/recovery
+-implement a basic search bar to search for the different songs that we have in the database
+
+
+implementation of social media related tools.
+try/catch for database connection.

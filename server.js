@@ -59,5 +59,5 @@ if ('development' == app.get('env')) {
 
 require('./routes/routes')(app, passport, db);
 
-app.listen(port, '127.0.0.1');
+app.listen(port);
 console.log('listenting on port ' + port);

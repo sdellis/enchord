@@ -5,14 +5,21 @@
     <% include head.ejs %>
   </head>
   <body ng-controller="LoginController">
+
+    <% if (messageerror.length > 0) { %>
+      <div class="alert alert-danger"><%= messageerror %></div>
+    <% } %>
+    <% if (messageinfo.length > 0) { %>
+      <div class="alert alert-danger"><%= messageinfo %></div>
+    <% } %>
   	 <!-- pass in the variable if our form is valid or invalid -->
     <form action="/forgot" method="post" name="loginForm" novalidate>
         
         <!-- USERNAME -->
         <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
-            <label class="control-label" for="username">Username</label>
-            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="50" placeholder="Username" required>
-            <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</span>
+            <label class="control-label" for="username">Email</label>
+            <input type="text" name="email" class="form-control" ng-model="user.email" ng-minlength="3" ng-maxlength="50" placeholder="Email" required>
+            <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your email</span>
             <span ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</span>
             <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</span>
         </div>
