@@ -1,59 +1,226 @@
 var fs = require('fs');
+//var S = require('string');
 
-/* returns distance to closing brace 
-	-1 if closing brace is not found 
-	pass original line and index of opening brace*/
-function braces(line, obrace) {
-	length = line.length
-	for (var i = obrace + 1; i < length; i++) {
-		if (line.charAt(i) == '}')
-			return i;
-	}
-	return -1;
+var sections = {'':''};
+var sectionOrder = {0:''}
+var currentSection = '';
+var chordLine = '';
+var lyricLine = '';
+var orderSet = false;
+var sectionNum = 0;
+
+function getSection(section)
+{
+	return sections[section];
 }
 
-function err(linenum, errno) {
+function getithSectionName(i)
+{
+	return sectionOrder[i];
+}
 
+function getithSection(i)
+{
+	return sections[sectionOrder[i]];
+}
+
+// function printDoc()
+// {
+// console.log(getSection(''));
+// for( var i = 1; i <=sectionNum;i++) //for testing
+// 			console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
+// }
+
+// Return result as string
+function printDoc()
+{
+	var result = "";
+	console.log(getSection(''));
+	result += getSection('');
+	for( var i = 1; i <=sectionNum;i++) { //for testing
+		console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
+		result += '<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '');
+	}
+	return result;
+}
+
+function setOrder(orderLine)
+{
+	var sectArray = orderLine.substring(6).split(",");
+	var sect = '';
+	for(var i = 0; i < sectArray.length; i++){
+		sectionNum++;
+		sect = sectArray[i].trim().toLowerCase();
+		sectionOrder[sectionNum] = sect;
+	}
+	orderSet = true;	
+}
+function pushToSection(sect)
+{
+sections[sect] += ('<p>' + chordLine + '</p>\n' + '<p>' + lyricLine + '</p>\n');
+	chordLine = '';
+	lyricLine = '';
+}
+
+//NEEDS TO BE HTML ESCAPE SANITIZED
+function checkBracketErrors(oneLine, linenum){
+//check for basic bracket errors
+	var state = '';
+	var len = oneLine.length;
+
+	for (var i = 0; i < len; i++) {
+		switch(state){
+		case '':
+			switch(oneLine[i]){
+			case '{': case '[': case '<':
+				state = oneLine[i]; break;
+			case '}': case ']': case '>':
+				return 'There is an extra \'' + oneLine[i] + '\' on line ' + linenum + '.';
+			default:
+			}
+			break;
+		case '[':
+			switch(oneLine[i]){
+			case ']':
+				state = ''; break;
+			case '{': case '[': case '<':
+			case '}':case '>':
+				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \']\' in line ' + linenum +  '.';
+			default:
+			}
+			break;
+		case '{':
+			switch(oneLine[i]){
+			case '}':
+				state = ''; break;
+			case '{': case '[': case '<':
+			case ']':case '>':
+				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \'}\' in line ' + linenum +  '.';
+			default:
+			}
+			break;
+		case '<':
+			switch(oneLine[i]){
+			case '>':
+				state = ''; break;
+			case '{': case '[': case '<':
+			case ']':case '}':
+				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \'>\' in line ' + linenum +  '.'
+			default:
+			}
+			break;
+		}
+	}
+	if(state !== '') return 'A \'' + state + '\' bracket on line ' + linenum + ' is not closed.';
+}
+//handle chord in []. i is position of [ on oneLine
+function parseChord(oneLine, i){
+	//pad chord line at least up to length of lyric line
+	while(chordLine.length < lyricLine.length)
+		chordLine += ' ';
+	j = i;
+	var newChord = '';
+	while(oneLine[++j] !== ']')
+		newChord += oneLine[j];
+	//later, narrow what is allowed as a chord
+		chordLine += newChord;
+	return j-i;
+		
+}
+//handle chord comment in <>. i is position of < on oneLine
+function parseChordComment(oneLine, i){
+	//pad chord line at least up to length of lyric line
+	while(chordLine.length < lyricLine.length)
+		chordLine += ' ';
+	j = i;
+	while(oneLine[++j] !== '>')
+		chordLine += oneLine[j];
+	
+	return j-i;
+}
+
+//handle options in {}. i is position of [ on oneLine
+function parseOption(oneLine, i){
+	var option = '';
+	j = i;
+	while(oneLine[++j] !== '}')
+		option += oneLine[j];
+	option = option.trim().toLowerCase()	
+	//is option a section? for now, assume so
+	if(chordLine !== ''|| lyricLine !== '')
+		pushToSection(currentSection);
+	currentSection = option;
+	if(!sections[currentSection]){
+		sections[currentSection] = '';
+		if(!orderSet)
+			sectionOrder[++sectionNum] = currentSection;
+		}
+	else
+		sections[currentSection] += '<p>WARNING: Multiple defitions of section ' + currentSection.toUpperCase() + '. Behavior undefined.</p>\n';
+	
+		
+	
+	return j-i;
 }
 
 /* assuming [chord]lyric format */
 // do something with font variable later
 function parseLine(oneLine, linenum, font) {
-	for (var i = 0 i < len; i++) {
-		close = -1;
-		if (oneLine[i] == '{') {
-			close = braces(oneLine, i);
-			if (close == -1)
-				//do something
-		} else if (oneLine[i] == '}') {
-			// front brace missing
+	oneLine = oneLine.replace(/\r/g,"");
+	if(linenum === 1 && /^order:/i.test(oneLine)){
+		setOrder(oneLine);
+		return;
+	}
+	
+	var bErr = checkBracketErrors(oneLine, linenum);
+	if(bErr) {
+		sections[currentSection] += '<p><i>'+ bErr +'</i></p>\n';
+		return;
+	}
+	//Presume no bracketing errors from here on out.
+	
+	if(/^\s*\{.*\}\s*$/.test(oneLine)){ //just single option
+		parseOption(oneLine.trim(), 0);
+		return;
+	}
+		
+	
+	if(!/[\[{<]/.test(oneLine)) { //if bracketless, simply print the line
+		sections[currentSection] += '<p>' + oneLine + '</p>\n'; 
+		return;
+	}
+	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
+	var len = oneLine.length;
+	for (var i = 0; i < len; i++) {
+		switch(oneLine[i]){
+		case '[':  
+			i+=parseChord(oneLine, i);
+			break;
+		case '<':
+			i+=parseChordComment(oneLine, i); 
+			break;
+		case '{':
+			i+=parseOption(oneLine, i);
+			break;
+		case '/':
+		// '//' rest of line unprinted comment?		
+			if(oneLine[i+1] ==='/'){	
+				i = len;			
+				break;
+			}
+		default:
+			lyricLine+= oneLine[i];		
 		}
 		
-	}
-	/*var newLine = '';
+	} 
+	pushToSection(currentSection);
 
-	var chordLine = '';
-	var lyricLine = '';
-
-	var lyricCharCount = 0;
-	var len = oneLine.length;
-
-	for (var i = 0; i < len; i++) {
-		if (oneLine.charAt(i) == '{') {
-			if (i + 2 < len) {
-				if (oneLine.charAt())
-			} else {
-				//not valid string. just print the {
-			}
-		}
-	} */
-
-	console.log(oneLine);
 }
 
-function readLines(input, font) {
+// function readLines(input, font) {
+function readLines(input, callback) {
 	var remaining = '';
-
+	var linenum = 1;
 	input.on('data', function(data) {
 		remaining += data;
 		var index = remaining.indexOf('\n');
@@ -61,7 +228,8 @@ function readLines(input, font) {
 		while (index > -1) {
 			var line = remaining.substring(last, index);
 			last = index + 1;
-			parseLine(line, font);
+			// parseLine(line, linenum++, font);
+			parseLine(line, linenum++);
 			index = remaining.indexOf('\n', last);
 		}
 
@@ -70,10 +238,44 @@ function readLines(input, font) {
 
 	input.on('end', function() {
 		if (remaining.length > 0) {
-			parseLine(remaining, font);
+			// parseLine(remaining,linenum, font);
+			parseLine(remaining,linenum);
+		}
+		// printDoc();
+
+		// return string
+		callback(printDoc());
+	});
+	
+}
+
+// Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
+// TAKE IN STRING INSTEAD OF WRITING TEMP FILE
+exports.parseSong = function(data, callback) {
+	fs.writeFile('./tmp.txt', data, function(err) {
+		if(err) {
+			console.log(err);
+			return 'error';
+		} else {
+			console.log('success!');
+			var input = fs.createReadStream('tmp.txt');
+			var result = readLines(input, function(result) {
+				fs.unlink('./tmp.txt', function (err) {
+					if (err) {
+						console.log(err);
+						return 'error';
+					} else {
+						console.log('success delete file');
+						console.log('In parser: ' + result);	
+						callback(result);
+					}
+				});
+			});
 		}
 	});
 }
 
-var input = fs.createReadStream('lines.txt');
-readLines(input);
+// Don't use global variables
+// var input = fs.createReadStream('lines.txt');
+
+// readLines(input);

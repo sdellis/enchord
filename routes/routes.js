@@ -1,7 +1,17 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
+<<<<<<< HEAD
 var User = require('../models/schemas/user');
 var async = require('async');
+=======
+var parser = require('../parser');
+var songEmpty = {
+		title: '',
+		artist: '',
+		genre: '',
+		_id: ''
+		};
+>>>>>>> c80f95513ca4af36f6fc8d4f5c681d3a0716f299
 
 module.exports = function(app, passport, db) {
 
@@ -96,13 +106,20 @@ module.exports = function(app, passport, db) {
 		app.post('/createsong', isLoggedIn, utils.createSong);
 		
 		app.get('/editsong', isLoggedIn, function(req, res) {
-			res.render('editsong.ejs', {title: 'enchord', isNew: 'true', user: req.user, message: ''});
+			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
 		
 		app.post('/editsong', isLoggedIn, utils.editSong);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
+		app.post('/parsesong', isLoggedIn, function(req, res) {
+			console.log(req.body.data);
+			parser.parseSong(req.body.data, function(parsedSong) {
+				console.log("In routes: " + parsedSong);
+				res.send(parsedSong);
+			});
+		});
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {
