@@ -68,6 +68,7 @@ exports.sendmail = function(req, res) {
 
 exports.confirm = function(req, res) {
 	console.log(req.body);
+	console.log(req.params.token);
 	async.waterfall([
 		function(done) {
 			User.findOne({ 'local.resetPasswordToken': req.params.token}, function(err, user) {
@@ -76,13 +77,13 @@ exports.confirm = function(req, res) {
 					done(err);
 				if (!user) {
 					console.log('no user found');
-					req.flash('error', 'password reset token is invalid or has expired.');
+					req.flash('messageerror', 'password reset token is invalid or has expired.');
 					return res.redirect('back');
 				} else {
 					console.log('user found');
-					if (resetPasswordExpires < Date.now()) {
+					if (user.local.resetPasswordExpires < Date.now()) {
 						console.log('here?');
-						req.flash('error', 'password reset token is invalid or has expired.');
+						req.flash('messageerror', 'password reset token is invalid or has expired.');
 						return res.redirect('back');
 					}
 					user.local.password = user.generateHash(req.body.password);
@@ -118,7 +119,7 @@ exports.confirm = function(req, res) {
   					  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
 				};
 				smtpTransport.sendMail(mailOptions, function(err) {
-				req.flash('success', 'Success! Your password has been changed.');
+				req.flash('messageerror', 'Success! Your password has been changed.');
 				done(err);
 			});
 		}

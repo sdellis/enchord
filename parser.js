@@ -241,7 +241,7 @@ function readLines(input, callback) {
 			// parseLine(remaining,linenum, font);
 			parseLine(remaining,linenum);
 		}
-		// printDoc();
+		//printDoc();
 
 		// return string
 		callback(printDoc());
@@ -278,4 +278,4 @@ exports.parseSong = function(data, callback) {
 // Don't use global variables
 // var input = fs.createReadStream('lines.txt');
 
-// readLines(input);
+ // readLines(input);
