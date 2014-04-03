@@ -1,29 +1,25 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
-var ObjectId = require('mongoose/lib/types/objectid');
-
+var ObjectId = require('mongoose/lib/types/objectid'); //for testing
+/*
 var songEmpty = {
 		title: '',
 		artist: '',
 		genre: '',
 		data: ''
-		};
+		};*/
 
 exports.createSong = function(req, res) {
+	var userid = getUserId(req);
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
+		author: userid,
 		genre: req.body.genre,
 		data: req.body.data
 		});
-	if (song.title.trim() == '') {
-		console.log('empty title');
-		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
-	}
-	if (song.artist.trim() == '') {
-		console.log('empty artist');
-		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
-	}
+	
+	checkFields(song);
 		
 	song.save(function (err, product, numberAffected) {
 			if (err) {
@@ -38,24 +34,32 @@ exports.createSong = function(req, res) {
 };
 
 exports.editSong = function(req, res) {
-	var id = req.body._id; //USE OID NOT TITLE THIS IS ONLY FOR TESTING
+	var id = req.body._id;
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
 		genre: req.body.genre,
 		data: req.body.data,
-		_id: id
 		});
-	if (song.title.trim() == '') {
-		console.log('empty title');
-		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
-	}
-	if (song.artist.trim() == '') {
-		console.log('empty artist');
-		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
-	}	
 	
-	songSchema.update({_id: id}, {title: req.body.title, artist: req.body.artist, genre: req.body.genre, data: req.body.data}, function(err, numberAffected, rawResponse) {
+	checkFields(song);
+	
+	//var testid = 'notgonnafindthis'; //not in db (on purpose)
+	var findsong = songSchema.findOne({_id: id}, function (err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'find error', hasError: true});
+			return;
+		}
+		if (docs == null) {
+			console.log('Song not found');
+			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
+			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+		}
+	});
+	
+	
+	songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, data: song.data}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
@@ -69,13 +73,19 @@ exports.editSong = function(req, res) {
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
 	//var testid = 'notgonnafindthis'; //not in db (on purpose)
-	/*var findsong = songSchema.findOne({title: testid}, function (err, docs) {
+	var findsong = songSchema.findOne({_id: id}, function (err, docs) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'find error', hasError: true});
 			return;
-		}});
-	console.log(findsong);*/
+		}
+		if (docs == null) {
+			console.log('Song not found');
+			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
+			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+		}
+		});
+		
 	songSchema.remove({_id: id}, function(err) {
 		if (err) {
 			console.log(err);
@@ -86,3 +96,31 @@ exports.deleteSong = function(req, res) {
 		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
 	});
 };
+
+function checkFields(song) {
+	if (song.title.trim() == '') {
+		console.log('empty title');
+		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
+	}
+	if (song.artist.trim() == '') {
+		console.log('empty artist');
+		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
+	}
+}
+
+function getUserId(req) {
+	var id;
+	if (req.user.local.email) {
+		id = req.user._id;
+	}
+	if (req.user.facebook.token) {
+		id = req.user.facebook.id;
+	}
+	if (req.user.twitter.token) {
+		id = req.user.twitter.id;
+	}
+	if (req.user.google.token) {
+		id = req.user.google.id;
+	}
+	return id;
+}
