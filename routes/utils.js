@@ -38,6 +38,8 @@ exports.createSong = function(req, res) {
 
 exports.editSong = function(req, res) {
 	var id = req.body._id;
+	console.log(id);
+	return;
 	
 	var song = songSchema.find({_id: id}, function(err, docs) {
 		if (err) {

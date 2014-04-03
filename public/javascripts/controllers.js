@@ -57,6 +57,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
 				console.log(data);
+				$scope.song = data.song;
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;

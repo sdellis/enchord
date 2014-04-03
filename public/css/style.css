@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('./../fonts/HelveticaNeue-UltraLight.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('./../fonts/HelveticaNeue-Thin.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('./../fonts/HelveticaNeue.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('./../fonts/HelveticaNeue-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+html { -webkit-text-size-adjust: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+html, body { height: 100%; }
+body { margin: 0px; padding: 0px; min-width: 320px; position: relative; font-family: 'Helvetica Neue'; }
+input[type=email]:focus { outline: none; }
+
+/* =============
+Top Section
+============= */
+
+#video_background {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -1000;
+	overflow: hidden;
+}
+
+/*#top { width: 100%; min-width: 320px; height: 100%; background-color: #74b08b; background-image: url('./../images/bg2.jpg'); background-size: cover; background-position: center center; color: #fff; text-align: center; position: relative; } */
+#top { width: 100%; min-width: 320px; height: 100%; background-size: cover; background-position: center center; color: #fff; text-align: center; position: relative; }
+#top h1, #top h2, #top h3 { margin: 0px; -webkit-font-smoothing: antialiased; }
+#message { font-size: 12px; color: #fff; text-align: center; max-width: 300px; padding: 0px 20px; margin: 0px auto 20px auto; font-weight: 200; display: none; }
+#message a:link, #message a:hover, #message a:active, #message a:visited { color: #fff; text-decoration: underline; }
+
+#top #content { position: absolute; width: 100%; top: 50%; }
+#top h1 { font-size: 90px; font-weight: 100; margin-top: -15px; margin-bottom: 5px; }
+#top h2 { font-size: 32px; font-weight: 200; margin-bottom: 20px; }
+#top h3 { font-size: 25px; font-weight: 500; margin: 0px auto; cursor: pointer; transition-duration: 0.2s; transition-property: opacity; -moz-transition-duration: 0.2s; -moz-transition-property: opacity; -webkit-transition-duration: 0.2s;  -webkit-transition-property: opacity; -o-transition-duration: 0.2s; -o-transition-property: opacity; opacity: 1.0; display: table; padding: 0px 20px; }
+#top h3 a:link, #top h3 a:active, #top h3 a:visited, #top h3 a:hover { text-decoration: none; color: #fff; }
+#top h3:hover { opacity: 0.75; }
+#top h3 img { vertical-align: middle; margin-top: -4px; margin-right: 10px; width: 30px; height: 30px; }
+
+#top form { padding: 0px 20px; }
+#top #form { max-width: 400px; background: #fff; margin: 0px auto 18px auto; text-align: left; padding: 0px; position: relative; }
+#top #form #submit { position: absolute; right: 0; background: #70ba8e; height: 100%; top: 0px; color: #fff; padding: 0px 0px; width: 45px; text-align: center; font-weight: 100; line-height: 14px; cursor: pointer; transition-duration: 0.2s; transition-property: background; -moz-transition-duration: 0.2s; -moz-transition-property: background; -webkit-transition-duration: 0.2s;  -webkit-transition-property: background; -o-transition-duration: 0.2s; -o-transition-property: background; }
+#top #form #submit img { margin-top: -4px; display: none; }
+#top #form #submit:hover { background: #69b186; }
+#top #form input[type=email] { margin: 0px; border: 0px; font-size: 18px; color: #000; font-weight: 200; font-family: 'Helvetica Neue'; padding: 11px 15px; width: calc(100% - 30px); -webkit-appearance: none; }
+
+#top #attribution { position: absolute; left: 0; bottom: 0; width: 100%; text-align: center; padding: 0px 0px 10px 0px; font-size: 15px; font-weight: 200; -webkit-font-smoothing: antialiased; cursor: pointer; }
+#top #attribution a:link, #top #attribution a:active, #top #attribution a:visited { color: #fff; text-decoration: none; }
+#top #attribution a:hover { color: #fff; text-decoration: none; opacity: 0.75; }
+
+@media only screen and (max-width: 600px) and (min-width: 350px) {
+	#top h1 { font-size: 80px; font-weight: 100; margin-top: -15px; margin-bottom: 5px; }
+	#top h2 { font-size: 25px; font-weight: 200; margin-bottom: 20px; }
+	#top h3 { font-size: 20px; font-weight: 500; margin-bottom: 0px; }
+	#top h3 img { margin-top: -2px; margin-right: 7px; width: 23px; height: 23px; }
+	#top #attribution { display: none; }
+}
+@media only screen and (max-width: 350px) {
+	#top h1 { font-size: 60px; font-weight: 100; margin-top: -15px; margin-bottom: 5px; }
+	#top h2 { font-size: 20px; font-weight: 200; margin-bottom: 15px; }
+	#top h3 { font-size: 15px; font-weight: 500; margin-bottom: 0px; }
+	#top h3 img { margin-top: -3px; margin-right: 6px; width: 18px; height: 18px; }
+	#top #attribution { display: none; }
+}
+
+/* =============
+Bottom Section
+============= */
+
+#bottom { background: #fff; width: 100%; min-width: 320px; height: 100%; text-align: center; position: relative; }
+#bottom h1, #bottom h2, #bottom h3 { margin: 0px; -webkit-font-smoothing: antialiased; }
+
+#bottom #content { position: absolute; top: 50%; width: 100%; }
+#bottom h1 { font-size: 60px; font-weight: 100; margin-bottom: 5px; }
+#bottom h2 { font-size: 28px; font-weight: 200; margin-bottom: 15px; padding: 0px 20px; margin: 0px auto; max-width: 460px; }
+#bottom #iphone { width: 340px; position: absolute; bottom: 0px; left: 50%; }
+#bottom #content a:link, #bottom #content a:active, #bottom #content a:visited { color: #70ba8e; text-decoration: underline; }
+#bottom #content a:hover { color: #70ba8e; text-decoration: underline; }
+
+@media only screen and (max-width: 600px) and (min-width: 350px) {
+	#bottom h1 { font-size: 53px; font-weight: 100; margin-bottom: 5px; }
+	#bottom h2 { font-size: 23px; font-weight: 200; margin-bottom: 15px; max-width: 390px; }
+	#bottom #iphone { width: 290px; }
+}
+@media only screen and (max-width: 350px) {
+	#bottom h1 { font-size: 40px; font-weight: 100; margin-bottom: 5px; }
+	#bottom h2 { font-size: 20px; font-weight: 200; margin-bottom: 15px; }
+	#bottom #iphone { width: 270px; }
+}
