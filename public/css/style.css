@@ -1,33 +1,10 @@
-@font-face {
-    font-family: 'Helvetica Neue';
-    src: url('./../fonts/HelveticaNeue-UltraLight.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Helvetica Neue';
-    src: url('./../fonts/HelveticaNeue-Thin.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Helvetica Neue';
-    src: url('./../fonts/HelveticaNeue.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Helvetica Neue';
-    src: url('./../fonts/HelveticaNeue-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-
 html { -webkit-text-size-adjust: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
 html, body { height: 100%; }
-body { margin: 0px; padding: 0px; min-width: 320px; position: relative; font-family: 'Helvetica Neue'; }
+body { margin: 0px; padding: 0px; min-width: 320px; position: relative; font-family: 'Open Sans', sans-serif; }
 input[type=email]:focus { outline: none; }
+a {
+    text-decoration:none;
+}
 
 /* =============
 Top Section
@@ -43,15 +20,28 @@ Top Section
 	height: auto;
 	z-index: -1000;
 	overflow: hidden;
+	background-color: #000;
 }
 
+#video_overlay {
+	position:absolute;
+	float:left;
+    width:100%;
+    min-height:100%;
+    background-color:#1A222A;
+    z-index:1;
+    opacity: 0.9;
+}
+h1, h2 {
+    display: inline;
+}
 /*#top { width: 100%; min-width: 320px; height: 100%; background-color: #74b08b; background-image: url('./../images/bg2.jpg'); background-size: cover; background-position: center center; color: #fff; text-align: center; position: relative; } */
-#top { width: 100%; min-width: 320px; height: 100%; background-size: cover; background-position: center center; color: #fff; text-align: center; position: relative; }
+#top { width: 100%; min-width: 320px; height: 100%; background-size: cover; background-position: center center; color: #fff; text-align: center; position: relative; z-index:2;}
 #top h1, #top h2, #top h3 { margin: 0px; -webkit-font-smoothing: antialiased; }
 #message { font-size: 12px; color: #fff; text-align: center; max-width: 300px; padding: 0px 20px; margin: 0px auto 20px auto; font-weight: 200; display: none; }
 #message a:link, #message a:hover, #message a:active, #message a:visited { color: #fff; text-decoration: underline; }
 
-#top #content { position: absolute; width: 100%; top: 50%; }
+#top #content { position: absolute; width: 100%; top: 45%; }
 #top h1 { font-size: 90px; font-weight: 100; margin-top: -15px; margin-bottom: 5px; }
 #top h2 { font-size: 32px; font-weight: 200; margin-bottom: 20px; }
 #top h3 { font-size: 25px; font-weight: 500; margin: 0px auto; cursor: pointer; transition-duration: 0.2s; transition-property: opacity; -moz-transition-duration: 0.2s; -moz-transition-property: opacity; -webkit-transition-duration: 0.2s;  -webkit-transition-property: opacity; -o-transition-duration: 0.2s; -o-transition-property: opacity; opacity: 1.0; display: table; padding: 0px 20px; }
@@ -69,6 +59,141 @@ Top Section
 #top #attribution { position: absolute; left: 0; bottom: 0; width: 100%; text-align: center; padding: 0px 0px 10px 0px; font-size: 15px; font-weight: 200; -webkit-font-smoothing: antialiased; cursor: pointer; }
 #top #attribution a:link, #top #attribution a:active, #top #attribution a:visited { color: #fff; text-decoration: none; }
 #top #attribution a:hover { color: #fff; text-decoration: none; opacity: 0.75; }
+
+
+/*=============
+Social Login Buttons
+===============*/
+
+/* Styles for buttons container */
+.container {
+	left: 50%;
+	margin: -86px 0 0 -103px;
+	position: fixed;
+	top: 60%; 
+	display: inline;
+}
+
+/* Facebook */
+.fb-icon-bg {
+	background: #354f88;
+	height: 37px;
+	margin: 0 0 -37px 0;
+	width: 41px; 
+}
+
+.fb-icon-bg:after {
+  content: url(https://dl.dropboxusercontent.com/u/54149043/CssDeck/fb-icon.png);
+  display: block;
+  padding: 9px 10px 5px 15px;
+}
+
+.fb-bg {
+	background: #3b5998;
+	display: block;
+	height: 37px;
+	margin: 0 0 30px 41px;
+	width: 166px; 
+}
+
+.fb-bg:after {
+	color: #fff;
+	content: "Sign In";
+	font-family: 'Open Sans', sans-serif;
+	height: 37px;
+	position: relative;
+	text-transform: uppercase;
+	top: 22%;
+	width: 41px; 
+}
+
+.fb-bg:hover{
+  cursor: pointer;
+}
+
+.fb-bg:active{
+  background: #354f88;
+}
+
+/* Twitter */
+.twi-icon-bg:after {
+  content: url(https://dl.dropboxusercontent.com/u/54149043/CssDeck/twi-icon.png);
+  display: block;
+  padding: 11px 10px 6px 11px;
+}
+
+.twi-icon-bg {
+	background: #40a2d1;
+	height: 37px;
+	margin: 0 0 -37px 0;
+	width: 41px; 
+}
+
+.twi-bg {
+	background: #45b0e3;
+	height: 37px;
+	margin: 0 0 30px 41px;
+	width: 166px; 
+}
+ 
+.twi-bg:after {
+	color: #fff;
+	content: "Sign In";
+	font-family: 'Open Sans', sans-serif;
+	height: 37px;
+	position: relative;
+  	text-transform: uppercase;
+	top: 22%;
+  	width: 41px; 
+}
+
+.twi-bg:hover {
+  cursor: pointer;
+}
+
+.twi-bg:active {
+  background: #40a2d1;
+}
+
+/* Google+ */
+.g-icon-bg:after {
+  content: url(https://dl.dropboxusercontent.com/u/54149043/CssDeck/g-icon.png);
+  display: block;
+  padding: 11px 10px 6px 13px;
+}
+
+.g-icon-bg {
+	background: #ce3e26;
+	height: 37px;
+	margin: 0 0 -37px 0;
+	width: 41px; 
+}
+ 
+.g-bg {
+	background: #de4c34;
+	height: 37px;
+	margin-left: 41px;
+	width: 166px; 
+}
+ 
+.g-bg:after {
+	color: #fff;
+	content: "sign in";
+	font-family: 'Open Sans', sans-serif;
+	height: 37px;
+	position: relative;
+	text-transform: uppercase;
+	top: 22%;
+	width: 41px; 
+}
+
+.g-bg:hover {
+  cursor: pointer;
+}
+
+.g-bg:active {
+  background: #ce3e26;
+}
 
 @media only screen and (max-width: 600px) and (min-width: 350px) {
 	#top h1 { font-size: 80px; font-weight: 100; margin-top: -15px; margin-bottom: 5px; }
