@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <!--<html lang='en' ng-app='enchord'>-->
-<html lang='en'>
-  <head>
-    <% include head.ejs %>
-  </head>
-  <body>
-    <h1>Welcome to Enchord</h1>
-	<a href="/about">About</a>
-	<a href="/login">Login</a>
-	<a href="/signup">Signup</a>
-  </body>
+<html>
+<head>
+	<% include head.ejs %>
+	<title>EnChord</title>
+	<meta name="author" content="EnChord">
+	<META NAME="description" CONTENT="Fill in here.">
+	<META NAME="keywords" CONTENT="chord sheet, chords, song sheet">
+	<META NAME="robot" CONTENT="index,follow">
+	<META NAME="copyright" CONTENT="Â© 2014 EnChord. All Rights Reserved.">
+	<META NAME="language" CONTENT="English">
+	<META NAME="revisit-after" CONTENT="7">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+	<div>
+		<div id="video_overlay"></div>
+		<video id="video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+		<source src="videos/bg2.mp4" type="video/mp4"> Video not supported </video>
+	</div>
+
+	<div id="top">
+		<div id="content">
+			<h2 style="font-weight: 600;">EnChord</h2>
+			<h2>&nbsp;simplifies chord sheets for the modern musician.</h2>
+		</div>
+
+		<div class="container" style="margin-top: -5%;">
+	  		<a href="/auth/facebook"><div class="fb-icon-bg"></div><div class="fb-bg"></div></a>
+	  		<a href="/auth/twitter"><div class="twi-icon-bg"></div><div class="twi-bg"></div></a>
+	  		<a href="/auth/google"><div class="g-icon-bg"></div><div class="g-bg"></div></a>
+		</div>
+
+		<div id="attribution">&copy; OnChord</div>
+	</div>
+</body>
 </html>
