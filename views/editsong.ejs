@@ -16,10 +16,11 @@
             <div class="col-md-4">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }">
                     <label class="control-label" for="title">Title*</label>          
-                    <input type="text" name="title" class="form-control" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-init="song.title = '<%= song.title %>'" required>
+                    <input type="text" name="title" class="form-control" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-init="song.title = '<%= song.title %>'" ng-pattern="/^[A-Za-z0-9\$\?\!\&\-\_]*$/" required>
                     <span ng-show="songEditForm.title.$error.required && !songEditForm.title.$pristine" class="help-block">Enter the title of the song</span>
                     <span ng-show="songEditForm.title.$error.minlength" class="help-block">Title is too short</span>
                     <span ng-show="songEditForm.title.$error.maxlength" class="help-block">Title is too long (sorry!)</span>
+                    <span ng-show="songEditForm.title.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_</span>
                 </div>
             </div>
         
@@ -27,10 +28,11 @@
             <div class="col-md-4">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }">
                     <label class="control-label" for="artist">Artist*</label>
-                    <input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-init="song.artist = '<%= song.artist %>'" required>
+                    <input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-init="song.artist = '<%= song.artist %>'" ng-pattern="/^[A-Za-z0-9\$\?\!\&\-\_]*$/" required>
                     <span ng-show="songEditForm.artist.$error.required && !songEditForm.artist.$pristine" class="help-block">Enter the artist of the song</span>
                     <span ng-show="songEditForm.artist.$error.minlength" class="help-block">Artist is too short</span>
                     <span ng-show="songEditForm.artist.$error.maxlength" class="help-block">Artist is too long (sorry!)</span>
+                    <span ng-show="songEditForm.artist.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_</span>
                 </div>
             </div>
         
@@ -38,7 +40,8 @@
             <div class="col-md-4">
                  <div class="form-group" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }">
                     <label class="control-label" for="genre">Genre</label>
-                    <input type="text" name="genre" class="form-control" ng-model="song.genre" ng-init="song.genre = '<%= song.genre %>'" placeholder="Genre">
+                    <input type="text" name="genre" class="form-control" ng-model="song.genre" ng-init="song.genre = '<%= song.genre %>'" ng-pattern="/^[A-Za-z0-9-_]*$/" placeholder="Genre">
+                    <span ng-show="songEditForm.genre.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
                 </div>
             </div>
         </div>
@@ -47,9 +50,10 @@
             <div class="col-md-6">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.data.$invalid && !songEditForm.data.$pristine }">
                     <label class="control-label" for="data">Lyrics/Chords</label>
-                    <textarea name="data" class="form-control" ng-init="song.data = '<%= song.data %>'" ng-model="song.data" ng-maxlength="10000" ng-change="parse()"></textarea>
+                    <textarea name="data" class="form-control" ng-init="song.data = '<%= song.data %>'" ng-model="song.data" ng-maxlength="10000" ng-change="parse()" ng-pattern="/^[A-Za-z0-9\$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>]*$/" ></textarea>
                     <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-init="song.artist = '<%= song.artist %>'" >-->
                     <span ng-show="songEditForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
+                    <span ng-show="songEditForm.data.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<></span>
                 </div>
             </div>
 

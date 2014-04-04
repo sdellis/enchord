@@ -19,7 +19,8 @@ exports.createSong = function(req, res) {
 		data: req.body.data
 		});
 	
-	checkFields(song);
+	if(!checkFields(song, res))
+		return;
 		
 	song.save(function (err, product, numberAffected) {
 			if (err) {
@@ -42,7 +43,8 @@ exports.editSong = function(req, res) {
 		data: req.body.data,
 		});
 	
-	checkFields(song);
+	if(!checkFields(song, res))
+		return;
 	
 	//var testid = 'notgonnafindthis'; //not in db (on purpose)
 	var findsong = songSchema.findOne({_id: id}, function (err, docs) {
@@ -55,6 +57,7 @@ exports.editSong = function(req, res) {
 			console.log('Song not found');
 			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
 			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+			return;
 		}
 	});
 	
@@ -67,6 +70,7 @@ exports.editSong = function(req, res) {
 		}
 		console.log('success edit');
 		res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
+		return;
 		});
 };
 
@@ -83,6 +87,7 @@ exports.deleteSong = function(req, res) {
 			console.log('Song not found');
 			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
 			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+			return;
 		}
 		});
 		
@@ -94,18 +99,22 @@ exports.deleteSong = function(req, res) {
 		}
 		console.log('success delete');
 		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
+		return;
 	});
 };
 
-function checkFields(song) {
+function checkFields(song, res) {
 	if (song.title.trim() == '') {
 		console.log('empty title');
 		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
+		return false;
 	}
 	if (song.artist.trim() == '') {
 		console.log('empty artist');
 		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
+		return false;
 	}
+	return true;
 }
 
 function getUserId(req) {

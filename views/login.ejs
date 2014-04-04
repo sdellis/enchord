@@ -14,17 +14,19 @@
         <!-- USERNAME -->
         <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
             <label class="control-label" for="username">Username</label>
-            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="100" placeholder="Username" required>
+            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="100" placeholder="Username" ng-pattern="/^[A-Za-z0-9-_]*$/" required>
             <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</span>
             <span ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</span>
             <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</span>
+            <span ng-show="loginForm.username.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
         </div>
             
         <!-- PASSWORD -->
         <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
             <label class="control-label" for="password">Password</label>
-            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Password" required>
+            <input type="password" name="password" class="form-control" ng-model="user.password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" placeholder="Password" required>
             <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">Enter your password</span>
+            <span ng-show="loginForm.password.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</span>
         </div>
         
         <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-default">Login</button>
