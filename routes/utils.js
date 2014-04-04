@@ -92,6 +92,28 @@ exports.deleteSong = function(req, res) {
 
 };
 
+exports.searchSong = function(req, res) {
+	var query = req.params.query;
+	var array = [];
+	if (query == '') {
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Empty query'});
+		return;
+	}
+	else {
+		songSchema.find({title: query}, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			console.log(docs);
+			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Search results'});
+			return;
+		});
+	}
+}
+
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
 		console.log('empty title');

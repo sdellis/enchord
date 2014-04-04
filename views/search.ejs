@@ -16,8 +16,8 @@
 
 	<!-- TODO: Add pagination -->
 	<ul>
-		<% results.forEach(song, i) { %>
-			<li><a href="/viewsong/<%= song._id %>"><%= song.title %></a></li>
+		<% for(var i = 0; i < results.length; i++) { %>
+			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a></li>
 		<% } %>
 	</ul>
   </body>
