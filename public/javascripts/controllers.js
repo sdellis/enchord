@@ -38,6 +38,8 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 		$scope.isNew = true;
 		$scope.hasError = false;
 		$scope.parse = function() {
+			//readLines($scope.song.data, function(data){$scope.song.result = data});
+
 			$http({
 				method  : 'POST',
 				url     : '/parsesong',
