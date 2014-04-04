@@ -10,7 +10,7 @@ var songEmpty = {
 		genre: '',
 		data: '',
 		_id: '',
-		type: 'public'
+		pub: true
 		};
 
 module.exports = function(app, passport, db) {

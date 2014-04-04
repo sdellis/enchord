@@ -70,13 +70,13 @@
         <div class="row">
             <div class="radio">
                 <label>
-                    <input type="radio" name="type" ng-model="song.type" ng-init="song.type = '<%= song.type %>'" value="public" checked>
+                    <input type="radio" name="type" ng-model="song.pub" ng-init="song.pub = '<%= song.pub %>'" value=true checked>
                         Public
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="type" ng-model="song.type" value="private">
+                    <input type="radio" name="type" ng-model="song.pub" value=false>
                         Private
                 </label>
             </div>
