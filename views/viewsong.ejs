@@ -7,6 +7,9 @@
   <body>
   	<p>Title: <%= song.title %></p>
   	<p>Artist: <%= song.artist %></p>
-  	<p>Author: <%= song.author %></p>
+  	<p>Author: <%= song.author_name %></p>
+  	<p>Genre: <%= song.genre %></p>
+
+  	<a href="/editsong/<%= song._id %>">Edit Song</a>
   </body>
  </html>
