@@ -16,7 +16,8 @@ exports.createSong = function(req, res) {
 		artist: req.body.artist,
 		author: userid,
 		genre: req.body.genre,
-		data: req.body.data
+		data: req.body.data,
+		pub: req.body.pub
 		});
 	
 	if(!checkFields(song, res))
@@ -41,28 +42,14 @@ exports.editSong = function(req, res) {
 		artist: req.body.artist,
 		genre: req.body.genre,
 		data: req.body.data,
+		pub: req.body.pub
 		});
 	
 	if(!checkFields(song, res))
 		return;
 	
-	//var testid = 'notgonnafindthis'; //not in db (on purpose)
-	var findsong = songSchema.findOne({_id: id}, function (err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'find error', hasError: true});
-			return;
-		}
-		if (docs == null) {
-			console.log('Song not found');
-			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
-			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
-			return;
-		}
-	});
-	
-	
-	songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, data: song.data}, function(err, numberAffected, rawResponse) {
+	findSong(id, function(docs) {
+		songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, data: song.data, pub: song.pub}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
@@ -72,26 +59,26 @@ exports.editSong = function(req, res) {
 		res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
 		return;
 		});
+	
+	});
+
 };
+
+exports.loadSong = function(req, res) {
+	var id = req.params._id;
+	
+	var findsong = findSong(id, function(docs) {
+		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
+	});
+}
+
+
 
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
-	//var testid = 'notgonnafindthis'; //not in db (on purpose)
-	var findsong = songSchema.findOne({_id: id}, function (err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'find error', hasError: true});
-			return;
-		}
-		if (docs == null) {
-			console.log('Song not found');
-			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
-			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
-			return;
-		}
-		});
-		
-	songSchema.remove({_id: id}, function(err) {
+
+	findSong(id, function(docs) {
+		songSchema.remove({_id: id}, function(err) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -100,7 +87,9 @@ exports.deleteSong = function(req, res) {
 		console.log('success delete');
 		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
 		return;
+		});
 	});
+
 };
 
 function checkFields(song, res) {
@@ -133,3 +122,23 @@ function getUserId(req) {
 	}
 	return id;
 }
+
+function findSong(id, callback) {
+	songSchema.findById(id, function (err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'find error', hasError: true});
+			return;
+		}
+		if (docs == null) {
+			console.log('Song not found');
+			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
+			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+			return;
+		}
+		callback(docs);
+	});
+
+}
+
+
