@@ -128,11 +128,11 @@ module.exports = function(app, passport, db) {
 		});
 
 		app.get('/search', function(req, res) {
-			res.render('search.ejs', {title: 'enchord', query: ''});
+			res.render('search.ejs', {title: 'enchord', query: '', results: []});
 		});
-		app.get('/search/:query', function(req, res) {
+		/*app.get('/search/:query', function(req, res) {
 			res.render('search.ejs', {title: 'enchord', query: req.params.query});
-		});
+		});*/
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {

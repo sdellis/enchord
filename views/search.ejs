@@ -13,5 +13,12 @@
 	</form>
 	<!-- Results should go here -->
 	Search query = {{query}}
+
+	<!-- TODO: Add pagination -->
+	<ul>
+		<% results.forEach(song, i) { %>
+			<li><a href="/viewsong/<%= song._id %>"><%= song.title %></a></li>
+		<% } %>
+	</ul>
   </body>
 </html>
