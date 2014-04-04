@@ -10,11 +10,11 @@ var songEmpty = {
 		};*/
 
 exports.createSong = function(req, res) {
-	var userid = getUserId(req);
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
-		author: userid,
+		author_id: getAuthorId(req),
+		author_name: getAuthorName(req),
 		genre: req.body.genre,
 		data: req.body.data,
 		pub: req.body.pub
@@ -64,7 +64,7 @@ exports.editSong = function(req, res) {
 
 };
 
-exports.loadSong = function(req, res) {
+exports.loadSongEdit = function(req, res) {
 	var id = req.params._id;
 	
 	var findsong = findSong(id, function(docs) {
@@ -72,7 +72,13 @@ exports.loadSong = function(req, res) {
 	});
 }
 
-
+exports.loadSongView = function(req, res) {
+	var id = req.params._id;
+	
+	var findsong = findSong(id, function(docs) {
+		res.render('viewsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
+	});
+}
 
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
@@ -93,6 +99,7 @@ exports.deleteSong = function(req, res) {
 };
 
 exports.searchSong = function(req, res) {
+	//var query = req.params.query.split(' ');
 	var query = req.params.query;
 	var array = [];
 	if (query == '') {
@@ -128,7 +135,7 @@ function checkFields(song, res) {
 	return true;
 }
 
-function getUserId(req) {
+function getAuthorId(req) {
 	var id;
 	if (req.user.local.email) {
 		id = req.user._id;
@@ -143,6 +150,23 @@ function getUserId(req) {
 		id = req.user.google.id;
 	}
 	return id;
+}
+
+function getAuthorName(req) {
+	var name;
+	if (req.user.local.email) {
+		name = req.user.local.user;
+	}
+	if (req.user.facebook.token) {
+		name = req.user.facebook.name;
+	}
+	if (req.user.twitter.token) {
+		name = req.user.twitter.name;
+	}
+	if (req.user.google.token) {
+		name = req.user.google.name;
+	}
+	return name;
 }
 
 function findSong(id, callback) {

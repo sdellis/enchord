@@ -115,9 +115,9 @@ module.exports = function(app, passport, db) {
 
 		app.post('/editsong', isLoggedIn, utils.editSong);
 		
-		//app.get('/editsong/:_id', isLoggedIn, utils.loadSongEdit);
+		app.get('/editsong/:_id', isLoggedIn, utils.loadSongEdit);
 
-		//app.get('/viewsong/:_id', utils.loadSongView);
+		app.get('/viewsong/:_id', utils.loadSongView);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
