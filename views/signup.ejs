@@ -11,7 +11,7 @@
 	<% if (message.length > 0) { %>
 		<div class="alert alert-danger"><%= message %></div>
 	<% } %>
-    <form action="/signup" method="POST" name="signupForm" novalidate>
+    <form action="/signup" method="POST" name="signupForm" id="signupForm" novalidate>
         <div id="wrapper">
             <div class="form">
                 <div class="header">
@@ -34,9 +34,9 @@
 
                 <input type="password" placeholder="Confirm Password" name="password_repeat" ng-model="user.password_repeat" ng-minlength="8" ng-maxlength="20" placeholder="Confirm Password" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/">
 
-                <input class="button submit" type="submit" onclick="submitForm()">
+                <div class="button submit" type="submit" onclick="submitForm() name="btnSubmit" id ="btnSubmit">
                     <img src="./images/checkmark.png" alt="checkmark">
-                </input>
+                </div>
 
                 <p><a href="/login" style="text-decoration:none; font-size: 1.2em;">Already have an account?</p></a>
             </div>
@@ -90,10 +90,13 @@
 	<!-- <p>Already have an account? <a href="/login">Login</a></p>
 	<p>Or go <a href="/">home</a>.</p> -->
     <script type="text/javascript">
-        function submitForm()
-        {  
-            document.getElementById('signupForm').submit();
-        }
+        // function submitForm()
+        // {  
+        //     document.getElementById('signupForm').submit();
+        // }
+        $('btnSubmit').click(function () {
+            $('signupForm').submit();
+        });
     </script>
   </body>
 </html>
