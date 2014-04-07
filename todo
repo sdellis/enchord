@@ -1,4 +1,18 @@
 front end
+-implement remaining design
+-pagination search page
+
+back end
+-differentiate between global/local libraries
+-copy song functionality
+-download as pdf/txt functionality
+-transposition
+-font sizes
+-advanced search option
+
+
+--old--
+front end
 -integrate sign in sheets
 -design home page and forgot password pages
 -design edit song pages

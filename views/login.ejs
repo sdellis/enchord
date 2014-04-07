@@ -13,12 +13,12 @@
         
         <!-- USERNAME -->
         <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
-            <label class="control-label" for="username">Username</label>
-            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="100" placeholder="Username" ng-pattern="/^[A-Za-z0-9-_]*$/" required>
-            <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</span>
-            <span ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</span>
-            <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</span>
-            <span ng-show="loginForm.username.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
+            <label class="control-label" for="username">Username or Email</label>
+            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="100" placeholder="Username or Email" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
+            <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username/email</span>
+            <span ng-show="loginForm.username.$error.minlength" class="help-block">Username/Email is too short</span>
+            <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username/Email is too long</span>
+            <span ng-show="loginForm.username.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</span>
         </div>
             
         <!-- PASSWORD -->
