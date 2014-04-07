@@ -30,9 +30,9 @@
                 <br><p><span>OR</span></p><br>
                 <input type="text" placeholder="Email Address" name="username"><br/>
                 <input type="password" placeholder="Password" name="password">
-                <input class="button submit" type="submit">
+                <div class="button submit" type="submit" onclick="submitForm()">
                     <img src="./images/checkmark.png" alt="checkmark">
-                </input>
+                </div>
                 <p><a href="/forgot" style="text-decoration:none; font-size: 1.2em;">Forgot your password?</p></a>
             </div>
         </div>
@@ -63,5 +63,11 @@
 	<!-- <p>Need an account? <a href="/signup">Signup</a></p>
 	<p>Or go <a href="/">home</a>.</p>
     <p>Login or Register with:</p> -->
+    <script type="text/javascript">
+        function submitForm()
+        {
+            document.getElementById('loginForm').submit();
+        }
+    </script>
   </body>
 </html>
