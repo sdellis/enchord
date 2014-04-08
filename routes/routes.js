@@ -16,13 +16,13 @@ var songEmpty = {
 module.exports = function(app, passport, db) {
 
 	db.mongoose.once('open', function callback() {
-		app.get('/', function(req, res){
+		app.get('/', protectLogin, function(req, res){
 	 		res.render('index', { title: 'Enchord' });
 		});
 
-		app.get('/home', function(req, res){
-			res.render('home.ejs');
-		})
+		// app.get('/home', function(req, res){
+		// 	res.render('home.ejs');
+		// })
 		
 		app.get('/about', function(req, res){
 			res.render('about.ejs', {title:"enchord"});
@@ -107,12 +107,17 @@ module.exports = function(app, passport, db) {
 			failureRedirect : '/login'
         }));
 		
-		app.post('/createsong', isLoggedIn, utils.createSong);
-		
-		app.get('/editsong', isLoggedIn, function(req, res) {
+		app.get('/findsong/:_id', isLoggedIn, utils.getSong)
+		app.get('/createsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
 
+		app.post('/createsong', isLoggedIn, utils.createSong);
+		
+		// app.get('/editsong', isLoggedIn, function(req, res) {
+		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+		// });
+		
 		app.post('/editsong', isLoggedIn, utils.editSong);
 		
 		app.get('/editsong/:_id', isLoggedIn, utils.loadSongEdit);
@@ -122,7 +127,6 @@ module.exports = function(app, passport, db) {
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
 		app.post('/parsesong', isLoggedIn, function(req, res) {
-			console.log(req.body.data);
 			parser.parseSong(req.body.data, function(parsedSong) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);

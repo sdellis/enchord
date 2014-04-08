@@ -12,22 +12,23 @@ exports.createSong = function(req, res) {
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ') //actually an array
-		});
+	});
 	
 	if(!checkFields(song, res))
 		return;
 		
 	song.save(function (err, product, numberAffected) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({message: 'Internal server error: Cannot create', hasError: true});
-				return;
-			}
-			console.log('success saved');
-			console.log(song.search_string);
-			res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
-			// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'successfully saved'});
-			});
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: Cannot create', hasError: true});
+			return;
+		}
+		console.log('success saved');
+		console.log(song.search_string);
+		console.log(song);
+		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
+		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});
+	});
 };
 
 exports.editSong = function(req, res) {
@@ -55,10 +56,8 @@ exports.editSong = function(req, res) {
 		console.log('success edit');
 		res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
 		return;
-		});
-	
+		});	
 	});
-
 };
 
 exports.loadSongEdit = function(req, res) {
@@ -116,6 +115,12 @@ exports.searchSong = function(req, res) {
 			return;
 		});
 	}
+}
+
+exports.getSong = function(req, res) {
+	findSong(req.params._id, function(data) {
+		res.send({song: data});
+	});
 }
 
 function checkFields(song, res) {
