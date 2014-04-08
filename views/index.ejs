@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--<html lang='en' ng-app='enchord'>-->
-<html>
+<html ng-app="enchord">
 <head>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,14 +67,14 @@
                     </div>
                 </div> 
                 <div class="row">
-                    <form class="search" action="">
-                        <input type="search" placeholder="Search for songs, artists, albums..." autofocus>
-                        <button type="submit"></button>
+                    <form class="search" name="searchForm" ng-controller="SearchController">
+                        <input type="search" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+                        <button type="submit" ng-click="search(query)"></button>
                     </form>   
                 </div><br><br>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-8 center white-text bottom-margin-normal">
-                        <a class="btn login-button" href="/login">Sign In</a>
+                        <a class="btn login-button" href="/signup">Sign Up</a>
                         <a class="btn login-button modern-button" href="#features-start">Learn More</a>
                     </div>
                 </div> 

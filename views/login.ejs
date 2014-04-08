@@ -12,7 +12,7 @@
 		  <div class="alert alert-danger"><%= message %></div>
 	  <% } %>
 
-    <form action="/login" method="post" name="loginForm" novalidate>
+    <form action="/login" method="POST" name="loginForm" id="loginForm" novalidate>
         <div id="wrapper">
             <div class="form">
                 <div class="header">
@@ -28,9 +28,9 @@
                     <a href="auth/google"><img src="./images/google.png" alt="google"></a>
                 </div>
                 <br><p><span>OR</span></p><br>
-                <input type="text" placeholder="Email Address"><br/>
-                <input type="password" placeholder="Password">
-                <div class="button submit">
+                <input type="text" placeholder="Email Address" name="username"><br/>
+                <input type="password" placeholder="Password" name="password">
+                <div class="button submit" type="submit" onclick="submitOnClick('loginForm')">
                     <img src="./images/checkmark.png" alt="checkmark">
                 </div>
                 <p><a href="/forgot" style="text-decoration:none; font-size: 1.2em;">Forgot your password?</p></a>
@@ -63,5 +63,10 @@
 	<!-- <p>Need an account? <a href="/signup">Signup</a></p>
 	<p>Or go <a href="/">home</a>.</p>
     <p>Login or Register with:</p> -->
+    <script type="text/javascript">
+        function submitOnClick(formName){
+            document.forms[formName].submit();
+        }
+    </script>
   </body>
 </html>
