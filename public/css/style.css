@@ -257,7 +257,7 @@ color: #868f90;
 	width: 50px;
 	color: #fff;
 	background: transparent;
-	background-image: url(./images/search.png);
+	background-image: url(../../images/search.png);
 }   
 
 .search button:hover {
