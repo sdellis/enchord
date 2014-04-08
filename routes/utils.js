@@ -1,13 +1,6 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
-/*
-var songEmpty = {
-		title: '',
-		artist: '',
-		genre: '',
-		data: ''
-		};*/
 
 exports.createSong = function(req, res) {
 	var song = new songSchema({
@@ -17,7 +10,8 @@ exports.createSong = function(req, res) {
 		author_name: getAuthorName(req),
 		genre: req.body.genre,
 		data: req.body.data,
-		pub: req.body.pub
+		pub: req.body.pub,
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ') //actually an array
 		});
 	
 	if(!checkFields(song, res))
@@ -30,6 +24,7 @@ exports.createSong = function(req, res) {
 				return;
 			}
 			console.log('success saved');
+			console.log(song.search_string);
 			res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
 			// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'successfully saved'});
 			});
@@ -42,14 +37,16 @@ exports.editSong = function(req, res) {
 		artist: req.body.artist,
 		genre: req.body.genre,
 		data: req.body.data,
-		pub: req.body.pub
+		pub: req.body.pub,
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')
 		});
 	
 	if(!checkFields(song, res))
 		return;
 	
 	findSong(id, function(docs) {
-		songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, data: song.data, pub: song.pub}, function(err, numberAffected, rawResponse) {
+		songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, 
+		data: song.data, pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
@@ -99,15 +96,15 @@ exports.deleteSong = function(req, res) {
 };
 
 exports.searchSong = function(req, res) {
-	//var query = req.params.query.split(' ');
-	var query = req.params.query;
+	var query = req.params.query.toLowerCase().split(' ');
+	console.log(query);
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Empty query'});
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
 		return;
 	}
 	else {
-		songSchema.find({title: query}, function(err, docs) {
+		songSchema.find({search_string: {$all: query}}, function(err, docs) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -161,7 +158,7 @@ function getAuthorName(req) {
 		name = req.user.facebook.name;
 	}
 	if (req.user.twitter.token) {
-		name = req.user.twitter.name;
+		name = req.user.twitter.username;
 	}
 	if (req.user.google.token) {
 		name = req.user.google.name;
