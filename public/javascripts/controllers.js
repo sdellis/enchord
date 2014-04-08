@@ -37,6 +37,16 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 	function($scope, $routeParams, $http, $window){ 
 		$scope.isNew = true;
 		$scope.hasError = false;
+  		var win = $window;
+  		$scope.$watch('songEditForm.$dirty', function(value) {
+    		if(value) {
+      			win.onbeforeunload = function(){
+        			return 'You have unsaved changes.';
+      			};
+    		} else {
+    			win.onbeforeunload = function(){};
+    		}
+  		});
 		$scope.parse = function() {
 			//readLines($scope.song.data, function(data){$scope.song.result = data});
 
@@ -64,6 +74,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;
+				$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -86,6 +97,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;
+				$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -131,6 +143,18 @@ enchordControllers.controller('SignupController', ['$scope',
 		// check that passwords match
 		$scope.checkPass = function() {
 			$scope.passMatch = $scope.signupForm.password.$viewValue == $scope.signupForm.password_repeat.$viewValue;
+			// console.log($scope.signupForm.password_repeat.$viewValue);
+			// console.log($scope.passMatch)
+		}
+	}]);
+
+// Reset Password controller
+enchordControllers.controller('ResetPasswordController', ['$scope',
+	function($scope){
+		$scope.passMatch = true;
+		// check that passwords match
+		$scope.checkPass = function() {
+			$scope.passMatch = $scope.resetForm.password.$viewValue == $scope.resetForm.password_repeat.$viewValue;
 			// console.log($scope.signupForm.password_repeat.$viewValue);
 			// console.log($scope.passMatch)
 		}
