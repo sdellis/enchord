@@ -34,7 +34,7 @@
 
                 <input type="password" placeholder="Confirm Password" name="password_repeat" ng-model="user.password_repeat" ng-minlength="8" ng-maxlength="20" placeholder="Confirm Password" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/">
 
-                <div class="button submit" type="submit" onclick="submitOnClick('signupForm')" name="btnSubmit" id="btnSubmit">
+                <div class="button submit" type="submit" ng-click="submitOnClick('signupForm')" name="btnSubmit" id="btnSubmit">
                     <img src="./images/checkmark.png" alt="checkmark">
                 </div>
 
