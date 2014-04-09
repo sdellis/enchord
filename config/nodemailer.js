@@ -116,7 +116,7 @@ exports.confirm = function(req, res) {
 				from: 'jemah.enchord@gmail.com',
 				subject: 'Your password has been changed',
 				text: 'Hello,\n\n' +
-  					  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+  					  'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n'
 				};
 				smtpTransport.sendMail(mailOptions, function(err) {
 				req.flash('messageerror', 'Success! Your password has been changed.');
