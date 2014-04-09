@@ -28,11 +28,12 @@
                     <a href="auth/google"><img src="./images/google.png" alt="google"></a>
                 </div>
                 <br><p><span>OR</span></p><br>
-                <input type="text" placeholder="Email Address" name="username"><br/>
-                <input type="password" placeholder="Password" name="password">
+                <input type="text" placeholder="Username or Email" name="username"onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }"><br/>
+                <input type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }">
                 <div class="button submit" type="submit" onclick="submitOnClick('loginForm')">
                     <img src="./images/checkmark.png" alt="checkmark">
                 </div>
+                <p><a href="/signup" style="text-decoration:none; font-size: 1.2em;">Don't have an account?</p></a>
                 <p><a href="/forgot" style="text-decoration:none; font-size: 1.2em;">Forgot your password?</p></a>
             </div>
         </div>
