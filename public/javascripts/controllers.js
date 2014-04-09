@@ -39,7 +39,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 		$scope.hasError = false;
   		var win = $window;
   		$scope.$watch('songEditForm.$dirty', function(value) {
-    		if(value) {
+    		if(value && !($scope.isNew)) {
       			win.onbeforeunload = function(){
         			return 'You have unsaved changes.';
       			};
@@ -49,7 +49,16 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
   		});
 		$scope.parse = function() {
 			//readLines($scope.song.data, function(data){$scope.song.result = data});
-
+			/*console.log($scope.song.data);
+			$http({
+				method  : 'GET',
+				url     : '/parsesong',
+				params  : { data : $scope.song.data }
+				//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data + " parsed";
+			});*/
 			$http({
 				method  : 'POST',
 				url     : '/parsesong',
@@ -60,6 +69,41 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				$scope.song.result = data + " parsed";
 			});
 		}
+
+		$scope.init = function(_id) {
+			console.log(_id);
+			if(_id != undefined && _id.length != 0) {
+				var getUrl = '/findsong/' + _id;
+				$http({
+					method  : 'GET',
+					url     : getUrl
+				}).success(function(data) {
+					console.log(data);
+					$scope.song = data.song;
+					$scope.parse();
+				}).error(function(data, status) {
+					console.log(data);
+					console.log(status);
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+				});
+			} else {
+				$scope.song = {
+					title: '',
+					artist: '',
+					genre: '',
+					data: '',
+					_id: '',
+					pub: true
+				};
+				$scope.parse();
+			}
+
+		}
+
 		$scope.createsong = function() {
 			console.log("create " + $scope.song.title);
 			console.log($scope.song);
@@ -70,11 +114,16 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
 				console.log(data);
-				$scope.song = data.song;
-				$scope.message = data.message;
-				$scope.hasError = data.hasError;
-				$scope.isNew = data.isNew;
-				$scope.songEditForm.$setPristine();
+				
+				// go to edit page
+				var url = '/editsong/' + data.song._id;
+				$window.location.href = url;
+
+				//$scope.song = data.song;
+				//$scope.message = data.message;
+				//$scope.hasError = data.hasError;
+				//$scope.isNew = data.isNew;
+				//$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);

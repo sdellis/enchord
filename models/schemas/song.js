@@ -8,5 +8,6 @@ module.exports = mongoose.model('song', {
 	genre: String,
 	tabbed_date: String,
 	data: String,
-	pub: Boolean
+	pub: Boolean,
+	search_string: Array
 });

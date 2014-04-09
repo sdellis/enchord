@@ -1,14 +1,14 @@
 front end
--implement remaining design
+-implement remaining design (edit, view, search)
 -pagination search page
 
 back end
 -differentiate between global/local libraries
+-advanced search option
 -copy song functionality
 -download as pdf/txt functionality
 -transposition
 -font sizes
--advanced search option
 
 
 --old--
