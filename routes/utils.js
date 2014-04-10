@@ -5,7 +5,7 @@ var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 exports.createSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
-		title_lower: req.body.toLowerCase(),
+		title_lower: req.body.title.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
 		author_id: getAuthorId(req),
