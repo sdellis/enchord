@@ -94,6 +94,7 @@ exports.deleteSong = function(req, res) {
 
 };
 
+//add distinguish public vs private
 exports.searchSong = function(req, res) {
 	var query = req.params.query.toLowerCase().split(' ');
 	console.log(query);
@@ -103,7 +104,53 @@ exports.searchSong = function(req, res) {
 		return;
 	}
 	else {
-		songSchema.find({search_string: {$all: query}}, function(err, docs) {
+		songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			console.log(docs);
+			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			return;
+		});
+	}
+}
+
+//fix to ignore case
+/*
+exports.advancedSearch = function(req, res) {
+	var qTitle = req.params.query.title; 
+	var qArtist = req.params.query.artist;
+	var qGenre = req.params.query.genre;
+	var qData = req.params.query.data.split(' ');
+	var array = [];
+	//make search data ignore case
+	songSchema.find({title: qTitle, artist: qArtist, genre: qGenre, {data: {$all: qData}}}, function(err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+			return;
+		}
+		console.log(docs);
+		array = docs;
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: qTitle, message: 'Search results'});
+		return;
+	});
+}
+*/
+
+//fix this to ignore artist case
+exports.getArtistSongs = function(req, res) {
+	var query = req.params.query;
+	var array = [];
+	if (query == '') {
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		return;
+	}
+	else {
+		songSchema.find({artist: query}, function(err, docs) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -115,13 +162,38 @@ exports.searchSong = function(req, res) {
 			return;
 		});
 	}
+
 }
+
+//currently searches whole database each time, should store the song ids in user and then simply get those song ids
+
+exports.getMySongs = function(req, res) {
+	var authorid = getAuthorId(req);
+	var array = [];
+	songSchema.find({author_id: authorid}, function(err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+			return;
+		}
+		console.log(docs);
+		array = docs;
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
+		return;
+	});
+	
+}
+
+
 
 exports.getSong = function(req, res) {
 	findSong(req.params._id, function(data) {
 		res.send({song: data});
 	});
 }
+
+
+
 
 function checkFields(song, res) {
 	if (song.title.trim() == '') {

@@ -139,6 +139,10 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/search/:query', utils.searchSong);
 		
+		app.get('/artistsongs/:query', utils.getArtistSongs);
+		
+		app.get('/mysongs/', isLoggedIn, utils.getMySongs);
+		
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {
