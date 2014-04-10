@@ -1,13 +1,13 @@
 var fs = require('fs');
 //var S = require('string');
 
-var sections = {'':''};
-var sectionOrder = {0:''}
-var currentSection = '';
-var chordLine = '';
-var lyricLine = '';
-var orderSet = false;
-var sectionNum = 0;
+var sections;
+var sectionOrder;
+var currentSection;
+var chordLine;
+var lyricLine;
+var orderSet;
+var sectionNum;
 
 function getSection(section)
 {
@@ -35,11 +35,11 @@ function getithSection(i)
 function printDoc()
 {
 	var result = "";
-	console.log(getSection(''));
+	//console.log(getSection(''));
 	result += getSection('');
 	for( var i = 1; i <=sectionNum;i++) { //for testing
-		console.log('<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '')); //remove later
-		result += '<p><b>' + getithSectionName(i).toUpperCase() + ':</b></p>' + '\n' + (getithSection(i) || '');
+		//console.log(getithSectionName(i).toUpperCase() + ':\n' + (getithSection(i) || '')); //remove later
+		result += getithSectionName(i).toUpperCase() + ':\n' + (getithSection(i) || '');
 	}
 	return result;
 }
@@ -55,9 +55,16 @@ function setOrder(orderLine)
 	}
 	orderSet = true;	
 }
-function pushToSection(sect)
+function pushToSection(sect,oneLine)
 {
-sections[sect] += ('<p>' + chordLine + '</p>\n' + '<p>' + lyricLine + '</p>\n');
+	if(chordLine !== ''){ //are there chord things?
+		if(/^\s*$/.test(lyricLine)) //just chords?
+			sections[sect] += chordLine + '\n';
+		else //words and chords?
+			sections[sect] += chordLine + '\n' + lyricLine + '\n';
+	}
+	else  //just words?
+			sections[sect] += lyricLine + '\n';
 	chordLine = '';
 	lyricLine = '';
 }
@@ -148,7 +155,7 @@ function parseOption(oneLine, i){
 	option = option.trim().toLowerCase()	
 	//is option a section? for now, assume so
 	if(chordLine !== ''|| lyricLine !== '')
-		pushToSection(currentSection);
+		pushToSection(currentSection,oneLine);
 	currentSection = option;
 	if(!sections[currentSection]){
 		sections[currentSection] = '';
@@ -174,7 +181,7 @@ function parseLine(oneLine, linenum, font) {
 	
 	var bErr = checkBracketErrors(oneLine, linenum);
 	if(bErr) {
-		sections[currentSection] += '<p><i>'+ bErr +'</i></p>\n';
+		sections[currentSection] += bErr +'\n';
 		return;
 	}
 	//Presume no bracketing errors from here on out.
@@ -186,9 +193,10 @@ function parseLine(oneLine, linenum, font) {
 		
 	
 	if(!/[\[{<]/.test(oneLine)) { //if bracketless, simply print the line
-		sections[currentSection] += '<p>' + oneLine + '</p>\n'; 
+		sections[currentSection] += oneLine + '\n'; 
 		return;
 	}
+	
 	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
 	var len = oneLine.length;
 	for (var i = 0; i < len; i++) {
@@ -213,45 +221,34 @@ function parseLine(oneLine, linenum, font) {
 		}
 		
 	} 
-	pushToSection(currentSection);
+	pushToSection(currentSection,oneLine);
 
 }
 
 // function readLines(input, font) {
 function readLines(input, callback) {
-	var remaining = '';
-	var linenum = 1;
-	input.on('data', function(data) {
-		remaining += data;
-		var index = remaining.indexOf('\n');
-		var last = 0;
-		while (index > -1) {
-			var line = remaining.substring(last, index);
-			last = index + 1;
-			// parseLine(line, linenum++, font);
-			parseLine(line, linenum++);
-			index = remaining.indexOf('\n', last);
-		}
-
-		remaining = remaining.substring(last);
-	});
-
-	input.on('end', function() {
-		if (remaining.length > 0) {
-			// parseLine(remaining,linenum, font);
-			parseLine(remaining,linenum);
-		}
-		// printDoc();
-
-		// return string
-		callback(printDoc());
-	});
+	//initialize global variables
+	sections = {'':''};
+	sectionOrder = {0:''}
+	currentSection = '';
+	chordLine = '';
+	lyricLine = '';
+	orderSet = false;
+	sectionNum = 0;
+	
+	var lines = input.split('\n');
+	
+	for(i = 0; i < lines.length; i++)
+		parseLine(lines[i], i + 1);
+	console.log(printDoc());
+	//callback(printDoc());
 	
 }
+exports.parseSong = readLines;
 
 // Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
 // TAKE IN STRING INSTEAD OF WRITING TEMP FILE
-exports.parseSong = function(data, callback) {
+/*exports.parseSong = function(data, callback) {
 	fs.writeFile('./tmp.txt', data, function(err) {
 		if(err) {
 			console.log(err);
@@ -274,8 +271,14 @@ exports.parseSong = function(data, callback) {
 		}
 	});
 }
+*/
 
-// Don't use global variables
-// var input = fs.createReadStream('lines.txt');
+var input = fs.createReadStream('lines.txt');
+var remaining = ''
+input.on('data', function(data) {
+		remaining += data;
+	})
+input.on('end', function() {
+	readLines(remaining);
 
-// readLines(input);
+	})

@@ -1,10 +1,20 @@
-order: verse 1, chorus, intro
-This is a sample line without chords.
+order: intro, verse 1, chorus , verse 1, chorus ,bridge ,chorus
+Everyday
+Joel Houston
+
 {intro}
-This line has [G]chords
-This line [D]has two <uhoh >[G]chords
+[E]    [B]    [G#m7]    [F#7]    <x2>
+
 {verse 1}
-This line has a <comment>
+[E]What to [B]say Lord <play softly>
+It's [G#m7]you who [F#7]gave me life and [E]I
+Can't ex[B]plain just how  [G#m7]
+Much You [F#7]mean to me now [E]that
+You have [B]saved me ....
+
 {chorus}
-This line has no chords either.
-{verse 1}
+[B]  Every[E]day it's [G#m]you I [F#]live for... //this part of the song is hard
+ 
+{bridge}
+ It's [B]You I [E]live for [G#]every[F#]day (3x)
+      [B]      [E]         [G#]     [F#]  <repeat bridge>
