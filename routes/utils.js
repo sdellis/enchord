@@ -171,7 +171,7 @@ function getAuthorName(req) {
 	return name;
 }
 
-function findSong(id, callback) {
+function findSong(id, callback, res) {
 	songSchema.findById(id, function (err, docs) {
 		if (err) {
 			console.log(err);

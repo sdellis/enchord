@@ -43,11 +43,16 @@
           <h2>Forgot Your Password?</h2>
         </div>
         <input type="text" placeholder="Email Address" name ="email" ng-model="user.email" ng-minlength="3" ng-maxlength="50" required><br/>
-        <div class="button submit" type="submit">
+        <div class="button submit" type="submit" onclick="submitOnClick('loginForm')">
           <img src="./images/checkmark.png" alt="checkmark">
         </div>
       </div>
     </div>
   </form>
+  <script type="text/javascript">
+    function submitOnClick(formName){
+        document.forms[formName].submit();
+    }
+  </script>
 </body>
 </html>

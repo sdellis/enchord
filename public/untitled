@@ -3,28 +3,28 @@
 <!--<html lang='en'>-->
 
 <head>
-    <% include head.ejs %>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <!-- bootstrap 3.0.2 -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <!-- font Awesome -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <!-- Theme style -->
-    <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+<% include head.ejs %>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+<!-- bootstrap 3.0.2 -->
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<!-- font Awesome -->
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<!-- bootstrap wysihtml5 - text editor -->
+<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+<!-- Theme style -->
+<link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
-    <style type="text/css">
-        body {
-            font-family: avenir;
-        }
-    </style>
+<style type="text/css">
+    body {
+        font-family: avenir;
+    }
+</style>
 </head>
 
 <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
         <header class="header">
-            <a href="/" class="logo" style="font-family:avenir;">
+            <a href="index.html" class="logo" style="font-family:avenir;">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 Enchord
             </a>
@@ -138,7 +138,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="/logout">Sign Out</a></li>
                     </ul>
                 </div>
             </nav>
@@ -160,11 +159,11 @@
                         </div>
                     </div>
                     <!-- search form -->
-                    <form class="sidebar-form" name="searchForm">
-                        <div class="input-group" ng-controller="SearchController">
-                            <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" name="query"/>
+                    <form action="#" method="get" class="sidebar-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search..."/>
                             <span class="input-group-btn">
-                                <button type='submit' name='search' id='search-btn' class="btn btn-flat" ng-click="search(query)"><i class="fa fa-search"></i></button>
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </form>
@@ -172,7 +171,7 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li class="active">
-                            <a href="/createsong">
+                            <a href="index.html">
                                 <i class="fa fa-plus"></i> <span>Create a Song</span>
                             </a>
                         </li>
