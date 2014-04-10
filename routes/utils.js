@@ -5,11 +5,13 @@ var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 exports.createSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
+		title_lower: req.body.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
 		author_id: getAuthorId(req),
 		author_name: getAuthorName(req),
 		genre: req.body.genre,
+		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ') //actually an array
@@ -36,9 +38,11 @@ exports.editSong = function(req, res) {
 	var id = req.body._id;
 	var song = new songSchema({
 		title: req.body.title,
+		title_lower: req.body.title.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
 		genre: req.body.genre,
+		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')
@@ -48,16 +52,17 @@ exports.editSong = function(req, res) {
 		return;
 	
 	findSong(id, function(docs) {
-		songSchema.update({_id: id}, {title: song.title, artist: song.artist, artist_lower: song.artist_lower, genre: song.genre, 
-		data: song.data, pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+		songSchema.update({_id: id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, 
+		artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, 
+		pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+				return;
+			}
+			console.log('success edit');
+			res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
 			return;
-		}
-		console.log('success edit');
-		res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
-		return;
 		});	
 	});
 };
@@ -120,15 +125,12 @@ exports.searchSong = function(req, res) {
 	}
 }
 
-//fix to ignore case
-/*
 exports.advancedSearch = function(req, res) {
-	var qTitle = req.params.query.title; 
-	var qArtist = req.params.query.artist;
-	var qGenre = req.params.query.genre;
+	var qTitle = req.params.title.toLowerCase(); 
+	var qArtist = req.params.artist.toLowerCase();
+	var qGenre = req.params.genre.toLowerCase();
 	var array = [];
-	//make search data ignore case
-	songSchema.find({title: qTitle, artist: qArtist, genre: qGenre, {data: {$all: qData}}}, function(err, docs) {
+	songSchema.find({title_lower: qTitle, artist_lower: qArtist, genre_lower: qGenre, }, function(err, docs) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -140,9 +142,7 @@ exports.advancedSearch = function(req, res) {
 		return;
 	});
 }
-*/
 
-//ignores case, but need to clear the song database and make new songs
 exports.getArtistSongs = function(req, res) {
 	var query = req.params.query.toLowerCase();
 	var array = [];
@@ -210,18 +210,20 @@ exports.remakeDB = function(req, res) {
 		for (var i = 0; i < array.length; i++) {
 			var song = new songSchema({
 			title: array[i].title,
+			title_lower: array[i].title.toLowerCase(),
 			artist: array[i].artist,
 			artist_lower: array[i].artist.toLowerCase(),
 			genre: array[i].genre,
+			genre_lower: array[i].genre.toLowerCase(),
 			data: array[i].data,
 			pub: array[i].pub,
 			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')
 			});
 		
 		
-			songSchema.update({_id: array[i]._id}, {title: song.title, artist: song.artist, artist_lower: song.artist_lower, 
-			genre: song.genre, data: song.data, pub: song.pub, search_string: song.search_string}, 
-			function(err, numberAffected, rawResponse) {
+			songSchema.update({_id: array[i]._id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, 
+			artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, pub: song.pub, 
+			search_string: song.search_string}, function(err, numberAffected, rawResponse) {
 				if (err) {
 					console.log(err);
 					res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
