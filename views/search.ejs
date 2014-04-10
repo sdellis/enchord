@@ -14,11 +14,12 @@
 	</form>
 	<!-- Results should go here -->
 	Search query = {{query}}
-
+	<br>
+	<%= results.length %> results
 	<!-- TODO: Add pagination -->
 	<ul>
 		<% for(var i = 0; i < results.length; i++) { %>
-			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a></li>
+			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artistsongs/<%= results[i].artist %>"><%= results[i].artist %></a></li>
 		<% } %>
 	</ul>
   </body>

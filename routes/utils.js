@@ -111,10 +111,34 @@ exports.searchSong = function(req, res) {
 			}
 			console.log(docs);
 			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			return;
+		});
+	}
+}
+
+//fix this to ignore artist case
+exports.getArtistSongs = function(req, res) {
+	var query = req.params.query;
+	var array = [];
+	if (query == '') {
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		return;
+	}
+	else {
+		songSchema.find({artist: query}, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			console.log(docs);
+			array = docs;
 			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Search results'});
 			return;
 		});
 	}
+
 }
 
 exports.getSong = function(req, res) {
