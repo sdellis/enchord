@@ -141,7 +141,12 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/artistsongs/:query', utils.getArtistSongs);
 		
-		app.get('/mysongs/', isLoggedIn, utils.getMySongs);
+		//fix to better format
+		app.get('/advancedsearch/:title&:artist&:genre', utils.advancedSearch);
+		
+		app.get('/mysongs', isLoggedIn, utils.getMySongs);
+		
+		app.get('/remakeDB', utils.remakeDB);
 		
 		/*
         //authorize when already logged in
