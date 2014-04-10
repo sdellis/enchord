@@ -240,8 +240,8 @@ function readLines(input, callback) {
 	
 	for(i = 0; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
-	console.log(printDoc());
-	//callback(printDoc());
+	//console.log(printDoc());
+	callback(printDoc());
 	
 }
 exports.parseSong = readLines;
@@ -272,7 +272,7 @@ exports.parseSong = readLines;
 	});
 }
 */
-
+/*
 var input = fs.createReadStream('lines.txt');
 var remaining = ''
 input.on('data', function(data) {
@@ -282,3 +282,4 @@ input.on('end', function() {
 	readLines(remaining);
 
 	})
+*/
