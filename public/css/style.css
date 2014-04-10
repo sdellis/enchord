@@ -1,0 +1,457 @@
+@font-face {
+    font-family: 'avenir';
+    src: url('avenirw02.woff');
+}
+
+body{
+	font-family:"avenir", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+nav.navbar.navbar-default{
+	background:transparent;
+	border:none;
+	border-radius:0px;
+	padding:0px 40px;
+	padding-bottom:0px;
+	margin-top:25px;
+}
+.navbar-nav.navbar-right:last-child{
+	margin-right:0px;
+}
+.features-image-rounded{
+	border: 5px solid #e3e3e3;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0 ;
+	max-width: 350px;
+	margin: auto;
+	margin-bottom: 50px;
+}
+.features-image-rounded img{
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	width: 100%;
+	height: auto;
+	display: block;
+	max-width:350px;
+}
+.features-row{
+	padding:100px 0;
+}
+.features-row h2{
+	font-size: 56px;
+	font-family: "Avenir";
+	color: gray;
+}
+.collapse.navbar-collapse{
+	padding-left:15px;
+	padding-right:15px;
+
+}
+nav.navbar.navbar-default.navbar-fixed-top{
+	background:rgba(255,255,255,.8);
+	margin:0px;
+	color: #A3C2F2;
+	border-bottom:1px solid #eee;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.navbar.navbar-default.navbar-fixed-top .navbar-nav > li.modern-nav-li > a{
+	color: #A3C2F2;
+	border: 1px solid #A3C2F2;
+
+}
+nav.navbar.navbar-default.navbar-fixed-top .logo-text{
+	color: #A3C2F2;
+}
+.features-row p{
+	font-size: 20px;
+	margin-top: 15px;
+	line-height: 32px;
+color: #868f90;
+}
+.blue.features-row h2,.blue.features-row p {
+	color: white;
+}
+.grey{
+	background-color:#f5f5f5;
+}
+.features-description{
+	box-sizing: border-box;
+	padding: 0 12.5px;
+	padding-top: 50px;
+	line-height: 1.8em;
+	position: relative;
+	height: 100%;
+	margin-top: 3%;
+}
+.login-button{
+	width:40%;
+	border:2px solid #A3C2F2;
+	padding:10px 0;
+	font-size:16px;
+	font-weight:300;
+	background-color: #A3C2F2;	
+	color: white;
+	text-transform: uppercase;
+}
+.modern-button{
+	color: #A3C2F2;	
+	background-color:transparent;
+	margin-left:10px;
+}
+.login-button:hover{
+	background-color:#A3C2F2;
+	color:white;
+	-webkit-transition: all 750ms ease;
+	-moz-transition: all 750ms ease;
+	-ms-transition: all 750ms ease;
+	-o-transition: all 750ms ease;
+	transition: all 750ms ease;
+}
+#hero-row{
+	padding-top:5%;
+	padding-bottom:10%;
+
+}
+.navbar-default .navbar-nav>li>a{
+	color: white;
+	text-transform: uppercase;
+}
+.navbar-default .navbar-nav>li>a:hover{
+	color: #A3C2F2;
+	-webkit-transition: all 750ms ease;
+	-moz-transition: all 750ms ease;
+	-ms-transition: all 750ms ease;
+	-o-transition: all 750ms ease;
+	transition: all 750ms ease;
+}
+
+.modern-nav-li{
+	margin:4px 0px;
+	margin-left:10px;
+}
+.navbar-nav> .modern-nav-li > a{
+	border:1px solid white;
+	padding:10px 20px;
+	vertical-align: middle;
+}
+.logo-text{
+	font-size:25px;
+	color: white;
+	vertical-align: middle;
+	letter-spacing: 2px;
+}
+#logo-header{
+	max-width:40px;
+	margin-right:10px;
+	margin-left:10px;
+}
+#logo-footer{
+		max-width:80px;
+		vertical-align: middle;
+		margin-top:20px;
+}
+.navbar-brand{
+	padding:7px 0px;
+}
+.navbar-nav> .modern-nav-li > a:hover{
+	border:1px solid #A3C2F2;
+	-webkit-transition: all 750ms ease;
+	-moz-transition: all 750ms ease;
+	-ms-transition: all 750ms ease;
+	-o-transition: all 750ms ease;
+	transition: all 750ms ease;
+}
+
+
+.normal-font{
+	font-family:"Lato", sans-serif;
+	
+}
+.white-text{
+	color:white;
+}
+.white{
+	background-color: white;
+}
+.center{
+	text-align: center;
+}
+.cover-heading{
+	font-size:100px;
+	line-height:200px;
+	font-weight:100;
+}
+#stickies{
+	background:transparent;
+    z-index:1;  
+}
+
+.overlay{
+	width:100%;
+	height: 100%;
+	background:rgba(0,0,0,.5);
+	z-index: 2000;
+	position:absolute;
+}
+.header-unit{
+	top:0%;
+	left:0%;
+	height: 720px;
+	width:100%;
+	overflow: hidden;
+	border-bottom:15px solid #A3C2F2;
+}
+#wrapper_mbYTP_bgndVideo{
+	min-height:735px !important;
+}
+
+#cork{
+	background-attachment:fixed;
+	min-height:2300px;
+	background-color:#A3C2F2;
+	background-size: 100% 100%;
+}
+
+.search {
+	width: 400px;
+	margin: 0 auto;
+	background: #EBEBEB;
+	background: rgba(0,0,0,.2);
+}
+
+.search input {
+	width: 350px;
+	padding: 10px 5px;
+	float: left;
+	color: #ccc;
+	border: 0;
+	background: transparent;
+}
+
+.search input:focus {
+	outline: 0;
+	background: transparent;
+}
+
+.search button {
+	position: relative;
+	float: right;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	height: 40px;
+	width: 50px;
+	color: #fff;
+	background: transparent;
+	background-image: url(../../images/search.png);
+}   
+
+.search button:hover {
+
+}
+.search button:active {
+	box-shadow: 0px 0px 12px 0px rgba(225, 225, 225, 1);
+}
+
+
+.search button:focus {outline: 0;}
+
+
+#mac{
+	background-image:url(../disp.png);
+	background-position: center;
+	background-size: 100% 100%;
+	min-height:1000px;
+	background-color:#eee;
+}
+#plan-features{
+	background-image:url(../PlanMacbook.png);
+
+	min-height:1000px;
+	background-color:#A3C2F2;
+	background-size: 100% 100%;
+}
+.cover-container, #conference, #plan2{
+	background-attachment:fixed;
+}
+.cover-container{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+  	background:transparent;
+  	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-size: 100% 100%;
+	z-index: 3000;
+}
+#plan2{
+  	background-image:url(../plan3.png);
+	min-height:400px;
+}
+
+
+.block-text{
+	padding:40px 0px;
+
+}
+.margin-top{
+	margin-top:410px;
+}
+.lead{
+	font-size:40px;
+	line-height:30px;
+	font-weight: 200;
+	font-family: "avenir";
+
+}
+.row {
+	margin-left: 0;
+	margin-right: 0;
+}
+.blue{
+	background-color:#A3C2F2;
+}
+.gray{
+	background-color:#f5f5f5;
+}
+.image-rounded{
+	border: 5px solid #e3e3e3;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	overflow: hidden;
+	padding: 0;
+}
+.large-text{
+	font-size:40px;
+	line-height: 40px;
+	text-align: center;
+}
+#about-text{
+	padding:0px 30px;
+	font-family: "avenir";
+	font-weight: 100;
+	font-size:25px;
+	margin:0px;
+
+}
+#footer{
+	min-height:400px;
+	padding-top:100px;
+
+}
+#footer h1{
+	font-size:50px;
+
+}
+h1,h2, h3, h4{
+	font-family: "Avenir";
+	font-weight:100;
+}
+.bottom-margin-normal{
+	margin-bottom:50px;
+}
+
+#easing_wrapper {
+	width:100%;
+	height:100%;
+}
+
+#easing {
+	top:10%;
+	width:50%;
+	z-index:101;
+}
+
+.stickies{
+	text-align: center;
+}
+img.task{
+	width:26.9%;
+	margin-left:32.24%;
+}
+img.task-one{
+	margin-top:24%;
+}
+img.task-two{
+	margin-top:22%;
+}
+img.task-three{
+	margin-top:20%;
+}
+img.task-four{
+	margin-top:18.2%;
+}
+img.task-five{
+	margin-top:16.4%;
+}
+.stickies img{
+	width:45%;
+	opacity:.9;
+
+}
+.stickies.one,.stickies.five {
+	margin-left:8%;
+
+}
+.stickies.two, .stickies.six{
+	margin-left:26%;
+}
+.stickies.three, .stickies.seven{
+	margin-left:44%;
+}
+.stickies.four, .stickies.eight{
+	margin-left:62%;
+}
+
+.skrollable {
+	/*
+	 * First-level skrollables are positioned relative to window
+	 */
+	position:fixed;
+
+	/*
+	 * Skrollables by default have a z-index of 100 in order to make it easy to position elements in front/back without changing each skrollable
+	 */
+	z-index:100;
+}
+
+.skrollr-mobile .skrollable {
+	/*
+		May cause issues on Android default browser (see #331 on GitHub).
+	*/
+	position:absolute;
+}
+
+.skrollable .skrollable {
+	/*
+	 * Second-level skrollables are positioned relative their parent skrollable
+	 */
+	position:absolute;
+}
+
+.skrollable .skrollable .skrollable {
+	/*
+	 * Third-level (and below) skrollables are positioned static
+	 */
+	position:static;
+}
+

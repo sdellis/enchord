@@ -1,13 +1,214 @@
 <!DOCTYPE html>
 <!--<html lang='en' ng-app='enchord'>-->
-<html lang='en'>
-  <head>
+<html ng-app="enchord">
+<head>
     <% include head.ejs %>
-  </head>
-  <body>
-    <h1>Welcome to Enchord</h1>
-	<a href="/about">About</a>
-	<a href="/login">Login</a>
-	<a href="/signup">Signup</a>
-  </body>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="#">
+
+    <title>Enchord</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <div class="overlay"></div>
+
+        <div class="header-unit">
+            <video id="video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0"> 
+            <source src="video/bg.mp4" type="video/mp4"> Video not supported </video>
+        </div><!-- end .header-unit -->
+
+        <div class="cover-container" data-stellar-background-ratio="0.5">
+            <nav class="navbar navbar-default" id="main-navbar" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                      <a class="navbar-brand" href="/home"><img id="logo-header"src="./images/logo.gif"><span class="logo-text">Enchord</span></a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                     
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <!--<li><a href="#">About</a></li>-->
+                            <li class="modern-nav-li"><a href="/login">Sign In</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
+            <div class="row" id="hero-row">
+                <div class="col-md-12 col-md-offset-6 center">
+                    <div class="inner cover white-text inner-center">
+                        <h1 class="cover-heading">Enchord</h1>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-16 col-md-offset-4 center white-text bottom-margin-normal">
+                        <p class="lead">Chord sheets for the contemporary musician.</p>
+                    </div>
+                </div> 
+                <div class="row">
+                    <form class="search" name="searchForm" ng-controller="SearchController">
+                        <input type="search" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+                        <button type="submit" ng-click="search(query)"></button>
+                    </form>   
+                </div><br><br>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-8 center white-text bottom-margin-normal">
+                        <a class="btn login-button" href="/signup">Sign Up</a>
+                        <a class="btn login-button modern-button" href="#features-start">Learn More</a>
+                    </div>
+                </div> 
+            </div>
+
+        </div>
+
+        <div class="row blue" id="features-start">
+            <div class="col-md-8 col-md-offset-2">
+                <!--<p class="large-text white-text" id="about-text">   </p>-->
+            </div>
+        </div>
+            
+        <section id="integrated" class="grey features-row">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" >
+                    <div class="features-image-rounded"  
+                    data-0="opacity:0;margin-left:0%;"
+                    data-500="" 
+                    data-600="opacity:1;margin-left:6%;position:static;" > 
+                        <img src="/images/feature3.png" alt="">
+                    </div>
+                </div>
+
+                <div class="col-md-10 col-md-offset-2 description">
+                    <h2>
+                        Integrated
+                    </h2>
+                    <p>
+                    Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="connected" class="white features-row">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-3 description">
+                    <h2>
+                        Connected
+                    </h2>
+                    <p>
+                        Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
+                    </p>
+                </div>
+
+                <div class="col-md-6 col-md-offset-2">
+                    <div class="features-image-rounded"                    
+                    data-0="opacity:0;margin-left:0%;"
+                    data-1000="" 
+                    data-1100="opacity:1;margin-left:6%;position:static;" >  
+
+                        <img src="/images/feature4.png" alt="">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="intelligent" class="grey features-row">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="features-image-rounded"                    
+                    data-0="opacity:0;margin-left:0%;"
+                    data-1500="" 
+                    data-1510="opacity:1;margin-left:6%;position:static;">
+                        <img src="/images/feature3.png" alt="">
+                    </div>                
+                </div>
+
+                <div class="col-md-10 col-md-offset-2 description">
+                    <h2>
+                        Intelligent
+                    </h2>
+                    <p>
+                        Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- <div id="footer" class="full-width blue white-text">
+            <div class="row-fluid">
+                <h1 class="white-text center"> ©              
+                    <div class=" center">
+                        <img id="logo-footer"src="">
+                    </div>
+                </h1>
+            </div>
+            </div>
+        </div> -->
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/skrollr.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/jquery.mb.YTPlayer.js"></script>
+
+
+        <script type="text/javascript">
+                    var s = skrollr.init({
+                    edgeStrategy: 'set', 
+                }); 
+            $(function(){    
+                $(".movie").mb_YTPlayer();
+                $('a[href*=#]:not([href=#])').click(function() {
+                    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                        if (target.length) {
+                            $('html,body').animate({
+                              scrollTop: target.offset().top
+                            }, 1000);
+                            return false;
+                        }
+                    }
+                });
+
+                var menu = $('#main-navbar');
+                var top = menu.offset().top;
+                $(window).scroll(function (event) {
+                // what the y position of the scroll is
+                    var y = $(this).scrollTop();
+                        if (y >= top + 400) {
+                            menu.addClass('navbar-fixed-top');
+                            $("#logo-header").attr('src', './images/logo.gif');
+
+                        } else {
+                            menu.removeClass('navbar-fixed-top');
+                            $("#logo-header").attr('src', './images/logo.gif');
+
+                        }
+                    });
+            });
+        </script>
+</body>
 </html>

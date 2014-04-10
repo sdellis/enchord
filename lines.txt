@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 order: intro, verse 1, chorus , verse 1, chorus ,bridge ,chorus
 Everyday
 Joel Houston
@@ -18,3 +19,14 @@ You have [B]saved me ....
 {bridge}
  It's [B]You I [E]live for [G#]every[F#]day (3x)
       [B]      [E]         [G#]     [F#]  <repeat bridge>
+=======
+order: verse 1, verse 1, chorus, intro
+This is a sample line without chords.
+{intro}
+This line has [G]chords
+This line [D]has two <uhoh >[G]chords //comment
+{verse 1}
+This line [has a <comment>
+{chorus}
+This line has no chords either.
+>>>>>>> a7ef369768f775cde6329033ed353017d5c068fe

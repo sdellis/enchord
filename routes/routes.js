@@ -1,24 +1,28 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
-<<<<<<< HEAD
 var User = require('../models/schemas/user');
 var async = require('async');
-=======
+
 var parser = require('../parser');
 var songEmpty = {
 		title: '',
 		artist: '',
 		genre: '',
-		_id: ''
+		data: '',
+		_id: '',
+		pub: true
 		};
->>>>>>> c80f95513ca4af36f6fc8d4f5c681d3a0716f299
 
 module.exports = function(app, passport, db) {
 
 	db.mongoose.once('open', function callback() {
-		app.get('/', function(req, res){
+		app.get('/', protectLogin, function(req, res){
 	 		res.render('index', { title: 'Enchord' });
 		});
+
+		// app.get('/home', function(req, res){
+		// 	res.render('home.ejs');
+		// })
 		
 		app.get('/about', function(req, res){
 			res.render('about.ejs', {title:"enchord"});
@@ -103,23 +107,38 @@ module.exports = function(app, passport, db) {
 			failureRedirect : '/login'
         }));
 		
-		app.post('/createsong', isLoggedIn, utils.createSong);
-		
-		app.get('/editsong', isLoggedIn, function(req, res) {
+		app.get('/findsong/:_id', isLoggedIn, utils.getSong)
+		app.get('/createsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
+
+		app.post('/createsong', isLoggedIn, utils.createSong);
+		
+		// app.get('/editsong', isLoggedIn, function(req, res) {
+		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+		// });
 		
 		app.post('/editsong', isLoggedIn, utils.editSong);
+		
+		app.get('/editsong/:_id', isLoggedIn, utils.loadSongEdit);
+
+		app.get('/viewsong/:_id', utils.loadSongView);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
 		app.post('/parsesong', isLoggedIn, function(req, res) {
-			console.log(req.body.data);
 			parser.parseSong(req.body.data, function(parsedSong) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);
 			});
 		});
+
+		app.get('/search', function(req, res) {
+			res.render('search.ejs', {title: 'enchord', query: '', results: []});
+		});
+		
+		app.get('/search/:query', utils.searchSong);
+		
 		/*
         //authorize when already logged in
         app.get('/connect/local', function(req, res) {

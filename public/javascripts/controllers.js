@@ -21,7 +21,7 @@ enchordControllers.controller('SearchController', ['$scope', '$window', '$routeP
 		$scope.search = function(query) {
 			console.log(query);
 			if (query != undefined && query.length > 0) {
-				$window.location.href = '#/search/' + query;
+				$window.location.href = '/search/' + query;
 			}
 		};
 	}]);
@@ -37,7 +37,28 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 	function($scope, $routeParams, $http, $window){ 
 		$scope.isNew = true;
 		$scope.hasError = false;
+  		var win = $window;
+  		$scope.$watch('songEditForm.$dirty', function(value) {
+    		if(value && !($scope.isNew)) {
+      			win.onbeforeunload = function(){
+        			return 'You have unsaved changes.';
+      			};
+    		} else {
+    			win.onbeforeunload = function(){};
+    		}
+  		});
 		$scope.parse = function() {
+			//readLines($scope.song.data, function(data){$scope.song.result = data});
+			/*console.log($scope.song.data);
+			$http({
+				method  : 'GET',
+				url     : '/parsesong',
+				params  : { data : $scope.song.data }
+				//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data + " parsed";
+			});*/
 			$http({
 				method  : 'POST',
 				url     : '/parsesong',
@@ -48,8 +69,44 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				$scope.song.result = data + " parsed";
 			});
 		}
+
+		$scope.init = function(_id) {
+			console.log(_id);
+			if(_id != undefined && _id.length != 0) {
+				var getUrl = '/findsong/' + _id;
+				$http({
+					method  : 'GET',
+					url     : getUrl
+				}).success(function(data) {
+					console.log(data);
+					$scope.song = data.song;
+					$scope.parse();
+				}).error(function(data, status) {
+					console.log(data);
+					console.log(status);
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+				});
+			} else {
+				$scope.song = {
+					title: '',
+					artist: '',
+					genre: '',
+					data: '',
+					_id: '',
+					pub: true
+				};
+				$scope.parse();
+			}
+
+		}
+
 		$scope.createsong = function() {
 			console.log("create " + $scope.song.title);
+			console.log($scope.song);
 			$http({
 				method  : 'POST',
 				url     : '/createsong',
@@ -57,9 +114,16 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
 				console.log(data);
-				$scope.message = data.message;
-				$scope.hasError = data.hasError;
-				$scope.isNew = data.isNew;
+				
+				// go to edit page
+				var url = '/editsong/' + data.song._id;
+				$window.location.href = url;
+
+				//$scope.song = data.song;
+				//$scope.message = data.message;
+				//$scope.hasError = data.hasError;
+				//$scope.isNew = data.isNew;
+				//$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -82,6 +146,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;
+				$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -127,6 +192,18 @@ enchordControllers.controller('SignupController', ['$scope',
 		// check that passwords match
 		$scope.checkPass = function() {
 			$scope.passMatch = $scope.signupForm.password.$viewValue == $scope.signupForm.password_repeat.$viewValue;
+			// console.log($scope.signupForm.password_repeat.$viewValue);
+			// console.log($scope.passMatch)
+		}
+	}]);
+
+// Reset Password controller
+enchordControllers.controller('ResetPasswordController', ['$scope',
+	function($scope){
+		$scope.passMatch = true;
+		// check that passwords match
+		$scope.checkPass = function() {
+			$scope.passMatch = $scope.resetForm.password.$viewValue == $scope.resetForm.password_repeat.$viewValue;
 			// console.log($scope.signupForm.password_repeat.$viewValue);
 			// console.log($scope.passMatch)
 		}

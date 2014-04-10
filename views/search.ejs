@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='en' ng-app='enchord'>
+<!--<html lang='en'>-->
+  <head>
+    <% include head.ejs %>
+  </head>
+  <body ng-controller="SearchController">
+  	<form role="form" name="searchForm" novalidate>
+		<div class="form-group" ng-class="{ 'has-error' : searchForm.query.$invalid && !searchForm.query.$pristine }" id="query_group">
+			<input ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" ng-init="query = '<%= query %>'" name="query" placeholder="Search">
+			<span ng-show="searchForm.query.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $!-_</span>
+			<button ng-disabled="searchForm.$invalid" ng-click="search(query)" class="btn btn-default">Search</button>
+		</div>
+	</form>
+	<!-- Results should go here -->
+	Search query = {{query}}
+
+	<!-- TODO: Add pagination -->
+	<ul>
+		<% for(var i = 0; i < results.length; i++) { %>
+			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a></li>
+		<% } %>
+	</ul>
+  </body>
+</html>

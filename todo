@@ -1,4 +1,18 @@
 front end
+-implement remaining design (edit, view, search)
+-pagination search page
+
+back end
+-differentiate between global/local libraries
+-advanced search option
+-copy song functionality
+-download as pdf/txt functionality
+-transposition
+-font sizes
+
+
+--old--
+front end
 -integrate sign in sheets
 -design home page and forgot password pages
 -design edit song pages
@@ -8,7 +22,7 @@ back end
 -put together all the different parts that we have so far
 -fix the parser
 -fix save and edit for new songs
--finish forgot password/recovery
+done -finish forgot password/recovery
 -implement a basic search bar to search for the different songs that we have in the database
 
 

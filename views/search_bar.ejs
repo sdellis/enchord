@@ -1,0 +1,9 @@
+<div ng-controller="SearchController">
+	<form role="form" name="searchForm" novalidate>
+		<div class="form-group" ng-class="{ 'has-error' : searchForm.query.$invalid && !searchForm.query.$pristine }" id="query_group">
+			<input ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" name="query" placeholder="Search">
+			<span ng-show="searchForm.query.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $!-_</span>
+			<button ng-disabled="searchForm.$invalid" ng-click="search(query)" class="btn btn-default">Search</button>
+		</div>
+	</form>
+</div>

@@ -68,6 +68,7 @@ exports.sendmail = function(req, res) {
 
 exports.confirm = function(req, res) {
 	console.log(req.body);
+	console.log(req.params.token);
 	async.waterfall([
 		function(done) {
 			User.findOne({ 'local.resetPasswordToken': req.params.token}, function(err, user) {
@@ -75,24 +76,31 @@ exports.confirm = function(req, res) {
 				if (err)
 					done(err);
 				if (!user) {
-					req.flash('error', 'password reset token is invalid or has expired.');
+					console.log('no user found');
+					req.flash('messageerror', 'password reset token is invalid or has expired.');
 					return res.redirect('back');
 				} else {
-					if (resetPasswordExpires < Date.now()) {
-						req.flash('error', 'password reset token is invalid or has expired.');
+					console.log('user found');
+					if (user.local.resetPasswordExpires < Date.now()) {
+						console.log('here?');
+						req.flash('messageerror', 'password reset token is invalid or has expired.');
 						return res.redirect('back');
 					}
+					user.local.password = user.generateHash(req.body.password);
+					user.local.resetPasswordToken = undefined;
+					user.local.resetPasswordExpires = undefined;
+
+					console.log(user);
+
+					user.save(function(err) {
+						req.logIn(user, function(err) {
+							done(err, user);
+						});
+					});
+
 				}
 
-				user.local.password = user.generateHash(req.body.password);
-				user.local.resetPasswordToken = undefined;
-				user.local.resetPasswordExpires = undefined;
-
-				user.save(function(err) {
-					req.logIn(user, function(err) {
-						done(err, user);
-					});
-				});
+				
 			});
 		},
 		function(user, done) {
@@ -108,10 +116,10 @@ exports.confirm = function(req, res) {
 				from: 'jemah.enchord@gmail.com',
 				subject: 'Your password has been changed',
 				text: 'Hello,\n\n' +
-  					  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+  					  'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n'
 				};
 				smtpTransport.sendMail(mailOptions, function(err) {
-				req.flash('success', 'Success! Your password has been changed.');
+				req.flash('messageerror', 'Success! Your password has been changed.');
 				done(err);
 			});
 		}
