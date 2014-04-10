@@ -6,6 +6,7 @@ exports.createSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
+		artist_lower: req.body.artist.toLowerCase(),
 		author_id: getAuthorId(req),
 		author_name: getAuthorName(req),
 		genre: req.body.genre,
@@ -36,6 +37,7 @@ exports.editSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
 		artist: req.body.artist,
+		artist_lower: req.body.artist.toLowerCase(),
 		genre: req.body.genre,
 		data: req.body.data,
 		pub: req.body.pub,
@@ -46,7 +48,7 @@ exports.editSong = function(req, res) {
 		return;
 	
 	findSong(id, function(docs) {
-		songSchema.update({_id: id}, {title: song.title, artist: song.artist, genre: song.genre, 
+		songSchema.update({_id: id}, {title: song.title, artist: song.artist, artist_lower: song.artist_lower, genre: song.genre, 
 		data: song.data, pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
@@ -94,7 +96,7 @@ exports.deleteSong = function(req, res) {
 
 };
 
-//add distinguish public vs private
+//add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
 	var query = req.params.query.toLowerCase().split(' ');
 	console.log(query);
@@ -124,7 +126,6 @@ exports.advancedSearch = function(req, res) {
 	var qTitle = req.params.query.title; 
 	var qArtist = req.params.query.artist;
 	var qGenre = req.params.query.genre;
-	var qData = req.params.query.data.split(' ');
 	var array = [];
 	//make search data ignore case
 	songSchema.find({title: qTitle, artist: qArtist, genre: qGenre, {data: {$all: qData}}}, function(err, docs) {
@@ -141,16 +142,16 @@ exports.advancedSearch = function(req, res) {
 }
 */
 
-//fix this to ignore artist case
+//ignores case, but need to clear the song database and make new songs
 exports.getArtistSongs = function(req, res) {
-	var query = req.params.query;
+	var query = req.params.query.toLowerCase();
 	var array = [];
 	if (query == '') {
 		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
 		return;
 	}
 	else {
-		songSchema.find({artist: query}, function(err, docs) {
+		songSchema.find({artist_lower: query}, function(err, docs) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -158,7 +159,7 @@ exports.getArtistSongs = function(req, res) {
 			}
 			console.log(docs);
 			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Search results'});
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
 			return;
 		});
 	}
@@ -194,6 +195,48 @@ exports.getSong = function(req, res) {
 
 
 
+//remake the songs so that they are updated to have new info
+
+exports.remakeDB = function(req, res) {
+	var array = [];
+	songSchema.find(function(err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+			return;
+		}
+		console.log(docs);
+		array = docs;
+		for (var i = 0; i < array.length; i++) {
+			var song = new songSchema({
+			title: array[i].title,
+			artist: array[i].artist,
+			artist_lower: array[i].artist.toLowerCase(),
+			genre: array[i].genre,
+			data: array[i].data,
+			pub: array[i].pub,
+			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')
+			});
+		
+		
+			songSchema.update({_id: array[i]._id}, {title: song.title, artist: song.artist, artist_lower: song.artist_lower, 
+			genre: song.genre, data: song.data, pub: song.pub, search_string: song.search_string}, 
+			function(err, numberAffected, rawResponse) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+					return;
+				}
+				console.log('success edit');
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: ' ', message: 'Search results'});
+				return;
+			});	
+		
+		}
+		return;
+	});
+
+}
 
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
