@@ -133,16 +133,15 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
-		app.get('/search', function(req, res) {
+		/*app.get('/search', function(req, res) {
 			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
-		});
+		});*/
+		
+		app.get('/search', utils.searchSong);
 		
 		app.get('/search/:query', utils.searchSong);
 		
 		app.get('/artist/:query', utils.getArtistSongs);
-		
-		//fix to better format
-		app.get('/advancedsearch/:title&:artist&:genre', utils.advancedSearch);
 		
 		app.get('/mysongs', isLoggedIn, utils.getMySongs);
 		
