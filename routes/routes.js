@@ -134,7 +134,7 @@ module.exports = function(app, passport, db) {
 		});
 
 		app.get('/search', function(req, res) {
-			res.render('search.ejs', {title: 'enchord', query: '', results: []});
+			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
 		});
 		
 		app.get('/search/:query', utils.searchSong);
