@@ -34,7 +34,7 @@
 			</form>
 		</div>
 		<div class="col-md-6">
-			<form role="form" name="advSearchForm" novalidate>
+			<form role="form" method="GET" action="/advsearch" name="advSearchForm" novalidate>
 				<!-- TITLE -->
                 <div class="form-group" ng-class="{ 'has-error' : advSearchForm.title.$invalid && !advSearchForm.title.$pristine }">
                     <label class="control-label" for="title">Title</label>          
@@ -66,8 +66,25 @@
 		            <span ng-show="advSearchForm.author.$error.maxlength" class="help-block">Username is too long</span>
 		            <span ng-show="advSearchForm.author.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
 	       		</div>
-	       		<button ng-disabled=true ng-click="search(query)" class="btn btn-default">Search</button>
-	       		<!--<button ng-disabled="searchForm.$invalid" ng-click="search(query)" class="btn btn-default">Search</button>-->
+	       		<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value = "Both">
+                        	Both
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value="Global">
+                        	Global
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value = "Local">
+                        	Local
+                	</label>
+            	</div>
+	       		<button ng-disabled="advSearchForm.$invalid" class="btn btn-default">Search</button>
 			</form> <!-- adv search form -->
 		</div> <!-- col -->
 	</div> <!-- row -->
