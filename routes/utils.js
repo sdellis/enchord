@@ -10,6 +10,7 @@ exports.createSong = function(req, res) {
 		artist_lower: req.body.artist.toLowerCase(),
 		author_id: getAuthorId(req),
 		author_name: getAuthorName(req),
+		author_lower: getAuthorName(req).toLowerCase(),
 		genre: req.body.genre,
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
@@ -194,24 +195,65 @@ exports.searchSong = function(req, res) {
 }
 
 exports.advancedSearch = function(req, res) {
-	var qTitle = req.params.title.toLowerCase(); 
+	var qTitle, qArtist, qGenre, qAuthor, qType;
+	
+	if (req.query.title == undefined)
+		qTitle = '';
+	else
+		qTitle = req.query.title.toLowerCase(); 
 	console.log(qTitle);
-	var qArtist = req.params.artist.toLowerCase();
+	if (req.query.artist == undefined)
+		qArtist = '';
+	else
+		qArtist = req.query.artist.toLowerCase();
 	console.log(qArtist);
-	var qGenre = req.params.genre.toLowerCase();
+	if (req.query.genre == undefined)
+		qGenre = '';
+	else
+		qGenre = req.query.genre.toLowerCase();
 	console.log(qGenre);
+	if (req.query.author == undefined)
+		qAuthor = '';
+	else
+		qAuthor = req.query.author.toLowerCase();
+	console.log(qAuthor);
+	
+	var query = {};
+	if (qTitle != '')
+		query['title_lower'] = qTitle;
+	if (qArtist != '')
+		query['artist_lower'] = qArtist;
+	if (qGenre != '')
+		query['genre_lower'] = qGenre;
+	if (qAuthor != '')
+		query['author_lower'] = qAuthor;
+	
+	if (req.query.type == undefined)
+		type = 'Global';
+	else
+		type = req.query.type;
+	query['pub'] = type;
+	if (query['pub'] == 'Local')
+		query['author_id'] = getAuthorId(req);
+	
 	var array = [];
-	songSchema.find({title_lower: qTitle, artist_lower: qArtist, genre_lower: qGenre, }, function(err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+	console.log(query);
+	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: '', message: 'Empty search'});
+	else
+	{
+		songSchema.find(query, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			//console.log(docs);
+			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: query, message: 'Search results'});
 			return;
+		});
 		}
-		console.log(docs);
-		array = docs;
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: qTitle, message: 'Search results'});
-		return;
-	});
 }
 
 exports.getArtistSongs = function(req, res) {
@@ -287,6 +329,7 @@ exports.remakeDB = function(req, res) {
 			genre: array[i].genre,
 			genre_lower: array[i].genre.toLowerCase(),
 			data: array[i].data,
+			author_lower: array[i].author_name.toLowerCase(),
 			pub: array[i].pub,
 			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')
 			});
