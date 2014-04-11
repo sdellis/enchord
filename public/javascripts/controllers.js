@@ -16,7 +16,8 @@ enchordControllers.controller('AboutController', ['$scope',
 // Search page controller CHANGE TO LOCATION PATH
 enchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',
 	function($scope, $window, $routeParams) {
-		$scope.query = $routeParams.query;
+		$scope.query = "";
+		$scope.type = "Public";
 		// redirect to search page
 		$scope.search = function(query) {
 			console.log(query);

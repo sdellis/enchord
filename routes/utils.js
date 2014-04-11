@@ -190,7 +190,7 @@ exports.getArtistSongs = function(req, res) {
 			}
 			console.log(docs);
 			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			res.render('artistpage.ejs', {title: 'enchord', isNew: false, results: array, artist: req.params.query, message: 'Search results'});
 			return;
 		});
 	}
