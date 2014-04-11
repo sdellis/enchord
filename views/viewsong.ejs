@@ -10,6 +10,7 @@
   	<p>Author: <%= song.author_name %></p>
   	<p>Genre: <%= song.genre %></p>
 
-  	<a href="/editsong/<%= song._id %>">Edit Song</a>
+  	<% if (isAuthor) { %><a href="/editsong/<%= song._id %>">Edit Song</a><% } %>
+    <% if (isLoggedIn && !isAuthor) { %><a href="#">Save Song</a><% } %>
   </body>
  </html>

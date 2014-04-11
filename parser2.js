@@ -1,13 +1,11 @@
 var fs = require('fs');
 //var S = require('string');
 
-var sections;
-var sectionOrder;
-var currentSection;
-var chordLine;
-var lyricLine;
-var orderSet;
-var sectionNum;
+var sections = {'':''};
+var sectionOrder = {0:''};
+var currentSection = '';
+var orderSet = false;
+var sectionNum = 0;
 
 function getSection(section)
 {
@@ -35,10 +33,10 @@ function getithSection(i)
 function printDoc()
 {
 	var result = "";
-	//console.log(getSection(''));
+	console.log(getSection(''));
 	result += getSection('');
 	for( var i = 1; i <=sectionNum;i++) { //for testing
-		//console.log(getithSectionName(i).toUpperCase() + ':\n' + (getithSection(i) || '')); //remove later
+		console.log(getithSectionName(i).toUpperCase() + ':\n' + (getithSection(i) || '')); //remove later
 		result += getithSectionName(i).toUpperCase() + ':\n' + (getithSection(i) || '');
 	}
 	return result;
@@ -55,18 +53,10 @@ function setOrder(orderLine)
 	}
 	orderSet = true;	
 }
-function pushToSection(sect,oneLine)
+function pushToSection(sect)
 {
-	if(chordLine !== ''){ //are there chord things?
-		if(/^\s*$/.test(lyricLine)) //just chords?
-			sections[sect] += chordLine + '\n';
-		else //words and chords?
-			sections[sect] += chordLine + '\n' + lyricLine + '\n';
-	}
-	else  //just words?
-			sections[sect] += lyricLine + '\n';
-	chordLine = '';
-	lyricLine = '';
+for(var i = 1; i < arguments.length;i++)
+	sections[sect] += arguments[i] + '\n';
 }
 
 //NEEDS TO BE HTML ESCAPE SANITIZED
@@ -121,49 +111,62 @@ function checkBracketErrors(oneLine, linenum){
 	if(state !== '') return 'A \'' + state + '\' bracket on line ' + linenum + ' is not closed.';
 }
 //handle chord in []. i is position of [ on oneLine
-function parseChord(oneLine, i){
+function parseChord(oneLine, i, twoLines){
 	//pad chord line at least up to length of lyric line
-	while(chordLine.length < lyricLine.length)
-		chordLine += ' ';
+	while(twoLines["chordLine"].length < twoLines["lyricLine"].length)
+		twoLines["chordLine"] += ' ';
 	j = i;
 	var newChord = '';
 	while(oneLine[++j] !== ']')
 		newChord += oneLine[j];
 	//later, narrow what is allowed as a chord
-		chordLine += newChord;
+		twoLines["chordLine"] += newChord;
 	return j-i;
 		
 }
 //handle chord comment in <>. i is position of < on oneLine
-function parseChordComment(oneLine, i){
+function parseChordComment(oneLine, i, twoLines){
 	//pad chord line at least up to length of lyric line
-	while(chordLine.length < lyricLine.length)
-		chordLine += ' ';
+	while(twoLines["chordLine"].length < twoLines["lyricLine"].length)
+		twoLines["chordLine"] += ' ';
 	j = i;
 	while(oneLine[++j] !== '>')
-		chordLine += oneLine[j];
+		twoLines["chordLine"] += oneLine[j];
 	
 	return j-i;
 }
 
 //handle options in {}. i is position of [ on oneLine
-function parseOption(oneLine, i){
+function parseOption(oneLine, i, twoLines){
 	var option = '';
 	j = i;
 	while(oneLine[++j] !== '}')
 		option += oneLine[j];
 	option = option.trim().toLowerCase()	
 	//is option a section? for now, assume so
-	if(chordLine !== ''|| lyricLine !== '')
-		pushToSection(currentSection,oneLine);
-	currentSection = option;
+	
+	if(twoLines["chordLine"] !== ''){ //are there chord things?
+		if(/^\s*$/.test(twoLines["lyricLine"])) //just chords?
+			pushToSection(currentSection, twoLines["chordLine"]);
+		else //words and chords?
+			pushToSection(currentSection, twolines.chordLine, twolines.lyricLine);
+	}
+	else  //just words?
+		pushToSection(currentSection, twoLines["lyricLine"]);
+		
+	
+	
+	twoLines["chordLine"] = '';
+	twoLines["lyricLine"] = '';
+		
+		currentSection = option;
 	if(!sections[currentSection]){
 		sections[currentSection] = '';
 		if(!orderSet)
 			sectionOrder[++sectionNum] = currentSection;
-		}
+	}
 	else
-		sections[currentSection] += '<p>WARNING: Multiple defitions of section ' + currentSection.toUpperCase() + '. Behavior undefined.</p>\n';
+		sections[currentSection] += 'WARNING: Multiple defitions of section ' + currentSection.toUpperCase() + '. Behavior undefined.\n';
 	
 		
 	
@@ -173,16 +176,22 @@ function parseOption(oneLine, i){
 /* assuming [chord]lyric format */
 // do something with font variable later
 function parseLine(oneLine, linenum, font) {
+	var twoLines = new Object(); 
+	twoLines.chordLine = ''
+	twoLines.lyricLine = ''
+	
+				 
 	oneLine = oneLine.replace(/\r/g,"");
+	//first line: optional order line
 	if(linenum === 1 && /^order:/i.test(oneLine)){
 		setOrder(oneLine);
 		return;
 	}
 	
+	//check for bracketing errors
 	var bErr = checkBracketErrors(oneLine, linenum);
 	if(bErr) {
-		sections[currentSection] += bErr +'\n';
-		return;
+		pushToSection(currentSection, bErr);	return;
 	}
 	//Presume no bracketing errors from here on out.
 	
@@ -193,22 +202,21 @@ function parseLine(oneLine, linenum, font) {
 		
 	
 	if(!/[\[{<]/.test(oneLine)) { //if bracketless, simply print the line
-		sections[currentSection] += oneLine + '\n'; 
+		pushToSection(currentSection, oneLine); 
 		return;
 	}
-	
-	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
+	//Otherwise, read in character by character, usually putting in the lyric line, and handling various cases for brackets.
 	var len = oneLine.length;
 	for (var i = 0; i < len; i++) {
 		switch(oneLine[i]){
 		case '[':  
-			i+=parseChord(oneLine, i);
+			i+=parseChord(oneLine, i, twoLines);
 			break;
 		case '<':
-			i+=parseChordComment(oneLine, i); 
+			i+=parseChordComment(oneLine, i, twoLines); 
 			break;
 		case '{':
-			i+=parseOption(oneLine, i);
+			i+=parseOption(oneLine, i, twoLines);
 			break;
 		case '/':
 		// '//' rest of line unprinted comment?		
@@ -217,38 +225,55 @@ function parseLine(oneLine, linenum, font) {
 				break;
 			}
 		default:
-			lyricLine+= oneLine[i];		
+			twoLines["lyricLine"]+= oneLine[i];		
 		}
 		
 	} 
-	pushToSection(currentSection,oneLine);
-
+	if(twoLines["chordLine"] !== ''){ //are there chord things?
+		if(/^\s*$/.test(twoLines["lyricLine"])) //just chords?
+			pushToSection(currentSection, twoLines["chordLine"]);
+		else //words and chords?
+			pushToSection(currentSection, twolines.chordLine, twolines.lyricLine);
+	}
+	else  //just words?
+		pushToSection(currentSection, twoLines["lyricLine"]);
 }
 
 // function readLines(input, font) {
 function readLines(input, callback) {
-	//initialize global variables
-	sections = {'':''};
-	sectionOrder = {0:''}
-	currentSection = '';
-	chordLine = '';
-	lyricLine = '';
-	orderSet = false;
-	sectionNum = 0;
-	
-	var lines = input.split('\n');
-	
-	for(i = 0; i < lines.length; i++)
-		parseLine(lines[i], i + 1);
-	//console.log(printDoc());
-	callback(printDoc());
+	var remaining = '';
+	var linenum = 1;
+	input.on('data', function(data) {
+		remaining += data;
+		var index = remaining.indexOf('\n');
+		var last = 0;
+		while (index > -1) {
+			var line = remaining.substring(last, index);
+			last = index + 1;
+			// parseLine(line, linenum++, font);
+			parseLine(line, linenum++);
+			index = remaining.indexOf('\n', last);
+		}
+
+		remaining = remaining.substring(last);
+	});
+
+	input.on('end', function() {
+		if (remaining.length > 0) {
+			// parseLine(remaining,linenum, font);
+			parseLine(remaining,linenum);
+		}
+		 printDoc();
+
+		// return string
+		//callback(printDoc());
+	});
 	
 }
-exports.parseSong = readLines;
 
 // Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
 // TAKE IN STRING INSTEAD OF WRITING TEMP FILE
-/*exports.parseSong = function(data, callback) {
+exports.parseSong = function(data, callback) {
 	fs.writeFile('./tmp.txt', data, function(err) {
 		if(err) {
 			console.log(err);
@@ -271,15 +296,8 @@ exports.parseSong = readLines;
 		}
 	});
 }
-*/
-/*
-var input = fs.createReadStream('lines.txt');
-var remaining = ''
-input.on('data', function(data) {
-		remaining += data;
-	})
-input.on('end', function() {
-	readLines(remaining);
 
-	})
-*/
+// Don't use global variables
+ var input = fs.createReadStream('lines.txt');
+
+ readLines(input);
