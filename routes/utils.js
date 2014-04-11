@@ -51,7 +51,7 @@ exports.editSong = function(req, res) {
 	if(!checkFields(song, res))
 		return;
 	
-	findSong(id, function(docs) {
+	findSong(id, res, function(docs) {
 		songSchema.update({_id: id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, 
 		artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, 
 		pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
@@ -70,7 +70,7 @@ exports.editSong = function(req, res) {
 exports.loadSongEdit = function(req, res) {
 	var id = req.params._id;
 	
-	var findsong = findSong(id, function(docs) {
+	var findsong = findSong(id, res, function(docs) {
 		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
 	});
 }
@@ -78,7 +78,7 @@ exports.loadSongEdit = function(req, res) {
 exports.loadSongView = function(req, res) {
 	var id = req.params._id;
 	
-	var findsong = findSong(id, function(docs) {
+	var findsong = findSong(id, res, function(docs) {
 		res.render('viewsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
 	});
 }
@@ -86,7 +86,7 @@ exports.loadSongView = function(req, res) {
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
 
-	findSong(id, function(docs) {
+	findSong(id, res, function(docs) {
 		songSchema.remove({_id: id}, function(err) {
 		if (err) {
 			console.log(err);
@@ -188,7 +188,7 @@ exports.getMySongs = function(req, res) {
 
 
 exports.getSong = function(req, res) {
-	findSong(req.params._id, function(data) {
+	findSong(req.params._id, res, function(data) {
 		res.send({song: data});
 	});
 }
@@ -288,7 +288,7 @@ function getAuthorName(req) {
 	return name;
 }
 
-function findSong(id, callback, res) {
+function findSong(id, res, callback) {
 	songSchema.findById(id, function (err, docs) {
 		if (err) {
 			console.log(err);
