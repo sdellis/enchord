@@ -135,10 +135,11 @@ exports.deleteSong = function(req, res) {
 //add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
 	var query = req.params.query.toLowerCase().split(' ');
+	var isPub = req.params.pub
 	console.log(query);
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: [], query: req.params.query, message: 'Empty query'});
 		return;
 	}
 	else {
@@ -158,8 +159,11 @@ exports.searchSong = function(req, res) {
 
 exports.advancedSearch = function(req, res) {
 	var qTitle = req.params.title.toLowerCase(); 
+	console.log(qTitle);
 	var qArtist = req.params.artist.toLowerCase();
+	console.log(qArtist);
 	var qGenre = req.params.genre.toLowerCase();
+	console.log(qGenre);
 	var array = [];
 	songSchema.find({title_lower: qTitle, artist_lower: qArtist, genre_lower: qGenre, }, function(err, docs) {
 		if (err) {
@@ -201,7 +205,9 @@ exports.getArtistSongs = function(req, res) {
 
 exports.getMySongs = function(req, res) {
 	var authorid = getAuthorId(req);
-	var array = [];
+	//var array = [];
+	//songSchema.find({author_id: authorid}, searchResults(err, docs));
+	
 	songSchema.find({author_id: authorid}, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -336,4 +342,16 @@ function findSong(id, res, callback) {
 
 }
 
-
+/*
+function searchResults(err, docs) {
+	if (err) {
+		console.log(err);
+		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+		return;
+	}
+	console.log(docs);
+	//array = docs;
+	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: qTitle, message: 'Search results'});
+	return;
+}
+*/
