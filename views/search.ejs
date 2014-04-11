@@ -7,12 +7,30 @@
   <body ng-controller="SearchController">
   	<div class="row">
 	  	<div class="col-md-6">
-		  	<form role="form" name="searchForm" novalidate>
+		  	<form role="form" method="GET" action="/search" name="searchForm" novalidate>
 				<div class="form-group" ng-class="{ 'has-error' : searchForm.query.$invalid && !searchForm.query.$pristine }" id="query_group">
 					<input ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\']*$/" ng-init="query = '<%= query %>'" name="query" placeholder="Search">
 					<span ng-show="searchForm.query.$error.pattern && !searchForm.$pristine" class="help-block">Invalid characters. Please use only alphanumeric characters or $!-_'</span>
-					<button ng-disabled="searchForm.$invalid" ng-click="search(query)" class="btn btn-default">Search</button>
+					<button ng-disabled="searchForm.$invalid" class="btn btn-default">Search</button>
 				</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" ng-value="Public" checked>
+                        	Public
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" ng-value="Private">
+                        	Private
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" ng-value="Both">
+                        	Both
+                	</label>
+            	</div>
 			</form>
 		</div>
 		<div class="col-md-6">
