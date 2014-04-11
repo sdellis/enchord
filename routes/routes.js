@@ -83,7 +83,7 @@ module.exports = function(app, passport, db) {
 		app.post('/reset/:token', mailer.confirm);
 
 		app.get('/members', isLoggedIn, function(req, res) {
-			res.render('profile.ejs', {title:"Members", user:req.user, message: req.flash('success')});
+			res.render('profile.ejs', {title:"Members", user:req.user, username: utils.getUsername(req), message: req.flash('success')});
 		});
 
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));

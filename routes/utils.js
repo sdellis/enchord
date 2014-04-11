@@ -287,6 +287,7 @@ function getAuthorName(req) {
 	}
 	return name;
 }
+exports.getUsername = getAuthorName;
 
 function findSong(id, res, callback) {
 	songSchema.findById(id, function (err, docs) {
