@@ -17,7 +17,7 @@ enchordControllers.controller('AboutController', ['$scope',
 enchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',
 	function($scope, $window, $routeParams) {
 		$scope.query = "";
-		$scope.type = "Public";
+		$scope.type = "Both";
 		// redirect to search page
 		$scope.search = function(query) {
 			console.log(query);

@@ -134,16 +134,23 @@ exports.deleteSong = function(req, res) {
 
 //add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
-	var query = req.query.query.toLowerCase().split(' ');
-	var type = req.query.type.toLowerCase();
+	var query, type;
+	if (req.query.query == undefined)
+		query = '';
+	else
+		query = req.query.query.toLowerCase().split(' ');
+	if (req.query.type == undefined)
+		type = 'Global';
+	else
+		type = req.query.type;
 	console.log(query);
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: [], query: req.query.query, message: 'Empty query'});
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: [], query: query, type: type, message: 'Empty query'});
 		return;
 	}
 	else {
-		if (type == 'public') {
+		if (type == 'Global') {
 			songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
 				if (err) {
 					console.log(err);
@@ -152,12 +159,12 @@ exports.searchSong = function(req, res) {
 				}
 				console.log(docs);
 				array = docs;
-				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, type: type, message: 'Search results'});
 				return;
 			});
 		}
-		else if (type == 'private') {
-			songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
+		else if (type == 'Local') {
+			songSchema.find({search_string: {$all: query}, author_id: getAuthorId(req)}, function(err, docs) {
 				if (err) {
 					console.log(err);
 					res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -165,11 +172,11 @@ exports.searchSong = function(req, res) {
 				}
 				console.log(docs);
 				array = docs;
-				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, type: type, message: 'Search results'});
 				return;
 			});
 		}
-		else if (type == 'both') {
+		else if (type == 'Both') {
 			songSchema.find({$or : [{search_string: {$all: query}, pub: true}, {search_string: {$all: query}, 
 				pub: false, author_id: getAuthorId(req)}]}, function(err, docs) {
 				if (err) {
@@ -179,7 +186,7 @@ exports.searchSong = function(req, res) {
 				}
 				console.log(docs);
 				array = docs;
-				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, type: type, message: 'Search results'});
 				return;
 			});
 		}
