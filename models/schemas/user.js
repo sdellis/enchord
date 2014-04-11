@@ -44,7 +44,8 @@ var User = mongoose.Schema({
         token        : String,
         email        : String,
         name         : String
-    }
+    },
+    folders: Array
 });
 
 User.methods.generateHash = function(password) {
