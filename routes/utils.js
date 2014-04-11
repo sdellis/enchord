@@ -134,26 +134,55 @@ exports.deleteSong = function(req, res) {
 
 //add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
-	var query = req.params.query.toLowerCase().split(' ');
-	var isPub = req.params.pub
+	var query = req.query.query.toLowerCase().split(' ');
+	var type = req.query.type.toLowerCase();
 	console.log(query);
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: [], query: req.params.query, message: 'Empty query'});
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: [], query: req.query.query, message: 'Empty query'});
 		return;
 	}
 	else {
-		songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+		if (type == 'public') {
+			songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
 				return;
-			}
-			console.log(docs);
-			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
-			return;
-		});
+			});
+		}
+		else if (type == 'private') {
+			songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
+				return;
+			});
+		}
+		else if (type == 'both') {
+			songSchema.find({$or : [{search_string: {$all: query}, pub: true}, {search_string: {$all: query}, 
+				pub: false, author_id: getAuthorId(req)}]}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.query.query, message: 'Search results'});
+				return;
+			});
+		}
 	}
 }
 
