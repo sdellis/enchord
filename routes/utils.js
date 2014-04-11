@@ -74,6 +74,22 @@ exports.loadSongEdit = function(req, res) {
 		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
 	});
 }
+exports.isAuthor = function(req, res, next) {
+	var id = req.params._id;
+	
+	var findsong = findSong(id, res, function(docs) {
+		if (req.isAuthenticated()) {
+			if (getAuthorId(req) == docs.author_id) {
+				return next();
+			} else {
+				// send message too?
+				res.redirect('/viewsong/' + id);
+			}
+		} else {
+			res.redirect('/login');
+		}
+	});
+}
 
 exports.loadSongView = function(req, res) {
 	var id = req.params._id;
