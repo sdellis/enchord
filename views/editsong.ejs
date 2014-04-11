@@ -40,7 +40,8 @@
             <div class="col-md-4">
                  <div class="form-group" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }">
                     <label class="control-label" for="genre">Genre</label>
-                    <input type="text" name="genre" class="form-control" ng-model="song.genre" ng-pattern="/^[A-Za-z0-9-_ ]*$/" placeholder="Genre">
+                    <input type="text" name="genre" class="form-control" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" placeholder="Genre">
+                    <span ng-show="songEditForm.genre.$error.maxlength" class="help-block">Input is too long</span>
                     <span ng-show="songEditForm.genre.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
                 </div>
             </div>
