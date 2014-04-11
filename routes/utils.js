@@ -79,7 +79,22 @@ exports.loadSongView = function(req, res) {
 	var id = req.params._id;
 	
 	var findsong = findSong(id, res, function(docs) {
-		res.render('viewsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
+		var isAuthor;
+		var isLoggedIn;
+		if (req.isAuthenticated()) {
+			isLoggedIn = true;
+			if (getAuthorId(req) == docs.author_id) {
+				isAuthor = true;
+			} else {
+				isAuthor = false;
+			}
+		} else {
+			isAuthor = false;
+			isLoggedIn = false;
+		}
+		console.log("Is logged in:" + isLoggedIn);
+		console.log("Original Author:" + isAuthor);
+		res.render('viewsong.ejs', {title: 'enchord', isNew: false, isAuthor: isAuthor, isLoggedIn: isLoggedIn, song: docs, message: 'Song loaded'});
 	});
 }
 
@@ -192,8 +207,6 @@ exports.getSong = function(req, res) {
 		res.send({song: data});
 	});
 }
-
-
 
 //remake the songs so that they are updated to have new info
 
