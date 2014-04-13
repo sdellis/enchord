@@ -28,9 +28,92 @@ enchordControllers.controller('SearchController', ['$scope', '$window', '$routeP
 	}]);
 
 // Song page (view) controller
-enchordControllers.controller('ViewController', ['$scope', '$routeParams',
-	function($scope, $routeParams){
-		$scope.song = {songId: $routeParams.songId, title: 'Temp'}
+enchordControllers.controller('ViewController', ['$scope', '$http', '$window', '$routeParams', 
+	function($scope, $http, $window, $routeParams){
+		$scope.song = {};
+		$scope.init = function(_id) {
+			if(_id != undefined && _id.length != 0) {
+				var getUrl = '/findsong/' + _id;
+				$http({
+					method  : 'GET',
+					url     : getUrl
+				}).success(function(data) {
+					console.log(data);
+					$scope.song = data.song;
+					$scope.parse();
+				}).error(function(data, status) {
+					console.log(data);
+					console.log(status);
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+				});
+			} else {
+				$scope.song = {
+					title: '',
+					artist: '',
+					genre: '',
+					data: '',
+					_id: '',
+					pub: true
+				};
+				$scope.parse();
+			}
+		}
+		$scope.copysong = function() {
+			// by default set public value to false
+			$scope.song.pub = false;
+			$http({
+				method  : 'POST',
+				url     : '/createsong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data){
+				console.log(data);
+				
+				// go to edit page
+				var url = '/editsong/' + data.song._id;
+				$window.location.href = url;
+
+				//$scope.song = data.song;
+				//$scope.message = data.message;
+				//$scope.hasError = data.hasError;
+				//$scope.isNew = data.isNew;
+				//$scope.songEditForm.$setPristine();
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
+		$scope.parse = function() {
+			//readLines($scope.song.data, function(data){$scope.song.result = data});
+			/*console.log($scope.song.data);
+			$http({
+				method  : 'GET',
+				url     : '/parsesong',
+				params  : { data : $scope.song.data }
+				//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data + " parsed";
+			});*/
+			$http({
+				method  : 'POST',
+				url     : '/parsesong',
+				data    : $.param($scope.song),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data + " parsed";
+			});
+		}
 	}]);
 
 // Song page (edit) controller
