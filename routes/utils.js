@@ -156,6 +156,29 @@ exports.searchSong = function(req, res) {
 	}
 }
 
+exports.searchSongPrivate = function(Req, res) {
+	var query = req.params.query.toLowerCase().split(' ');
+	console.log(query);
+	var array = [];
+	if (query == '') {
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		return;
+	}
+	else {
+		songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			console.log(docs);
+			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			return;
+		});
+	}
+}
+
 exports.advancedSearch = function(req, res) {
 	var qTitle = req.params.title.toLowerCase(); 
 	var qArtist = req.params.artist.toLowerCase();

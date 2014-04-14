@@ -28,3 +28,5 @@ done -finish forgot password/recovery
 
 implementation of social media related tools.
 try/catch for database connection.
+
+do we want all the sign in options?
