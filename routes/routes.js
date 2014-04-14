@@ -1,5 +1,6 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
+var folderutils = require('./folderutils');
 var User = require('../models/schemas/user');
 var async = require('async');
 
