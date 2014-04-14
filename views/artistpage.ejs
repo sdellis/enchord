@@ -7,6 +7,9 @@
   <body ng-controller="SongEditController">
   	<div class="container">
   		<h1><%= artist %></h1>
-  		
+  		<% for(var i = 0; i < results.length; i++) { %>
+			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artist/<%= results[i].artist %>"><%= results[i].artist %></a></li>
+		<% } %>
+		<a href="/search">Back to search page</a>
   	</div>
   </body>

@@ -140,7 +140,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/search', utils.searchSong);
 		
-		app.get('/advancedsearch', utils.advancedSearch);
+		app.get('/advsearch', utils.advancedSearch);
 		
 		app.get('/artist/:query', utils.getArtistSongs);
 		
