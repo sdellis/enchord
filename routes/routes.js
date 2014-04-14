@@ -83,7 +83,7 @@ module.exports = function(app, passport, db) {
 		app.post('/reset/:token', mailer.confirm);
 
 		app.get('/members', isLoggedIn, function(req, res) {
-			res.render('profile.ejs', {title:"Members", user:req.user, message: req.flash('success')});
+			res.render('profile.ejs', {title:"Members", user:req.user, username: utils.getUsername(req), message: req.flash('success')});
 		});
 
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -120,7 +120,7 @@ module.exports = function(app, passport, db) {
 		
 		app.post('/editsong', isLoggedIn, utils.editSong);
 		
-		app.get('/editsong/:_id', isLoggedIn, utils.loadSongEdit);
+		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);
 
 		app.get('/viewsong/:_id', utils.loadSongView);
 		
@@ -133,11 +133,19 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
-		app.get('/search', function(req, res) {
-			res.render('search.ejs', {title: 'enchord', query: '', results: []});
-		});
+		/*app.get('/search', function(req, res) {
+			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
+		});*/
 		
-		app.get('/search/:query', utils.searchSong);
+		app.get('/search', utils.searchSong);
+		
+		app.get('/advsearch', utils.advancedSearch);
+		
+		app.get('/artist/:query', utils.getArtistSongs);
+		
+		app.get('/mysongs', isLoggedIn, utils.getMySongs);
+		
+		app.get('/remakeDB', utils.remakeDB);
 		
 		/*
         //authorize when already logged in

@@ -27,7 +27,7 @@
 
         <div class="header-unit">
             <video id="video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0"> 
-            <source src="video/bg.mp4" type="video/mp4"> Video not supported </video>
+            <source src="video/bg2.mp4" type="video/mp4"> Video not supported </video>
         </div><!-- end .header-unit -->
 
         <div class="cover-container" data-stellar-background-ratio="0.5">
@@ -68,9 +68,10 @@
                     </div>
                 </div> 
                 <div class="row">
-                    <form class="search" name="searchForm" ng-controller="SearchController">
-                        <input type="search" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
-                        <button type="submit" ng-click="search(query)"></button>
+                    <form class="search" type="GET" action="/search" name="searchForm" ng-controller="SearchController">
+                        <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+                        <input type="hidden" name="type" value="Global">
+                        <button type="submit"><img src="../../images/search.png" style="width: 45%; height: auto;"></button>
                     </form>   
                 </div><br><br>
                 <div class="row">
