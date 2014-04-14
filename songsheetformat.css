@@ -1,0 +1,55 @@
+html {
+    font-family : sans-serif, sans;
+}
+body {
+    margin      : 0px;
+}
+div {
+	page-break-inside : avoid;
+}
+
+p {
+	white-space: pre;
+	line-height: 100%;
+}
+
+p .lineerror{
+	color		: red;
+	font-style	: italic;
+}
+
+p .heading {
+    font-weight : bold;
+    font-size   : 16px;
+    margin      : 4px 0 -8px;
+}
+p .tab {
+    font		: Courier; ##/asdflkajsd;fkj
+    font-size   : 20px;
+}
+.credits {
+    font-size   : 10px;
+    position    : relative;
+    top         : 5px;
+}
+span[chord]:before {
+    position    : relative;
+    top         : -1.2em;
+    display     : inline-block;
+    content     : attr(chord);
+    width       : 0;
+    font-weight : bold;
+	font-style	:normal; 
+	font-size	:85%
+}
+
+span[chordcomment]:before {
+    position    : relative;
+    top         : -1.2em;
+    display     : inline-block;
+    content     : attr(chordcomment);
+    width       : 0;
+	font-weight	: normal; 
+    font-style  : italic;
+	font-size	: 85%
+}
