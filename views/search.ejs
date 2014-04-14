@@ -13,28 +13,32 @@
 					<span ng-show="searchForm.query.$error.pattern && !searchForm.$pristine" class="help-block">Invalid characters. Please use only alphanumeric characters or $!-_'</span>
 					<button ng-disabled="searchForm.$invalid" class="btn btn-default">Search</button>
 				</div>
-            	<div class="radio">
+                <% if (isLoggedIn) {%><!-- The radio tags should only show up if they're logged in -->
+				<div class="radio">
                 	<label>
-                    	<input type="radio" name="type" ng-model="type" ng-value="Public" checked>
-                        	Public
-                	</label>
-            	</div>
-            	<div class="radio">
-                	<label>
-                    	<input type="radio" name="type" ng-model="type" ng-value="Private">
-                        	Private
-                	</label>
-            	</div>
-            	<div class="radio">
-                	<label>
-                    	<input type="radio" name="type" ng-model="type" ng-value="Both">
+                    	<input type="radio" name="type" ng-model="type" value = "Both">
                         	Both
                 	</label>
             	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value="Global">
+                        	Global
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value = "Local">
+                        	Local
+                	</label>
+            	</div>
+                <% } else { %>
+                    <input type="hidden" name="type" value="Global">
+                <% } %>
 			</form>
 		</div>
 		<div class="col-md-6">
-			<form role="form" name="advSearchForm" novalidate>
+			<form role="form" method="GET" action="/advsearch" name="advSearchForm" novalidate>
 				<!-- TITLE -->
                 <div class="form-group" ng-class="{ 'has-error' : advSearchForm.title.$invalid && !advSearchForm.title.$pristine }">
                     <label class="control-label" for="title">Title</label>          
@@ -66,13 +70,34 @@
 		            <span ng-show="advSearchForm.author.$error.maxlength" class="help-block">Username is too long</span>
 		            <span ng-show="advSearchForm.author.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
 	       		</div>
-	       		<button ng-disabled=true ng-click="search(query)" class="btn btn-default">Search</button>
-	       		<!--<button ng-disabled="searchForm.$invalid" ng-click="search(query)" class="btn btn-default">Search</button>-->
+                <% if (isLoggedIn) {%>
+	       		<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value = "Both">
+                        	Both
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value="Global">
+                        	Global
+                	</label>
+            	</div>
+            	<div class="radio">
+                	<label>
+                    	<input type="radio" name="type" ng-model="type" value = "Local">
+                        	Local
+                	</label>
+            	</div>
+                <% } else { %>
+                    <input type="hidden" name="type" value="Global">
+                <% } %>
+	       		<button ng-disabled="advSearchForm.$invalid" class="btn btn-default">Search</button>
 			</form> <!-- adv search form -->
 		</div> <!-- col -->
 	</div> <!-- row -->
 	<!-- Results should go here -->
-	Search query = {{query}}
+	<!-- Search query = {{query}} -->
 	
 	<!-- Can be moved later, click to go to your songs -->
 	<br>
@@ -85,7 +110,7 @@
 	<!-- TODO: Add pagination -->
 	<ul>
 		<% for(var i = 0; i < results.length; i++) { %>
-			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artistsongs/<%= results[i].artist %>"><%= results[i].artist %></a></li>
+			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artist/<%= results[i].artist %>"><%= results[i].artist %></a></li>
 		<% } %>
 	</ul>
   </body>

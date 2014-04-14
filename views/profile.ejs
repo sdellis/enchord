@@ -160,11 +160,12 @@
                         </div>
                     </div>
                     <!-- search form -->
-                    <form class="sidebar-form" name="searchForm">
+                    <form class="sidebar-form" type="GET" action="/search" name="searchForm">
                         <div class="input-group" ng-controller="SearchController">
                             <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                            <input type="hidden" name="type" value="Both">
                             <span class="input-group-btn">
-                                <button type='submit' name='search' id='search-btn' class="btn btn-flat" ng-click="search(query)"><i class="fa fa-search"></i></button>
+                                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </form>

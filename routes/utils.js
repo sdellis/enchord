@@ -10,6 +10,7 @@ exports.createSong = function(req, res) {
 		artist_lower: req.body.artist.toLowerCase(),
 		author_id: getAuthorId(req),
 		author_name: getAuthorName(req),
+		author_lower: getAuthorName(req).toLowerCase(),
 		genre: req.body.genre,
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
@@ -134,25 +135,103 @@ exports.deleteSong = function(req, res) {
 
 //add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
-	var query = req.params.query.toLowerCase().split(' ');
+	var query, type;
+	if (req.query.query == undefined)
+		query = '';
+	else
+		query = req.query.query.toLowerCase().split(' ');
+	if (req.query.type == undefined)
+		type = 'Global';
+	else
+		type = req.query.type;
 	console.log(query);
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		res.render('search.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			results: [], 
+			query: query, 
+			type: type, 
+			message: 'Empty query', 
+			isLoggedIn: req.isAuthenticated()
+		});
 		return;
 	}
 	else {
-		songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+		if (type == 'Global') {
+			songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({
+						message: 'Internal server error: cannot find', 
+						hasError: true
+					});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {
+					title: 'enchord', 
+					isNew: false, 
+					results: array, 
+					query: req.query.query, 
+					type: type, 
+					message: 'Search results',
+					isLoggedIn: req.isAuthenticated()
+				});
 				return;
-			}
-			console.log(docs);
-			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
-			return;
-		});
+			});
+		}
+		else if (type == 'Local') {
+			songSchema.find({search_string: {$all: query}, author_id: getAuthorId(req)}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({
+						message: 'Internal server error: cannot find',
+						hasError: true
+					});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {
+					title: 'enchord', 
+					isNew: false, 
+					results: array, 
+					query: req.query.query, 
+					type: type, 
+					message: 'Search results',
+					isLoggedIn: req.isAuthenticated()
+				});
+				return;
+			});
+		}
+		else if (type == 'Both') {
+			songSchema.find({$or : [{search_string: {$all: query}, pub: true}, {search_string: {$all: query}, 
+				pub: false, author_id: getAuthorId(req)}]}, function(err, docs) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({
+						message: 'Internal server error: cannot find', 
+						hasError: true
+					});
+					return;
+				}
+				console.log(docs);
+				array = docs;
+				res.render('search.ejs', {
+					title: 'enchord', 
+					isNew: false, 
+					results: array, 
+					query: req.query.query, 
+					type: type, 
+					message: 'Search results',
+					isLoggedIn: req.isAuthenticated()
+				});
+				return;
+			});
+		}
 	}
 }
 
@@ -180,40 +259,115 @@ exports.searchSongPrivate = function(Req, res) {
 }
 
 exports.advancedSearch = function(req, res) {
-	var qTitle = req.params.title.toLowerCase(); 
-	var qArtist = req.params.artist.toLowerCase();
-	var qGenre = req.params.genre.toLowerCase();
+	var qTitle, qArtist, qGenre, qAuthor, qType;
+	
+	if (req.query.title == undefined)
+		qTitle = '';
+	else
+		qTitle = req.query.title.toLowerCase(); 
+	console.log(qTitle);
+	if (req.query.artist == undefined)
+		qArtist = '';
+	else
+		qArtist = req.query.artist.toLowerCase();
+	console.log(qArtist);
+	if (req.query.genre == undefined)
+		qGenre = '';
+	else
+		qGenre = req.query.genre.toLowerCase();
+	console.log(qGenre);
+	if (req.query.author == undefined)
+		qAuthor = '';
+	else
+		qAuthor = req.query.author.toLowerCase();
+	console.log(qAuthor);
+	
+	var query = {};
+	if (qTitle != '')
+		query['title_lower'] = qTitle;
+	if (qArtist != '')
+		query['artist_lower'] = qArtist;
+	if (qGenre != '')
+		query['genre_lower'] = qGenre;
+	if (qAuthor != '')
+		query['author_lower'] = qAuthor;
+	console.log(query);
+	if (req.query.type == undefined)
+		type = 'Global';
+	else
+		type = req.query.type;
+	query['pub'] = type;
+	if (query['pub'] == 'Local')
+		query['author_id'] = getAuthorId(req);
+	
 	var array = [];
-	songSchema.find({title_lower: qTitle, artist_lower: qArtist, genre_lower: qGenre, }, function(err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+	console.log(query);
+	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
+		res.render('search.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			results: array, 
+			query: '', 
+			message: 'Empty search',
+			isLoggedIn: req.isAuthenticated()
+		});
+	else
+	{
+		songSchema.find(query, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({
+					message: 'Internal server error: cannot find', 
+					hasError: true});
+				return;
+			}
+			//console.log(docs);
+			array = docs;
+			res.render('search.ejs', {
+				title: 'enchord', 
+				isNew: false, 
+				results: array, 
+				query: query, 
+				message: 'Search results',
+				isLoggedIn: req.isAuthenticated()
+			});
 			return;
+		});
 		}
-		console.log(docs);
-		array = docs;
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: qTitle, message: 'Search results'});
-		return;
-	});
 }
 
 exports.getArtistSongs = function(req, res) {
 	var query = req.params.query.toLowerCase();
 	var array = [];
 	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		res.render('search.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			results: array, 
+			query: req.params.query, 
+			message: 'Empty query'
+		});
 		return;
 	}
 	else {
 		songSchema.find({artist_lower: query}, function(err, docs) {
 			if (err) {
 				console.log(err);
-				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				res.status(500).json({
+					message: 'Internal server error: cannot find', 
+					hasError: true
+				});
 				return;
 			}
 			console.log(docs);
 			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			res.render('artistpage.ejs', {
+				title: 'enchord', 
+				isNew: false, 
+				results: array, 
+				artist: req.params.query, 
+				message: 'Search results'
+			});
 			return;
 		});
 	}
@@ -224,7 +378,9 @@ exports.getArtistSongs = function(req, res) {
 
 exports.getMySongs = function(req, res) {
 	var authorid = getAuthorId(req);
-	var array = [];
+	//var array = [];
+	//songSchema.find({author_id: authorid}, searchResults(err, docs));
+	
 	songSchema.find({author_id: authorid}, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -268,6 +424,7 @@ exports.remakeDB = function(req, res) {
 			genre: array[i].genre,
 			genre_lower: array[i].genre.toLowerCase(),
 			data: array[i].data,
+			author_lower: array[i].author_name.toLowerCase(),
 			pub: array[i].pub,
 			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')
 			});
@@ -359,4 +516,16 @@ function findSong(id, res, callback) {
 
 }
 
-
+/*
+function searchResults(err, docs) {
+	if (err) {
+		console.log(err);
+		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+		return;
+	}
+	console.log(docs);
+	//array = docs;
+	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: qTitle, message: 'Search results'});
+	return;
+}
+*/

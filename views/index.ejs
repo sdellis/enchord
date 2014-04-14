@@ -68,9 +68,10 @@
                     </div>
                 </div> 
                 <div class="row">
-                    <form class="search" name="searchForm" ng-controller="SearchController">
-                        <input type="search" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
-                        <button type="submit" ng-click="search(query)"></button>
+                    <form class="search" type="GET" action="/search" name="searchForm" ng-controller="SearchController">
+                        <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+                        <input type="hidden" name="type" value="Global">
+                        <button type="submit"><img src="../../images/search.png" style="width: 45%; height: auto;"></button>
                     </form>   
                 </div><br><br>
                 <div class="row">
