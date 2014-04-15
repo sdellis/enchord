@@ -238,7 +238,7 @@ exports.searchSong = function(req, res) {
 	}
 	else {
 		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, query['search_string'], req, res);
+			searchResults(err, docs, req.query.query, req, res);
 		});
 	}
 }
@@ -274,15 +274,19 @@ exports.advancedSearch = function(req, res) {
 		query['artist_lower'] = qArtist;
 	if (qGenre != '')
 		query['genre_lower'] = qGenre;
-	if (qAuthor != '')
+	if (qAuthor != '') {
 		query['author_lower'] = qAuthor;
+		
+		query['pub'] = true; //only if not searching for current user???(maybe)
+	}
 	console.log(query);
 	if (req.query.type == undefined)
 		type = 'Global';
 	else
 		type = req.query.type;
-	query['pub'] = type; // I think there might be a bug here. This needs to be true/false
-	if (query['pub'] == 'Local')
+	if (type == 'Global')
+		query['pub'] = true;
+	if (type == 'Local')
 		query['author_id'] = getAuthorId(req);
 	
 	var array = [];
