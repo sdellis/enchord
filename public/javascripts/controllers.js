@@ -313,3 +313,25 @@ enchordControllers.controller('LoginController', ['$scope',
 		// $scope.error_message = "";
 
 	}]);
+
+// enchordControllers.controller('ProfileController', ['$scope', '$http',
+// 	function($scope, $http){
+// 		$scope.usersongs = {};
+// 		$scope.init = function() {
+// 			$http({
+// 				method  : 'GET',
+// 				url     : '/mysongs'
+// 			}).success(function(data) {
+// 				console.log(data);
+// 				$scope.usersongs = data.sersongs;
+// 			}).error(function(data, status) {
+// 				console.log(data);
+// 				console.log(status);
+// 				if (status == 500) {
+// 					console.log(status);
+// 					$scope.message = data.message;
+// 					$scope.hasError = data.hasError;
+// 				}
+// 			});
+// 		}
+// 	}]);

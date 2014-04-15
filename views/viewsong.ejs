@@ -11,6 +11,7 @@
   	<p>Author: <%= song.author_name %></p>
   	<p>Genre: <%= song.genre %></p>
 
+    <a href="/downloadsongtxt/<%= song._id %>">Download as text file</a>
   	<% if (isAuthor) { %><a href="/editsong/<%= song._id %>">Edit Song</a><% } %>
     <% if (isLoggedIn && !isAuthor) { %><a href="#" ng-click="copysong()">Save Song</a><% } %>
   </div>
