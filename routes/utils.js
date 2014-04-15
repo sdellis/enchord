@@ -235,7 +235,7 @@ exports.searchSong = function(req, res) {
 	}
 }
 
-exports.searchSongPrivate = function(Req, res) {
+/*exports.searchSongPrivate = function(req, res) {
 	var query = req.params.query.toLowerCase().split(' ');
 	console.log(query);
 	var array = [];
@@ -256,7 +256,7 @@ exports.searchSongPrivate = function(Req, res) {
 			return;
 		});
 	}
-}
+}*/
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
