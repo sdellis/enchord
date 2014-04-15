@@ -148,6 +148,8 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/mysongs', isLoggedIn, utils.getMySongs);
 		
+		//app.get('/myfolders', isLoggedIn, folderutils.getUserFolder);
+		
 		app.get('/remakeDB', utils.remakeDB);
 		
 		/*

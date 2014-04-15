@@ -367,7 +367,6 @@ exports.getMySongs = function(req, res) {
 }
 
 
-
 exports.getSong = function(req, res) {
 	findSong(req.params._id, res, function(data) {
 		res.send({song: data});
@@ -451,6 +450,7 @@ function getAuthorId(req) {
 	}
 	return id;
 }
+exports.getId = getAuthorId;
 
 function getAuthorName(req) {
 	var name;
