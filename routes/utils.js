@@ -133,20 +133,40 @@ exports.deleteSong = function(req, res) {
 
 };
 
-//add distinguish public vs private. Right now only searches public songs
 exports.searchSong = function(req, res) {
-	var query, type;
-	if (req.query.query == undefined)
-		query = '';
-	else
-		query = req.query.query.toLowerCase().split(' ');
+	var query = {};
+	var query1 = {};
+	var query2 = {}; //break into 2 queries for easy or statement for Both
+	if (req.query.query == undefined) {
+		query['search_string'] = '';
+	}
+	else {
+		query['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+	}
+	if (req.query.type == 'Global' || req.query.type == undefined) {
+		query['pub'] = true;
+	}
+	else if (req.query.type == 'Local') {
+		query['author_id'] = getAuthorId(req);
+	}
+	else if (req.query.type == 'Both') {
+		query1['search_string'] = query['search_string'];
+		query2['search_string'] = query['search_string'];
+		query1['pub'] = true;
+		query2['pub'] = false;
+		query2['author_id'] = getAuthorId(req);
+		query = {};
+		query['$or'] = [query1, query2];
+	}
+
+	var type;
 	if (req.query.type == undefined)
 		type = 'Global';
 	else
 		type = req.query.type;
 	console.log(query);
 	var array = [];
-	if (query == '') {
+	if (query['search_string'] == '') {
 		res.render('search.ejs', {
 			title: 'enchord', 
 			isNew: false, 
@@ -159,79 +179,9 @@ exports.searchSong = function(req, res) {
 		return;
 	}
 	else {
-		if (type == 'Global') {
-			songSchema.find({search_string: {$all: query}, pub: true}, function(err, docs) {
-				if (err) {
-					console.log(err);
-					res.status(500).json({
-						message: 'Internal server error: cannot find', 
-						hasError: true
-					});
-					return;
-				}
-				console.log(docs);
-				array = docs;
-				res.render('search.ejs', {
-					title: 'enchord', 
-					isNew: false, 
-					results: array, 
-					query: req.query.query, 
-					type: type, 
-					message: 'Search results',
-					isLoggedIn: req.isAuthenticated()
-				});
-				return;
-			});
-		}
-		else if (type == 'Local') {
-			songSchema.find({search_string: {$all: query}, author_id: getAuthorId(req)}, function(err, docs) {
-				if (err) {
-					console.log(err);
-					res.status(500).json({
-						message: 'Internal server error: cannot find',
-						hasError: true
-					});
-					return;
-				}
-				console.log(docs);
-				array = docs;
-				res.render('search.ejs', {
-					title: 'enchord', 
-					isNew: false, 
-					results: array, 
-					query: req.query.query, 
-					type: type, 
-					message: 'Search results',
-					isLoggedIn: req.isAuthenticated()
-				});
-				return;
-			});
-		}
-		else if (type == 'Both') {
-			songSchema.find({$or : [{search_string: {$all: query}, pub: true}, {search_string: {$all: query}, 
-				pub: false, author_id: getAuthorId(req)}]}, function(err, docs) {
-				if (err) {
-					console.log(err);
-					res.status(500).json({
-						message: 'Internal server error: cannot find', 
-						hasError: true
-					});
-					return;
-				}
-				console.log(docs);
-				array = docs;
-				res.render('search.ejs', {
-					title: 'enchord', 
-					isNew: false, 
-					results: array, 
-					query: req.query.query, 
-					type: type, 
-					message: 'Search results',
-					isLoggedIn: req.isAuthenticated()
-				});
-				return;
-			});
-		}
+		songSchema.find(query, function(err, docs) {
+			searchResults(err, docs, query['search_string'], req, res);
+		});
 	}
 }
 
@@ -291,43 +241,40 @@ exports.advancedSearch = function(req, res) {
 	else
 	{
 		songSchema.find(query, function(err, docs) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({
-					message: 'Internal server error: cannot find', 
-					hasError: true});
-				return;
-			}
-			//console.log(docs);
-			array = docs;
-			res.render('search.ejs', {
-				title: 'enchord', 
-				isNew: false, 
-				results: array, 
-				query: query, 
-				message: 'Search results',
-				isLoggedIn: req.isAuthenticated()
-			});
-			return;
+			searchResults(err, docs, query, req, res);
 		});
-		}
+	}
 }
 
 exports.getArtistSongs = function(req, res) {
-	var query = req.params.query.toLowerCase();
+	var query = {};
+	query['artist_lower'] = req.params.query.toLowerCase();
+	query['pub'] = true;
+	
+	var queryprivate = {};
+	queryprivate['pub'] = false;
+	if (req.isAuthenticated()) {
+		queryprivate['artist_lower'] = req.params.query.toLowerCase();
+		queryprivate['author_id'] = getAuthorId(req);
+	}
+	else { //makes it so the or will not return anything (will only get the public songs)
+		queryprivate['artist_lower'] = '';
+		queryprivate['author_name'] = '';
+	}
 	var array = [];
-	if (query == '') {
+	if (query['artist_lower'] == '') {
 		res.render('search.ejs', {
 			title: 'enchord', 
 			isNew: false, 
 			results: array, 
 			query: req.params.query, 
-			message: 'Empty query'
+			message: 'Empty query',
+			isLoggedIn: req.isAuthenticated()
 		});
 		return;
 	}
 	else {
-		songSchema.find({artist_lower: query}, function(err, docs) {
+		songSchema.find({$or: [query, queryprivate]}, function(err, docs) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({
@@ -355,19 +302,9 @@ exports.getArtistSongs = function(req, res) {
 
 exports.getMySongs = function(req, res) {
 	var authorid = getAuthorId(req);
-	//var array = [];
-	//songSchema.find({author_id: authorid}, searchResults(err, docs));
 	
 	songSchema.find({author_id: authorid}, function(err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
-			return;
-		}
-		console.log(docs);
-		array = docs;
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
-		return;
+		searchResults(err, docs, authorid, req, res);
 	});
 	
 }
@@ -416,7 +353,8 @@ exports.remakeDB = function(req, res) {
 					return;
 				}
 				console.log('success edit');
-				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: ' ', message: 'Search results'});
+				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: ' ', message: 'Search results',
+					isLoggedIn: req.isAuthenticated()});
 				return;
 			});	
 		
@@ -493,8 +431,8 @@ function findSong(id, res, callback) {
 
 }
 
-/*
-function searchResults(err, docs) {
+
+function searchResults(err, docs, query, req, res) {
 	if (err) {
 		console.log(err);
 		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -502,7 +440,7 @@ function searchResults(err, docs) {
 	}
 	console.log(docs);
 	//array = docs;
-	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: qTitle, message: 'Search results'});
+	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: query, message: 'Search results', isLoggedIn: req.isAuthenticated()});
 	return;
 }
-*/
+
