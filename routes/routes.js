@@ -1,5 +1,6 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
+var folderutils = require('./folderutils');
 var User = require('../models/schemas/user');
 var async = require('async');
 
@@ -153,6 +154,8 @@ module.exports = function(app, passport, db) {
 		app.get('/artist/:query', utils.getArtistSongs);
 		
 		// app.get('/mysongs', isLoggedIn, utils.getMySongs);
+		
+		//app.get('/myfolders', isLoggedIn, folderutils.getUserFolder);
 		
 		app.get('/remakeDB', utils.remakeDB);
 		
