@@ -36,10 +36,10 @@ function getithSection(i)
 // }
 
 // Return result as html page string
-function printDoc(font)
+function printDoc(font,csspath)
 {
 	
-	var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"songsheetformat.css\"></head>\n<body>\n";
+	var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
 	//console.log(getSection(''));
 	if(font)
 		result+= '<style> body {font-family:' + font +';}</style>';
@@ -277,7 +277,7 @@ function parseLine(oneLine, linenum, font) {
 }
 
 // function readLines(input, font) {
-function readLines(input, callback, font) {
+function readLines(input, callback, font, csspath) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
@@ -290,8 +290,8 @@ function readLines(input, callback, font) {
 	
 	for(i = 0; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
-	//console.log(printDoc(font));
-	callback(printDoc());
+	//console.log(printDoc(font, csspath));
+	callback(printDoc(font, csspath));
 	
 }
 exports.parseSong = readLines;
@@ -322,14 +322,14 @@ exports.parseSong = readLines;
 	});
 }
 */
-
-/*var input = fs.createReadStream('lines.txt');
+/*
+var input = fs.createReadStream('lines.txt');
 var remaining = ''
 input.on('data', function(data) {
 		remaining += data;
 	})
 input.on('end', function() {
-	readLines(remaining,"blah","Georgia");
+	readLines(remaining,"blah","Georgia","songsheetformat.css");
 
 	})
 */
