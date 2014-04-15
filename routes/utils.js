@@ -1,5 +1,7 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
+var parser = require('../parser'); // parser
+var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 
 exports.createSong = function(req, res) {
@@ -112,6 +114,61 @@ exports.loadSongView = function(req, res) {
 		console.log("Is logged in:" + isLoggedIn);
 		console.log("Original Author:" + isAuthor);
 		res.render('viewsong.ejs', {title: 'enchord', isNew: false, isAuthor: isAuthor, isLoggedIn: isLoggedIn, song: docs, message: 'Song loaded'});
+	});
+}
+
+exports.downloadSongTxt = function(req, res) {
+	var id = req.params._id;
+
+	findSong(id, res, function(docs) {
+		console.log(docs);
+		if (docs) {
+			parser.parseSong(docs.data, function(parsedSong) {
+				fs.writeFile('./tmp.txt', parsedSong, function(err) {
+					if(err) {
+						console.log(err);
+						res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+						return;
+					} else {
+						console.log('success!');
+						var titlewords = docs.title.split(" ");
+						var filename = "";
+						for (var i = 0; i < titlewords.length; i++) {
+							if (i == titlewords.length - 1) {
+								filename = filename + titlewords[i] + ".txt";
+							} else {
+								filename = filename + titlewords[i] + "_";
+							}
+						}
+						res.download('./tmp.txt', filename, function(err) {
+							if (err) {
+								console.log(err);
+								res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
+								fs.unlink('./tmp.txt', function (err) {
+									if (err) {
+										console.log(err);
+										res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+										return;
+									} else {
+										console.log('success delete file');
+									}
+								});
+								return;
+							} 
+							fs.unlink('./tmp.txt', function (err) {
+								if (err) {
+									console.log(err);
+									res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+									return;
+								} else {
+									console.log('success delete file');
+								}
+							});
+						});
+					}
+				});
+			});
+		}
 	});
 }
 
