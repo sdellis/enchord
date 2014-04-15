@@ -36,16 +36,21 @@ function getithSection(i)
 // }
 
 // Return result as html page string
-function printDoc()
+function printDoc(font)
 {
 	
 	var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"songsheetformat.css\"></head>\n<body>\n";
 	//console.log(getSection(''));
+	if(font)
+		result+= '<style> body {font-family:' + font +';}</style>';
 	
-	result += getSection('@');
+	result += "<p>" + getSection('@')+"</p>\n";
 	for( var i = 1; i <=sectionNum;i++) { //for testing
-		var s = getithSectionName(i);
-		result += "<div class=\"" + s + "\">\n<h4>" + toTitleCase(s) + "</h4>\n"+(getithSection(i) || '') + "</div>\n";
+		var s =  getithSection(i);
+		if(!s) continue;
+		s.replace(/\n+$/,"")
+		var sn = getithSectionName(i);
+		result += "<p><span class='heading'>"+toTitleCase(sn)+ "</span>\n" + s + "</p>\n"; //class=\"" + sn + "\"
 	}
 	result += "</body>\n</html>";
 	return result;
@@ -62,10 +67,11 @@ function setOrder(orderLine)
 	}
 	orderSet = true;	
 }
-function pushToSection(sect)
+function pushToSection(sect,lines)
 {
-
-	sections[sect] += "<p>"+ lyricLine + "</p>\n" ;
+	while((lines+= -1) > 0)
+		sections[sect] += "<br>";
+	sections[sect] += lyricLine + "\n" ;
 	lyricLine = '';
 }
 
@@ -81,8 +87,10 @@ function checkBracketErrors(oneLine, linenum){
 			switch(oneLine[i]){
 			case '{': case '[': case '<':
 				state = oneLine[i]; break;
-			case '}': case ']': case '>':
+			case '}': case ']': 
 				return 'There is an extra \'' + oneLine[i] + '\' on line ' + linenum + '.';
+			case '>':
+				return 'There is an extra \'&lt;\' on line ' + linenum + '.';
 			default:
 			}
 			break;
@@ -90,9 +98,12 @@ function checkBracketErrors(oneLine, linenum){
 			switch(oneLine[i]){
 			case ']':
 				state = ''; break;
-			case '{': case '[': case '<':
-			case '}':case '>':
+			case '{': case '[': case '}':
 				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \']\' in line ' + linenum +  '.';
+			case '<':
+				return 'There is an unexpected \'&lt;\' before an expected \']\' in line ' + linenum +  '.';
+			case '>':
+				return 'There is an unexpected \'&gt;\' before an expected \']\' in line ' + linenum +  '.';
 			default:
 			}
 			break;
@@ -100,9 +111,12 @@ function checkBracketErrors(oneLine, linenum){
 			switch(oneLine[i]){
 			case '}':
 				state = ''; break;
-			case '{': case '[': case '<':
-			case ']':case '>':
+			case '{': case '[': case ']':
 				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \'}\' in line ' + linenum +  '.';
+			case '<':
+				return 'There is an unexpected \'&lt;\' before an expected \']\' in line ' + linenum +  '.';
+			case '>':
+				return 'There is an unexpected \'&gt;\' before an expected \']\' in line ' + linenum +  '.';
 			default:
 			}
 			break;
@@ -110,9 +124,11 @@ function checkBracketErrors(oneLine, linenum){
 			switch(oneLine[i]){
 			case '>':
 				state = ''; break;
-			case '{': case '[': case '<':
+			case '{': case '[': 
 			case ']':case '}':
 				return 'There is an unexpected \'' + oneLine[i] +  '\' before an expected \'>\' in line ' + linenum +  '.'
+			case '<':
+				return 'There is an unexpected \'&lt;\' before an expected \']\' in line ' + linenum +  '.';
 			default:
 			}
 			break;
@@ -149,17 +165,29 @@ function parseOption(oneLine, i){
 	option = option.trim().toLowerCase()	
 	switch(option)
 	{
-		case 'bold':
+		case 'bold': case 'start bold': case 'startbold':
 			lyricLine += "<strong>";
 			return j-i;
 		case 'endbold':	case 'end bold':
 			lyricLine += "</strong>";
 			return j-i;
-		case 'italic':case 'ital':
+		case 'italic':case 'ital': case 'start italic': case 'start ital': case 'startitalic': case 'startital':
 			lyricLine += "<em>";
 			return j-i;
 		case 'enditalic': case 'end italic': case 'endital': case 'end ital':
 			lyricLine += "</em>";	
+			return j-i;
+		case 'tab': case 'start tab': case 'starttab':
+			lyricLine += "<span class='tab'>";
+			return j-i;
+		case 'end tab': case 'endtab':
+			lyricLine += "</span>";
+			return j-i;
+		case 'heading': case 'start heading': case 'startheading':
+			lyricLine += "<span class='heading'>";
+			return j-i;
+		case 'end heading': case 'endheading':
+			lyricLine += "</span>";
 			return j-i;
 		default:
 		
@@ -188,6 +216,7 @@ function parseOption(oneLine, i){
 // do something with font variable later
 function parseLine(oneLine, linenum, font) {
 	oneLine = oneLine.replace(/\r/g,"");
+	var lines = 0;
 	if(linenum === 1 && /^order:/i.test(oneLine)){
 		setOrder(oneLine);
 		return;
@@ -195,8 +224,8 @@ function parseLine(oneLine, linenum, font) {
 	
 	var bErr = checkBracketErrors(oneLine, linenum);
 	if(bErr) {
-		lyricLine = bErr;
-		pushToSection(currentSection);
+		lyricLine = '<span class="lineerror">' + bErr + '</span>';
+		pushToSection(currentSection,1);
 		return;
 	}
 	//Presume no bracketing errors from here on out.
@@ -207,20 +236,26 @@ function parseLine(oneLine, linenum, font) {
 	}
 		
 	
-	if(!/[\[{<]/.test(oneLine)) { //if bracketless, simply print the line
+	/*if(!/[\[{<]/.test(oneLine)) { //if bracketless, simply print the line
 		lyricLine = oneLine;
 		pushToSection(currentSection);
 		return;
+	}*/
+	//if just spaces/newlines, 
+	if(/^\s*$/.test(oneLine)){
+		lyricLine += oneLine;
+		return;
 	}
-	
 	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
 	var len = oneLine.length;
 	for (var i = 0; i < len; i++) {
 		switch(oneLine[i]){
-		case '[':  
+		case '[':
+			lines = 2;
 			i+=parseChord(oneLine, i);
 			break;
 		case '<':
+			lines = 2;
 			i+=parseChordComment(oneLine, i); 
 			break;
 		case '{':
@@ -237,12 +272,12 @@ function parseLine(oneLine, linenum, font) {
 		}
 		
 	} 
-	pushToSection(currentSection);
+	pushToSection(currentSection, lines);
 
 }
 
 // function readLines(input, font) {
-function readLines(input, callback) {
+function readLines(input, callback, font) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
@@ -255,7 +290,7 @@ function readLines(input, callback) {
 	
 	for(i = 0; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
-	//console.log(printDoc());
+	//console.log(printDoc(font));
 	callback(printDoc());
 	
 }
@@ -287,13 +322,14 @@ exports.parseSong = readLines;
 	});
 }
 */
-/*
-var input = fs.createReadStream('lines.txt');
+
+/*var input = fs.createReadStream('lines.txt');
 var remaining = ''
 input.on('data', function(data) {
 		remaining += data;
 	})
 input.on('end', function() {
-	readLines(remaining);
+	readLines(remaining,"blah","Georgia");
 
-	})*/
+	})
+*/

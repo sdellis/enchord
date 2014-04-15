@@ -1,32 +1,36 @@
-<<<<<<< HEAD
-order: intro, verse 1, chorus , verse 1, chorus ,bridge ,chorus
-Everyday
+order: Intro, Verse 1, Chorus , pizza, Verse 1, Chorus ,Bridge ,Chorus
+{heading}Everyday
 Joel Houston
 
-{intro}
-[E]    [B]    [G#m7]    [F#7]    <x2>
+{Intro}
+[E]     [B]     [G#m7]         [F#]        <x2>
 
-{verse 1}
+{Verse 1}
 [E]What to [B]say Lord <play softly>
-It's [G#m7]you who [F#7]gave me life and [E]I
+It's [G#m7]{ital}you who [F#7]gave me life {end ital}and [E]I
 Can't ex[B]plain just how  [G#m7]
+
 Much You [F#7]mean to me now [E]that
 You have [B]saved me ....
+Another line without chords
 
-{chorus}
-[B]  Every[E]day it's [G#m]you I [F#]live for... //this part of the song is hard
+
+
+
+
+{Chorus}
+[B]  Every[E]{bold}day{endbold} it's [G#m]you I [F#]{italic}{bold}live{enditalic} for{end bold}... //this part of the song is hard
+A line with an[B] error <
+
+
+//important empty
  
-{bridge}
+{Bridge}
  It's [B]You I [E]live for [G#]every[F#]day (3x)
       [B]      [E]         [G#]     [F#]  <repeat bridge>
-=======
-order: verse 1, verse 1, chorus, intro
-This is a sample line without chords.
-{intro}
-This line has [G]chords
-This line [D]has two <uhoh >[G]chords //comment
-{verse 1}
-This line [has a <comment>
-{chorus}
-This line has no chords either.
->>>>>>> a7ef369768f775cde6329033ed353017d5c068fe
+{tab}
+E---[E]0---
+B---0---
+G-------
+D-------
+{end tab}
