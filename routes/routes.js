@@ -123,6 +123,8 @@ module.exports = function(app, passport, db) {
 		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);
 
 		app.get('/viewsong/:_id', utils.loadSongView);
+
+		app.get('/downloadsongtxt/:_id', utils.downloadSongTxt);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
