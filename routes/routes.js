@@ -82,8 +82,15 @@ module.exports = function(app, passport, db) {
 
 		app.post('/reset/:token', mailer.confirm);
 
+		// refactor this
 		app.get('/members', isLoggedIn, function(req, res) {
-			res.render('profile.ejs', {title:"Members", user:req.user, username: utils.getUsername(req), message: req.flash('success')});
+			utils.getMySongs(req, res, function(usersongs) {
+				console.log("In routes");
+				console.log(usersongs);
+				if (usersongs != undefined) {
+					res.render('profile.ejs', {title:"Members", user:req.user, username: utils.getUsername(req), usersongs: usersongs, message: req.flash('success')});
+				}
+			});			
 		});
 
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -145,7 +152,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/artist/:query', utils.getArtistSongs);
 		
-		app.get('/mysongs', isLoggedIn, utils.getMySongs);
+		// app.get('/mysongs', isLoggedIn, utils.getMySongs);
 		
 		app.get('/remakeDB', utils.remakeDB);
 		

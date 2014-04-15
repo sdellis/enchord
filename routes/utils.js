@@ -410,7 +410,7 @@ exports.getArtistSongs = function(req, res) {
 
 //currently searches whole database each time, should store the song ids in user and then simply get those song ids
 
-exports.getMySongs = function(req, res) {
+exports.getMySongs = function(req, res, callback) {
 	var authorid = getAuthorId(req);
 	//var array = [];
 	//songSchema.find({author_id: authorid}, searchResults(err, docs));
@@ -422,9 +422,10 @@ exports.getMySongs = function(req, res) {
 			return;
 		}
 		console.log(docs);
-		array = docs;
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
-		return;
+		callback(docs);
+		// res.send({usersongs: array});
+		// res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
+		// return;
 	});
 	
 }
