@@ -21,7 +21,7 @@ exports.createSong = function(req, res) {
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: '534df435ca4b8ca819a6554f'
+		folder_id: '534e0897ba5d043c15566a0a'
 	});
 	
 	if(!checkFields(song, res))

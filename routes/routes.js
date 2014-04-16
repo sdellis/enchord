@@ -155,12 +155,16 @@ module.exports = function(app, passport, db) {
 		
 		// app.get('/mysongs', isLoggedIn, utils.getMySongs);
 		
+		//folder testing stuff
 		app.get('/myfolders', isLoggedIn, folderutils.getUserFolders);
 		
 		app.get('/viewfoldersongs/:_id', isLoggedIn, folderutils.getFolderSongs);
 		
 		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
 		
+		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
+		
+		//no longer works properly(because of folders) DO NOT USE
 		app.get('/remakeDB', utils.remakeDB);
 		
 		/*

@@ -52,7 +52,7 @@ exports.makeFolder = function(req, res) {
 	var folder = new folderSchema({
 		name: foldername,
 		author_id: authorid,
-		author_name: authorname,
+		author_name: [authorname],
 		parent_folder: ''
 	});
 	folder.save(function(err, docs, numberAffected) {
@@ -67,7 +67,32 @@ exports.makeFolder = function(req, res) {
 		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: foldername, results: ''});
 		return;
 	});
+}
+
+//maybe make it similar to how editSong works? also later just make an editFolder page to have option to share
+exports.shareFolder = function(req, res) {
+	var newuser = req.params.username; //using name for now because that's how other people will search(use id later)
+	var folderid = req.params.folderid;
 	
+	
+	folderSchema.findById(folderid, function(err, docs) {
+		var authorids = docs['author_id'].push(newuser);
+		folderSchema.update({_id: folderid}, {author_id: authorids}, function(err, numberAffected, rawResponse) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+				return;
+			}
+			console.log('success edit');
+			res.render('folderview.ejs', {
+				title: 'enchord', 
+				isNew: false, 
+				authorName: '',
+				results: []
+			});
+			return;
+		});	
+	});
 }
 
 function getAuthorId(req) {
