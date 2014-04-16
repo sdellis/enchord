@@ -37,14 +37,14 @@ function getithSection(i)
 
 // Return result as html page string
 // function printDoc(font,csspath)
-function printDoc(font)
+function printDoc(font,fontsize)
 {
 	
 	// var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
 	//console.log(getSection(''));
 	var result = "";
 	if(font)
-		result+= '<style> div.chordSheet {font-family:' + font +';}</style>';
+		result+= '<style> div.chordSheet {font-family:' + font +';\nfont-size:' + fontsize + ';}</style>';
 	
 	result += "<p>" + getSection('@')+"</p>\n";
 	for( var i = 1; i <=sectionNum;i++) { //for testing
@@ -280,7 +280,7 @@ function parseLine(oneLine, linenum, font) {
 
 // function readLines(input, font) {
 // function readLines(input, callback, font, csspath) {
-function readLines(input, font, callback) {
+function readLines(input, font, callback, fontsize) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
@@ -295,7 +295,7 @@ function readLines(input, font, callback) {
 		parseLine(lines[i], i + 1);
 	//console.log(printDoc(font, csspath));
 	// callback(printDoc(font, csspath));
-	callback(printDoc(font));
+	callback(printDoc(font,fontsize));
 	
 }
 exports.parseSongHTML = readLines;
