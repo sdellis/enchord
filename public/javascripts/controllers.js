@@ -1,6 +1,6 @@
 'use strict';
 
-var enchordControllers = angular.module('enchordControllers', []);
+var enchordControllers = angular.module('enchordControllers', ['ngSanitize']);
 
 // Home page controller
 enchordControllers.controller('HomeController', ['$scope',
@@ -28,8 +28,13 @@ enchordControllers.controller('SearchController', ['$scope', '$window', '$routeP
 	}]);
 
 // Song page (view) controller
-enchordControllers.controller('ViewController', ['$scope', '$http', '$window', '$routeParams', 
-	function($scope, $http, $window, $routeParams){
+enchordControllers.controller('ViewController', [
+	'$scope', 
+	'$http', 
+	'$window', 
+	'$routeParams', 
+	'$sce',
+	function($scope, $http, $window, $routeParams, $sce){
 		$scope.song = {};
 		$scope.init = function(_id) {
 			if(_id != undefined && _id.length != 0) {
@@ -40,7 +45,7 @@ enchordControllers.controller('ViewController', ['$scope', '$http', '$window', '
 				}).success(function(data) {
 					console.log(data);
 					$scope.song = data.song;
-					$scope.parse();
+					$scope.parsehtml();
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -59,7 +64,7 @@ enchordControllers.controller('ViewController', ['$scope', '$http', '$window', '
 					_id: '',
 					pub: true
 				};
-				$scope.parse();
+				$scope.parsehtml();
 			}
 		}
 		$scope.copysong = function() {
@@ -92,33 +97,31 @@ enchordControllers.controller('ViewController', ['$scope', '$http', '$window', '
 				}
 			});
 		}
-		$scope.parse = function() {
-			//readLines($scope.song.data, function(data){$scope.song.result = data});
-			/*console.log($scope.song.data);
-			$http({
-				method  : 'GET',
-				url     : '/parsesong',
-				params  : { data : $scope.song.data }
-				//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-			}).success(function(data) {
-				console.log(data);
-				$scope.song.result = data + " parsed";
-			});*/
+		$scope.parsehtml = function() {
 			$http({
 				method  : 'POST',
-				url     : '/parsesong',
+				url     : '/parsesonghtml',
 				data    : $.param($scope.song),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
-				$scope.song.result = data + " parsed";
+				$scope.song.result = data;
 			});
+		}
+		// Guarantee that returned html is clean
+		$scope.parsedResult = function() {
+			return $sce.trustAsHtml($scope.song.result);
 		}
 	}]);
 
 // Song page (edit) controller
-enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '$http', '$window',
-	function($scope, $routeParams, $http, $window){ 
+enchordControllers.controller('SongEditController', [
+	'$scope', 
+	'$routeParams', 
+	'$http', 
+	'$window',
+	'$sce',
+	function($scope, $routeParams, $http, $window, $sce){ 
 		$scope.isNew = true;
 		$scope.hasError = false;
   		var win = $window;
@@ -131,27 +134,44 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
     			win.onbeforeunload = function(){};
     		}
   		});
-		$scope.parse = function() {
-			//readLines($scope.song.data, function(data){$scope.song.result = data});
-			/*console.log($scope.song.data);
-			$http({
-				method  : 'GET',
-				url     : '/parsesong',
-				params  : { data : $scope.song.data }
-				//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-			}).success(function(data) {
-				console.log(data);
-				$scope.song.result = data + " parsed";
-			});*/
+		// $scope.parse = function() {
+		// 	//readLines($scope.song.data, function(data){$scope.song.result = data});
+		// 	console.log($scope.song.data);
+		// 	$http({
+		// 		method  : 'GET',
+		// 		url     : '/parsesong',
+		// 		params  : { data : $scope.song.data }
+		// 		//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		// 	}).success(function(data) {
+		// 		console.log(data);
+		// 		$scope.song.result = data + " parsed";
+		// 	});
+		// 	$http({
+		// 		method  : 'POST',
+		// 		url     : '/parsesong',
+		// 		data    : $.param($scope.song),
+		// 		headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		// 	}).success(function(data) {
+		// 		console.log(data);
+		// 		$scope.song.result = data + " parsed";
+		// 	});
+		// }
+
+		$scope.parsehtml = function() {
 			$http({
 				method  : 'POST',
-				url     : '/parsesong',
+				url     : '/parsesonghtml',
 				data    : $.param($scope.song),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.result = data + " parsed";
 			});
+		}
+
+		// Guarantee that returned html is clean
+		$scope.parsedResult = function() {
+			return $sce.trustAsHtml($scope.song.result);
 		}
 
 		$scope.init = function(_id) {
@@ -164,7 +184,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 				}).success(function(data) {
 					console.log(data);
 					$scope.song = data.song;
-					$scope.parse();
+					$scope.parsehtml();
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -183,7 +203,7 @@ enchordControllers.controller('SongEditController', ['$scope', '$routeParams', '
 					_id: '',
 					pub: true
 				};
-				$scope.parse();
+				$scope.parsehtml();
 			}
 
 		}

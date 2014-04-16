@@ -1,6 +1,7 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
 var parser = require('../parser'); // parser
+var htmlparser = require('../htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 
@@ -113,7 +114,14 @@ exports.loadSongView = function(req, res) {
 		}
 		console.log("Is logged in:" + isLoggedIn);
 		console.log("Original Author:" + isAuthor);
-		res.render('viewsong.ejs', {title: 'enchord', isNew: false, isAuthor: isAuthor, isLoggedIn: isLoggedIn, song: docs, message: 'Song loaded'});
+		res.render('viewsong.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			isAuthor: isAuthor, 
+			isLoggedIn: isLoggedIn, 
+			song: docs, 
+			message: 'Song loaded'
+		});
 	});
 }
 
@@ -124,7 +132,7 @@ exports.downloadSongTxt = function(req, res) {
 		console.log(docs);
 		if (docs) {
 			parser.parseSong(docs.data, function(parsedSong) {
-				fs.writeFile('./tmp.txt', parsedSong, function(err) {
+				fs.writeFile('./' + id + '.txt', parsedSong, function(err) {
 					if(err) {
 						console.log(err);
 						res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -140,22 +148,22 @@ exports.downloadSongTxt = function(req, res) {
 								filename = filename + titlewords[i] + "_";
 							}
 						}
-						res.download('./tmp.txt', filename, function(err) {
+						res.download('./' + id + '.txt', filename, function(err) {
 							if (err) {
 								console.log(err);
 								res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
-								fs.unlink('./tmp.txt', function (err) {
-									if (err) {
-										console.log(err);
-										res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
-										return;
-									} else {
-										console.log('success delete file');
-									}
-								});
+								// fs.unlink('./' + id + '.txt', function (err) {
+								// 	if (err) {
+								// 		console.log(err);
+								// 		res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+								// 		return;
+								// 	} else {
+								// 		console.log('success delete file');
+								// 	}
+								// });
 								return;
 							} 
-							fs.unlink('./tmp.txt', function (err) {
+							fs.unlink('./' + id + '.txt', function (err) {
 								if (err) {
 									console.log(err);
 									res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -382,6 +390,7 @@ exports.getMySongs = function(req, res, callback) {
 
 
 exports.getSong = function(req, res) {
+	console.log(req.params);
 	findSong(req.params._id, res, function(data) {
 		res.send({song: data});
 	});

@@ -5,6 +5,7 @@ var User = require('../models/schemas/user');
 var async = require('async');
 
 var parser = require('../parser');
+var htmlparser = require('../htmlparser')
 var songEmpty = {
 		title: '',
 		artist: '',
@@ -115,7 +116,7 @@ module.exports = function(app, passport, db) {
 			failureRedirect : '/login'
         }));
 		
-		app.get('/findsong/:_id', isLoggedIn, utils.getSong)
+		app.get('/findsong/:_id', utils.getSong)
 		app.get('/createsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
@@ -138,6 +139,14 @@ module.exports = function(app, passport, db) {
 		
 		app.post('/parsesong', isLoggedIn, function(req, res) {
 			parser.parseSong(req.body.data, function(parsedSong) {
+				console.log("In routes: " + parsedSong);
+				res.send(parsedSong);
+			});
+		});
+
+		app.post('/parsesonghtml', function(req, res) {
+			console.log(req.body);
+			htmlparser.parseSongHTML(req.body.data, "Courier", function(parsedSong) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);
 			});
