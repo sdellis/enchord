@@ -36,13 +36,15 @@ function getithSection(i)
 // }
 
 // Return result as html page string
-function printDoc(font,csspath)
+// function printDoc(font,csspath)
+function printDoc(font)
 {
 	
-	var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
+	// var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
 	//console.log(getSection(''));
+	var result = "";
 	if(font)
-		result+= '<style> body {font-family:' + font +';}</style>';
+		result+= '<style> div.chordSheet {font-family:' + font +';}</style>';
 	
 	result += "<p>" + getSection('@')+"</p>\n";
 	for( var i = 1; i <=sectionNum;i++) { //for testing
@@ -52,7 +54,7 @@ function printDoc(font,csspath)
 		var sn = getithSectionName(i);
 		result += "<p><span class='heading'>"+toTitleCase(sn)+ "</span>\n" + s + "</p>\n"; //class=\"" + sn + "\"
 	}
-	result += "</body>\n</html>";
+	// result += "</body>\n</html>";
 	return result;
 }
 
@@ -277,7 +279,8 @@ function parseLine(oneLine, linenum, font) {
 }
 
 // function readLines(input, font) {
-function readLines(input, callback, font, csspath) {
+// function readLines(input, callback, font, csspath) {
+function readLines(input, font, callback) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
@@ -291,10 +294,11 @@ function readLines(input, callback, font, csspath) {
 	for(i = 0; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
 	//console.log(printDoc(font, csspath));
-	callback(printDoc(font, csspath));
+	// callback(printDoc(font, csspath));
+	callback(printDoc(font));
 	
 }
-exports.parseSong = readLines;
+exports.parseSongHTML = readLines;
 
 // Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
 // TAKE IN STRING INSTEAD OF WRITING TEMP FILE

@@ -1,4 +1,17 @@
 front end
+-implement remaining design
+-pagination
+
+back end
+-implement folder system; sharing folders
+-bands
+-ratings
+-transposition
+-reverse parser
+-allow user to choose different display methods
+-download as pdf
+
+front end
 -implement remaining design (edit, view, search)
 -pagination search page
 
