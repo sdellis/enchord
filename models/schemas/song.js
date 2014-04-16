@@ -13,5 +13,6 @@ module.exports = mongoose.model('song', {
 	tabbed_date: String,
 	data: String,
 	pub: Boolean,
-	search_string: Array
+	search_string: Array,
+	folder_id: String
 });

@@ -1,9 +1,12 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
+var userSchema = require('../models/schemas/user');
+var folderSchema = require('../models/schemas/folder');
 var parser = require('../parser'); // parser
 var htmlparser = require('../htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
+
 
 exports.createSong = function(req, res) {
 	var song = new songSchema({
@@ -18,12 +21,13 @@ exports.createSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
-		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ') //actually an array
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
+		folder_id: '534df435ca4b8ca819a6554f'
 	});
 	
 	if(!checkFields(song, res))
 		return;
-		
+	
 	song.save(function (err, product, numberAffected) {
 		if (err) {
 			console.log(err);
@@ -31,9 +35,10 @@ exports.createSong = function(req, res) {
 			return;
 		}
 		console.log('success saved');
-		console.log(song.search_string);
 		console.log(song);
+		
 		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
+		return;
 		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});
 	});
 };
@@ -49,7 +54,7 @@ exports.editSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
-		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '),
 		});
 	
 	if(!checkFields(song, res))
@@ -368,7 +373,7 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
-//currently searches whole database each time, should store the song ids in user and then simply get those song ids
+//currently searches whole database each time
 
 exports.getMySongs = function(req, res, callback) {
 	var authorid = getAuthorId(req);
@@ -524,4 +529,3 @@ function searchResults(err, docs, query, req, res) {
 	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: query, message: 'Search results', isLoggedIn: req.isAuthenticated()});
 	return;
 }
-
