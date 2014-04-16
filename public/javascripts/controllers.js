@@ -18,6 +18,17 @@ enchordControllers.controller('SearchController', ['$scope', '$window', '$routeP
 	function($scope, $window, $routeParams) {
 		$scope.query = "";
 		$scope.type = "Both";
+		$scope.advquery = {}
+		$scope.init = function(query, type, title, artist, genre, author) {
+			$scope.query = query;
+			$scope.type = type;
+			$scope.advquery = {
+				title: title,
+				artist: artist,
+				genre: genre,
+				author: author
+			};
+		}
 		// redirect to search page
 		$scope.search = function(query) {
 			console.log(query);

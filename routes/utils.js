@@ -236,6 +236,15 @@ exports.searchSong = function(req, res) {
 	else
 		type = req.query.type;
 	console.log(query);
+
+	var originalQuery = {
+		query: req.query.query,
+		title: "",
+		artist: "",
+		genre: "",
+		author: "",
+		type: type
+	};
 	var array = [];
 	if (query['search_string'] == '') {
 		res.render('search.ejs', {
@@ -251,14 +260,13 @@ exports.searchSong = function(req, res) {
 	}
 	else {
 		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, req.query.query, req, res);
+			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
 }
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
-	
 	if (req.query.title == undefined)
 		qTitle = '';
 	else
@@ -302,6 +310,14 @@ exports.advancedSearch = function(req, res) {
 	if (type == 'Local')
 		query['author_id'] = getAuthorId(req);
 	
+	var originalQuery = {
+		query: "",
+		title: req.query.title, 
+		artist: req.query.artist,
+		genre: req.query.genre,
+		author: req.query.author,
+		type: type
+	};
 	var array = [];
 	console.log(query);
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
@@ -316,7 +332,7 @@ exports.advancedSearch = function(req, res) {
 	else
 	{
 		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, query, req, res);
+			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
 }
@@ -526,6 +542,13 @@ function searchResults(err, docs, query, req, res) {
 	console.log(docs);
 	console.log(query);
 	//array = docs;
-	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: query, message: 'Search results', isLoggedIn: req.isAuthenticated()});
+	res.render('search.ejs', {
+		title: 'enchord', 
+		isNew: false, 
+		results: docs, 
+		query: query, 
+		message: 'Search results', 
+		isLoggedIn: req.isAuthenticated()
+	});
 	return;
 }

@@ -11,6 +11,8 @@ back end
 -allow user to choose different display methods
 -download as pdf
 
+
+--old--
 front end
 -implement remaining design (edit, view, search)
 -pagination search page

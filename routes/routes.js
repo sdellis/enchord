@@ -146,7 +146,7 @@ module.exports = function(app, passport, db) {
 
 		app.post('/parsesonghtml', function(req, res) {
 			console.log(req.body);
-			htmlparser.parseSongHTML(req.body.data, "Courier", function(parsedSong) {
+			htmlparser.parseSongHTML(req.body.data, "Courier", "12px", function(parsedSong) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);
 			});

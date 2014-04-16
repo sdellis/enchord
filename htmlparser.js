@@ -285,7 +285,7 @@ function parseLine(oneLine, linenum, font) {
 
 // function readLines(input, font) {
 // function readLines(input, callback, font, csspath) {
-function readLines(input, font, callback, fontsize) {
+function readLines(input, font, fontsize, callback) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
