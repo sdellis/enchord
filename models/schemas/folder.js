@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('folder', {
-	folder_name: String,
-	song_list: Array,
-	creator: String
+	name: String,
+	author_name: String,
+	author_id: String,
+	parent_folder: String //if applicable
 });
