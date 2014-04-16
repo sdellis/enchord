@@ -43,8 +43,13 @@ function printDoc(font,fontsize)
 	// var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
 	//console.log(getSection(''));
 	var result = "";
-	if(font)
-		result+= '<style> div.chordSheet {font-family:' + font +';\nfont-size:' + fontsize + ';}</style>';
+	
+	if(!font)
+		font = 'sans';
+	if(!fontsize)
+		fontsize = '12px';
+	
+	result+= '<style> div.chordSheet {font-family:' + font +';\nfont-size:' + fontsize + ';}</style>';
 	
 	result += "<p>" + getSection('@')+"</p>\n";
 	for( var i = 1; i <=sectionNum;i++) { //for testing
