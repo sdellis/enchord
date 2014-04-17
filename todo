@@ -3,13 +3,15 @@ front end
 -pagination
 
 back end
--implement folder system; sharing folders
--bands
+-implement folder system
 -ratings
--transposition
--reverse parser
 -allow user to choose different display methods
 -download as pdf
+-bands (if time)
+
+parser
+-transposition
+-reverse parser
 
 
 --old--

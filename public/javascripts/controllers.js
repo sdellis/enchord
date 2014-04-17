@@ -108,6 +108,14 @@ enchordControllers.controller('ViewController', [
 				}
 			});
 		}
+		$scope.testpdf = function() {
+			// var doc = new jsPDF();
+			// doc.fromHTML($('#chord_sheet').get(0), 15, 15, {
+			// 	'width': 170
+			// });
+			// doc.save('Test.pdf');
+			
+		}
 		$scope.parsehtml = function() {
 			$http({
 				method  : 'POST',

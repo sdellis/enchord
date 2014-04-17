@@ -11,9 +11,10 @@
   	<p>Author: <%= song.author_name %></p>
   	<p>Genre: <%= song.genre %></p>
 
-    <div class="chordSheet" ng-bind-html="parsedResult()">
+    <div class="chordSheet" id="chord_sheet" ng-bind-html="parsedResult()">
     </div>
 
+    <button ng-click="testpdf()">Test pdf </button>
     <a href="/downloadsongtxt/<%= song._id %>">Download as text file</a>
   	<% if (isAuthor) { %><a href="/editsong/<%= song._id %>">Edit Song</a><% } %>
     <% if (isLoggedIn && !isAuthor) { %><a href="#" ng-click="copysong()">Save Song</a><% } %>
