@@ -114,7 +114,24 @@ enchordControllers.controller('ViewController', [
 			// 	'width': 170
 			// });
 			// doc.save('Test.pdf');
-			
+			html2canvas($('#chord_sheet'), {
+    			onrendered: function(canvas) {
+    				console.log(canvas);
+    				var data = canvas.toDataURL('image/png');
+    				// var data = canvas.toDataURL('application/pdf');
+    				$('.container').append('<a href=\"' + data + '\">Download pdf</a>');
+    				var i = new Image(); 
+					// i.onload = function(){
+					// 	alert( i.width+", "+i.height );
+					// };
+
+					i.src = data;
+    				var doc = new jsPDF();
+					doc.addImage(data, 'PNG', 15, 15, i.width/4, i.height/4);
+			 		doc.save('Test.pdf');
+        		// canvas is the final rendered <canvas> element
+    			}
+			});
 		}
 		$scope.parsehtml = function() {
 			$http({
