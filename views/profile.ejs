@@ -9,8 +9,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- font Awesome -->
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
@@ -39,71 +37,6 @@
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                        <!-- Messages: style can be found in dropdown.less-->
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-envelope"></i>
-                                <span class="label label-success">4</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">You have 4 messages</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li><!-- start message -->
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="images/default.png" class="img-circle" alt="User Image"/>
-                                                </div>
-                                                <h4>
-                                                    Heemin
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                </h4>
-                                                <p>Hi, I'm taking 4 COS classes next semester.</p>
-                                            </a>
-                                        </li><!-- end message -->
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="images/default.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Eugene
-                                                    <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                                </h4>
-                                                <p>hihihi</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="images/default.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Jessie
-                                                    <small><i class="fa fa-clock-o"></i> Today</small>
-                                                </h4>
-                                                <p>YOLOSWAG</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="images/default.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Matt
-                                                    <small><i class="fa fa-clock-o"></i> Today</small>
-                                                </h4>
-                                                <p>parse parse parse parse parse</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="footer"><a href="#">See All Messages</a></li>
-                            </ul>
-                        </li>
-                        
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -267,13 +200,36 @@
                         <li class="active">My Library</li>
                     </ol>
                 </section>
+                <table class="table tablesorter" id="mytable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Song</th>
+                            <th>Arist</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% for(var i = 0; i < usersongs.length; i++){ %>
+                        <tr>
+                            <td></td>
+                            <td><a href="/viewsong/<%= usersongs[i]._id %>"><%= usersongs[i].title %></a></td>
+                            <td><a href="/artist/<%= usersongs[i].artist %>"><%= usersongs[i].artist %></a></td>
+                        </tr>
+                    <%} %>
+                    </tbody>
+                    </table>
+<!--                         <tr>
+                            <td></td>
+                            <td>Soul Meets Body</td>
+                            <td>Death Cab For Cutie</td>
+                        </tr> -->
 
                 <!-- Content. Temp. This is gonna look ugly. -->
-                <ul>
+                <!-- <ul>
                     <% for(var i = 0; i < usersongs.length; i++) { %>
                         <li><a href="/viewsong/<%= usersongs[i]._id %>"><%= usersongs[i].title %></a> by <a href="/artist/<%= usersongs[i].artist %>"><%= usersongs[i].artist %></a></li>
                     <% } %>
-                </ul>
+                </ul> -->
                 <!-- <div ng-controller="ProfileController" ng-init="init()">
                     <ul data-ng-repeat="song in usersongs">
                         
@@ -297,6 +253,15 @@
         <script src="js/AdminLTE/app.js" type="text/javascript"></script>
         
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>        
+        <script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>   
+        <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script> 
+        <script>
+            $(document).ready(function(){
+            $(function(){
+            $("#mytable").tablesorter();
+            });
+            });
+        </script>
+        <!--<script src="js/moment.min.js" type="text/javascript"></script>   -->    
 </body>
 </html>
