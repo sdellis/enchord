@@ -148,6 +148,19 @@ enchordControllers.controller('ViewController', [
 		$scope.parsedResult = function() {
 			return $sce.trustAsHtml($scope.song.result);
 		}
+		//upvote
+		$scope.upvote = function() {
+			$http({
+				method : 'POST',
+				url : '/upvote',
+				data : $.param($scope.song),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log('yay');
+				console.log(data);
+				$scope.song.upvote = data;
+			});
+		}
 	}]);
 
 // Song page (edit) controller

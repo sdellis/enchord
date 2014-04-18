@@ -23,6 +23,7 @@ exports.createSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
+		upvote: 0,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
 		folder_id: '534e0897ba5d043c15566a0a'
 	});
@@ -627,7 +628,39 @@ function searchResults(err, docs, query, req, res) {
 	});
 };*/
 
-function upvote(req, songid) {
+exports.upvote = function(req, res) {
+	console.log(req.body);
+	var id = req.body._id;
+	songSchema.findById(id, function(err, docs) {
+		if (err) {
+			console.log(Err);
+			return;
+		} else if (docs == null) {
+			console.log('song not found');
+			return;
+		} else {
+			var userid = getAuthorId(req);
+			var index = docs.rates.indexOf(userid);
+			if (index == -1) {
+				console.log(docs);
+				console.log(userid);
+				docs.rates.push(userid);
+				docs.upvote++;
+				docs.save(function(err, count) {
+					if (err) {
+						console.log(err);
+					}
+					console.log(docs.upvote);
+					res.send(docs.upvote);
+				});
+			} else {
+				return;
+			}
+		}
+	})
+}
+/*
+function upvotehelp(req, songid) {
 	songSchema.findById(songid, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -656,10 +689,9 @@ function upvote(req, songid) {
 			}
 		}
 	});
-}
+}*/
 
-function downvote(req, songid) {
-	songSchema.findById(songid, function(err, docs) {
+/*	songSchema.findById(songid, function(err, docs) {
 		if (err) {
 			console.log(err);
 			return;
@@ -687,7 +719,7 @@ function downvote(req, songid) {
 			}
 		}
 	});
-}
+}*/
 
 function hasvoted(req, songid) {
 	songSchema.findById(songid, function(err, docs) {
@@ -699,18 +731,18 @@ function hasvoted(req, songid) {
 			return;
 		} else {
 			var userid = getAuthorId(req);
-			var index = indexOfUser(docs.rates, userid);
+			var index = docs.rates.indexOf(userid);
 			if (index == -1) {
-				return null;
+				return false;
 			} else {
 				//already rated by this user
 				//what did he choose?
-				return docs.rates[index];
+				return true;
 			}
 		}
 	});
 }
-
+/*
 function indexOfUser(ratings, userid) {
 	for (var i = 0; i < ratings.length; i++) {
 		if (ratings[i].user_id == userid) {
@@ -720,3 +752,4 @@ function indexOfUser(ratings, userid) {
 	return -1;
 }
 
+*/
