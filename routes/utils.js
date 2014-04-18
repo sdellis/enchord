@@ -223,6 +223,7 @@ exports.deleteSong = function(req, res) {
 
 };
 
+/*
 exports.searchSong = function(req, res) {
 	var query = {};
 	var query1 = {};
@@ -283,7 +284,7 @@ exports.searchSong = function(req, res) {
 			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
-}
+}*/
 
 
 exports.searchSong = function(req, res) {
@@ -299,8 +300,12 @@ exports.searchSong = function(req, res) {
 	}
 	query1['pub'] = true;
 	query2['pub'] = false;
-	query2['author_id'] = getAuthorId(req);
-
+	if (req.isAuthenticated()) {
+		query2['author_id'] = getAuthorId(req);
+	}
+	else {
+		query2 = {'search_string': ''}; //not logged in, do not search private songs
+	}
 	var originalQuery = {
 		query: req.query.query,
 		title: "",
@@ -308,7 +313,7 @@ exports.searchSong = function(req, res) {
 		genre: "",
 		author: "",
 	};
-	var search_results = {};
+	var search_results = {global: [], local: []};
 	if (query1['search_string'] == '') {
 		res.render('search.ejs', {
 			title: 'enchord', 
@@ -380,7 +385,12 @@ exports.advancedSearch = function(req, res) {
 	
 	query1['pub'] = true;
 	query2['pub'] = false;
-	query2['author_id'] = getAuthorId(req);
+	if (req.isAuthenticated()) {
+		query2['author_id'] = getAuthorId(req);
+	}
+	else {
+		query2 = {'search_string': ''}; //not logged in, do not search private songs
+	}
 	
 	var originalQuery = {
 		query: "",
@@ -389,12 +399,12 @@ exports.advancedSearch = function(req, res) {
 		genre: req.query.genre,
 		author: req.query.author,
 	};
-	var array = [];
+	var search_results = {global: [], local: []};
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
 		res.render('search.ejs', {
 			title: 'enchord', 
 			isNew: false, 
-			results: array, 
+			results: search_results, 
 			query: '', 
 			message: 'Empty search',
 			isLoggedIn: req.isAuthenticated()
@@ -405,7 +415,7 @@ exports.advancedSearch = function(req, res) {
 			search_results['global'] = docs;
 			songSchema.find(query2, function(err, docs) {
 				search_results['local'] = docs;
-				searchResults(err, docs, originalQuery, req, res); //FIX THIS PART
+				searchResults(err, search_results, originalQuery, req, res); //FIX THIS PART
 			});
 		});
 	}
