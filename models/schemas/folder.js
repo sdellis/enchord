@@ -6,5 +6,5 @@ module.exports = mongoose.model('folder', {
 	//shared: [String],
 	author_id: [String], //array of strings
 	band_id: String, //to get band folders, search for this in folderSchema. Set to '' if no band
-	parent_folder: String //if applicable, set to ,, if no parent folder(save as id)
+	//parent_folder: String //if applicable, set to ,, if no parent folder(save as id)
 });

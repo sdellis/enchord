@@ -16,15 +16,15 @@ exports.createSong = function(req, res) {
 		title_lower: req.body.title.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
-		author_id: getAuthorId(req),
-		author_name: getAuthorName(req),
+		author_id: [getAuthorId(req)], //0th element will be original creator(won't matter too much), sharing only for bands
+		author_name: getAuthorName(req), //original creator
 		author_lower: getAuthorName(req).toLowerCase(),
 		genre: req.body.genre,
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: '534e0897ba5d043c15566a0a' //only for testing for now
+		folder_id: ''
 	});
 	
 	if(!checkFields(song, res))
@@ -90,7 +90,8 @@ exports.isAuthor = function(req, res, next) {
 	
 	var findsong = findSong(id, res, function(docs) {
 		if (req.isAuthenticated()) {
-			if (getAuthorId(req) == docs.author_id) {
+			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+			//if (getAuthorId(req) == docs.author_id) {
 				return next();
 			} else {
 				// send message too?
@@ -110,7 +111,9 @@ exports.loadSongView = function(req, res) {
 		var isLoggedIn;
 		if (req.isAuthenticated()) {
 			isLoggedIn = true;
-			if (getAuthorId(req) == docs.author_id) {
+			
+			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+			//if (getAuthorId(req) == docs.author_id) {
 				isAuthor = true;
 			} else {
 				isAuthor = false;
