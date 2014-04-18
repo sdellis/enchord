@@ -166,7 +166,7 @@ function parseOption(oneLine, i){
 		case 'bold': case 'start bold': case 'startbold':
 		case 'endbold':	case 'end bold':
 		case 'italic':case 'ital': case 'start italic': case 'start ital': case 'startitalic': case 'startital':
-nd italic': case 'endital': case 'end ital':
+case 'end italic': case 'endital': case 'end ital':
 		case 'tab': case 'start tab': case 'starttab':
 		case 'end tab': case 'endtab':
 			return j-i;

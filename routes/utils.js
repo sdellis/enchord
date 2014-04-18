@@ -2,8 +2,8 @@
 var songSchema = require('../models/schemas/song');
 var userSchema = require('../models/schemas/user');
 var folderSchema = require('../models/schemas/folder');
-var parser = require('../parser'); // parser
-var htmlparser = require('../htmlparser'); // parser
+var parser = require('../parsers/textparser'); // parser
+var htmlparser = require('../parsers/htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 var grabzit = require("grabzit");
