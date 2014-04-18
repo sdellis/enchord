@@ -188,77 +188,7 @@ module.exports = function(app, passport, db) {
 		//no longer works properly(because of folders) DO NOT USE
 		//app.get('/remakeDB', utils.remakeDB);
 		
-		/*
-        //authorize when already logged in
-        app.get('/connect/local', function(req, res) {
-        	res.render('connect-local.ejs', {message: req.flash('loginMessage')});
-        });
-
-        app.post('/connect/local', passport.authenticate('local-signup', {
-			successRedirect : '/members',
-			failureRedirect : '/connect/local',
-			failureFlash : true // allow flash messages
-		}));
-
-		app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
-
-		app.get('/connect/facebook/callback', passport.authorize('facebook', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-		}));
-
-		app.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
-
-		app.get('/connect/twitter/callback', passport.authorize('twitter', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-		}));
-
-		app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
-
-		app.get('/connect/google/callback', passport.authorize('google', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-		}));
-
-		//copied from scotch.io
-		// local -----------------------------------
-	    app.get('/unlink/local', function(req, res) {
-	        var user            = req.user;
-	        user.local.email    = undefined;
-	        user.local.password = undefined;
-	        user.save(function(err) {
-	            res.redirect('/members');
-	        });
-	    });
-
-	    // facebook -------------------------------
-	    app.get('/unlink/facebook', function(req, res) {
-	        var user            = req.user;
-	        user.facebook.token = undefined;
-	        user.save(function(err) {
-	            res.redirect('/members');
-	        });
-	    });
-
-	    // twitter --------------------------------
-	    app.get('/unlink/twitter', function(req, res) {
-	        var user           = req.user;
-	        user.twitter.token = undefined;
-	        user.save(function(err) {
-	           res.redirect('/members');
-	        });
-	    });
-
-	    // google ---------------------------------
-	    app.get('/unlink/google', function(req, res) {
-	        var user          = req.user;
-	        user.google.token = undefined;
-	        user.save(function(err) {
-	           res.redirect('/members');
-	        });
-	    });
-	    //copied from scotch.io */
+	    app.post('/upvote', utils.upvote);
 
 		app.get('/logout', function(req, res) {
 			req.logout();

@@ -34,3 +34,10 @@ B---0---
 G-------
 D-------
 {end tab}
+
+
+{Verse 2} Hello this is verse 2
+{tab}E----
+B-----{endtab}
+
+{Bridge} extra definition issue
