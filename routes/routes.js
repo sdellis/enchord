@@ -190,6 +190,7 @@ module.exports = function(app, passport, db) {
 		
 	    app.post('/upvote', utils.upvote);
 	    app.post('/undovote', utils.undovote);
+	    app.get('/hasvoted', utils.hasvoted);
 
 		app.get('/logout', function(req, res) {
 			req.logout();

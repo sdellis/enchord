@@ -696,7 +696,8 @@ exports.undovote = function(req, res) {
 	});
 }
 
-function hasvoted(req, songid) {
+exports.hasvoted = function(req, res) {
+	var songid = req.params._id;
 	songSchema.findById(songid, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -710,8 +711,6 @@ function hasvoted(req, songid) {
 			if (index == -1) {
 				return false;
 			} else {
-				//already rated by this user
-				//what did he choose?
 				return true;
 			}
 		}
