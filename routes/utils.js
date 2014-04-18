@@ -688,7 +688,7 @@ exports.undovote = function(req, res) {
 						console.log(err);
 					}
 					console.log(docs.upvote);
-					res.send(docs.upvote);
+					res.send({vote: docs.upvote});
 				});
 				return;
 			}

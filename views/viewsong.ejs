@@ -15,6 +15,7 @@
     </div>
 
     <% if (isLoggedIn) { %><button ng-click="upvote()">+1 </button><% } %>
+    <% if (isLoggedIn) { %><button ng-click="undovote()">+1 </button><% } %>
     <p> {{song.upvote}} </p>
     <button ng-click="testpdf()">Test pdf </button>
     <a id="pdf_link" href="/downloadsongpdf/<%= song._id %>">Download as PDF</a>
