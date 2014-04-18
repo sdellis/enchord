@@ -189,6 +189,7 @@ module.exports = function(app, passport, db) {
 		//app.get('/remakeDB', utils.remakeDB);
 		
 	    app.post('/upvote', utils.upvote);
+	    app.post('/undovote', utils.undovote);
 
 		app.get('/logout', function(req, res) {
 			req.logout();
