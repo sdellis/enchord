@@ -285,28 +285,58 @@ exports.searchSong = function(req, res) {
 	}
 }
 
-/*exports.searchSongPrivate = function(req, res) {
-	var query = req.params.query.toLowerCase().split(' ');
-	console.log(query);
-	var array = [];
-	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+
+exports.searchSong = function(req, res) {
+	var query1 = {}; //do the global search
+	var query2 = {}; //break into 2 queries for easy or statement for Both
+	if (req.query.query == undefined) {
+		query1['search_string'] = '';
+		query2['search_string'] = '';
+	}
+	else {
+		query1['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+		query2['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+	}
+	query1['pub'] = true;
+	query2['pub'] = false;
+	query2['author_id'] = getAuthorId(req);
+
+	var originalQuery = {
+		query: req.query.query,
+		title: "",
+		artist: "",
+		genre: "",
+		author: "",
+		type: type
+	};
+	var search_results = {};
+	if (query['search_string'] == '') {
+		res.render('search.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			results: [], 
+			query: query, 
+			message: 'Empty query', 
+			isLoggedIn: req.isAuthenticated()
+		});
 		return;
 	}
 	else {
-		songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
-				return;
-			}
-			console.log(docs);
-			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
-			return;
+		songSchema.find(query1, function(err, docs) { //this docs is public songs
+			search_results['global'] = docs;
+			songSchema.find(query2, function(err, docs) {
+				search_results['local'] = docs;
+				console.log(search_results);
+				searchResults(err, search_results, originalQuery, req, res);
+			});
 		});
 	}
-}*/
+}
+
+
+
+
+
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
