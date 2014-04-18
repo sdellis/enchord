@@ -134,6 +134,9 @@ module.exports = function(app, passport, db) {
 		app.get('/viewsong/:_id', utils.loadSongView);
 
 		app.get('/downloadsongtxt/:_id', utils.downloadSongTxt);
+
+		// app.get('/downloadsongpdf/:_id', utils.downloadSongPdf);
+		// app.get('/handler', utils.downloadSongPdfHandler);
 		
 		app.post('/deletesong', isLoggedIn, utils.deleteSong);
 		
