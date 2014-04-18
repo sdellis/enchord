@@ -665,67 +665,36 @@ exports.upvote = function(req, res) {
 		}
 	})
 }
-/*
-function upvotehelp(req, songid) {
-	songSchema.findById(songid, function(err, docs) {
-		if (err) {
-			console.log(err);
-			return;
-		} else if (docs == null) {
-			console.log('which song?');
-			return;
-		} else {
-			var userid = getAuthorId(req);
-			var index = indexOfUser(docs.rates, userid);
-			if (index == -1) {
-				docs.rates.append({user_id: userid, rating: 1});
-				docs.upvote++;
-				docs.save();
-			} else {
-				if (index.rating == 1) {
-					return;
-				} else {
-					docs.upvote++;
-					docs.downvote--;
-					index.rating = -1;
-					docs.save();
-					return;
-				}
-				return;
-			}
-		}
-	});
-}*/
 
-/*	songSchema.findById(songid, function(err, docs) {
+exports.undovote = function(req, res) {
+	var id = req.body._id;
+	songSchema.findById(id, function(err, docs) {
 		if (err) {
 			console.log(err);
 			return;
 		} else if (docs == null) {
-			console.log('which song?');
+			console.log('song not found');
 			return;
 		} else {
 			var userid = getAuthorId(req);
-			var index = indexOfUser(docs.rates, userid);
+			var index = docs.rates.indexOf(userid);
 			if (index == -1) {
-				docs.rates.append({user_id: userid, rating: -1});
-				docs.downvote++;
-				docs.save();
 				return;
 			} else {
-				if (index.rating == -1) {
-					return;
-				} else {
-					docs.upvote--;
-					docs.downvote++;
-					index.rating = 1;
-					docs.save();
-					return;
-				}
+				docs.upvote--;
+				docs.rates.splice(index, 1);
+				docs.save(function(err, count) {
+					if (err) {
+						console.log(err);
+					}
+					console.log(docs.upvote);
+					res.send(docs.upvote);
+				});
+				return;
 			}
 		}
 	});
-}*/
+}
 
 function hasvoted(req, songid) {
 	songSchema.findById(songid, function(err, docs) {
@@ -748,14 +717,3 @@ function hasvoted(req, songid) {
 		}
 	});
 }
-/*
-function indexOfUser(ratings, userid) {
-	for (var i = 0; i < ratings.length; i++) {
-		if (ratings[i].user_id == userid) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-*/
