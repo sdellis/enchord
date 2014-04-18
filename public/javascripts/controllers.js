@@ -159,9 +159,8 @@ enchordControllers.controller('ViewController', [
 				data : $.param($scope.song),
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
-				console.log('yay');
 				console.log(data);
-				$scope.song.upvote = data;
+				$scope.song.upvote = data.vote;
 			});
 		}
 	}]);
