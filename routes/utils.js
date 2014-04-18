@@ -23,6 +23,7 @@ exports.createSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
+		upvote: 0,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
 		folder_id: '534e0897ba5d043c15566a0a'
 	});
@@ -280,6 +281,29 @@ exports.searchSong = function(req, res) {
 		});
 	}
 }
+
+/*exports.searchSongPrivate = function(req, res) {
+	var query = req.params.query.toLowerCase().split(' ');
+	console.log(query);
+	var array = [];
+	if (query == '') {
+		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+		return;
+	}
+	else {
+		songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+				return;
+			}
+			console.log(docs);
+			array = docs;
+			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
+			return;
+		});
+	}
+}*/
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
@@ -568,3 +592,164 @@ function searchResults(err, docs, query, req, res) {
 	});
 	return;
 }
+
+
+
+/*exports.editSong = function(req, res) {
+	var id = req.body._id;
+	var song = new songSchema({
+		title: req.body.title,
+		title_lower: req.body.title.toLowerCase(),
+		artist: req.body.artist,
+		artist_lower: req.body.artist.toLowerCase(),
+		genre: req.body.genre,
+		genre_lower: req.body.genre.toLowerCase(),
+		data: req.body.data,
+		pub: req.body.pub,
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')
+		});
+	
+	if(!checkFields(song, res))
+		return;
+	
+	findSong(id, res, function(docs) {
+		songSchema.update({_id: id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, 
+		artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, 
+		pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+				return;
+			}
+			console.log('success edit');
+			res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
+			return;
+		});	
+	});
+};*/
+
+exports.upvote = function(req, res) {
+	console.log(req.body);
+	var id = req.body._id;
+	songSchema.findById(id, function(err, docs) {
+		if (err) {
+			console.log(Err);
+			return;
+		} else if (docs == null) {
+			console.log('song not found');
+			return;
+		} else {
+			var userid = getAuthorId(req);
+			var index = docs.rates.indexOf(userid);
+			if (index == -1) {
+				console.log(docs);
+				console.log(userid);
+				docs.rates.push(userid);
+				docs.upvote++;
+				docs.save(function(err, count) {
+					if (err) {
+						console.log(err);
+					}
+					console.log(docs.upvote);
+					res.send(docs.upvote);
+				});
+			} else {
+				return;
+			}
+		}
+	})
+}
+/*
+function upvotehelp(req, songid) {
+	songSchema.findById(songid, function(err, docs) {
+		if (err) {
+			console.log(err);
+			return;
+		} else if (docs == null) {
+			console.log('which song?');
+			return;
+		} else {
+			var userid = getAuthorId(req);
+			var index = indexOfUser(docs.rates, userid);
+			if (index == -1) {
+				docs.rates.append({user_id: userid, rating: 1});
+				docs.upvote++;
+				docs.save();
+			} else {
+				if (index.rating == 1) {
+					return;
+				} else {
+					docs.upvote++;
+					docs.downvote--;
+					index.rating = -1;
+					docs.save();
+					return;
+				}
+				return;
+			}
+		}
+	});
+}*/
+
+/*	songSchema.findById(songid, function(err, docs) {
+		if (err) {
+			console.log(err);
+			return;
+		} else if (docs == null) {
+			console.log('which song?');
+			return;
+		} else {
+			var userid = getAuthorId(req);
+			var index = indexOfUser(docs.rates, userid);
+			if (index == -1) {
+				docs.rates.append({user_id: userid, rating: -1});
+				docs.downvote++;
+				docs.save();
+				return;
+			} else {
+				if (index.rating == -1) {
+					return;
+				} else {
+					docs.upvote--;
+					docs.downvote++;
+					index.rating = 1;
+					docs.save();
+					return;
+				}
+			}
+		}
+	});
+}*/
+
+function hasvoted(req, songid) {
+	songSchema.findById(songid, function(err, docs) {
+		if (err) {
+			console.log(err);
+			return;
+		} else if (docs == null) {
+			console.log('which song?');
+			return;
+		} else {
+			var userid = getAuthorId(req);
+			var index = docs.rates.indexOf(userid);
+			if (index == -1) {
+				return false;
+			} else {
+				//already rated by this user
+				//what did he choose?
+				return true;
+			}
+		}
+	});
+}
+/*
+function indexOfUser(ratings, userid) {
+	for (var i = 0; i < ratings.length; i++) {
+		if (ratings[i].user_id == userid) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+*/

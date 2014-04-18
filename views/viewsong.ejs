@@ -14,6 +14,8 @@
     <div class="chordSheet" id="chord_sheet" ng-bind-html="parsedResult()">
     </div>
 
+    <button ng-click="upvote()">+1 </button>
+    <p> {{song.upvote}} </p>
     <button ng-click="testpdf()">Test pdf </button>
     <a id="pdf_link" href="/downloadsongpdf/<%= song._id %>">Download as PDF</a>
     <a href="/downloadsongtxt/<%= song._id %>">Download as text file</a>
