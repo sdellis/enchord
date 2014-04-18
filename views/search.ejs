@@ -9,7 +9,7 @@
 	  	<div class="col-md-6">
 		  	<form role="form" method="GET" action="/search" name="searchForm" novalidate>
 				<div class="form-group" ng-class="{ 'has-error' : searchForm.query.$invalid && !searchForm.query.$pristine }" id="query_group">
-					<input ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\']*$/" ng-init="query = '<%= query %>'" name="query" placeholder="Search">
+					<input ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\']*$/" ng-init="init('<%= query.query %>', '<%= query.type %>', '<%= query.title %>', '<%= query.artist %>', '<%= query.genre %>', '<%= query.author %>')" name="query" placeholder="Search">
 					<span ng-show="searchForm.query.$error.pattern && !searchForm.$pristine" class="help-block">Invalid characters. Please use only alphanumeric characters or $!-_'</span>
 					<button ng-disabled="searchForm.$invalid" class="btn btn-default">Search</button>
 				</div>
@@ -42,7 +42,7 @@
 				<!-- TITLE -->
                 <div class="form-group" ng-class="{ 'has-error' : advSearchForm.title.$invalid && !advSearchForm.title.$pristine }">
                     <label class="control-label" for="title">Title</label>          
-                    <input type="text" name="title" class="form-control" ng-model="song.title" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/">
+                    <input type="text" name="title" class="form-control" ng-model="advquery.title" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/">
                     <span ng-show="advSearchForm.title.$error.maxlength" class="help-block">Title is too long</span>
                     <span ng-show="advSearchForm.title.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_'</span>
                 </div>
@@ -50,7 +50,7 @@
             	<!-- ARTIST -->
                 <div class="form-group" ng-class="{ 'has-error' : advSearchForm.artist.$invalid && !advSearchForm.artist.$pristine }">
                     <label class="control-label" for="artist">Artist</label>
-                    <input type="text" name="artist" class="form-control" ng-model="song.artist" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/">
+                    <input type="text" name="artist" class="form-control" ng-model="advquery.artist" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/">
                     <span ng-show="advSearchForm.artist.$error.maxlength" class="help-block">Artist is too long</span>
                     <span ng-show="advSearchForm.artist.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_</span>
                 </div>
@@ -58,7 +58,7 @@
             	<!-- GENRE -->
                  <div class="form-group" ng-class="{ 'has-error' : advSearchForm.genre.$invalid && !advSearchForm.genre.$pristine }">
                     <label class="control-label" for="genre">Genre</label>
-                    <input type="text" name="genre" class="form-control" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" placeholder="Genre">
+                    <input type="text" name="genre" class="form-control" ng-model="advquery.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" placeholder="Genre">
                     <span ng-show="advSearchForm.genre.$error.maxlength" class="help-block">Input is too long</span>
                     <span ng-show="advSearchForm.genre.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
                 </div>
@@ -66,7 +66,7 @@
 	            <!-- USER -->
 	            <div class="form-group" ng-class="{ 'has-error' : advSearchForm.author.$invalid && !advSearchForm.author.$pristine }">
 		            <label class="control-label" for="author">Author Username</label>
-		            <input type="text" name="author" class="form-control" ng-model="song.author" ng-maxlength="100" placeholder="Author Username" ng-pattern="/^[A-Za-z0-9-_]*$/">
+		            <input type="text" name="author" class="form-control" ng-model="advquery.author" ng-maxlength="100" placeholder="Author Username" ng-pattern="/^[A-Za-z0-9-_]*$/">
 		            <span ng-show="advSearchForm.author.$error.maxlength" class="help-block">Username is too long</span>
 		            <span ng-show="advSearchForm.author.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
 	       		</div>

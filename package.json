@@ -21,6 +21,7 @@
     "nodemailer": "~0.6.0",
     "async": "^0.6.2",
     "crypto": "0.0.3",
-    "pagination": "~0.4.0"
+    "pagination": "~0.4.0",
+    "grabzit": "~2.1.2"
   }
 }

@@ -5,15 +5,21 @@
     <% include head.ejs %>
   </head>
   <body ng-controller='ViewController'>
-    <div class="container" ng-init="init('<%= song._id %>')"> 
+  <div class="container" ng-init="init('<%= song._id %>')"> 
   	<p>Title: <%= song.title %></p>
   	<p>Artist: <%= song.artist %></p>
   	<p>Author: <%= song.author_name %></p>
   	<p>Genre: <%= song.genre %></p>
 
+    <div class="chordSheet" id="chord_sheet" ng-bind-html="parsedResult()">
+    </div>
+
+    <button ng-click="testpdf()">Test pdf </button>
+    <a id="pdf_link" href="/downloadsongpdf/<%= song._id %>">Download as PDF</a>
     <a href="/downloadsongtxt/<%= song._id %>">Download as text file</a>
   	<% if (isAuthor) { %><a href="/editsong/<%= song._id %>">Edit Song</a><% } %>
     <% if (isLoggedIn && !isAuthor) { %><a href="#" ng-click="copysong()">Save Song</a><% } %>
+
   </div>
   </body>
  </html>

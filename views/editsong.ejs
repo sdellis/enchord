@@ -51,7 +51,7 @@
             <div class="col-md-6">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.data.$invalid && !songEditForm.data.$pristine }">
                     <label class="control-label" for="data">Lyrics/Chords</label>
-                    <textarea name="data" class="form-control" ng-maxlength="10000" ng-model="song.data" ng-change="parse()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;\~\|\@\/\\\#\%\^\*\+\=]*$/" ></textarea>
+                    <textarea name="data" class="form-control" ng-maxlength="10000" ng-model="song.data" ng-change="parsehtml()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;\~\|\@\/\\\#\%\^\*\+\=]*$/" ></textarea>
                     <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" >-->
                     <span ng-show="songEditForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
                     <span ng-show="songEditForm.data.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<>'&#34;|@~/\#%^*+=</span>
@@ -59,11 +59,14 @@
             </div>
 
             <!-- CHORD SHEET -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.result.$invalid && !songEditForm.result.$pristine }">
                     <label class="control-label" for="result">Live View</label>
                     <textarea name="result" style="font-family:Courier" class="form-control" ng-model="song.result" disabled></textarea>
                 </div>
+            </div> -->
+
+            <div class="chordSheet col-md-6" ng-bind-html="parsedResult()">
             </div>
         </div>
 
@@ -91,7 +94,8 @@
         
         <button ng-disabled="songEditForm.$invalid" ng-init="isNew = <%= isNew %>" ng-show="isNew" ng-click="createsong()" type="submit" class="btn btn-default">Create</button>
         <button ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="editsong()" type="submit" class="btn btn-default">Save</button> 
-        <button ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default">Delete</button>   
+        <button ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default">Delete</button>
+
         <a href="/members">Return to members page</a>
         <a href="/createsong">Create new song</a>
        <!--  < if (isNew) { >

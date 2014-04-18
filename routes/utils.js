@@ -1,8 +1,14 @@
 //Mongo
 var songSchema = require('../models/schemas/song');
+var userSchema = require('../models/schemas/user');
+var folderSchema = require('../models/schemas/folder');
 var parser = require('../parser'); // parser
+var htmlparser = require('../htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
+var grabzit = require("grabzit");
+var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
+						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
 
 exports.createSong = function(req, res) {
 	var song = new songSchema({
@@ -17,12 +23,13 @@ exports.createSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
-		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ') //actually an array
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
+		folder_id: '534e0897ba5d043c15566a0a'
 	});
 	
 	if(!checkFields(song, res))
 		return;
-		
+	
 	song.save(function (err, product, numberAffected) {
 		if (err) {
 			console.log(err);
@@ -30,9 +37,10 @@ exports.createSong = function(req, res) {
 			return;
 		}
 		console.log('success saved');
-		console.log(song.search_string);
 		console.log(song);
+		
 		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
+		return;
 		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});
 	});
 };
@@ -48,7 +56,7 @@ exports.editSong = function(req, res) {
 		genre_lower: req.body.genre.toLowerCase(),
 		data: req.body.data,
 		pub: req.body.pub,
-		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')
+		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '),
 		});
 	
 	if(!checkFields(song, res))
@@ -113,7 +121,14 @@ exports.loadSongView = function(req, res) {
 		}
 		console.log("Is logged in:" + isLoggedIn);
 		console.log("Original Author:" + isAuthor);
-		res.render('viewsong.ejs', {title: 'enchord', isNew: false, isAuthor: isAuthor, isLoggedIn: isLoggedIn, song: docs, message: 'Song loaded'});
+		res.render('viewsong.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			isAuthor: isAuthor, 
+			isLoggedIn: isLoggedIn, 
+			song: docs, 
+			message: 'Song loaded'
+		});
 	});
 }
 
@@ -124,7 +139,7 @@ exports.downloadSongTxt = function(req, res) {
 		console.log(docs);
 		if (docs) {
 			parser.parseSong(docs.data, function(parsedSong) {
-				fs.writeFile('./tmp.txt', parsedSong, function(err) {
+				fs.writeFile('./' + id + '.txt', parsedSong, function(err) {
 					if(err) {
 						console.log(err);
 						res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -140,22 +155,22 @@ exports.downloadSongTxt = function(req, res) {
 								filename = filename + titlewords[i] + "_";
 							}
 						}
-						res.download('./tmp.txt', filename, function(err) {
+						res.download('./' + id + '.txt', filename, function(err) {
 							if (err) {
 								console.log(err);
 								res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
-								fs.unlink('./tmp.txt', function (err) {
-									if (err) {
-										console.log(err);
-										res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
-										return;
-									} else {
-										console.log('success delete file');
-									}
-								});
+								// fs.unlink('./' + id + '.txt', function (err) {
+								// 	if (err) {
+								// 		console.log(err);
+								// 		res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+								// 		return;
+								// 	} else {
+								// 		console.log('success delete file');
+								// 	}
+								// });
 								return;
 							} 
-							fs.unlink('./tmp.txt', function (err) {
+							fs.unlink('./' + id + '.txt', function (err) {
 								if (err) {
 									console.log(err);
 									res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -171,6 +186,20 @@ exports.downloadSongTxt = function(req, res) {
 		}
 	});
 }
+
+// exports.downloadSongPdf = function(req, res) {
+// 	console.log("here");
+// 	client.set_pdf_options("http://www.google.com");
+// 	console.log("here2");
+// 	client.save("http://enchord.herokuapp.com/handler");
+// }
+
+// exports.downloadSongPdfHandler = function(req, res) {
+// 	client.get_result(req.query.id, function(err, result){
+// 		console.log("In handler");
+//     	fs.writeFile('test.pdf', result);
+// 	});
+// }
 
 exports.deleteSong = function(req, res) {
 	var id = req.body._id;
@@ -223,6 +252,15 @@ exports.searchSong = function(req, res) {
 	else
 		type = req.query.type;
 	console.log(query);
+
+	var originalQuery = {
+		query: req.query.query,
+		title: "",
+		artist: "",
+		genre: "",
+		author: "",
+		type: type
+	};
 	var array = [];
 	if (query['search_string'] == '') {
 		res.render('search.ejs', {
@@ -238,7 +276,7 @@ exports.searchSong = function(req, res) {
 	}
 	else {
 		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, req.query.query, req, res);
+			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
 }
@@ -268,7 +306,6 @@ exports.searchSong = function(req, res) {
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
-	
 	if (req.query.title == undefined)
 		qTitle = '';
 	else
@@ -312,6 +349,14 @@ exports.advancedSearch = function(req, res) {
 	if (type == 'Local')
 		query['author_id'] = getAuthorId(req);
 	
+	var originalQuery = {
+		query: "",
+		title: req.query.title, 
+		artist: req.query.artist,
+		genre: req.query.genre,
+		author: req.query.author,
+		type: type
+	};
 	var array = [];
 	console.log(query);
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
@@ -326,7 +371,7 @@ exports.advancedSearch = function(req, res) {
 	else
 	{
 		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, query, req, res);
+			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
 }
@@ -383,7 +428,7 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
-//currently searches whole database each time, should store the song ids in user and then simply get those song ids
+//currently searches whole database each time
 
 exports.getMySongs = function(req, res, callback) {
 	var authorid = getAuthorId(req);
@@ -405,6 +450,7 @@ exports.getMySongs = function(req, res, callback) {
 
 
 exports.getSong = function(req, res) {
+	console.log(req.params);
 	findSong(req.params._id, res, function(data) {
 		res.send({song: data});
 	});
@@ -535,7 +581,14 @@ function searchResults(err, docs, query, req, res) {
 	console.log(docs);
 	console.log(query);
 	//array = docs;
-	res.render('search.ejs', {title: 'enchord', isNew: false, results: docs, query: query, message: 'Search results', isLoggedIn: req.isAuthenticated()});
+	res.render('search.ejs', {
+		title: 'enchord', 
+		isNew: false, 
+		results: docs, 
+		query: query, 
+		message: 'Search results', 
+		isLoggedIn: req.isAuthenticated()
+	});
 	return;
 }
 
@@ -666,3 +719,4 @@ function indexOfUser(ratings, userid) {
 	}
 	return -1;
 }
+

@@ -17,4 +17,5 @@ module.exports = mongoose.model('song', {
 	upvote: Number,
 	downvote: Number,
 	rates: [{user_id: String, rating: Number}]
+	folder_id: String
 });

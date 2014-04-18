@@ -36,13 +36,20 @@ function getithSection(i)
 // }
 
 // Return result as html page string
-function printDoc(font,csspath)
+// function printDoc(font,csspath)
+function printDoc(font,fontsize)
 {
 	
-	var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + csspath + "\"></head>\n<body>\n";
+	 //var result = "<!DOCTYPE html><html>\n<head><link rel=\"stylesheet\" type=\"text/css\" href=\"songsheetformat.css\"></head>\n<body>\n";
 	//console.log(getSection(''));
-	if(font)
-		result+= '<style> body {font-family:' + font +';}</style>';
+	var result = "";
+	
+	if(!font)
+		font = 'sans';
+	if(!fontsize)
+		fontsize = '12px';
+	
+	result+= '<style> div.chordSheet {font-family:' + font +';\nfont-size:' + fontsize + ';}</style>';
 	
 	result += "<p>" + getSection('@')+"</p>\n";
 	for( var i = 1; i <=sectionNum;i++) { //for testing
@@ -52,7 +59,7 @@ function printDoc(font,csspath)
 		var sn = getithSectionName(i);
 		result += "<p><span class='heading'>"+toTitleCase(sn)+ "</span>\n" + s + "</p>\n"; //class=\"" + sn + "\"
 	}
-	result += "</body>\n</html>";
+	 //result += "</body>\n</html>";
 	return result;
 }
 
@@ -157,7 +164,7 @@ function parseChordComment(oneLine, i){
 }
 
 //handle options in {}. i is position of [ on oneLine
-function parseOption(oneLine, i){
+function parseOption(oneLine, i,lines){
 	var option = '';
 	j = i;
 	while(oneLine[++j] !== '}')
@@ -197,7 +204,7 @@ function parseOption(oneLine, i){
 	
 	//option is a section
 	if(lyricLine !== '')
-		pushToSection(currentSection);
+		pushToSection(currentSection,lines);
 	currentSection = option;
 	if(!sections[currentSection]){
 		sections[currentSection] = '';
@@ -205,8 +212,8 @@ function parseOption(oneLine, i){
 			sectionOrder[++sectionNum] = currentSection;
 		}
 	else
-		sections[currentSection] += 'WARNING: Multiple defitions of section ' + currentSection + '. Behavior undefined.\n';
-	
+		sections[currentSection] += 
+	    '<span class="lineerror">WARNING: Multiple defitions of section ' + toTitleCase(currentSection) + '. Rename or consolidate sections.\n</span>\n';
 		
 	
 	return j-i;
@@ -259,7 +266,7 @@ function parseLine(oneLine, linenum, font) {
 			i+=parseChordComment(oneLine, i); 
 			break;
 		case '{':
-			i+=parseOption(oneLine, i);
+			i+=parseOption(oneLine, i,lines);
 			break;
 		case '/':
 		// '//' rest of line unprinted comment?		
@@ -268,6 +275,7 @@ function parseLine(oneLine, linenum, font) {
 				break;
 			}
 		default:
+			if(lines <1) lines = 1;
 			lyricLine+= oneLine[i];		
 		}
 		
@@ -277,7 +285,8 @@ function parseLine(oneLine, linenum, font) {
 }
 
 // function readLines(input, font) {
-function readLines(input, callback, font, csspath) {
+// function readLines(input, callback, font, csspath) {
+function readLines(input, font,  fontsize,callback) {
 	//initialize global variables
 	sections = {'@':''};
 	sectionOrder = {0:'@'}
@@ -290,11 +299,11 @@ function readLines(input, callback, font, csspath) {
 	
 	for(i = 0; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
-	//console.log(printDoc(font, csspath));
-	callback(printDoc(font, csspath));
+	//console.log(printDoc(font, fontsize));
+	callback(printDoc(font,fontsize));
 	
 }
-exports.parseSong = readLines;
+exports.parseSongHTML = readLines;
 
 // Integrate parser --> THIS FUNCTION NEEDS TO BE FIXED
 // TAKE IN STRING INSTEAD OF WRITING TEMP FILE
@@ -329,7 +338,7 @@ input.on('data', function(data) {
 		remaining += data;
 	})
 input.on('end', function() {
-	readLines(remaining,"blah","Georgia","songsheetformat.css");
+	readLines(remaining,"Georgia","12px","blah");
 
 	})
 */
