@@ -307,10 +307,9 @@ exports.searchSong = function(req, res) {
 		artist: "",
 		genre: "",
 		author: "",
-		type: type
 	};
 	var search_results = {};
-	if (query['search_string'] == '') {
+	if (query1['search_string'] == '') {
 		res.render('search.ejs', {
 			title: 'enchord', 
 			isNew: false, 
@@ -322,12 +321,11 @@ exports.searchSong = function(req, res) {
 		return;
 	}
 	else {
-		songSchema.find(query1, function(err, docs) { //this docs is public songs
+		songSchema.find(query1, function(err, docs) {
 			search_results['global'] = docs;
 			songSchema.find(query2, function(err, docs) {
 				search_results['local'] = docs;
-				console.log(search_results);
-				searchResults(err, search_results, originalQuery, req, res);
+				searchResults(err, search_results, originalQuery, req, res); //FIX THIS PART
 			});
 		});
 	}
@@ -361,30 +359,28 @@ exports.advancedSearch = function(req, res) {
 		qAuthor = req.query.author.toLowerCase();
 	console.log(qAuthor);
 	
-	var query = {};
-	if (qTitle != '')
-		query['title_lower'] = qTitle;
-	if (qArtist != '')
-		query['artist_lower'] = qArtist;
-	if (qGenre != '')
-		query['genre_lower'] = qGenre;
+	var query1 = {};
+	var query2 = {};
+	
+	if (qTitle != '') {
+		query1['title_lower'] = qTitle;
+		query2['title_lower'] = qTitle;
+	}
+	if (qArtist != '') {
+		query1['artist_lower'] = qArtist;
+		query2['artist_lower'] = qArtist;
+	}
+	if (qGenre != '') {
+		query1['genre_lower'] = qGenre;
+		query2['genre_lower'] = qGenre;
+	}
 	if (qAuthor != '') {
-		query['author_lower'] = qAuthor;
-		
-		query['pub'] = true; //only if not searching for current user???(maybe)
+		query1['author_lower'] = qAuthor;
 	}
-	console.log(query);
-	if (req.query.type == undefined)
-		type = 'Global';
-	else
-		type = req.query.type;
-	if (type == 'Global')
-		query['pub'] = true;
-	if (type == 'Local')
-		query['author_id'] = getAuthorId(req);
-	if (type == 'Both') {
-		query['$or'] = [{'pub': true},{'pub': false, 'author_id': getAuthorId(req)}];
-	}
+	
+	query1['pub'] = true;
+	query2['pub'] = false;
+	query2['author_id'] = getAuthorId(req);
 	
 	var originalQuery = {
 		query: "",
@@ -392,10 +388,8 @@ exports.advancedSearch = function(req, res) {
 		artist: req.query.artist,
 		genre: req.query.genre,
 		author: req.query.author,
-		type: type
 	};
 	var array = [];
-	console.log(query);
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
 		res.render('search.ejs', {
 			title: 'enchord', 
@@ -407,8 +401,12 @@ exports.advancedSearch = function(req, res) {
 		});
 	else
 	{
-		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, originalQuery, req, res);
+		songSchema.find(query1, function(err, docs) {
+			search_results['global'] = docs;
+			songSchema.find(query2, function(err, docs) {
+				search_results['local'] = docs;
+				searchResults(err, docs, originalQuery, req, res); //FIX THIS PART
+			});
 		});
 	}
 }

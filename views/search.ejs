@@ -99,15 +99,21 @@
 	<!-- Results should go here -->
 	<!-- Search query = {{query}} -->
 	
-	<!-- Can be moved later, click to go to your songs -->
-	<p><%= results.length %> results</p>
+	<p><%= results['global'].length %> global results</p>
 	<!-- <a href="/mysongs/">Click here to get your songs</a> -->
 	
 	<!-- Added link after each songs that shows that artist's list of songs -->
 	<!-- TODO: Add pagination -->
 	<ul>
-		<% for(var i = 0; i < results.length; i++) { %>
-			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artist/<%= results[i].artist %>"><%= results[i].artist %></a></li>
+		<% for(var i = 0; i < results['global'].length; i++) { %>
+			<li><a href="/viewsong/<%= results['global'][i]._id %>"><%= results['global'][i].title %></a> by <a href="/artist/<%= results['global'][i].artist %>"><%= results['global'][i].artist %></a></li>
+		<% } %>
+	</ul>
+	
+	<p><%= results['local'].length %> local results</p>
+	<ul>
+		<% for(var i = 0; i < results['local'].length; i++) { %>
+			<li><a href="/viewsong/<%= results['local'][i]._id %>"><%= results['local'][i].title %></a> by <a href="/artist/<%= results['local'][i].artist %>"><%= results['local'][i].artist %></a></li>
 		<% } %>
 	</ul>
   </body>
