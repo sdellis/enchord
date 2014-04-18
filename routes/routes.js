@@ -4,8 +4,8 @@ var folderutils = require('./folderutils');
 var User = require('../models/schemas/user');
 var async = require('async');
 
-var parser = require('../parser');
-var htmlparser = require('../htmlparser')
+var parser = require('../parsers/parser');
+var htmlparser = require('../parsers/htmlparser')
 var songEmpty = {
 		title: '',
 		artist: '',
@@ -189,6 +189,8 @@ module.exports = function(app, passport, db) {
 		//app.get('/remakeDB', utils.remakeDB);
 		
 	    app.post('/upvote', utils.upvote);
+	    app.post('/undovote', utils.undovote);
+	    app.get('/hasvoted', utils.hasvoted);
 
 		app.get('/logout', function(req, res) {
 			req.logout();

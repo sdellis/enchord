@@ -28,7 +28,7 @@
             <div class="col-md-4">
                 <div class="form-group" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }">
                     <label class="control-label" for="artist">Artist*</label>
-                    <input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/" required>
+                    <input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required>
                     <span ng-show="songEditForm.artist.$error.required && !songEditForm.artist.$pristine" class="help-block">Enter the artist of the song</span>
                     <span ng-show="songEditForm.artist.$error.minlength" class="help-block">Artist is too short</span>
                     <span ng-show="songEditForm.artist.$error.maxlength" class="help-block">Artist is too long (sorry!)</span>

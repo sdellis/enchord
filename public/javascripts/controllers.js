@@ -5,7 +5,6 @@ var enchordControllers = angular.module('enchordControllers', ['ngSanitize']);
 // Home page controller
 enchordControllers.controller('HomeController', ['$scope',
 	function($scope) {
-		$scope.variable = 'Heemin';
 	}]);
 
 // About page controller
@@ -92,12 +91,6 @@ enchordControllers.controller('ViewController', [
 				// go to edit page
 				var url = '/editsong/' + data.song._id;
 				$window.location.href = url;
-
-				//$scope.song = data.song;
-				//$scope.message = data.message;
-				//$scope.hasError = data.hasError;
-				//$scope.isNew = data.isNew;
-				//$scope.songEditForm.$setPristine();
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -119,7 +112,7 @@ enchordControllers.controller('ViewController', [
     				console.log(canvas);
     				var data = canvas.toDataURL('image/png');
     				// var data = canvas.toDataURL('application/pdf');
-    				$('.container').append('<a href=\"' + data + '\">Download pdf</a>');
+    				// $('.container').append('<a href=\"' + data + '\">Download pdf</a>');
     				var i = new Image(); 
 					// i.onload = function(){
 					// 	alert( i.width+", "+i.height );
@@ -128,7 +121,17 @@ enchordControllers.controller('ViewController', [
 					i.src = data;
     				var doc = new jsPDF();
 					doc.addImage(data, 'PNG', 15, 15, i.width/4, i.height/4);
-			 		doc.save('Test.pdf');
+			 		// generate proper filename
+			 		var titlewords = $scope.song.title.split(" ");
+						var filename = "";
+						for (var i = 0; i < titlewords.length; i++) {
+							if (i == titlewords.length - 1) {
+								filename = filename + titlewords[i] + ".pdf";
+							} else {
+								filename = filename + titlewords[i] + "_";
+							}
+						}
+			 		doc.save(filename);
         		// canvas is the final rendered <canvas> element
     			}
 			});
@@ -153,6 +156,29 @@ enchordControllers.controller('ViewController', [
 			$http({
 				method : 'POST',
 				url : '/upvote',
+				data : $.param($scope.song),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.upvote = data.vote;
+			});
+		}
+		//undo vote
+		$scope.undovote = function() {
+			$http({
+				method : 'POST',
+				url : '/undovote',
+				data : $.param($scope.song),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.upvote = data.vote;
+			});
+		}
+		$scope.undovote = function() {
+			$http({
+				method : 'POST',
+				url : '/undovote',
 				data : $.param($scope.song),
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
@@ -183,28 +209,6 @@ enchordControllers.controller('SongEditController', [
     			win.onbeforeunload = function(){};
     		}
   		});
-		// $scope.parse = function() {
-		// 	//readLines($scope.song.data, function(data){$scope.song.result = data});
-		// 	console.log($scope.song.data);
-		// 	$http({
-		// 		method  : 'GET',
-		// 		url     : '/parsesong',
-		// 		params  : { data : $scope.song.data }
-		// 		//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-		// 	}).success(function(data) {
-		// 		console.log(data);
-		// 		$scope.song.result = data + " parsed";
-		// 	});
-		// 	$http({
-		// 		method  : 'POST',
-		// 		url     : '/parsesong',
-		// 		data    : $.param($scope.song),
-		// 		headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-		// 	}).success(function(data) {
-		// 		console.log(data);
-		// 		$scope.song.result = data + " parsed";
-		// 	});
-		// }
 
 		$scope.parsehtml = function() {
 			$http({
@@ -345,8 +349,6 @@ enchordControllers.controller('SignupController', ['$scope',
 		// check that passwords match
 		$scope.checkPass = function() {
 			$scope.passMatch = $scope.signupForm.password.$viewValue == $scope.signupForm.password_repeat.$viewValue;
-			// console.log($scope.signupForm.password_repeat.$viewValue);
-			// console.log($scope.passMatch)
 		}
 	}]);
 
@@ -357,8 +359,6 @@ enchordControllers.controller('ResetPasswordController', ['$scope',
 		// check that passwords match
 		$scope.checkPass = function() {
 			$scope.passMatch = $scope.resetForm.password.$viewValue == $scope.resetForm.password_repeat.$viewValue;
-			// console.log($scope.signupForm.password_repeat.$viewValue);
-			// console.log($scope.passMatch)
 		}
 	}]);
 // .directive('validPasswordC', function () {
@@ -377,12 +377,32 @@ enchordControllers.controller('ResetPasswordController', ['$scope',
 // Login controller
 enchordControllers.controller('LoginController', ['$scope',
 	function($scope){
-		// $scope.u_error = false;
-		// $scope.p_error = false;
-		// $scope.error_message = "";
-
 	}]);
-
+/* OLD CODE */
+/* front-end parser */
+// $scope.parse = function() {
+// 	//readLines($scope.song.data, function(data){$scope.song.result = data});
+// 	console.log($scope.song.data);
+// 	$http({
+// 		method  : 'GET',
+// 		url     : '/parsesong',
+// 		params  : { data : $scope.song.data }
+// 		//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+// 	}).success(function(data) {
+// 		console.log(data);
+// 		$scope.song.result = data + " parsed";
+// 	});
+// 	$http({
+// 		method  : 'POST',
+// 		url     : '/parsesong',
+// 		data    : $.param($scope.song),
+// 		headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+// 	}).success(function(data) {
+// 		console.log(data);
+// 		$scope.song.result = data + " parsed";
+// 	});
+// }
+/* profile controller */
 // enchordControllers.controller('ProfileController', ['$scope', '$http',
 // 	function($scope, $http){
 // 		$scope.usersongs = {};
