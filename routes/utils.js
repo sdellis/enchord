@@ -16,8 +16,8 @@ exports.createSong = function(req, res) {
 		title_lower: req.body.title.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
-		author_id: getAuthorId(req),
-		author_name: getAuthorName(req),
+		author_id: [getAuthorId(req)], //0th element will be original creator(won't matter too much), sharing only for bands
+		author_name: getAuthorName(req), //original creator
 		author_lower: getAuthorName(req).toLowerCase(),
 		genre: req.body.genre,
 		genre_lower: req.body.genre.toLowerCase(),
@@ -25,7 +25,7 @@ exports.createSong = function(req, res) {
 		pub: req.body.pub,
 		upvote: 0,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: '534e0897ba5d043c15566a0a'
+		folder_id: ''
 	});
 	
 	if(!checkFields(song, res))
@@ -91,7 +91,8 @@ exports.isAuthor = function(req, res, next) {
 	
 	var findsong = findSong(id, res, function(docs) {
 		if (req.isAuthenticated()) {
-			if (getAuthorId(req) == docs.author_id) {
+			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+			//if (getAuthorId(req) == docs.author_id) {
 				return next();
 			} else {
 				// send message too?
@@ -111,7 +112,9 @@ exports.loadSongView = function(req, res) {
 		var isLoggedIn;
 		if (req.isAuthenticated()) {
 			isLoggedIn = true;
-			if (getAuthorId(req) == docs.author_id) {
+			
+			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+			//if (getAuthorId(req) == docs.author_id) {
 				isAuthor = true;
 			} else {
 				isAuthor = false;
@@ -349,6 +352,9 @@ exports.advancedSearch = function(req, res) {
 		query['pub'] = true;
 	if (type == 'Local')
 		query['author_id'] = getAuthorId(req);
+	if (type == 'Both') {
+		query['$or'] = [{'pub': true},{'pub': false, 'author_id': getAuthorId(req)}];
+	}
 	
 	var originalQuery = {
 		query: "",
@@ -458,7 +464,7 @@ exports.getSong = function(req, res) {
 }
 
 //remake the songs so that they are updated to have new info
-
+/*
 exports.remakeDB = function(req, res) {
 	var array = [];
 	songSchema.find(function(err, docs) {
@@ -502,7 +508,7 @@ exports.remakeDB = function(req, res) {
 		return;
 	});
 
-}
+}*/
 
 function checkFields(song, res) {
 	if (song.title.trim() == '') {

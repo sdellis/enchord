@@ -6,6 +6,9 @@ var fs = require('fs');
 var utils = require('./utils');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 
+//FIX ALL THE RENDER PAGES!!!!!!!!!!!!!
+//also make sure to check that it is the right user in each of the functions
+
 
 exports.getUserFolders = function(req, res) {
 	var authorid = getAuthorId(req);
@@ -45,6 +48,39 @@ exports.getFolderSongs = function(req, res) {
 	});
 }
 
+//need to check that the user can add songs to this folder (user is in author_id array)
+exports.addSongToFolder = function(req, res) {
+	var songid = req.params.songid;
+	var folderid = req.params.folderid;
+	
+	songSchema.update({_id: songid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
+			return;
+		}
+		console.log('add song to folder success');
+		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: folderid, results: ''});
+		return;
+	});
+}
+
+//DOES NOT DELETE THE SONG. set the folder_id in the song to null
+exports.deleteSongFromFolder = function(req, res) {
+	var songid = req.params.songid;
+	
+	songSchema.update({_id: songid}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+			return;
+		}
+		console.log('delete song from folder success');
+		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: 'empty', results: ''});
+		return;
+	});
+}
+
 exports.makeFolder = function(req, res) {
 	var foldername = req.params.name;
 	var authorid = getAuthorId(req);
@@ -70,21 +106,22 @@ exports.makeFolder = function(req, res) {
 }
 
 //maybe make it similar to how editSong works? also later just make an editFolder page to have option to share
+//folder sharing is ONLY FOR BANDS. What it means to share a folder: others can view, edit songs, add songs to the folder
 exports.shareFolder = function(req, res) {
-	var newuser = req.params.username; //using name for now because that's how other people will search(use id later)
+	var newuser = req.params.userid;
 	var folderid = req.params.folderid;
 	
 	
 	folderSchema.findById(folderid, function(err, docs) {
-		var authorids = docs['author_id'].push(newuser);
-		folderSchema.update({_id: folderid}, {author_id: authorids}, function(err, numberAffected, rawResponse) {
+		docs['author_id'].push(newuser);
+		folderSchema.update({_id: folderid}, {author_id: docs['author_id']}, function(err, numberAffected, rawResponse) {
 			if (err) {
 				console.log(err);
-				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+				res.status(500).json({message: 'Internal server error', hasError: true});
 				return;
 			}
 			console.log('success edit');
-			res.render('folderview.ejs', {
+			res.render('folderview.ejs', { //just shows a no info page for now
 				title: 'enchord', 
 				isNew: false, 
 				authorName: '',
@@ -94,6 +131,56 @@ exports.shareFolder = function(req, res) {
 		});	
 	});
 }
+
+exports.renameFolder = function(req, res) {
+	var folderid = req.params.folderid;
+	
+	folderSchema.update({_id: folderid}, {name: req.params.name}, function(err, numberAffected, rawResponse) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error', hasError: true});
+			return;
+		}
+		console.log('success edit');
+		res.render('folderview.ejs', { //just shows a no info page for now
+			title: 'enchord', 
+			isNew: false, 
+			authorName: '',
+			results: []
+		});
+		return;
+	});	
+
+}
+
+exports.deleteFolder = function(req, res) {
+	var folderid = req.params.folderid;
+	
+	songSchema.update({folder_id: folderid}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error', hasError: true});
+			return;
+		}
+		console.log('success edit');
+		folderSchema.remove({_id: folderid}, function(err) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error', hasError: true});
+				return;
+			}
+			res.render('folderview.ejs', { //just shows a no info page for now
+			title: 'enchord', 
+			isNew: false, 
+			authorName: '',
+			results: []
+			});
+			return;
+		});
+		return;
+	});	
+}
+
 
 function getAuthorId(req) {
 	var id;

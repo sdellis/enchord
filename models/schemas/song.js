@@ -5,7 +5,7 @@ module.exports = mongoose.model('song', {
 	title_lower: String,
 	artist: String,
 	artist_lower: String,
-	author_id: String,
+	author_id: [String],
 	author_name: String,
 	author_lower: String,
 	genre: String,

@@ -172,12 +172,21 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/viewfoldersongs/:_id', isLoggedIn, folderutils.getFolderSongs);
 		
+		app.get('/addsongtofolder/:folderid&:songid', isLoggedIn, folderutils.addSongToFolder);
+		
+		//check this, maybe need folderid to check????
+		app.get('/deletesongfromfolder/:songid', isLoggedIn, folderutils.deleteSongFromFolder);
+		
 		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
 		
 		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
+		app.get('/renamefolder/:folderid&:name', isLoggedIn, folderutils.renameFolder);
+		
+		app.get('/deletefolder/:folderid', isLoggedIn, folderutils.deleteFolder);
+		
 		//no longer works properly(because of folders) DO NOT USE
-		app.get('/remakeDB', utils.remakeDB);
+		//app.get('/remakeDB', utils.remakeDB);
 		
 	    app.post('/upvote', utils.upvote);
 
