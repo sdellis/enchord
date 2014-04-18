@@ -22,7 +22,7 @@ exports.createSong = function(req, res) {
 		data: req.body.data,
 		pub: req.body.pub,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: '534e0897ba5d043c15566a0a'
+		folder_id: '534e0897ba5d043c15566a0a' //only for testing for now
 	});
 	
 	if(!checkFields(song, res))
@@ -309,6 +309,9 @@ exports.advancedSearch = function(req, res) {
 		query['pub'] = true;
 	if (type == 'Local')
 		query['author_id'] = getAuthorId(req);
+	if (type == 'Both') {
+		query['$or'] = [{'pub': true},{'pub': false, 'author_id': getAuthorId(req)}];
+	}
 	
 	var originalQuery = {
 		query: "",
@@ -418,7 +421,7 @@ exports.getSong = function(req, res) {
 }
 
 //remake the songs so that they are updated to have new info
-
+/*
 exports.remakeDB = function(req, res) {
 	var array = [];
 	songSchema.find(function(err, docs) {
@@ -462,7 +465,7 @@ exports.remakeDB = function(req, res) {
 		return;
 	});
 
-}
+}*/
 
 function checkFields(song, res) {
 	if (song.title.trim() == '') {

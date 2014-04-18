@@ -70,8 +70,9 @@ exports.makeFolder = function(req, res) {
 }
 
 //maybe make it similar to how editSong works? also later just make an editFolder page to have option to share
+//folder sharing is ONLY FOR BANDS. What it means to share a folder: others can view, edit songs, add songs to the folder
 exports.shareFolder = function(req, res) {
-	var newuser = req.params.username; //using name for now because that's how other people will search(use id later)
+	var newuser = req.params.userid;
 	var folderid = req.params.folderid;
 	
 	
@@ -80,11 +81,11 @@ exports.shareFolder = function(req, res) {
 		folderSchema.update({_id: folderid}, {author_id: authorids}, function(err, numberAffected, rawResponse) {
 			if (err) {
 				console.log(err);
-				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
+				res.status(500).json({message: 'Internal server error', hasError: true});
 				return;
 			}
 			console.log('success edit');
-			res.render('folderview.ejs', {
+			res.render('folderview.ejs', { //just shows a no info page for now
 				title: 'enchord', 
 				isNew: false, 
 				authorName: '',
@@ -94,6 +95,9 @@ exports.shareFolder = function(req, res) {
 		});	
 	});
 }
+
+
+
 
 function getAuthorId(req) {
 	var id;

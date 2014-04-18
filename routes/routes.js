@@ -174,7 +174,7 @@ module.exports = function(app, passport, db) {
 		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
 		//no longer works properly(because of folders) DO NOT USE
-		app.get('/remakeDB', utils.remakeDB);
+		//app.get('/remakeDB', utils.remakeDB);
 		
 		/*
         //authorize when already logged in
