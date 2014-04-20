@@ -223,6 +223,7 @@ exports.deleteSong = function(req, res) {
 
 };
 
+/*
 exports.searchSong = function(req, res) {
 	var query = {};
 	var query1 = {};
@@ -283,30 +284,62 @@ exports.searchSong = function(req, res) {
 			searchResults(err, docs, originalQuery, req, res);
 		});
 	}
-}
+}*/
 
-/*exports.searchSongPrivate = function(req, res) {
-	var query = req.params.query.toLowerCase().split(' ');
-	console.log(query);
-	var array = [];
-	if (query == '') {
-		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});
+
+exports.searchSong = function(req, res) {
+	var query1 = {}; //do the global search
+	var query2 = {}; //break into 2 queries for easy or statement for Both
+	if (req.query.query == undefined) {
+		query1['search_string'] = '';
+		query2['search_string'] = '';
+	}
+	else {
+		query1['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+		query2['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+	}
+	query1['pub'] = true;
+	query2['pub'] = false;
+	if (req.isAuthenticated()) {
+		query2['author_id'] = getAuthorId(req);
+	}
+	else {
+		query2 = {'search_string': ''}; //not logged in, do not search private songs
+	}
+	var originalQuery = {
+		query: req.query.query,
+		title: "",
+		artist: "",
+		genre: "",
+		author: "",
+	};
+	var search_results = {global: [], local: []};
+	if (query1['search_string'] == '') {
+		res.render('search.ejs', {
+			title: 'enchord', 
+			isNew: false, 
+			results: [], 
+			query: query, 
+			message: 'Empty query', 
+			isLoggedIn: req.isAuthenticated()
+		});
 		return;
 	}
 	else {
-		songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {
-			if (err) {
-				console.log(err);
-				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
-				return;
-			}
-			console.log(docs);
-			array = docs;
-			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});
-			return;
+		songSchema.find(query1, function(err, docs) {
+			search_results['global'] = docs;
+			songSchema.find(query2, function(err, docs) {
+				search_results['local'] = docs;
+				searchResults(err, search_results, originalQuery, req, res); //FIX THIS PART
+			});
 		});
 	}
-}*/
+}
+
+
+
+
+
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
@@ -331,29 +364,32 @@ exports.advancedSearch = function(req, res) {
 		qAuthor = req.query.author.toLowerCase();
 	console.log(qAuthor);
 	
-	var query = {};
-	if (qTitle != '')
-		query['title_lower'] = qTitle;
-	if (qArtist != '')
-		query['artist_lower'] = qArtist;
-	if (qGenre != '')
-		query['genre_lower'] = qGenre;
-	if (qAuthor != '') {
-		query['author_lower'] = qAuthor;
-		
-		query['pub'] = true; //only if not searching for current user???(maybe)
+	var query1 = {};
+	var query2 = {};
+	
+	if (qTitle != '') {
+		query1['title_lower'] = qTitle;
+		query2['title_lower'] = qTitle;
 	}
-	console.log(query);
-	if (req.query.type == undefined)
-		type = 'Global';
-	else
-		type = req.query.type;
-	if (type == 'Global')
-		query['pub'] = true;
-	if (type == 'Local')
-		query['author_id'] = getAuthorId(req);
-	if (type == 'Both') {
-		query['$or'] = [{'pub': true},{'pub': false, 'author_id': getAuthorId(req)}];
+	if (qArtist != '') {
+		query1['artist_lower'] = qArtist;
+		query2['artist_lower'] = qArtist;
+	}
+	if (qGenre != '') {
+		query1['genre_lower'] = qGenre;
+		query2['genre_lower'] = qGenre;
+	}
+	if (qAuthor != '') {
+		query1['author_lower'] = qAuthor;
+	}
+	
+	query1['pub'] = true;
+	query2['pub'] = false;
+	if (req.isAuthenticated()) {
+		query2['author_id'] = getAuthorId(req);
+	}
+	else {
+		query2 = {'search_string': ''}; //not logged in, do not search private songs
 	}
 	
 	var originalQuery = {
@@ -362,23 +398,25 @@ exports.advancedSearch = function(req, res) {
 		artist: req.query.artist,
 		genre: req.query.genre,
 		author: req.query.author,
-		type: type
 	};
-	var array = [];
-	console.log(query);
+	var search_results = {global: [], local: []};
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
 		res.render('search.ejs', {
 			title: 'enchord', 
 			isNew: false, 
-			results: array, 
+			results: search_results, 
 			query: '', 
 			message: 'Empty search',
 			isLoggedIn: req.isAuthenticated()
 		});
 	else
 	{
-		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, originalQuery, req, res);
+		songSchema.find(query1, function(err, docs) {
+			search_results['global'] = docs;
+			songSchema.find(query2, function(err, docs) {
+				search_results['local'] = docs;
+				searchResults(err, search_results, originalQuery, req, res); //FIX THIS PART
+			});
 		});
 	}
 }
