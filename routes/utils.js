@@ -697,7 +697,7 @@ exports.undovote = function(req, res) {
 }
 
 exports.hasvoted = function(req, res) {
-	var songid = req.params._id;
+	var songid = req.query._id;
 	songSchema.findById(songid, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -709,9 +709,11 @@ exports.hasvoted = function(req, res) {
 			var userid = getAuthorId(req);
 			var index = docs.rates.indexOf(userid);
 			if (index == -1) {
-				return false;
+				res.send({voted: false});
+				return;
 			} else {
-				return true;
+				res.send({voted: true});
+				return;
 			}
 		}
 	});

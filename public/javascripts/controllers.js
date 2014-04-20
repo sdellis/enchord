@@ -46,6 +46,17 @@ enchordControllers.controller('ViewController', [
 	'$sce',
 	function($scope, $http, $window, $routeParams, $sce){
 		$scope.song = {};
+		$scope.voted = false;
+		$scope.hasvoted = function() {
+			$http({
+				method : 'GET',
+				url    : '/hasvoted',
+				params : { _id : $scope.song._id }
+			}).success(function(data) {
+				console.log(data);
+				$scope.voted = data.voted;
+			});
+		}
 		$scope.init = function(_id) {
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
@@ -56,6 +67,7 @@ enchordControllers.controller('ViewController', [
 					console.log(data);
 					$scope.song = data.song;
 					$scope.parsehtml();
+					$scope.hasvoted();
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -161,6 +173,7 @@ enchordControllers.controller('ViewController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.upvote = data.vote;
+				$scope.voted = true;
 			});
 		}
 		//undo vote
@@ -173,18 +186,7 @@ enchordControllers.controller('ViewController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.upvote = data.vote;
-			});
-		}
-		$scope.undovote = function() {
-			$http({
-				method : 'POST',
-				url : '/undovote',
-				data : $.param($scope.song),
-				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
-			}).success(function(data) {
-				console.log('yay');
-				console.log(data);
-				$scope.song.upvote = data;
+				$scope.voted = false;
 			});
 		}
 	}]);
