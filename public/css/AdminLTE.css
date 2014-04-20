@@ -3402,3 +3402,33 @@ fieldset[disabled] .btn-vk.active {
   color: #587ea3;
   background-color: #ffffff;
 }
+
+.button{  
+  width:200px;
+  height:45px;
+  font:18px/45px;
+  background:#399025;
+  background:-webkit-linear-gradient(bottom,#399025,#45c925);
+  background:-moz-linear-gradient(bottom,#399025,#45c925);
+  color:#f1f1f1;
+  border:none;
+  cursor:pointer;
+  border-radius:3px;
+  margin-bottom: 10px;
+}
+.button{
+  text-align:center;  
+}
+
+button:focus{
+  outline:none;
+}
+
+button:hover{
+  -webkit-transition: all 500ms ease;
+  -moz-transition: all 500ms ease;
+  -ms-transition: all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
