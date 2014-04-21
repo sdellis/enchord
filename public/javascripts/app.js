@@ -7,7 +7,7 @@ enchord.config(function($locationProvider, $routeProvider) {
     .when('/', { templateUrl: 'partials/library'})
     .when('/search/:query', {templateUrl: 'partials/search'})
     .when('/createband', {templateUrl: 'partials/band_create'})
-    .when('/editband/:_id', {templateUrl: 'partials/band_create'})
+    .when('/editband/:_id', {templateUrl: 'partials/band_edit'})
     .when('/createsong', {templateUrl: 'partials/editsong'})
     .when('/editsong/:_id', {templateUrl: 'partials/editsong'})
     .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})

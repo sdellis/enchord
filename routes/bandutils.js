@@ -1,8 +1,16 @@
-var songSchema = require('../models/schemas/song');
+var bandSchema = require('../models/schemas/band');
 var userSchema = require('../models/schemas/user');
 var folderSchema = require('../models/schemas/folder');
 var bandSchema = require('../models/schemas/folder');
 var utils = require('./utils');
+
+
+// add member - make sure member exists
+// delete member
+// get members
+// get all bands
+
+// get username and id of current user
 
 
 exports.createBand = function(req, res) {
@@ -100,7 +108,7 @@ exports.loadBandView = function(req, res) {
 			isNew: false, 
 			isAuthor: isAuthor, 
 			isLoggedIn: isLoggedIn, 
-			song: docs, 
+			band: docs, 
 			message: 'Band loaded'
 		});
 	});
@@ -135,9 +143,9 @@ function findBand(id, res, callback) {
 			return;
 		}
 		if (docs == null) {
-			console.log('Song not found');
-			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
-			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+			console.log('Band not found');
+			res.send({message: 'Cannot find band', hasError: false, isNew: false, isDeleted: false});
+			//res.status(500).json({message: 'Internal server error: Cannot find band to delete', hasError: true});
 			return;
 		}
 		callback(docs);
