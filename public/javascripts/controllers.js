@@ -1,4 +1,19 @@
 'use strict';
+var cleanSong = function(song) {
+	if (song.title == undefined)
+		song.title="";
+	if (song.artist == undefined)
+		song.artist="";
+	if (song.genre == undefined)
+		song.genre="";
+	if (song.data == undefined)
+		song.data="";
+	if (song._id == undefined)
+		song._id="";
+	if (song.pub == undefined)
+		song.pub=true;
+	return song;
+}
 
 var enchordControllers = angular.module('enchordControllers', ['ngSanitize']);
 
@@ -11,28 +26,79 @@ enchordControllers.controller('HomeController', ['$scope',
 enchordControllers.controller('AboutController', ['$scope',
 	function($scope){
 	}]);
-
-// Search page controller CHANGE TO LOCATION PATH
-enchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',
-	function($scope, $window, $routeParams) {
-		$scope.query = "";
-		$scope.type = "Both";
-		$scope.advquery = {}
-		$scope.init = function(query, type, title, artist, genre, author) {
-			$scope.query = query;
-			$scope.type = type;
-			$scope.advquery = {
-				title: title,
-				artist: artist,
-				genre: genre,
-				author: author
-			};
+enchordControllers.controller('ProfileController', [
+	'$scope', 
+	'$http', 
+	'$location',
+	'Side',
+	function($scope, $http, $location, Side){
+		$scope.Side = Side;
+		$scope.usersongs = {};
+		$scope.init = function() {
+			Side.setPagetype('default');
+			$http({
+				method  : 'GET',
+				url     : '/mysongs'
+			}).success(function(data) {
+				console.log(data);
+				$scope.usersongs = data.usersongs;
+				$scope.pagetype = "search";
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
+		$scope.search = function() {
+			$scope.pagetype = "search";
+			$location.url("about");
+		}
+	}]);
+// Search page controller 
+enchordControllers.controller('SearchController', [
+	'$scope', 
+	'$window', 
+	'$routeParams', 
+	'$location', 
+	'$http',
+	'Side',
+	function($scope, $window, $routeParams, $location, $http, Side) {
+		$scope.query = $routeParams.query;
+		$scope.globalresults = [];
+		$scope.localresults = [];
+		// $scope.type = "Both";
+		// $scope.advquery = {}
+		// $scope.init = function(query, type, title, artist, genre, author) {
+		// 	$scope.query = query;
+		// 	$scope.type = type;
+		// 	$scope.advquery = {
+		// 		title: title,
+		// 		artist: artist,
+		// 		genre: genre,
+		// 		author: author
+		// 	};
+		// }
+		$scope.init = function() {
+			Side.setPagetype('search');
+			$http({
+				method : 'GET',
+				url    : '/search',
+				params : { query : $scope.query }
+			}).success(function(data) {
+				console.log(data);
+				$scope.globalresults = data.results.global;
+				$scope.localresults = data.results.local;
+			});
 		}
 		// redirect to search page
-		$scope.search = function(query) {
-			console.log(query);
-			if (query != undefined && query.length > 0) {
-				$window.location.href = '/search/' + query;
+		$scope.search = function() {
+			console.log($scope.query);
+			if ($scope.query != undefined && $scope.query.length > 0) {
+				$location.url('search/' + $scope.query);
 			}
 		};
 	}]);
@@ -197,10 +263,13 @@ enchordControllers.controller('SongEditController', [
 	'$routeParams', 
 	'$http', 
 	'$window',
+	'$location',
 	'$sce',
-	function($scope, $routeParams, $http, $window, $sce){ 
+	'Side',
+	function($scope, $routeParams, $http, $window, $location, $sce, Side){ 
 		$scope.isNew = true;
 		$scope.hasError = false;
+		$scope.song = {};
   		var win = $window;
   		$scope.$watch('songEditForm.$dirty', function(value) {
     		if(value && !($scope.isNew)) {
@@ -229,8 +298,12 @@ enchordControllers.controller('SongEditController', [
 			return $sce.trustAsHtml($scope.song.result);
 		}
 
-		$scope.init = function(_id) {
-			console.log(_id);
+		$scope.init = function() {
+			var _id = $routeParams._id;
+			if(_id == undefined)
+				Side.setPagetype("createsong");
+			else
+				Side.setPagetype("editsong");
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -238,7 +311,13 @@ enchordControllers.controller('SongEditController', [
 					url     : getUrl
 				}).success(function(data) {
 					console.log(data);
+					if (data.song == undefined) { // if song does not exist
+						console.log("Song not found");
+						$location.url('createsong');
+						return;
+					}
 					$scope.song = data.song;
+					$scope.isNew = false;
 					$scope.parsehtml();
 				}).error(function(data, status) {
 					console.log(data);
@@ -260,11 +339,15 @@ enchordControllers.controller('SongEditController', [
 				};
 				$scope.parsehtml();
 			}
-
+			console.log($scope.isNew);
 		}
 
 		$scope.createsong = function() {
 			console.log("create " + $scope.song.title);
+			console.log($('#data').val());
+			console.log($scope.song);
+			$scope.song.data = $('#data').val();
+			$scope.song = cleanSong($scope.song);
 			console.log($scope.song);
 			$http({
 				method  : 'POST',
@@ -275,8 +358,9 @@ enchordControllers.controller('SongEditController', [
 				console.log(data);
 				
 				// go to edit page
-				var url = '/editsong/' + data.song._id;
-				$window.location.href = url;
+				$scope.isNew = false;
+				var url = 'editsong/' + data.song._id;
+				$location.url(url);
 
 				//$scope.song = data.song;
 				//$scope.message = data.message;
@@ -293,8 +377,10 @@ enchordControllers.controller('SongEditController', [
 				}
 			});
 		}
-		$scope.editsong = function() {
+		$scope.editsong = function(redirect) {
 			console.log("edit " + $scope.song.title);
+			$scope.song.data = $('#data').val();
+			$scope.song = cleanSong($scope.song);
 			$http({
 				method  : 'POST',
 				url     : '/editsong',
@@ -306,6 +392,8 @@ enchordControllers.controller('SongEditController', [
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;
 				$scope.songEditForm.$setPristine();
+				if(redirect)
+					$location.url('/');
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -327,7 +415,7 @@ enchordControllers.controller('SongEditController', [
 				console.log(data);
 				if (data.isDeleted == true) {
 					// redirect to different page later
-					$window.location.href = '/members';
+					$location.url('/');
 				}
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
@@ -379,6 +467,26 @@ enchordControllers.controller('ResetPasswordController', ['$scope',
 // Login controller
 enchordControllers.controller('LoginController', ['$scope',
 	function($scope){
+	}]);
+
+enchordControllers.controller('BandController', [
+	'$scope', 
+	'$http', 
+	'$location',
+	'Side',
+	function($scope, $http, $location, Side) {
+		$scope.init = function() {
+			Side.setPagetype('band');
+			// $http({
+			// 	method : 'GET',
+			// 	url    : '/search',
+			// 	params : { query : $scope.query }
+			// }).success(function(data) {
+			// 	console.log(data);
+			// 	$scope.globalresults = data.results.global;
+			// 	$scope.localresults = data.results.local;
+			// });
+		}
 	}]);
 /* OLD CODE */
 /* front-end parser */

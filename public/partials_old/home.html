@@ -1,0 +1,13 @@
+<h1>Welcome to Enchord</h1>
+<p>{{variable}}!</p>
+<a href="#/about">About</a>
+<a href="#/login">Login</a>
+<a href="#/signup">Signup</a>
+<div ng-controller="SearchController">
+	<form role="form">
+		<div class="form-group" id="query_group">
+			<input ng-model="query" type="text" class="form-control" id="query" name="query" placeholder="Search">
+			<button ng-click="search(query)" class="btn btn-default">Search</button>
+		</div>
+	</form>
+</div>

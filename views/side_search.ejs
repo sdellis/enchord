@@ -1,0 +1,51 @@
+ <aside class="left-side sidebar-offcanvas"  style="position:fixed;">
+    <section class="sidebar">
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="images/default.png" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info" style="padding-top: 8%;">
+                <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } %>
+            </div>
+        </div>
+
+        <!-- Search controller -->
+        <form class="sidebar-form" name="searchForm">
+            <div class="input-group" ng-controller="SearchController">
+                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                <input type="hidden" name="type" value="Both">
+                <span class="input-group-btn">
+                    <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#">
+                    <i class="fa fa-headphones"></i> <span>Everything</span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-music"></i> <span>Songs</span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>Artist</span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-tag"></i> <span>Genre</span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>User</span>
+                </a>
+            </li> 
+        </ul>
+    </section>
+</aside>

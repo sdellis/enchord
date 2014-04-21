@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Test</title>
+    <% include head.ejs %>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        body {
+            font-family: avenir;
+        }
+    </style>
+</head>
+<body ng-app='myApp'>
+  <%= message %>
+  <a href="#/about"> /about</a> |
+  <a href="#/"> home</a>
+  <!-- uncomment if HTML5Mode on -->
+  <!-- <a href="/about"> /about</a> | -->
+  <!-- <a href="/"> home</a> -->
+  <hr />
+  <div ng-view></div>
+</body>
+</html>

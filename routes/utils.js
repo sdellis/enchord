@@ -315,14 +315,6 @@ exports.searchSong = function(req, res) {
 	};
 	var search_results = {global: [], local: []};
 	if (query1['search_string'] == '') {
-		res.render('search.ejs', {
-			title: 'enchord', 
-			isNew: false, 
-			results: [], 
-			query: query, 
-			message: 'Empty query', 
-			isLoggedIn: req.isAuthenticated()
-		});
 		return;
 	}
 	else {
@@ -411,6 +403,7 @@ exports.advancedSearch = function(req, res) {
 		});
 	else
 	{
+		console.log(query2);
 		songSchema.find(query1, function(err, docs) {
 			search_results['global'] = docs;
 			songSchema.find(query2, function(err, docs) {
@@ -475,9 +468,9 @@ exports.getArtistSongs = function(req, res) {
 
 //currently searches whole database each time
 
-exports.getMySongs = function(req, res, callback) {
+function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
-	
+	console.log(authorid);
 	songSchema.find({author_id: authorid}, function(err, docs) {
 		if (err) {
 			console.log(err);
@@ -489,7 +482,19 @@ exports.getMySongs = function(req, res, callback) {
 		// res.send({usersongs: array});
 		// res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
 		// return;
+	});	
+}
+exports.getMySongs = getMySongs;
+
+exports.getUserSongs = function(req, res) {
+	getMySongs(req, res, function(docs){
+		console.log("in get user songs");
+		res.send({usersongs: docs});
+		return;
 	});
+		// res.send({usersongs: array});
+		// res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});
+		// return
 	
 }
 
@@ -617,23 +622,25 @@ function findSong(id, res, callback) {
 }
 
 
-function searchResults(err, docs, query, req, res) {
+function searchResults(err, results, query, req, res) {
 	if (err) {
 		console.log(err);
 		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
 		return;
 	}
-	console.log(docs);
+	console.log(results.global);
+	console.log(results.local);
 	console.log(query);
 	//array = docs;
-	res.render('search.ejs', {
-		title: 'enchord', 
-		isNew: false, 
-		results: docs, 
-		query: query, 
-		message: 'Search results', 
-		isLoggedIn: req.isAuthenticated()
-	});
+	// res.render('search.ejs', {
+	// 	title: 'enchord', 
+	// 	isNew: false, 
+	// 	results: docs, 
+	// 	query: query, 
+	// 	message: 'Search results', 
+	// 	isLoggedIn: req.isAuthenticated()
+	// });
+	res.send({results: results, query: query});
 	return;
 }
 

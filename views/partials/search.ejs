@@ -1,0 +1,50 @@
+<aside class="right-side" ng-controller="SearchController" ng-init="init()">
+    <section class="content-header">
+        <h1>
+            Search Results
+            <small>{{ globalresults.length }} songs found</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#/search/{{query}}"><i class="fa fa-search"></i> "{{query}}"</a></li>
+            <li class="active">Results</li>
+        </ol>
+    </section>
+    <h3 style= "padding-left: 15px;">Local</h3>
+    <table class="table" name="local">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Song</th>
+                <th>Arist</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="song in localresults">
+                <td></td>
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td>{{ song.author_name }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 style= "padding-left: 15px;">Global</h3>
+    <table class="table" name="global">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Song</th>
+                <th>Arist</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="song in globalresults">
+                <td></td>
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td>{{ song.author_name }}</td>
+            </tr>
+        </tbody>
+    </table>   
+</aside>

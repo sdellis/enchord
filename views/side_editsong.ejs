@@ -1,0 +1,50 @@
+<aside class="left-side sidebar-offcanvas" ng-controller="SongEditController" ng-init="init()">
+    <section class="sidebar">
+
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/images/default.png" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info" style="padding-top: 8%;">
+                <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } %>
+            </div>
+        </div>
+
+        <form class="sidebar-form" name="searchForm">
+            <div class="input-group" ng-controller="SearchController">
+                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                <input type="hidden" name="type" value="Both">
+                <span class="input-group-btn">
+                    <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#/createsong">
+                    <i class="fa fa-plus"></i> <span>Create a Song</span>
+                </a>
+            </li>
+            
+            <!-- <form action="POST" class="sidebar-form" name="songEditForm" novalidate> -->
+            <form class="sidebar-form" name="songEditForm" novalidate>
+                    <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Title" /><br>
+
+                    <input type="text" name="artist" class="form-control" placeholder="Artist" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
+
+                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" /><br>
+
+
+                    <button ng-click="createsong()" class="button" ng-show="isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+
+                    <button ng-click="editsong(false)" class="button" ng-show="!isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+
+                    <button ng-click="editsong(true)" class="button" ng-show="!isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button>
+
+                    <button class="button" ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
+            </form>
+        </ul>
+
+    </section>
+</aside>

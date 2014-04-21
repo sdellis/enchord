@@ -19,7 +19,7 @@ module.exports = function(app, passport, db) {
 
 	db.mongoose.once('open', function callback() {
 		app.get('/', protectLogin, function(req, res){
-	 		res.render('index', { title: 'Enchord' });
+	 		res.render('home', { title: 'Enchord' });
 		});
 
 		// app.get('/home', function(req, res){
@@ -90,7 +90,14 @@ module.exports = function(app, passport, db) {
 				console.log("In routes");
 				console.log(usersongs);
 				if (usersongs != undefined) {
-					res.render('profile.ejs', {title:"Members", user:req.user, username: utils.getUsername(req), usersongs: usersongs, message: req.flash('success')});
+					res.render('index.ejs', {
+						title:"Members",
+						isLoggedIn: req.isAuthenticated, 
+						user: req.user, 
+						username: utils.getUsername(req), 
+						usersongs: usersongs, 
+						message: req.flash('success')
+					});
 				}
 			});			
 		});
@@ -165,7 +172,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/artist/:query', utils.getArtistSongs);
 		
-		// app.get('/mysongs', isLoggedIn, utils.getMySongs);
+		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
 		
 		//folder testing stuff
 		app.get('/myfolders', isLoggedIn, folderutils.getUserFolders);
@@ -199,6 +206,12 @@ module.exports = function(app, passport, db) {
 		app.get('/forgot', function (req, res) {
 			res.render('forgot.ejs', {title:"Members", user:req.user});
 		});
+
+		app.get('/partials/:filename', function(req, res){
+			var filename = req.params.filename;
+			if(!filename) return; // todo
+			res.render("partials/" + filename);
+		});
 // 		app.post('/forgot', function (req, res) {
 //     var email = req.body.email;
 //     var reset = forgot(email, function (err) {
@@ -225,6 +238,7 @@ module.exports = function(app, passport, db) {
 //     delete req.session.reset;
 //     res.end('password reset');
 // });
+		app.get('/test', function(req, res){res.render('test.ejs');});
 	});
 }
 

@@ -1,0 +1,115 @@
+<aside class="left-side sidebar-offcanvas">
+    <section class="sidebar">
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/images/default.png" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info" style="padding-top: 8%;">
+                <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } %>
+            </div>
+        </div>
+        <!-- Search controller -->
+        <!-- <form class="sidebar-form" type="GET" action="/search" name="searchForm"> -->
+        <form class="sidebar-form" name="searchForm">
+            <div class="input-group" ng-controller="SearchController">
+                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                <input type="hidden" name="type" value="Both">
+                <span class="input-group-btn">
+                    <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#/createsong">
+                    <i class="fa fa-plus"></i> <span>Create a Song</span>
+                </a>
+            </li>
+            <li>
+                <a href="#/createband">
+                    <i class="fa fa-plus"></i> <span>Create a Band</span>
+                </a>
+            </li>
+
+           <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>My Bands</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Heemin and the Heartbreakers</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Red Hot Heemin Peppers</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Guns N' Heemins</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Van Heemin</a></li>
+                </ul>
+            </li>
+            
+            <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">My Folders</h5>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>Daft Punk</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Get Lucky</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Instant Crush</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Around the World</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>One More Time</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Lose Yourself to Dance</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>Elliott Smith</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Between the Bars</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Angeles</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Say Yes</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Coast to Coast</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Because</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>The Beatles</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Back in the U.S.S.R.</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Tomorrow Never Knows</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Hello Goodbye</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Yellow Submarine</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Here Comes the Sun</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>The Shins</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Simple Song</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>New Slang</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>A Comet Appears</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Port of Morrow</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Caring is Creepy</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>Death Cab For Cutie</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Soul Meets Body</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Transatlanticism</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Crooked Teeth</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Grapevine Fires</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i>What Sarah Said</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</aside>
