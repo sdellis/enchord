@@ -1,6 +1,7 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
 var folderutils = require('./folderutils');
+var bandutils = require('./bandutils');
 var User = require('../models/schemas/user');
 var async = require('async');
 
@@ -192,9 +193,20 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/deletefolder/:folderid', isLoggedIn, folderutils.deleteFolder);
 		
-		//no longer works properly(because of folders) DO NOT USE
-		//app.get('/remakeDB', utils.remakeDB);
+		//bands
+		app.get('/createband',  isLoggedIn, function(req, res) {
+			res.render('createband.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+		});
+		app.post('/createband', isLoggedIn, bandutils.createBand);
+
+		app.post('/editband', bandutils.isBandLeader, bandutils.editBand);
 		
+		//prevent access where needed
+		app.get('/editband/:_id', bandutils.isBandLeader, bandutils.loadBandEdit);
+
+		//app.get('/viewband/:_id', bandutils.loadBandView);
+
+		//voting stuff
 	    app.post('/upvote', utils.upvote);
 	    app.post('/undovote', utils.undovote);
 	    app.get('/hasvoted', utils.hasvoted);
