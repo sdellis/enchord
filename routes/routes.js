@@ -1,6 +1,7 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
 var folderutils = require('./folderutils');
+var bandutils = require('./bandutils');
 var User = require('../models/schemas/user');
 var async = require('async');
 
@@ -185,9 +186,20 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/deletefolder/:folderid', isLoggedIn, folderutils.deleteFolder);
 		
-		//no longer works properly(because of folders) DO NOT USE
-		//app.get('/remakeDB', utils.remakeDB);
+		//bands
+		app.get('/createband',  isLoggedIn, function(req, res) {
+			res.render('createband.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+		});
+		app.post('/createband', isLoggedIn, bandutils.createBand);
+
+		app.post('/editband', bandutils.isBandLeader, bandutils.editBand);
 		
+		//prevent access where needed
+		app.get('/editband/:_id', bandutils.isBandLeader, bandutils.loadBandEdit);
+
+		//app.get('/viewband/:_id', bandutils.loadBandView);
+
+		//voting stuff
 	    app.post('/upvote', utils.upvote);
 	    app.post('/undovote', utils.undovote);
 	    app.get('/hasvoted', utils.hasvoted);
@@ -199,32 +211,8 @@ module.exports = function(app, passport, db) {
 		app.get('/forgot', function (req, res) {
 			res.render('forgot.ejs', {title:"Members", user:req.user});
 		});
-// 		app.post('/forgot', function (req, res) {
-//     var email = req.body.email;
-//     var reset = forgot(email, function (err) {
-//         if (err) res.end('Error sending message: ' + err)
-//         else res.end('Check your inbox for a password reset message.')
-//     });
 
-//     reset.on('request', function (req_, res_) {
-//         req_.session.reset = { email : email, id : reset.id };
-//         fs.createReadStream(__dirname + '/forgot.html').pipe(res_);
-//     });
-// });
 
-// app.post('/reset', function (req, res) {
-//     if (!req.session.reset) return res.end('reset token not set');
-
-//     var password = req.body.password;
-//     var confirm = req.body.confirm;
-//     if (password !== confirm) return res.end('passwords do not match');
-
-//     // update the user db here
-
-//     forgot.expire(req.session.reset.id);
-//     delete req.session.reset;
-//     res.end('password reset');
-// });
 	});
 }
 

@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"isAuth",
+				"isAuthenticated"
+			],
+			[
 				"index",
 				"indexOfUser"
 			],
@@ -64,29 +68,10 @@
 	"buffers":
 	[
 		{
-			"file": "todo",
+			"file": "routes/bandutils.js",
 			"settings":
 			{
-				"buffer_size": 1012,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "//Mongo\nvar songSchema = require('../models/schemas/song');\nvar userSchema = require('../models/schemas/user');\nvar folderSchema = require('../models/schemas/folder');\nvar parser = require('../parser'); // parser\nvar htmlparser = require('../htmlparser'); // parser\nvar fs = require('fs');\nvar ObjectId = require('mongoose/lib/types/objectid'); //for testing\nvar grabzit = require(\"grabzit\");\nvar client = new grabzit(\"Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=\", \n						\"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8=\"); // pdf\n\nexports.createSong = function(req, res) {\n	var song = new songSchema({\n		title: req.body.title,\n		title_lower: req.body.title.toLowerCase(),\n		artist: req.body.artist,\n		artist_lower: req.body.artist.toLowerCase(),\n		author_id: getAuthorId(req),\n		author_name: getAuthorName(req),\n		author_lower: getAuthorName(req).toLowerCase(),\n		genre: req.body.genre,\n		genre_lower: req.body.genre.toLowerCase(),\n		data: req.body.data,\n		pub: req.body.pub,\n		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array\n		folder_id: '534e0897ba5d043c15566a0a'\n	});\n	\n	if(!checkFields(song, res))\n		return;\n	\n	song.save(function (err, product, numberAffected) {\n		if (err) {\n			console.log(err);\n			res.status(500).json({message: 'Internal server error: Cannot create', hasError: true});\n			return;\n		}\n		console.log('success saved');\n		console.log(song);\n		\n		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});\n		return;\n		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});\n	});\n};\n\nexports.editSong = function(req, res) {\n	var id = req.body._id;\n	var song = new songSchema({\n		title: req.body.title,\n		title_lower: req.body.title.toLowerCase(),\n		artist: req.body.artist,\n		artist_lower: req.body.artist.toLowerCase(),\n		genre: req.body.genre,\n		genre_lower: req.body.genre.toLowerCase(),\n		data: req.body.data,\n		pub: req.body.pub,\n		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '),\n		});\n	\n	if(!checkFields(song, res))\n		return;\n	\n	findSong(id, res, function(docs) {\n		songSchema.update({_id: id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, \n		artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, \n		pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {\n			if (err) {\n				console.log(err);\n				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});\n				return;\n			}\n			console.log('success edit');\n			res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});\n			return;\n		});	\n	});\n};\n\nexports.loadSongEdit = function(req, res) {\n	var id = req.params._id;\n	\n	var findsong = findSong(id, res, function(docs) {\n		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});\n	});\n}\nexports.isAuthor = function(req, res, next) {\n	var id = req.params._id;\n	\n	var findsong = findSong(id, res, function(docs) {\n		if (req.isAuthenticated()) {\n			if (getAuthorId(req) == docs.author_id) {\n				return next();\n			} else {\n				// send message too?\n				res.redirect('/viewsong/' + id);\n			}\n		} else {\n			res.redirect('/login');\n		}\n	});\n}\n\nexports.loadSongView = function(req, res) {\n	var id = req.params._id;\n	\n	var findsong = findSong(id, res, function(docs) {\n		var isAuthor;\n		var isLoggedIn;\n		if (req.isAuthenticated()) {\n			isLoggedIn = true;\n			if (getAuthorId(req) == docs.author_id) {\n				isAuthor = true;\n			} else {\n				isAuthor = false;\n			}\n		} else {\n			isAuthor = false;\n			isLoggedIn = false;\n		}\n		console.log(\"Is logged in:\" + isLoggedIn);\n		console.log(\"Original Author:\" + isAuthor);\n		res.render('viewsong.ejs', {\n			title: 'enchord', \n			isNew: false, \n			isAuthor: isAuthor, \n			isLoggedIn: isLoggedIn, \n			song: docs, \n			message: 'Song loaded'\n		});\n	});\n}\n\nexports.downloadSongTxt = function(req, res) {\n	var id = req.params._id;\n\n	findSong(id, res, function(docs) {\n		console.log(docs);\n		if (docs) {\n			parser.parseSong(docs.data, function(parsedSong) {\n				fs.writeFile('./' + id + '.txt', parsedSong, function(err) {\n					if(err) {\n						console.log(err);\n						res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});\n						return;\n					} else {\n						console.log('success!');\n						var titlewords = docs.title.split(\" \");\n						var filename = \"\";\n						for (var i = 0; i < titlewords.length; i++) {\n							if (i == titlewords.length - 1) {\n								filename = filename + titlewords[i] + \".txt\";\n							} else {\n								filename = filename + titlewords[i] + \"_\";\n							}\n						}\n						res.download('./' + id + '.txt', filename, function(err) {\n							if (err) {\n								console.log(err);\n								res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});\n								// fs.unlink('./' + id + '.txt', function (err) {\n								// 	if (err) {\n								// 		console.log(err);\n								// 		res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});\n								// 		return;\n								// 	} else {\n								// 		console.log('success delete file');\n								// 	}\n								// });\n								return;\n							} \n							fs.unlink('./' + id + '.txt', function (err) {\n								if (err) {\n									console.log(err);\n									res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});\n									return;\n								} else {\n									console.log('success delete file');\n								}\n							});\n						});\n					}\n				});\n			});\n		}\n	});\n}\n\n// exports.downloadSongPdf = function(req, res) {\n// 	console.log(\"here\");\n// 	client.set_pdf_options(\"http://www.google.com\");\n// 	console.log(\"here2\");\n// 	client.save(\"http://enchord.herokuapp.com/handler\");\n// }\n\n// exports.downloadSongPdfHandler = function(req, res) {\n// 	client.get_result(req.query.id, function(err, result){\n// 		console.log(\"In handler\");\n//     	fs.writeFile('test.pdf', result);\n// 	});\n// }\n\nexports.deleteSong = function(req, res) {\n	var id = req.body._id;\n\n	findSong(id, res, function(docs) {\n		songSchema.remove({_id: id}, function(err) {\n		if (err) {\n			console.log(err);\n			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});\n			return;\n		}\n		console.log('success delete');\n		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});\n		return;\n		});\n	});\n\n};\n\nexports.searchSong = function(req, res) {\n	var query = {};\n	var query1 = {};\n	var query2 = {}; //break into 2 queries for easy or statement for Both\n	if (req.query.query == undefined) {\n		query['search_string'] = '';\n	}\n	else {\n		query['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};\n	}\n	if (req.query.type == 'Global' || req.query.type == undefined) {\n		query['pub'] = true;\n	}\n	else if (req.query.type == 'Local') {\n		query['author_id'] = getAuthorId(req);\n	}\n	else if (req.query.type == 'Both') {\n		query1['search_string'] = query['search_string'];\n		query2['search_string'] = query['search_string'];\n		query1['pub'] = true;\n		query2['pub'] = false;\n		query2['author_id'] = getAuthorId(req);\n		query = {};\n		query['$or'] = [query1, query2];\n	}\n\n	// you should put this on top\n	var type;\n	if (req.query.type == undefined)\n		type = 'Global';\n	else\n		type = req.query.type;\n	console.log(query);\n\n	var originalQuery = {\n		query: req.query.query,\n		title: \"\",\n		artist: \"\",\n		genre: \"\",\n		author: \"\",\n		type: type\n	};\n	var array = [];\n	if (query['search_string'] == '') {\n		res.render('search.ejs', {\n			title: 'enchord', \n			isNew: false, \n			results: [], \n			query: query, \n			type: type, \n			message: 'Empty query', \n			isLoggedIn: req.isAuthenticated()\n		});\n		return;\n	}\n	else {\n		songSchema.find(query, function(err, docs) {\n			searchResults(err, docs, originalQuery, req, res);\n		});\n	}\n}\n\n/*exports.searchSongPrivate = function(req, res) {\n	var query = req.params.query.toLowerCase().split(' ');\n	console.log(query);\n	var array = [];\n	if (query == '') {\n		res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Empty query'});\n		return;\n	}\n	else {\n		songSchema.find({search_string: {$all: query}, pub: false, author_id: getAuthorId(req)}, function(err, docs) {\n			if (err) {\n				console.log(err);\n				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});\n				return;\n			}\n			console.log(docs);\n			array = docs;\n			res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: req.params.query, message: 'Search results'});\n			return;\n		});\n	}\n}*/\n\nexports.advancedSearch = function(req, res) {\n	var qTitle, qArtist, qGenre, qAuthor, qType;\n	if (req.query.title == undefined)\n		qTitle = '';\n	else\n		qTitle = req.query.title.toLowerCase(); \n	console.log(qTitle);\n	if (req.query.artist == undefined)\n		qArtist = '';\n	else\n		qArtist = req.query.artist.toLowerCase();\n	console.log(qArtist);\n	if (req.query.genre == undefined)\n		qGenre = '';\n	else\n		qGenre = req.query.genre.toLowerCase();\n	console.log(qGenre);\n	if (req.query.author == undefined)\n		qAuthor = '';\n	else\n		qAuthor = req.query.author.toLowerCase();\n	console.log(qAuthor);\n	\n	var query = {};\n	if (qTitle != '')\n		query['title_lower'] = qTitle;\n	if (qArtist != '')\n		query['artist_lower'] = qArtist;\n	if (qGenre != '')\n		query['genre_lower'] = qGenre;\n	if (qAuthor != '') {\n		query['author_lower'] = qAuthor;\n		\n		query['pub'] = true; //only if not searching for current user???(maybe)\n	}\n	console.log(query);\n	if (req.query.type == undefined)\n		type = 'Global';\n	else\n		type = req.query.type;\n	if (type == 'Global')\n		query['pub'] = true;\n	if (type == 'Local')\n		query['author_id'] = getAuthorId(req);\n	\n	var originalQuery = {\n		query: \"\",\n		title: req.query.title, \n		artist: req.query.artist,\n		genre: req.query.genre,\n		author: req.query.author,\n		type: type\n	};\n	var array = [];\n	console.log(query);\n	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')\n		res.render('search.ejs', {\n			title: 'enchord', \n			isNew: false, \n			results: array, \n			query: '', \n			message: 'Empty search',\n			isLoggedIn: req.isAuthenticated()\n		});\n	else\n	{\n		songSchema.find(query, function(err, docs) {\n			searchResults(err, docs, originalQuery, req, res);\n		});\n	}\n}\n\nexports.getArtistSongs = function(req, res) {\n	var query = {};\n	query['artist_lower'] = req.params.query.toLowerCase();\n	query['pub'] = true;\n	\n	var queryprivate = {};\n	queryprivate['pub'] = false;\n	if (req.isAuthenticated()) {\n		queryprivate['artist_lower'] = req.params.query.toLowerCase();\n		queryprivate['author_id'] = getAuthorId(req);\n	}\n	else { //makes it so the or will not return anything (will only get the public songs)\n		queryprivate['artist_lower'] = '';\n		queryprivate['author_name'] = '';\n	}\n	var array = [];\n	if (query['artist_lower'] == '') {\n		res.render('search.ejs', {\n			title: 'enchord', \n			isNew: false, \n			results: array, \n			query: req.params.query, \n			message: 'Empty query',\n			isLoggedIn: req.isAuthenticated()\n		});\n		return;\n	}\n	else {\n		songSchema.find({$or: [query, queryprivate]}, function(err, docs) {\n			if (err) {\n				console.log(err);\n				res.status(500).json({\n					message: 'Internal server error: cannot find', \n					hasError: true\n				});\n				return;\n			}\n			console.log(docs);\n			array = docs;\n			res.render('artistpage.ejs', {\n				title: 'enchord', \n				isNew: false, \n				results: array, \n				artist: req.params.query, \n				message: 'Search results'\n			});\n			return;\n		});\n	}\n\n}\n\n//currently searches whole database each time\n\nexports.getMySongs = function(req, res, callback) {\n	var authorid = getAuthorId(req);\n	\n	songSchema.find({author_id: authorid}, function(err, docs) {\n		if (err) {\n			console.log(err);\n			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});\n			return;\n		}\n		console.log(docs);\n		callback(docs);\n		// res.send({usersongs: array});\n		// res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});\n		// return;\n	});\n	\n}\n\n\nexports.getSong = function(req, res) {\n	console.log(req.params);\n	findSong(req.params._id, res, function(data) {\n		res.send({song: data});\n	});\n}\n\n//remake the songs so that they are updated to have new info\n\nexports.remakeDB = function(req, res) {\n	var array = [];\n	songSchema.find(function(err, docs) {\n		if (err) {\n			console.log(err);\n			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});\n			return;\n		}\n		console.log(docs);\n		array = docs;\n		for (var i = 0; i < array.length; i++) {\n			var song = new songSchema({\n			title: array[i].title,\n			title_lower: array[i].title.toLowerCase(),\n			artist: array[i].artist,\n			artist_lower: array[i].artist.toLowerCase(),\n			genre: array[i].genre,\n			genre_lower: array[i].genre.toLowerCase(),\n			data: array[i].data,\n			author_lower: array[i].author_name.toLowerCase(),\n			pub: array[i].pub,\n			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')\n			});\n		\n		\n			songSchema.update({_id: array[i]._id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, \n			artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, pub: song.pub, \n			search_string: song.search_string}, function(err, numberAffected, rawResponse) {\n				if (err) {\n					console.log(err);\n					res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});\n					return;\n				}\n				console.log('success edit');\n				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: ' ', message: 'Search results',\n					isLoggedIn: req.isAuthenticated()});\n				return;\n			});	\n		\n		}\n		return;\n	});\n\n}\n\nfunction checkFields(song, res) {\n	if (song.title.trim() == '') {\n		console.log('empty title');\n		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});\n		return false;\n	}\n	if (song.artist.trim() == '') {\n		console.log('empty artist');\n		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});\n		return false;\n	}\n	return true;\n}\n\nfunction getAuthorId(req) {\n	var id;\n	if (req.user.local.email) {\n		id = req.user._id;\n	}\n	if (req.user.facebook.token) {\n		id = req.user.facebook.id;\n	}\n	if (req.user.twitter.token) {\n		id = req.user.twitter.id;\n	}\n	if (req.user.google.token) {\n		id = req.user.google.id;\n	}\n	return id;\n}\nexports.getId = getAuthorId;\n\nfunction getAuthorName(req) {\n	var name;\n	if (req.user.local.email) {\n		name = req.user.local.user;\n	}\n	if (req.user.facebook.token) {\n		name = req.user.facebook.name;\n	}\n	if (req.user.twitter.token) {\n		name = req.user.twitter.username;\n	}\n	if (req.user.google.token) {\n		name = req.user.google.name;\n	}\n	return name;\n}\nexports.getUsername = getAuthorName;\n\nfunction findSong(id, res, callback) {\n	songSchema.findById(id, function (err, docs) {\n		if (err) {\n			console.log(err);\n			res.status(500).json({message: 'find error', hasError: true});\n			return;\n		}\n		if (docs == null) {\n			console.log('Song not found');\n			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});\n			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});\n			return;\n		}\n		callback(docs);\n	});\n\n}\n\n\nfunction searchResults(err, docs, query, req, res) {\n	if (err) {\n		console.log(err);\n		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});\n		return;\n	}\n	console.log(docs);\n	console.log(query);\n	//array = docs;\n	res.render('search.ejs', {\n		title: 'enchord', \n		isNew: false, \n		results: docs, \n		query: query, \n		message: 'Search results', \n		isLoggedIn: req.isAuthenticated()\n	});\n	return;\n}\n\n\n\n/*exports.editSong = function(req, res) {\n	var id = req.body._id;\n	var song = new songSchema({\n		title: req.body.title,\n		title_lower: req.body.title.toLowerCase(),\n		artist: req.body.artist,\n		artist_lower: req.body.artist.toLowerCase(),\n		genre: req.body.genre,\n		genre_lower: req.body.genre.toLowerCase(),\n		data: req.body.data,\n		pub: req.body.pub,\n		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' ')\n		});\n	\n	if(!checkFields(song, res))\n		return;\n	\n	findSong(id, res, function(docs) {\n		songSchema.update({_id: id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, \n		artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, \n		pub: song.pub, search_string: song.search_string}, function(err, numberAffected, rawResponse) {\n			if (err) {\n				console.log(err);\n				res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});\n				return;\n			}\n			console.log('success edit');\n			res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});\n			return;\n		});	\n	});\n};*/\n\nexports.upvote = function(req, res) {\n	console.log(req.body._id);\n	var id = req.body._id;\n	songSchema.findById(id, function(err, docs) {\n		if (err) {\n			console.log(Err);\n			return;\n		} else if (docs == null) {\n			console.log('song not found');\n			return;\n		} else {\n			var userid = getAuthorId(req);\n			var index = indexOfUser(docs.rates, userid);\n			if (index == -1) {\n				docs.rates.append()\n			}\n		}\n	})\n}\n\nfunction upvotehelp(req, songid) {\n	songSchema.findById(songid, function(err, docs) {\n		if (err) {\n			console.log(err);\n			return;\n		} else if (docs == null) {\n			console.log('which song?');\n			return;\n		} else {\n			var userid = getAuthorId(req);\n			var index = indexOfUser(docs.rates, userid);\n			if (index == -1) {\n				docs.rates.append({user_id: userid, rating: 1});\n				docs.upvote++;\n				docs.save();\n			} else {\n				if (index.rating == 1) {\n					return;\n				} else {\n					docs.upvote++;\n					docs.downvote--;\n					index.rating = -1;\n					docs.save();\n					return;\n				}\n				return;\n			}\n		}\n	});\n}\n\n/*	songSchema.findById(songid, function(err, docs) {\n		if (err) {\n			console.log(err);\n			return;\n		} else if (docs == null) {\n			console.log('which song?');\n			return;\n		} else {\n			var userid = getAuthorId(req);\n			var index = indexOfUser(docs.rates, userid);\n			if (index == -1) {\n				docs.rates.append({user_id: userid, rating: -1});\n				docs.downvote++;\n				docs.save();\n				return;\n			} else {\n				if (index.rating == -1) {\n					return;\n				} else {\n					docs.upvote--;\n					docs.downvote++;\n					index.rating = 1;\n					docs.save();\n					return;\n				}\n			}\n		}\n	});\n}*/\n\nfunction hasvoted(req, songid) {\n	songSchema.findById(songid, function(err, docs) {\n		if (err) {\n			console.log(err);\n			return;\n		} else if (docs == null) {\n			console.log('which song?');\n			return;\n		} else {\n			var userid = getAuthorId(req);\n			var index = indexOfUser(docs.rates, userid);\n			if (index == -1) {\n				return null;\n			} else {\n				//already rated by this user\n				//what did he choose?\n				return docs.rates[index];\n			}\n		}\n	});\n}\n\nfunction indexOfUser(ratings, userid) {\n	for (var i = 0; i < ratings.length; i++) {\n		if (ratings[i].user_id == userid) {\n			return i;\n		}\n	}\n	return -1;\n}\n\n",
-			"file": "routes/utils.js",
-			"file_size": 18841,
-			"file_write_time": 130423238955466006,
-			"settings":
-			{
-				"buffer_size": 19227,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "models/schemas/song.js",
-			"settings":
-			{
-				"buffer_size": 459,
+				"buffer_size": 3515,
 				"line_ending": "Unix"
 			}
 		},
@@ -99,50 +84,58 @@
 			}
 		},
 		{
-			"file": "routes/bandutils.js",
+			"file": "routes/utils.js",
 			"settings":
 			{
-				"buffer_size": 1250,
+				"buffer_size": 19707,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "views/viewsong.ejs",
+			"file": "views/createband.ejs",
 			"settings":
 			{
-				"buffer_size": 943,
+				"buffer_size": 4100,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "var mailer = require('../config/nodemailer');\nvar utils = require('./utils');\nvar folderutils = require('./folderutils');\nvar User = require('../models/schemas/user');\nvar async = require('async');\n\nvar parser = require('../parser');\nvar htmlparser = require('../htmlparser')\nvar songEmpty = {\n		title: '',\n		artist: '',\n		genre: '',\n		data: '',\n		_id: '',\n		pub: true\n		};\n\nmodule.exports = function(app, passport, db) {\n\n	db.mongoose.once('open', function callback() {\n		app.get('/', protectLogin, function(req, res){\n	 		res.render('index', { title: 'Enchord' });\n		});\n\n		// app.get('/home', function(req, res){\n		// 	res.render('home.ejs');\n		// })\n		\n		app.get('/about', function(req, res){\n			res.render('about.ejs', {title:\"enchord\"});\n		});\n\n		app.get('/login', protectLogin, function(req, res){\n			res.render('login.ejs', {title: \"enchord\", message: req.flash('loginMessage')});\n		});\n		app.post('/login', passport.authenticate('local-login', {\n			successRedirect: '/members', \n			failureRedirect: '/login',\n			failureFlash : true // allow flash messages\n		}));\n		app.get('/signup', protectLogin, function(req, res){\n			res.render('signup.ejs', {title: \"enchord\", message: req.flash('signupMessage')});\n		});\n		app.post('/signup', passport.authenticate('local-signup', {\n			successRedirect: '/members',\n			failureRedirect: '/signup',\n			failureFlash : true // allow flash messages\n		}));\n\n		app.get('/forgot', function(req, res) {\n			res.render('forgot.ejs', {\n				title: 'enchord',\n				user: req.user,\n				messageerror: req.flash('error'),\n				messageinfo: req.flash('info')\n			});\n		});\n\n		app.post('/forgot', mailer.sendmail);\n\n		app.get('/reset/:token', function(req, res) {\n			User.findOne({'local.resetPasswordToken': req.params.token}, function(err, user) {\n				console.log(user);\n				console.log(req.params.token);\n				if (err)\n					done(err);\n				if (!user) {\n					req.flash('messageerror', 'Password reset token is invalid or has expired.');\n					return res.redirect('/forgot');\n				} else {\n					if (user.local.resetPasswordExpires < Date.now()) {\n						console.log('confirm');\n						req.flash('messageerror', 'Password reset token is invalid or has expired.');\n						return res.redirect('/forgot');\n					}\n				}\n				res.render('reset.ejs', {\n					title: 'enchord',\n					user: req.user,\n					tokens: req.params.token\n				});\n			});\n		});\n\n		app.post('/reset/:token', mailer.confirm);\n\n		// refactor this\n		app.get('/members', isLoggedIn, function(req, res) {\n			utils.getMySongs(req, res, function(usersongs) {\n				console.log(\"In routes\");\n				console.log(usersongs);\n				if (usersongs != undefined) {\n					res.render('profile.ejs', {title:\"Members\", user:req.user, username: utils.getUsername(req), usersongs: usersongs, message: req.flash('success')});\n				}\n			});			\n		});\n\n		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));\n\n		app.get('/auth/facebook/callback', passport.authenticate('facebook', {\n			successRedirect : '/members',\n			failureRedirect : '/login'\n		}));\n\n		app.get('/auth/twitter', passport.authenticate('twitter'));\n\n		app.get('/auth/twitter/callback', passport.authenticate('twitter', {\n			successRedirect : '/members',\n			failureRedirect : '/login'\n		}));\n\n		app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));\n\n		app.get('/auth/google/callback', passport.authenticate('google', {\n			successRedirect : '/members',\n			failureRedirect : '/login'\n        }));\n		\n		app.get('/findsong/:_id', utils.getSong)\n		app.get('/createsong', isLoggedIn, function(req, res) {\n			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});\n		});\n\n		app.post('/createsong', isLoggedIn, utils.createSong);\n		\n		// app.get('/editsong', isLoggedIn, function(req, res) {\n		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});\n		// });\n		\n		app.post('/editsong', isLoggedIn, utils.editSong);\n		\n		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);\n\n		app.get('/viewsong/:_id', utils.loadSongView);\n\n		app.get('/downloadsongtxt/:_id', utils.downloadSongTxt);\n\n		// app.get('/downloadsongpdf/:_id', utils.downloadSongPdf);\n		// app.get('/handler', utils.downloadSongPdfHandler);\n		\n		app.post('/deletesong', isLoggedIn, utils.deleteSong);\n		\n		app.post('/parsesong', isLoggedIn, function(req, res) {\n			parser.parseSong(req.body.data, function(parsedSong) {\n				console.log(\"In routes: \" + parsedSong);\n				res.send(parsedSong);\n			});\n		});\n\n		app.post('/parsesonghtml', function(req, res) {\n			console.log(req.body);\n			htmlparser.parseSongHTML(req.body.data, \"Courier\", \"12px\", function(parsedSong) {\n				console.log(\"In routes: \" + parsedSong);\n				res.send(parsedSong);\n			});\n		});\n\n		/*app.get('/search', function(req, res) {\n			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});\n		});*/\n		\n		app.get('/search', utils.searchSong);\n		\n		app.get('/advsearch', utils.advancedSearch);\n		\n		app.get('/artist/:query', utils.getArtistSongs);\n		\n		// app.get('/mysongs', isLoggedIn, utils.getMySongs);\n		\n		//folder testing stuff\n		app.get('/myfolders', isLoggedIn, folderutils.getUserFolders);\n		\n		app.get('/viewfoldersongs/:_id', isLoggedIn, folderutils.getFolderSongs);\n		\n		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);\n		\n		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);\n		\n		//no longer works properly(because of folders) DO NOT USE\n		app.get('/remakeDB', utils.remakeDB);\n		\n	    app.post('/upvote', utils.upvote);\n\n		app.get('/logout', function(req, res) {\n			req.logout();\n			res.redirect('/');\n		});\n		app.get('/forgot', function (req, res) {\n			res.render('forgot.ejs', {title:\"Members\", user:req.user});\n		});\n// 		app.post('/forgot', function (req, res) {\n//     var email = req.body.email;\n//     var reset = forgot(email, function (err) {\n//         if (err) res.end('Error sending message: ' + err)\n//         else res.end('Check your inbox for a password reset message.')\n//     });\n\n//     reset.on('request', function (req_, res_) {\n//         req_.session.reset = { email : email, id : reset.id };\n//         fs.createReadStream(__dirname + '/forgot.html').pipe(res_);\n//     });\n// });\n\n// app.post('/reset', function (req, res) {\n//     if (!req.session.reset) return res.end('reset token not set');\n\n//     var password = req.body.password;\n//     var confirm = req.body.confirm;\n//     if (password !== confirm) return res.end('passwords do not match');\n\n//     // update the user db here\n\n//     forgot.expire(req.session.reset.id);\n//     delete req.session.reset;\n//     res.end('password reset');\n// });\n	});\n}\n\n\n// Middleware to verify if logged in\nfunction isLoggedIn(req, res, next){\n	if (req.isAuthenticated())\n		return next();\n	res.redirect('/login');\n}\n\n// Middleware to protect login page\nfunction protectLogin(req, res, next) {\n	if (!req.isAuthenticated())\n		return next();\n	res.redirect('/members');\n}\n",
 			"file": "routes/routes.js",
-			"file_size": 7013,
-			"file_write_time": 130423248701385596,
 			"settings":
 			{
-				"buffer_size": 7021,
+				"buffer_size": 7040,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "'use strict';\n\nvar enchordControllers = angular.module('enchordControllers', ['ngSanitize']);\n\n// Home page controller\nenchordControllers.controller('HomeController', ['$scope',\n	function($scope) {\n		$scope.variable = 'Heemin';\n	}]);\n\n// About page controller\nenchordControllers.controller('AboutController', ['$scope',\n	function($scope){\n	}]);\n\n// Search page controller CHANGE TO LOCATION PATH\nenchordControllers.controller('SearchController', ['$scope', '$window', '$routeParams',\n	function($scope, $window, $routeParams) {\n		$scope.query = \"\";\n		$scope.type = \"Both\";\n		$scope.advquery = {}\n		$scope.init = function(query, type, title, artist, genre, author) {\n			$scope.query = query;\n			$scope.type = type;\n			$scope.advquery = {\n				title: title,\n				artist: artist,\n				genre: genre,\n				author: author\n			};\n		}\n		// redirect to search page\n		$scope.search = function(query) {\n			console.log(query);\n			if (query != undefined && query.length > 0) {\n				$window.location.href = '/search/' + query;\n			}\n		};\n	}]);\n\n// Song page (view) controller\nenchordControllers.controller('ViewController', [\n	'$scope', \n	'$http', \n	'$window', \n	'$routeParams', \n	'$sce',\n	function($scope, $http, $window, $routeParams, $sce){\n		$scope.song = {};\n		$scope.init = function(_id) {\n			if(_id != undefined && _id.length != 0) {\n				var getUrl = '/findsong/' + _id;\n				$http({\n					method  : 'GET',\n					url     : getUrl\n				}).success(function(data) {\n					console.log(data);\n					$scope.song = data.song;\n					$scope.parsehtml();\n				}).error(function(data, status) {\n					console.log(data);\n					console.log(status);\n					if (status == 500) {\n						console.log(status);\n						$scope.message = data.message;\n						$scope.hasError = data.hasError;\n					}\n				});\n			} else {\n				$scope.song = {\n					title: '',\n					artist: '',\n					genre: '',\n					data: '',\n					_id: '',\n					pub: true\n				};\n				$scope.parsehtml();\n			}\n		}\n		$scope.copysong = function() {\n			// by default set public value to false\n			$scope.song.pub = false;\n			$http({\n				method  : 'POST',\n				url     : '/createsong',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data){\n				console.log(data);\n				\n				// go to edit page\n				var url = '/editsong/' + data.song._id;\n				$window.location.href = url;\n\n				//$scope.song = data.song;\n				//$scope.message = data.message;\n				//$scope.hasError = data.hasError;\n				//$scope.isNew = data.isNew;\n				//$scope.songEditForm.$setPristine();\n			}).error(function(data, status) {\n				console.log(data);\n				console.log(status);\n				if (status == 500) {\n					console.log(status);\n					$scope.message = data.message;\n					$scope.hasError = data.hasError;\n				}\n			});\n		}\n		$scope.testpdf = function() {\n			// var doc = new jsPDF();\n			// doc.fromHTML($('#chord_sheet').get(0), 15, 15, {\n			// 	'width': 170\n			// });\n			// doc.save('Test.pdf');\n			html2canvas($('#chord_sheet'), {\n    			onrendered: function(canvas) {\n    				console.log(canvas);\n    				var data = canvas.toDataURL('image/png');\n    				// var data = canvas.toDataURL('application/pdf');\n    				$('.container').append('<a href=\\\"' + data + '\\\">Download pdf</a>');\n    				var i = new Image(); \n					// i.onload = function(){\n					// 	alert( i.width+\", \"+i.height );\n					// };\n\n					i.src = data;\n    				var doc = new jsPDF();\n					doc.addImage(data, 'PNG', 15, 15, i.width/4, i.height/4);\n			 		doc.save('Test.pdf');\n        		// canvas is the final rendered <canvas> element\n    			}\n			});\n		}\n		$scope.parsehtml = function() {\n			$http({\n				method  : 'POST',\n				url     : '/parsesonghtml',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data) {\n				console.log(data);\n				$scope.song.result = data;\n			});\n		}\n		// Guarantee that returned html is clean\n		$scope.parsedResult = function() {\n			return $sce.trustAsHtml($scope.song.result);\n		}\n		//upvote\n		$scope.upvote = function() {\n			$http({\n				method : 'POST',\n				url : '/upvote',\n				data : $.param($scope.song._id),\n				headers : {'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data) {\n				console.log('yay');\n				$scope.song.upvote = data;\n			})\n		}\n	}]);\n\n// Song page (edit) controller\nenchordControllers.controller('SongEditController', [\n	'$scope', \n	'$routeParams', \n	'$http', \n	'$window',\n	'$sce',\n	function($scope, $routeParams, $http, $window, $sce){ \n		$scope.isNew = true;\n		$scope.hasError = false;\n  		var win = $window;\n  		$scope.$watch('songEditForm.$dirty', function(value) {\n    		if(value && !($scope.isNew)) {\n      			win.onbeforeunload = function(){\n        			return 'You have unsaved changes.';\n      			};\n    		} else {\n    			win.onbeforeunload = function(){};\n    		}\n  		});\n		// $scope.parse = function() {\n		// 	//readLines($scope.song.data, function(data){$scope.song.result = data});\n		// 	console.log($scope.song.data);\n		// 	$http({\n		// 		method  : 'GET',\n		// 		url     : '/parsesong',\n		// 		params  : { data : $scope.song.data }\n		// 		//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n		// 	}).success(function(data) {\n		// 		console.log(data);\n		// 		$scope.song.result = data + \" parsed\";\n		// 	});\n		// 	$http({\n		// 		method  : 'POST',\n		// 		url     : '/parsesong',\n		// 		data    : $.param($scope.song),\n		// 		headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n		// 	}).success(function(data) {\n		// 		console.log(data);\n		// 		$scope.song.result = data + \" parsed\";\n		// 	});\n		// }\n\n		$scope.parsehtml = function() {\n			$http({\n				method  : 'POST',\n				url     : '/parsesonghtml',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data) {\n				console.log(data);\n				$scope.song.result = data + \" parsed\";\n			});\n		}\n\n		// Guarantee that returned html is clean\n		$scope.parsedResult = function() {\n			return $sce.trustAsHtml($scope.song.result);\n		}\n\n		$scope.init = function(_id) {\n			console.log(_id);\n			if(_id != undefined && _id.length != 0) {\n				var getUrl = '/findsong/' + _id;\n				$http({\n					method  : 'GET',\n					url     : getUrl\n				}).success(function(data) {\n					console.log(data);\n					$scope.song = data.song;\n					$scope.parsehtml();\n				}).error(function(data, status) {\n					console.log(data);\n					console.log(status);\n					if (status == 500) {\n						console.log(status);\n						$scope.message = data.message;\n						$scope.hasError = data.hasError;\n					}\n				});\n			} else {\n				$scope.song = {\n					title: '',\n					artist: '',\n					genre: '',\n					data: '',\n					_id: '',\n					pub: true\n				};\n				$scope.parsehtml();\n			}\n\n		}\n\n		$scope.createsong = function() {\n			console.log(\"create \" + $scope.song.title);\n			console.log($scope.song);\n			$http({\n				method  : 'POST',\n				url     : '/createsong',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data){\n				console.log(data);\n				\n				// go to edit page\n				var url = '/editsong/' + data.song._id;\n				$window.location.href = url;\n\n				//$scope.song = data.song;\n				//$scope.message = data.message;\n				//$scope.hasError = data.hasError;\n				//$scope.isNew = data.isNew;\n				//$scope.songEditForm.$setPristine();\n			}).error(function(data, status) {\n				console.log(data);\n				console.log(status);\n				if (status == 500) {\n					console.log(status);\n					$scope.message = data.message;\n					$scope.hasError = data.hasError;\n				}\n			});\n		}\n		$scope.editsong = function() {\n			console.log(\"edit \" + $scope.song.title);\n			$http({\n				method  : 'POST',\n				url     : '/editsong',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data){\n				console.log(data);\n				$scope.message = data.message;\n				$scope.hasError = data.hasError;\n				$scope.isNew = data.isNew;\n				$scope.songEditForm.$setPristine();\n			}).error(function(data, status) {\n				console.log(data);\n				console.log(status);\n				if (status == 500) {\n					console.log(status);\n					$scope.message = data.message;\n					$scope.hasError = data.hasError;\n				}\n			});\n		}\n		$scope.deletesong = function() {\n			console.log(\"delete \" + $scope.song.title);\n			$http({\n				method  : 'POST',\n				url     : '/deletesong',\n				data    : $.param($scope.song),\n				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n			}).success(function(data){\n				console.log(data);\n				if (data.isDeleted == true) {\n					// redirect to different page later\n					$window.location.href = '/members';\n				}\n				$scope.message = data.message;\n				$scope.hasError = data.hasError;\n				$scope.isNew = data.isNew;\n			}).error(function(data, status) {\n				console.log(data);\n				console.log(status);\n				if (status == 500) {\n					console.log(status);\n					$scope.message = data.message;\n					$scope.hasError = data.hasError;\n				}\n			});\n		}\n	}]);\n\n// Signup controller\nenchordControllers.controller('SignupController', ['$scope',\n	function($scope){\n		$scope.passMatch = true;\n		// check that passwords match\n		$scope.checkPass = function() {\n			$scope.passMatch = $scope.signupForm.password.$viewValue == $scope.signupForm.password_repeat.$viewValue;\n			// console.log($scope.signupForm.password_repeat.$viewValue);\n			// console.log($scope.passMatch)\n		}\n	}]);\n\n// Reset Password controller\nenchordControllers.controller('ResetPasswordController', ['$scope',\n	function($scope){\n		$scope.passMatch = true;\n		// check that passwords match\n		$scope.checkPass = function() {\n			$scope.passMatch = $scope.resetForm.password.$viewValue == $scope.resetForm.password_repeat.$viewValue;\n			// console.log($scope.signupForm.password_repeat.$viewValue);\n			// console.log($scope.passMatch)\n		}\n	}]);\n// .directive('validPasswordC', function () {\n//     return {\n//         require: 'ngModel',\n//         link: function (scope, elm, attrs, ctrl) {\n//             ctrl.$parsers.unshift(function (viewValue, $scope) {\n//                 var noMatch = (viewValue != scope.signupForm.password.$viewValue || viewValue != scope.signupForm.password_repeat.$viewValue)\n//                 console.log(noMatch)\n//                 ctrl.$setValidity('noMatch', !noMatch)\n//             })\n//         }\n//     }\n// });\n\n// Login controller\nenchordControllers.controller('LoginController', ['$scope',\n	function($scope){\n		// $scope.u_error = false;\n		// $scope.p_error = false;\n		// $scope.error_message = \"\";\n\n	}]);\n\n// enchordControllers.controller('ProfileController', ['$scope', '$http',\n// 	function($scope, $http){\n// 		$scope.usersongs = {};\n// 		$scope.init = function() {\n// 			$http({\n// 				method  : 'GET',\n// 				url     : '/mysongs'\n// 			}).success(function(data) {\n// 				console.log(data);\n// 				$scope.usersongs = data.sersongs;\n// 			}).error(function(data, status) {\n// 				console.log(data);\n// 				console.log(status);\n// 				if (status == 500) {\n// 					console.log(status);\n// 					$scope.message = data.message;\n// 					$scope.hasError = data.hasError;\n// 				}\n// 			});\n// 		}\n// 	}]);",
-			"file": "public/javascripts/controllers.js",
-			"file_size": 10868,
-			"file_write_time": 130423238496026025,
+			"contents": "Searching 1740 files for \"folderview\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/folderutils.js:\n   17  	\n   18  	folderSchema.find({author_id: authorid}, function(err, docs) {\n   19: 		res.render('folderview.ejs', {\n   20  			title: 'enchord', \n   21  			isNew: false, \n   ..\n  122  			}\n  123  			console.log('success edit');\n  124: 			res.render('folderview.ejs', { //just shows a no info page for now\n  125  				title: 'enchord', \n  126  				isNew: false, \n  ...\n  143  		}\n  144  		console.log('success edit');\n  145: 		res.render('folderview.ejs', { //just shows a no info page for now\n  146  			title: 'enchord', \n  147  			isNew: false, \n  ...\n  170  				return;\n  171  			}\n  172: 			res.render('folderview.ejs', { //just shows a no info page for now\n  173  			title: 'enchord', \n  174  			isNew: false, \n\n4 matches in 1 file\n",
 			"settings":
 			{
-				"buffer_size": 11165,
-				"line_ending": "Unix"
+				"buffer_size": 854,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 82.0,
+		"height": 151.0,
 		"selected_items":
 		[
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
 			[
 				"git: pull",
 				"Git: Pull"
@@ -205,11 +198,19 @@
 	},
 	"file_history":
 	[
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/folder.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editsong.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/edit_song.html",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/express/node_modules/connect/node_modules/multiparty/test/standalone/test-content-transfer-encoding.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editband.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/nodemailer/examples/example_direct.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/todo",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/db.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/song.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/viewsong.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/folder.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/db.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/user.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/ratings.js",
@@ -219,7 +220,6 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parser.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/reset.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/nodemailer.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/todo",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/jemah.sublime-project",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/.gitignore",
@@ -309,6 +309,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"findsong",
+			"folderview",
+			"bandutils",
+			"update",
 			"editSong",
 			"save",
 			"console.log",
@@ -482,24 +486,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "todo",
+					"file": "routes/bandutils.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1012,
+						"buffer_size": 3515,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								786,
-								786
+								762,
+								762
 							]
 						],
 						"settings":
@@ -507,206 +511,61 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close"
-							],
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "routes/utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19227,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17343,
-								17343
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
 								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close"
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
 							],
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 6787.0,
+						"translation.y": 1122.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "models/schemas/song.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 459,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								436,
-								436
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
+					"buffer": 1,
 					"file": "models/schemas/band.js",
-					"semi_transient": false,
+					"semi_transient": true,
 					"settings":
 					{
 						"buffer_size": 143,
@@ -716,8 +575,8 @@
 						"selection":
 						[
 							[
-								121,
-								121
+								0,
+								0
 							]
 						],
 						"settings":
@@ -729,191 +588,44 @@
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close"
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
 							],
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "routes/bandutils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1250,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1247,
-								1247
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "views/viewsong.ejs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 943,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								532,
-								532
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close"
-							],
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -923,20 +635,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "routes/routes.js",
+					"buffer": 2,
+					"file": "routes/utils.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7021,
+						"buffer_size": 19707,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5603,
-								5603
+								15967,
+								15967
 							]
 						],
 						"settings":
@@ -944,72 +656,72 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
-								"bh_tag_close"
+								"bh_tag_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
 							],
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 1606.0,
+						"translation.x": -0.0,
+						"translation.y": 6304.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "public/javascripts/controllers.js",
+					"buffer": 3,
+					"file": "views/createband.ejs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11165,
+						"buffer_size": 4100,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4276,
-								4276
+								4100,
+								4100
 							]
 						],
 						"settings":
@@ -1017,55 +729,231 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
-								"bh_tag_close"
+								"bh_tag_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
+							],
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 462.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "routes/routes.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7040,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6195,
+								6195
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
 							],
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 1287.0,
+						"translation.x": 0.0,
+						"translation.y": 1266.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 854,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										217,
+										227
+									],
+									[
+										369,
+										379
+									],
+									[
+										556,
+										566
+									],
+									[
+										724,
+										734
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close"
+							],
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
