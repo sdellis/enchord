@@ -27,7 +27,7 @@ exports.createSong = function(req, res) {
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
 		folder_id: '',
 		band_id: '',
-		isBand: ''
+		isBand: false
 	});
 	
 	if(!checkFields(song, res))

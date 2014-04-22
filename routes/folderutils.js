@@ -10,11 +10,11 @@ var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 //also make sure to check that it is the right user in each of the functions
 
 
-exports.getUserFolders = function(req, res) {
+exports.getUserFolders = function(req, res) { //can only get user's own folder
 	var authorid = getAuthorId(req);
 	var authorname = getAuthorName(req);
 	var folders = [];
-	
+
 	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
 		res.render('folderview.ejs', {
 			title: 'enchord', 
@@ -29,7 +29,7 @@ exports.getFolderSongs = function(req, res) {
 	var folderid = req.params._id;
 	folderSchema.findById(folderid, function(err, docs) {
 		var foldername = docs.name;
-		songSchema.find({folder_id: folderid}, function(err, docs) {
+		songSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, docs) { //search author_id also
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
@@ -48,12 +48,12 @@ exports.getFolderSongs = function(req, res) {
 	});
 }
 
-//need to check that the user can add songs to this folder (user is in author_id array)
+//need to check that the user can add songs to this folder
 exports.addSongToFolder = function(req, res) {
 	var songid = req.params.songid;
 	var folderid = req.params.folderid;
 	
-	songSchema.update({_id: songid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
+	songSchema.update({_id: songid, author_id: getAuthorId(req)}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
@@ -69,7 +69,7 @@ exports.addSongToFolder = function(req, res) {
 exports.deleteSongFromFolder = function(req, res) {
 	var songid = req.params.songid;
 	
-	songSchema.update({_id: songid}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
+	songSchema.update({_id: songid, author_id: getAuthorId(req)}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
@@ -108,7 +108,7 @@ exports.makeFolder = function(req, res) {
 
 //maybe make it similar to how editSong works? also later just make an editFolder page to have option to share
 //folder sharing is ONLY FOR BANDS. What it means to share a folder: others can view, edit songs, add songs to the folder
-exports.shareFolder = function(req, res) {
+/*exports.shareFolder = function(req, res) {
 	var newuser = req.params.userid;
 	var folderid = req.params.folderid;
 	
@@ -131,12 +131,12 @@ exports.shareFolder = function(req, res) {
 			return;
 		});	
 	});
-}
+}*/
 
 exports.renameFolder = function(req, res) {
 	var folderid = req.params.folderid;
 	
-	folderSchema.update({_id: folderid}, {name: req.params.name}, function(err, numberAffected, rawResponse) {
+	folderSchema.update({_id: folderid, author_id: getAuthorId(req)}, {name: req.params.name}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error', hasError: true});
@@ -157,14 +157,14 @@ exports.renameFolder = function(req, res) {
 exports.deleteFolder = function(req, res) {
 	var folderid = req.params.folderid;
 	
-	songSchema.update({folder_id: folderid}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
+	songSchema.update({folder_id: folderid, author_id: getAuthorId(req)}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error', hasError: true});
 			return;
 		}
 		console.log('success edit');
-		folderSchema.remove({_id: folderid}, function(err) {
+		folderSchema.remove({_id: folderid, author_id: getAuthorId(req)}, function(err) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error', hasError: true});
