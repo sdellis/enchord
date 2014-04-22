@@ -68,6 +68,7 @@ enchordControllers.controller('ProfileController', [
 		$scope.pageSize = 10;
 		$scope.Side = Side;
 		$scope.usersongs = [];
+		$scope.userfolders = [];
 		$scope.init = function() {
 			Side.setPagetype('default');
 			$http({
@@ -76,6 +77,21 @@ enchordControllers.controller('ProfileController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.usersongs = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+			$http({
+				method  : 'GET',
+				url     : '/myfolders'
+			}).success(function(data) {
+				console.log(data);
+				$scope.userfolders = data.userfolders;
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -660,7 +676,46 @@ enchordControllers.controller('BandViewController', [
 			});
 		}
 	}]);
+enchordControllers.controller('FolderController', [
+	'$scope', 
+	'$routeParams', 
+	'$http', 
+	'$window',
+	'$location',
+	'$sce',
+	'Side',
+	function($scope, $routeParams, $http, $window, $location, $sce, Side) {
+		$scope.folder = {};
+		$scope.userfolders = [];
+		$scope.init = function() {
+			$http({
+				method  : 'GET',
+				url     : '/myfolders'
+			}).success(function(data) {
+				console.log(data);
+				$scope.userfolders = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
 
+		$scope.createfolder = function() {
+			console.log("create " + $scope.folder.name);
+			$http({
+				method : 'GET',
+				url    : '/createfolder/' + $scope.folder.name
+			}).success(function(data){
+				console.log(data);
+				$window.location.href='/members';
+			});
+		}
+	}]);
 /* OLD CODE */
 /* front-end parser */
 // $scope.parse = function() {

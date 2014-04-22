@@ -16,12 +16,13 @@ exports.getUserFolders = function(req, res) { //can only get user's own folder
 	var folders = [];
 
 	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
-		res.render('folderview.ejs', {
-			title: 'enchord', 
-			isNew: false, 
-			authorName: authorname,
-			results: docs
-		});
+		// res.render('folderview.ejs', {
+		// 	title: 'enchord', 
+		// 	isNew: false, 
+		// 	authorName: authorname,
+		// 	results: docs
+		// });
+		res.send({userfolders: docs});
 	});
 }
 
@@ -101,7 +102,8 @@ exports.makeFolder = function(req, res) {
 		console.log('success folder saved');
 		console.log(folder);
 		
-		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: foldername, results: ''});
+		res.send({folder: docs});
+		// res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: foldername, results: ''});
 		return;
 	});
 }

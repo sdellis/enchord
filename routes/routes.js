@@ -211,7 +211,7 @@ module.exports = function(app, passport, db) {
 		//check this, maybe need folderid to check????
 		app.get('/deletesongfromfolder/:songid', isLoggedIn, folderutils.deleteSongFromFolder);
 		
-		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
+		app.get('/createfolder/:name', isLoggedIn, folderutils.makeFolder);
 		
 		//app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
