@@ -567,6 +567,25 @@ function checkFields(song, res) {
 	return true;
 }
 
+exports.getUserInfo = function(req, res) {
+	if (!req.isAuthenticated()) {
+		res.send({
+			username: undefined,
+			id: undefined
+		});
+	} else {
+		var userid = getAuthorId(req);
+		var username = getAuthorName(req);
+
+		var user = {
+			username: username,
+			id: userid
+		};
+
+		res.send(user);
+	}
+}
+
 function getAuthorId(req) {
 	var id;
 	if (req.user.local.email) {
