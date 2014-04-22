@@ -8,6 +8,7 @@ enchord.config(function($locationProvider, $routeProvider) {
     .when('/search/:query', {templateUrl: 'partials/search'})
     .when('/createband', {templateUrl: 'partials/band_create'})
     .when('/editband/:_id', {templateUrl: 'partials/band_edit'})
+    .when('/viewband/:_id', {templateUrl: 'partials/band_view'})
     .when('/createsong', {templateUrl: 'partials/editsong'})
     .when('/editsong/:_id', {templateUrl: 'partials/editsong'})
     .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})
@@ -23,11 +24,21 @@ enchord.factory('Side', function(){
   };
 });
 
-enchord.run(['$rootScope', function($rootScope, $routeProvider){
-	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		$route.reload();
-	});
-}]);
+// for pagination
+enchord.filter('startFrom', function() {
+	return function(input, start) {
+		return function(input, start) {
+			start = +start;
+			return input.slice(start);
+		}
+	}
+});
+
+// enchord.run(['$rootScope', function($rootScope, $routeProvider){
+// 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
+// 		$route.reload();
+// 	});
+// }]);
  
 // enchord.controller('ctrl', function($scope){});
 

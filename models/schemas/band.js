@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('band', {
-	band_name: String,
-	band_members: [String],
-	leader: String
+	name: String,
+	members: [{id: String, name: String}],
+	leader: {id: String. name: String}
 });

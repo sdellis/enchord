@@ -1,22 +1,23 @@
-<aside class="right-side" ng-controller="ProfileController" ng-init="init()">
+<aside class="right-side" ng-controller="BandViewController" ng-init="init()">
     <section class="content-header">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">My Library</li>
+            <li class="active">This Band Name</li>
+            <li class="active">Active Folder Name</li>
         </ol>
     </section>
     <table class="table">
         <thead>
             <tr>
-                <th style="max-width: 10px;"></th>
-                <th style="max-width: 5px;"></th>
+                <th></th>
+                <th></th>
                 <th>Song</th>
                 <th>Artist</th>
                 <th>Genre</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
+        <tr data-ng-repeat="song in usersongs">
                 <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
                 <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
@@ -24,12 +25,5 @@
                 <td>{{ song.genre }}</td>
             </tr>
         </tbody>
-        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
-            Previous
-        </button>
-            {{currentPage+1}}/{{numberOfPages()}}
-        <button ng-disabled="currentPage >= data.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
-            Next
-        </button>
     </table>
 </aside>
