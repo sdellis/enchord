@@ -1,0 +1,10 @@
+<html ng-app="enchord">
+	<% include head.ejs %>
+<body ng-controller='ProfileController'>
+	<div ng-switch on="pagetype">
+		<div ng-switch-default><ng-include src="libraryurl"></ng-include></div>
+		<div ng-switch-when="search">2</div>
+	</div>
+	<button ng-click="search()">about</a>
+</body>
+</html>

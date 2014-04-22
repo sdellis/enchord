@@ -254,7 +254,7 @@ exports.deleteBand = function(req, res) {
 	});
 
 	//delete band
-	bandSchema.remove({_id: req.params._id} function(err) {
+	bandSchema.remove({_id: req.params._id}, function(err) {
 		if (err) {
 			res.status(500).json({message: 'Internal server error: Cannot delete band', hasError: true});
 		}

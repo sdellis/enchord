@@ -45,9 +45,16 @@
                 </div>
             </nav>
         </header>
-        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongEditController" ng-init="init('<%= _id %>')">
-            <% include side_editsong.ejs %>
-            <% include partial_editsong.ejs %>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <div ng-switch on="Side.pagetype()">
+                <div ng-switch-default><% include side_default.ejs %></div>
+                <div ng-switch-when="search"><% include side_search.ejs %></div>
+                <div ng-switch-when="band"><% include side_band.ejs %></div>
+                <div ng-switch-when="viewband"><% include side_viewband.ejs %></div>
+                <div ng-switch-when="createsong"><% include side_editsong.ejs %></div>
+                <div ng-switch-when="editsong"><% include side_editsong.ejs %></div>
+            </div>
+            <div ng-view/>
         </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>

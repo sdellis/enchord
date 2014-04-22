@@ -1,4 +1,4 @@
-<aside class="left-side sidebar-offcanvas" ng-controller="SongEditController" ng-init="init()">
+<aside class="left-side sidebar-offcanvas">
     <section class="sidebar">
 
         <div class="user-panel">
@@ -22,7 +22,7 @@
 
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="#/createsong">
+                <a href="/members/createsong">
                     <i class="fa fa-plus"></i> <span>Create a Song</span>
                 </a>
             </li>
@@ -35,8 +35,8 @@
 
                     <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" /><br>
 
-                    <input style="margin-left:10px;" type="radio" name="scope" value="public">&nbsp;&nbsp;&nbsp;Public<br>
-                    <input style="margin-left:10px; margin-bottom: 30px;" type="radio" name="scope" value="private" >&nbsp;&nbsp;&nbsp;Private
+                    <input style="margin-left:10px;" type="radio" name="scope" ng-model="song.pub" ng-value=true>&nbsp;&nbsp;&nbsp;Public<br>
+                    <input style="margin-left:10px; margin-bottom: 30px;" type="radio" name="scope" ng-model="song.pub" ng-value=false >&nbsp;&nbsp;&nbsp;Private
 
 
                     <button ng-click="createsong()" class="button" ng-show="isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
@@ -50,6 +50,4 @@
         </ul>
 
     </section>
-</aside>
-<script src="/js/AdminLTE/app.js" type="text/javascript"></script> 
-<script src="/js/AdminLTE/dashboard.js" type="text/javascript"></script> 
+</aside> 
