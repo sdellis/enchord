@@ -108,7 +108,7 @@ exports.isAuthor = function(req, res, next) {
 			}
 			else {
 				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)};
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
 					if (isInBand == -1) {
 						res.redirect('/viewsong/' + id);
 					}
@@ -145,7 +145,7 @@ exports.loadSongView = function(req, res) {
 			}
 			else {
 				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)};
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
 					if (isInBand == -1) {
 						isAuthor = false;
 					}
