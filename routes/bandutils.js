@@ -18,7 +18,7 @@ exports.createBand = function(req, res) {
 	var username = utils.getUsername(req);
 
 	var newBand = new bandSchema( {
-		name: req.body.bandname;
+		name: req.body.bandname,
 		leader: {id: id, name: username}
 	});
 	newBand.member.push({id: id, name: username});
@@ -166,7 +166,7 @@ function findIndexOfMember(array, name) {
 exports.importFolder = function(req, res) {
 	var newFolder = new folderSchema( {
 		isBand: true,
-		band_id: req.params.bandid;
+		band_id: req.params.bandid
 	});
 
 	newFolder.save(function(err, docs) {

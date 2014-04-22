@@ -187,7 +187,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
 		
-		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
+		//app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
 		app.get('/renamefolder/:folderid&:name', isLoggedIn, folderutils.renameFolder);
 		
