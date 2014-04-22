@@ -3,17 +3,17 @@ var enchord = angular.module('enchord', ['ngRoute', 'enchordControllers']);
  
 enchord.config(function($locationProvider, $routeProvider) {
   // $locationProvider.html5Mode(true);
-  $routeProvider
-    .when('/', { templateUrl: 'partials/library'})
-    .when('/search/:query', {templateUrl: 'partials/search'})
-    .when('/createband', {templateUrl: 'partials/band_create'})
-    .when('/editband/:_id', {templateUrl: 'partials/band_edit'})
-    .when('/viewband/:_id', {templateUrl: 'partials/band_view'})
-    .when('/createsong', {templateUrl: 'partials/editsong'})
-    .when('/editsong/:_id', {templateUrl: 'partials/editsong'})
-    .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})
-    // .when('/about', { templateUrl: 'partials/about'})
-    .otherwise({redirectTo:'/'});
+  // $routeProvider
+    // .when('/', { templateUrl: 'partials/library'})
+    // .when('/search/:query', {templateUrl: 'partials/search'})
+    // .when('/createband', {templateUrl: 'partials/band_create'})
+    // .when('/editband/:_id', {templateUrl: 'partials/band_edit'})
+    // .when('/viewband/:_id', {templateUrl: 'partials/band_view'})
+    // .when('/createsong', {templateUrl: 'partials/editsong'})
+    // .when('/editsong/:_id', {templateUrl: 'partials/editsong'})
+    // .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})
+    // // .when('/about', { templateUrl: 'partials/about'})
+    // .otherwise({redirectTo:'/'});
 });
 
 enchord.factory('Side', function(){
@@ -32,7 +32,7 @@ enchord.filter('startFrom', function() {
 	}
 });
 
-// enchord.run(['$rootScope', function($rootScope, $routeProvider){
+// enchord.run(['$rootScope', '$route', '$window', function($rootScope, $route, $window, $routeProvider){
 // 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 // 		$route.reload();
 // 	});

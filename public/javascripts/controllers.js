@@ -61,12 +61,14 @@ enchordControllers.controller('ProfileController', [
 	'$scope', 
 	'$http', 
 	'$location',
+	'$route',
 	'Side',
-	function($scope, $http, $location, Side){
+	function($scope, $http, $location, $route, Side){
 		$scope.currentPage = 0;
 		$scope.pageSize = 10;
 		$scope.Side = Side;
 		$scope.usersongs = [];
+		$scope.userfolders = [];
 		$scope.init = function() {
 			Side.setPagetype('default');
 			$http({
@@ -75,6 +77,21 @@ enchordControllers.controller('ProfileController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.usersongs = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+			$http({
+				method  : 'GET',
+				url     : '/myfolders'
+			}).success(function(data) {
+				console.log(data);
+				$scope.userfolders = data.userfolders;
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -329,12 +346,13 @@ enchordControllers.controller('SongEditController', [
 			return $sce.trustAsHtml($scope.song.result);
 		}
 
-		$scope.init = function() {
-			var _id = $routeParams._id;
-			if(_id == undefined)
-				Side.setPagetype("createsong");
-			else
-				Side.setPagetype("editsong");
+		// $scope.init = function() {
+		// 	var _id = $routeParams._id;
+		$scope.init = function(_id) {
+			// if(_id == undefined)
+			// 	Side.setPagetype("createsong");
+			// else
+			// 	Side.setPagetype("editsong");
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -344,7 +362,7 @@ enchordControllers.controller('SongEditController', [
 					console.log(data);
 					if (data.song == undefined) { // if song does not exist
 						console.log("Song not found");
-						$location.url('createsong');
+						$window.location.href='/members/createsong';
 						return;
 					}
 					$scope.song = data.song;
@@ -390,8 +408,8 @@ enchordControllers.controller('SongEditController', [
 				
 				// go to edit page
 				$scope.isNew = false;
-				var url = 'editsong/' + data.song._id;
-				$location.url(url);
+				$window.location.href='/members/editsong/' + data.song._id;
+				// $location.url(url);
 
 				//$scope.song = data.song;
 				//$scope.message = data.message;
@@ -424,7 +442,7 @@ enchordControllers.controller('SongEditController', [
 				$scope.isNew = data.isNew;
 				$scope.songEditForm.$setPristine();
 				if(redirect)
-					$location.url('/');
+					$window.location.href = '/members';
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -446,7 +464,7 @@ enchordControllers.controller('SongEditController', [
 				console.log(data);
 				if (data.isDeleted == true) {
 					// redirect to different page later
-					$location.url('/');
+					$window.location.href = '/members';
 				}
 				$scope.message = data.message;
 				$scope.hasError = data.hasError;
@@ -658,7 +676,46 @@ enchordControllers.controller('BandViewController', [
 			});
 		}
 	}]);
+enchordControllers.controller('FolderController', [
+	'$scope', 
+	'$routeParams', 
+	'$http', 
+	'$window',
+	'$location',
+	'$sce',
+	'Side',
+	function($scope, $routeParams, $http, $window, $location, $sce, Side) {
+		$scope.folder = {};
+		$scope.userfolders = [];
+		$scope.init = function() {
+			$http({
+				method  : 'GET',
+				url     : '/myfolders'
+			}).success(function(data) {
+				console.log(data);
+				$scope.userfolders = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
 
+		$scope.createfolder = function() {
+			console.log("create " + $scope.folder.name);
+			$http({
+				method : 'GET',
+				url    : '/createfolder/' + $scope.folder.name
+			}).success(function(data){
+				console.log(data);
+				$window.location.href='/members';
+			});
+		}
+	}]);
 /* OLD CODE */
 /* front-end parser */
 // $scope.parse = function() {

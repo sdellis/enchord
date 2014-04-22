@@ -103,6 +103,32 @@ module.exports = function(app, passport, db) {
 			});			
 		});
 
+		app.get('/members/createsong', isLoggedIn, function(req, res){
+			res.render('editsong.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: '',
+				isNew: true
+			});
+		});
+
+		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){
+			res.render('editsong.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: req.params._id,
+				isNew: false
+			});
+		});
+
+		app.get('/viewsong/:_id', function(req, res){
+			res.render('viewsong.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: req.params._id
+			});
+		});
+
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
 		app.get('/auth/facebook/callback', passport.authenticate('facebook', {
@@ -139,7 +165,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);
 
-		app.get('/viewsong/:_id', utils.loadSongView);
+		// app.get('/viewsong/:_id', utils.loadSongView);
 
 		app.get('/downloadsongtxt/:_id', utils.downloadSongTxt);
 
@@ -185,7 +211,7 @@ module.exports = function(app, passport, db) {
 		//check this, maybe need folderid to check????
 		app.get('/deletesongfromfolder/:songid', isLoggedIn, folderutils.deleteSongFromFolder);
 		
-		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
+		app.get('/createfolder/:name', isLoggedIn, folderutils.makeFolder);
 		
 		//app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang='en' ng-app='enchord'>
+    <head>
+        <% include head.ejs %>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+        <style type="text/css">
+            body {
+                font-family: avenir;
+            }
+        </style>
+    </head>
+
+    <body class="skin-black">
+        <header class="header">
+            <a href="/" class="logo" style="font-family:avenir;">
+                Enchord
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#"><i class="fa fa-cogs"></i>  Account Settings</a></li>
+                        <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <aside class="left-side sidebar-offcanvas">
+                <section class="sidebar">
+
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="img/feature2.png" class="img-circle" alt="User Image" />
+                        </div>
+                        <div class="pull-left info" style="padding-top: 8%;">
+                            <p>Hello, username</p>
+                        </div>
+                    </div>
+
+                    <form action="#" method="GET" class="sidebar-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>
+
+                    <ul class="sidebar-menu">
+                        <li class="active">
+                            <a href="createsong.html">
+                                <i class="fa fa-plus"></i> <span>Create a Song</span>
+                            </a>
+                        </li>
+                        
+                        <form action="POST" class="sidebar-form" name="songEditForm" novalidate>
+                                <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Title" /><br>
+
+                                <input type="text" name="artist" class="form-control" placeholder="Artist" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
+
+                                <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" /><br>
+
+
+                                <button class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+
+                                <button class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button>
+
+                                <button class="button" ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
+                        </form>
+                    </ul>
+
+                </section>
+            </aside>
+
+            <aside class="right-side">
+                
+                
+            </aside>
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js/AdminLTE/app.js" type="text/javascript"></script>        
+        <script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>        
+    </body>
+</html>
