@@ -1,4 +1,4 @@
-var fs = require('fs');
+//var fs = require('fs');
 //var S = require('string');
 
 var sections;
@@ -128,29 +128,39 @@ function checkBracketErrors(oneLine, linenum){
 	if(state !== '') return 'A \'' + state + '\' bracket on line ' + linenum + ' is not closed.';
 }
 //handle chord in []. i is position of [ on oneLine
-function parseChord(oneLine, i){
-	//pad chord line at least up to length of lyric line
-	while(chordLine.length < lyricLine.length)
-		chordLine += ' ';
+function parseChord(oneLine, i,chordAlign){
+	
 	j = i;
 	var newChord = '';
 	while(oneLine[++j] !== ']')
 		newChord += oneLine[j];
 	//later, narrow what is allowed as a chord
-	
+	if(chordAlign === "float"){
+		//pad chord line at least up to length of lyric line
+		while(chordLine.length < lyricLine.length)
+			chordLine += ' ';
 		chordLine += newChord + ' ';
+	}
+	else //chordAlign === "inline"
+		lyricLine += newChord
 	return j-i;
 		
 }
 //handle chord comment in <>. i is position of < on oneLine
-function parseChordComment(oneLine, i){
-	//pad chord line at least up to length of lyric line
-	while(chordLine.length < lyricLine.length)
-		chordLine += ' ';
+function parseChordComment(oneLine, i,chordAlign){
+
 	j = i;
+	var newChordComment = '';
 	while(oneLine[++j] !== '>')
-		chordLine += oneLine[j];
-	chordLine += ' ';
+		newChordComment += oneLine[j];
+	if(chordAlign === "float"){
+		//pad chord line at least up to length of lyric line
+		while(chordLine.length < lyricLine.length)
+			chordLine += ' ';
+		chordLine += newChordComment + ' ';
+	}
+	else //chordAlign === "inline"
+		lyricLine += newChordComment
 	return j-i;
 }
 
@@ -195,10 +205,6 @@ case 'end italic': case 'endital': case 'end ital':
 // do something with font variable later
 function parseLine(oneLine, linenum, font) {
 	oneLine = oneLine.replace(/\r/g,"");
-	if(linenum === 1 && /^order:/i.test(oneLine)){
-		setOrder(oneLine);
-		return;
-	}
 	
 	var bErr = checkBracketErrors(oneLine, linenum);
 	if(bErr) {
@@ -207,6 +213,12 @@ function parseLine(oneLine, linenum, font) {
 		return;
 	}
 	//Presume no bracketing errors from here on out.
+	
+	if(linenum === 1 && /^order:/i.test(oneLine)){
+		setOrder(oneLine);
+		return;
+	}
+	
 	
 	if(/^\s*\{.*\}\s*$/.test(oneLine)){ //just single option
 		parseOption(oneLine.trim(), 0);
@@ -220,15 +232,19 @@ function parseLine(oneLine, linenum, font) {
 		return;
 	}
 	
+	var chordAlign = "float";
+	if(oneLine.charAt(0) = '%')
+		chordAlign = "inline";
+	
 	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
 	var len = oneLine.length;
 	for (var i = 0; i < len; i++) {
 		switch(oneLine[i]){
 		case '[':  
-			i+=parseChord(oneLine, i);
+			i+=parseChord(oneLine, i,chordAlign);
 			break;
 		case '<':
-			i+=parseChordComment(oneLine, i); 
+			i+=parseChordComment(oneLine, i,chordAlign); 
 			break;
 		case '{':
 			i+=parseOption(oneLine, i);
