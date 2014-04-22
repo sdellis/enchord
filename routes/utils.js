@@ -459,7 +459,7 @@ function getMySongs(req, res, callback) {
 			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
 			return;
 		}
-		console.log(docs);
+		// console.log(docs);
 		callback(docs);
 		// res.send({usersongs: array});
 		// res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: authorid, message: 'Search results'});

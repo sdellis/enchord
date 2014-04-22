@@ -27,12 +27,12 @@ module.exports = function(app, passport, db) {
 		// 	res.render('home.ejs');
 		// })
 		
-		app.get('/about', function(req, res){
-			res.render('about.ejs', {title:"enchord"});
-		});
+		// app.get('/about', function(req, res){
+		// 	res.render('about.ejs', {title:"enchord"});
+		// });
 
 		app.get('/login', protectLogin, function(req, res){
-			res.render('login.ejs', {title: "enchord", message: req.flash('loginMessage')});
+			res.render('login', {title: "enchord", message: req.flash('loginMessage')});
 		});
 		app.post('/login', passport.authenticate('local-login', {
 			successRedirect: '/members', 
@@ -40,7 +40,7 @@ module.exports = function(app, passport, db) {
 			failureFlash : true // allow flash messages
 		}));
 		app.get('/signup', protectLogin, function(req, res){
-			res.render('signup.ejs', {title: "enchord", message: req.flash('signupMessage')});
+			res.render('signup', {title: "enchord", message: req.flash('signupMessage')});
 		});
 		app.post('/signup', passport.authenticate('local-signup', {
 			successRedirect: '/members',
@@ -49,7 +49,7 @@ module.exports = function(app, passport, db) {
 		}));
 
 		app.get('/forgot', function(req, res) {
-			res.render('forgot.ejs', {
+			res.render('forgot', {
 				title: 'enchord',
 				user: req.user,
 				messageerror: req.flash('error'),
@@ -89,15 +89,19 @@ module.exports = function(app, passport, db) {
 		app.get('/members', isLoggedIn, function(req, res) {
 			utils.getMySongs(req, res, function(usersongs) {
 				console.log("In routes");
-				console.log(usersongs);
+				// console.log(usersongs);
 				if (usersongs != undefined) {
-					res.render('index.ejs', {
+					folderutils.getFoldersAndSongs(req, res, function(userfolders) {
+						console.log(userfolders);
+						res.render('index.ejs', {
 						title:"Members",
 						isLoggedIn: req.isAuthenticated, 
 						user: req.user, 
 						username: utils.getUsername(req), 
 						usersongs: usersongs, 
+						userfolders: userfolders,
 						message: req.flash('success')
+						});
 					});
 				}
 			});			
@@ -128,6 +132,18 @@ module.exports = function(app, passport, db) {
 				_id: req.params._id
 			});
 		});
+
+		app.get('/searchresults/:query', function(req, res){
+			res.render('results.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				query: req.params.query
+			});
+		});
+
+		app.get('/search', utils.searchSong);
+		
+		app.get('/advsearch', utils.advancedSearch);
 
 		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
@@ -192,10 +208,6 @@ module.exports = function(app, passport, db) {
 		/*app.get('/search', function(req, res) {
 			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
 		});*/
-		
-		app.get('/search', utils.searchSong);
-		
-		app.get('/advsearch', utils.advancedSearch);
 		
 		app.get('/artist/:query', utils.getArtistSongs);
 		
@@ -280,7 +292,7 @@ module.exports = function(app, passport, db) {
 //     delete req.session.reset;
 //     res.end('password reset');
 // });
-		app.get('/test', function(req, res){res.render('test.ejs');});
+		// app.get('/test', function(req, res){res.render('test.ejs');});
 	});
 }
 

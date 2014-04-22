@@ -77,33 +77,50 @@
 
                     <ul class="sidebar-menu">
                         <li class="active">
-                            <a href="index.html">
-                                <i class="fa fa-backward"></i> <span>Back</span>
+                            <a href="viewband.html">
+                                <i class="fa fa-backward"></i> <span>Back to Band</span>
                             </a>
                         </li>
-                        <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Song Info</h5>
-                        <li><a href="#">Song Name</a></li>
-                        <li><a href="#">Song Artist</a></li>
-                        <li><a href="#">Song Author</a></li>
-                        <li><a href="#">Song Genre</a></li>
-                        <li><a href="#"><i class="fa fa-star" style="color:yellow;"></i> 50</a></li>
-                        <form class="sidebar-form">
-
-                            <button class="button" style="background-color: rgb(77, 144, 254) !important;
-                            background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;"><i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy to My Library</button>
-
-                              <button class="button" style="background-color: rgb(77, 144, 254) !important;
-                            background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Song</button>
-
-                            <button class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-download"></i>&nbsp;&nbsp;Download as PDF</button>
-
-                            <button class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-download"></i>&nbsp;&nbsp;Download as .txt</button>
-                        </form>
                     </ul>
                 </section>
             </aside>
 
             <aside class="right-side">
+            <h2 style="padding-left: 20px;">Edit Folder</h2>
+            <form action="#" method="get" style="padding-left: 50px; padding-top: 20px; max-width:475px;">
+                <h4> Folder Info </h4>  
+                <input type="text" name="foldername" class="form-control" placeholder="Folder Name"/><br>
+                <input type="text" name="owner" class="form-control" placeholder="user.username" readonly/><br>
+                
+                <h4> Songs</h4>
+
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song1" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song2" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song3" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song4" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+
+                <button class="button" style="background-color: rgb(77, 144, 254) !important;
+                background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important; margin-top: 20px; margin-bottom: 50px;">Update Folder</button>
+
+                <button class="button" style="background-color: rgb(200, 80, 70) !important;
+                background-image: -webkit-linear-gradient(top,rgb(250, 80, 70),rgb(250, 80, 80)) !important; margin-top: 20px; margin-bottom: 50px;"><i class="fa fa-times"></i> Delete Folder</button>
+            </form>
+            
                 
                 
             </aside>
