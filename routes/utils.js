@@ -27,7 +27,7 @@ exports.createSong = function(req, res) {
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
 		folder_id: '',
 		band_id: '',
-		isBand: ''
+		isBand: false
 	});
 	
 	if(!checkFields(song, res))
@@ -89,8 +89,6 @@ exports.loadSongEdit = function(req, res) {
 	});
 }
 
-//EDIT THIS--------------------------------------------------------------------------------------------------------
-
 exports.isAuthor = function(req, res, next) {
 	var id = req.params._id;
 	
@@ -125,7 +123,6 @@ exports.isAuthor = function(req, res, next) {
 	});
 }
 
-//EDIT THIS--------------------------------------------------------------------------------------------------------------
 exports.loadSongView = function(req, res) {
 	var id = req.params._id;
 	
@@ -274,70 +271,6 @@ exports.deleteSong = function(req, res) {
 
 };
 
-/*
-exports.searchSong = function(req, res) {
-	var query = {};
-	var query1 = {};
-	var query2 = {}; //break into 2 queries for easy or statement for Both
-	if (req.query.query == undefined) {
-		query['search_string'] = '';
-	}
-	else {
-		query['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
-	}
-	if (req.query.type == 'Global' || req.query.type == undefined) {
-		query['pub'] = true;
-	}
-	else if (req.query.type == 'Local') {
-		query['author_id'] = getAuthorId(req);
-	}
-	else if (req.query.type == 'Both') {
-		query1['search_string'] = query['search_string'];
-		query2['search_string'] = query['search_string'];
-		query1['pub'] = true;
-		query2['pub'] = false;
-		query2['author_id'] = getAuthorId(req);
-		query = {};
-		query['$or'] = [query1, query2];
-	}
-
-	// you should put this on top
-	var type;
-	if (req.query.type == undefined)
-		type = 'Global';
-	else
-		type = req.query.type;
-	console.log(query);
-
-	var originalQuery = {
-		query: req.query.query,
-		title: "",
-		artist: "",
-		genre: "",
-		author: "",
-		type: type
-	};
-	var array = [];
-	if (query['search_string'] == '') {
-		res.render('search.ejs', {
-			title: 'enchord', 
-			isNew: false, 
-			results: [], 
-			query: query, 
-			type: type, 
-			message: 'Empty query', 
-			isLoggedIn: req.isAuthenticated()
-		});
-		return;
-	}
-	else {
-		songSchema.find(query, function(err, docs) {
-			searchResults(err, docs, originalQuery, req, res);
-		});
-	}
-}*/
-
-
 exports.searchSong = function(req, res) {
 	var query1 = {isBand: false}; //do the global search; if song is in band, it is not searchable
 	var query2 = {isBand: false}; //break into 2 queries for easy or statement for Both
@@ -350,7 +283,7 @@ exports.searchSong = function(req, res) {
 		query2['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
 	}
 	query1['pub'] = true;
-	query2['pub'] = false;
+	//query2['pub'] = false;
 	if (req.isAuthenticated()) {
 		query2['author_id'] = getAuthorId(req);
 	}
@@ -427,7 +360,7 @@ exports.advancedSearch = function(req, res) {
 	}
 	
 	query1['pub'] = true;
-	query2['pub'] = false;
+	//query2['pub'] = false;
 	if (req.isAuthenticated()) {
 		query2['author_id'] = getAuthorId(req);
 	}
@@ -517,8 +450,6 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
-//currently searches whole database each time
-
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
 	console.log(authorid);
@@ -557,53 +488,6 @@ exports.getSong = function(req, res) {
 	});
 }
 
-//remake the songs so that they are updated to have new info
-/*
-exports.remakeDB = function(req, res) {
-	var array = [];
-	songSchema.find(function(err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
-			return;
-		}
-		console.log(docs);
-		array = docs;
-		for (var i = 0; i < array.length; i++) {
-			var song = new songSchema({
-			title: array[i].title,
-			title_lower: array[i].title.toLowerCase(),
-			artist: array[i].artist,
-			artist_lower: array[i].artist.toLowerCase(),
-			genre: array[i].genre,
-			genre_lower: array[i].genre.toLowerCase(),
-			data: array[i].data,
-			author_lower: array[i].author_name.toLowerCase(),
-			pub: array[i].pub,
-			search_string: array[i].title.toLowerCase().concat(' ', array[i].artist.toLowerCase()).split(' ')
-			});
-		
-		
-			songSchema.update({_id: array[i]._id}, {title: song.title, title_lower: song.title_lower, artist: song.artist, 
-			artist_lower: song.artist_lower, genre: song.genre, genre_lower: song.genre_lower, data: song.data, pub: song.pub, 
-			search_string: song.search_string}, function(err, numberAffected, rawResponse) {
-				if (err) {
-					console.log(err);
-					res.status(500).json({message: 'Internal server error: Cannot edit', hasError: true});
-					return;
-				}
-				console.log('success edit');
-				res.render('search.ejs', {title: 'enchord', isNew: false, results: array, query: ' ', message: 'Search results',
-					isLoggedIn: req.isAuthenticated()});
-				return;
-			});	
-		
-		}
-		return;
-	});
-
-}*/
-
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
 		console.log('empty title');
@@ -616,6 +500,25 @@ function checkFields(song, res) {
 		return false;
 	}
 	return true;
+}
+
+exports.getUserInfo = function(req, res) {
+	if (!req.isAuthenticated()) {
+		res.send({
+			username: undefined,
+			id: undefined
+		});
+	} else {
+		var userid = getAuthorId(req);
+		var username = getAuthorName(req);
+
+		var user = {
+			username: username,
+			id: userid
+		};
+
+		res.send(user);
+	}
 }
 
 function getAuthorId(req) {

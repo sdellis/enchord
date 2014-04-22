@@ -187,7 +187,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/makefolder/:name', isLoggedIn, folderutils.makeFolder);
 		
-		app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
+		//app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
 		app.get('/renamefolder/:folderid&:name', isLoggedIn, folderutils.renameFolder);
 		
@@ -203,6 +203,10 @@ module.exports = function(app, passport, db) {
 		
 		//prevent access where needed
 		app.get('/editband/:_id', bandutils.isBandLeader, bandutils.loadBandEdit);
+
+		//make sure only band leader deletes
+		app.get('/deleteband', bandutils.deleteBand);
+		app.get('/importFolder', bandutils.importFolder);
 
 		//app.get('/viewband/:_id', bandutils.loadBandView);
 
