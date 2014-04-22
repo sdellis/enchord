@@ -111,5 +111,14 @@
                 </ul>
             </li>
         </ul>
+        <form class="sidebar-form" name="searchForm">
+            <div class="input-group" ng-controller="SearchController">
+                <input type="text" name="query" class="form-control" placeholder="Create a new folder..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                <input type="hidden" name="type" value="Both">
+                <span class="input-group-btn">
+                    <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+        </form>
     </section>
 </aside>
