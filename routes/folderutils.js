@@ -26,8 +26,17 @@ exports.getUserFolders = function(req, res) { //can only get user's own folder
 	});
 }
 
-exports.getFolderSongs = function(req, res) {
-	var folderid = req.params._id;
+function getMyFolders(req, res, callback) {
+	var authorid = getAuthorId(req);
+	var authorname = getAuthorName(req);
+	var folders = [];
+
+	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
+		callback(docs);
+	});
+}
+
+function getSongs(req, res, folderid, callback) {
 	folderSchema.findById(folderid, function(err, docs) {
 		var foldername = docs.name;
 		songSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, docs) { //search author_id also
@@ -36,16 +45,54 @@ exports.getFolderSongs = function(req, res) {
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
 				return;
 			}
-			console.log(docs);
-			res.render('foldersongs.ejs', {
-				title: 'enchord', 
-				isNew: false, 
-				folderName: foldername,
-				results: docs
-			});
+			// console.log(docs);
+			callback(docs);
 			return;
 		});
 		return;
+	});
+}
+
+exports.getUserFolders = function(req, res) {
+	getMyFolders(req, res, function(data){
+		res.send({userfolders: data});
+	})
+}
+
+exports.getFoldersAndSongs = function(req, res, callback) {
+	userfolders = [];
+	getMyFolders(req, res, function(data){
+		var i = 0;
+		// console.log(data);
+		for (var i in data) {
+			(function(i) {
+    			setTimeout(function() {
+	      			console.log(data[i]._id);
+					getSongs(req, res, data[i]._id, function(songs){
+					userfolders.push({folder: data[i], songs: songs});
+					console.log(i);
+					if (i == data.length - 1) {
+						console.log(userfolders);
+						callback(userfolders);
+					}
+				});
+    		}, i * 1000);
+  			})(i);
+			// console.log(folder[i]);
+		}
+	});
+}
+
+exports.getFolderSongs = function(req, res) {
+	var folderid = req.params._id;
+	getSongs(req, res, folderid, function(data){
+		// res.render('foldersongs.ejs', {
+		// 	title: 'enchord', 
+		// 	isNew: false, 
+		// 	folderName: foldername,
+		// 	results: data
+		// });
+		res.send({foldersongs: data});
 	});
 }
 
