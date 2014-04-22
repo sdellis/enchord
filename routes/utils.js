@@ -16,7 +16,7 @@ exports.createSong = function(req, res) {
 		title_lower: req.body.title.toLowerCase(),
 		artist: req.body.artist,
 		artist_lower: req.body.artist.toLowerCase(),
-		author_id: [getAuthorId(req)], //0th element will be original creator(won't matter too much), sharing only for bands
+		author_id: getAuthorId(req),
 		author_name: getAuthorName(req), //original creator
 		author_lower: getAuthorName(req).toLowerCase(),
 		genre: req.body.genre,
@@ -25,7 +25,9 @@ exports.createSong = function(req, res) {
 		pub: req.body.pub,
 		upvote: 0,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: ''
+		folder_id: '',
+		band_id: '',
+		isBand: ''
 	});
 	
 	if(!checkFields(song, res))
@@ -86,24 +88,44 @@ exports.loadSongEdit = function(req, res) {
 		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
 	});
 }
+
+//EDIT THIS--------------------------------------------------------------------------------------------------------
+
 exports.isAuthor = function(req, res, next) {
 	var id = req.params._id;
 	
 	var findsong = findSong(id, res, function(docs) {
 		if (req.isAuthenticated()) {
-			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-			//if (getAuthorId(req) == docs.author_id) {
-				return next();
-			} else {
-				// send message too?
-				res.redirect('/viewsong/' + id);
+		
+			if (docs['isBand'] == false) {
+				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+				if (getAuthorId(req) == docs.author_id) {
+					return next();
+				} else {
+					// send message too?
+					res.redirect('/viewsong/' + id);
+				}
 			}
+			else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					if (isInBand == -1) {
+						res.redirect('/viewsong/' + id);
+					}
+					else {
+						return next();
+					}
+				});
+			}
+		
+		
 		} else {
 			res.redirect('/login');
 		}
 	});
 }
 
+//EDIT THIS--------------------------------------------------------------------------------------------------------------
 exports.loadSongView = function(req, res) {
 	var id = req.params._id;
 	
@@ -113,12 +135,41 @@ exports.loadSongView = function(req, res) {
 		if (req.isAuthenticated()) {
 			isLoggedIn = true;
 			
-			if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-			//if (getAuthorId(req) == docs.author_id) {
+			if (docs['isBand'] == false) {
+				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+				if (getAuthorId(req) == docs.author_id) {
+					isAuthor = true;
+				} else {
+					isAuthor = false;
+				}
+			}
+			else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					if (isInBand == -1) {
+						isAuthor = false;
+					}
+					else {
+						isAuthor = true;
+					}
+				});
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+			/*
+			if (getAuthorId(req) == docs.author_id) {
 				isAuthor = true;
 			} else {
 				isAuthor = false;
-			}
+			}*/
 		} else {
 			isAuthor = false;
 			isLoggedIn = false;
@@ -288,8 +339,8 @@ exports.searchSong = function(req, res) {
 
 
 exports.searchSong = function(req, res) {
-	var query1 = {}; //do the global search
-	var query2 = {}; //break into 2 queries for easy or statement for Both
+	var query1 = {isBand: false}; //do the global search; if song is in band, it is not searchable
+	var query2 = {isBand: false}; //break into 2 queries for easy or statement for Both
 	if (req.query.query == undefined) {
 		query1['search_string'] = '';
 		query2['search_string'] = '';
@@ -356,8 +407,8 @@ exports.advancedSearch = function(req, res) {
 		qAuthor = req.query.author.toLowerCase();
 	console.log(qAuthor);
 	
-	var query1 = {};
-	var query2 = {};
+	var query1 = {isBand: false}; //if song belongs to a band, it is always not searchable
+	var query2 = {isBand: false};
 	
 	if (qTitle != '') {
 		query1['title_lower'] = qTitle;
@@ -415,11 +466,11 @@ exports.advancedSearch = function(req, res) {
 }
 
 exports.getArtistSongs = function(req, res) {
-	var query = {};
+	var query = {isBand: false};
 	query['artist_lower'] = req.params.query.toLowerCase();
 	query['pub'] = true;
 	
-	var queryprivate = {};
+	var queryprivate = {isBand: false};
 	queryprivate['pub'] = false;
 	if (req.isAuthenticated()) {
 		queryprivate['artist_lower'] = req.params.query.toLowerCase();
@@ -471,7 +522,7 @@ exports.getArtistSongs = function(req, res) {
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
 	console.log(authorid);
-	songSchema.find({author_id: authorid}, function(err, docs) {
+	songSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});

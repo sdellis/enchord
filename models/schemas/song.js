@@ -5,7 +5,7 @@ module.exports = mongoose.model('song', {
 	title_lower: String,
 	artist: String,
 	artist_lower: String,
-	author_id: [String],
+	author_id: String,
 	author_name: String,
 	author_lower: String,
 	genre: String,
@@ -18,5 +18,7 @@ module.exports = mongoose.model('song', {
 	//downvote: Number,
 	//rates: [{user_id: String, rating: Number}]
 	rates: [String],
-	folder_id: String
+	folder_id: String,
+	band_id: String,
+	isBand: Boolean
 });
