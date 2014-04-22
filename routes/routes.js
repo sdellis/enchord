@@ -204,6 +204,10 @@ module.exports = function(app, passport, db) {
 		//prevent access where needed
 		app.get('/editband/:_id', bandutils.isBandLeader, bandutils.loadBandEdit);
 
+		//make sure only band leader deletes
+		app.get('/deleteband', bandutils.deleteBand);
+		app.get('/importFolder', bandutils.importFolder);
+
 		//app.get('/viewband/:_id', bandutils.loadBandView);
 
 		//voting stuff

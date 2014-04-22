@@ -18,7 +18,7 @@ exports.createBand = function(req, res) {
 	var username = utils.getUsername(req);
 
 	var newBand = new bandSchema( {
-		name: req.body.bandname;
+		name: req.body.bandname,
 		leader: {id: id, name: username}
 	});
 	newBand.member.push({id: id, name: username});
@@ -163,10 +163,20 @@ function findIndexOfMember(array, name) {
 	return -1;
 }
 
+exports.findBandFolder = function(req, res) {
+	folderSchema.find({isBand: true, bandid: req.params._id}, function(err, folders) {
+		if (err) {
+			res.status(500).json({message: 'Internal server error: Cannot create song', hasError: true});
+		} else {
+			return {folder: folders};
+		}
+	})
+};
+
 exports.importFolder = function(req, res) {
 	var newFolder = new folderSchema( {
 		isBand: true,
-		band_id: req.params.bandid;
+		band_id: req.params.bandid
 	});
 
 	newFolder.save(function(err, docs) {
@@ -205,4 +215,49 @@ exports.importFolder = function(req, res) {
 		});
 	});
 	return {success: true};
+};
+
+exports.deleteBand = function(req, res) {
+	//delete songs related to band
+	songSchema.remove({isBand: true, band_id:req.params._id}, function(err) {
+		if (err) {
+			res.status(500).json({message: 'Internal server error: Cannot delete song', hasError: true});
+		}
+	});
+
+	//delete folders related to band
+	folderSchema.remove({isBand: true, band_id:req.params._id}, function(err) {
+		if (err) {
+			res.status(500).json({message: 'Internal server error: Cannot delete song', hasError: true});
+		}
+	});
+
+	//remove band from users
+	bandSchema.findById(req.params._id, function(err, band) {
+		if (err) {
+			res.status(500).json({message: 'Internal server error: Cannot find band', hasError: true});	
+		} else if (!band) {
+			return {success: false};
+		} else {
+			for (var i = 0; i < band.members.length; i++ ) {
+				userSchema.findById(band.members[i], function(err, mem) {
+					var index = mem.bands.indexOf(req.params._id);
+					mem.bands.splice(index, 1);
+					mem.save(function(err, mem) {
+						if (err) {
+							res.status(500).json({message: 'Internal server error: Cannot delete band from user', hasError: true});
+						}
+					});
+				});
+			}
+		}
+	});
+
+	//delete band
+	bandSchema.remove({_id: req.params._id} function(err) {
+		if (err) {
+			res.status(500).json({message: 'Internal server error: Cannot delete band', hasError: true});
+		}
+	});
+
 };
