@@ -1,7 +1,7 @@
 var bandSchema = require('../models/schemas/band');
 var userSchema = require('../models/schemas/user');
 var folderSchema = require('../models/schemas/folder');
-var bandSchema = require('../models/schemas/folder');
+var songSchema = require('../models/schemas/song');
 var utils = require('./utils');
 
 
@@ -164,5 +164,45 @@ function findIndexOfMember(array, name) {
 }
 
 exports.importFolder = function(req, res) {
-	
+	var newFolder = new folderSchema( {
+		isBand: true,
+		band_id: req.params.bandid;
+	});
+
+	newFolder.save(function(err, docs) {
+		var folderid = docs._id;
+		songSchema.find({folder_id: folderid}, function(err, songs) {
+			if (err) {
+				res.status(500).json({message: 'Internal server error: Cannot create song', hasError: true});
+				return {success:false};
+			}
+			for (var i = 0; i < songs.length; i++ ) {
+				var newSong = new songSchema({
+					title: songs[i].title,
+					title_lower: songs[i].title_lower,
+					artist: songs[i].artist,
+					artist_lower: songs[i].artist_lower,
+					author_id: undefined,
+					author_name: undefined, //original creator
+					author_lower: undefined,
+					genre: songs[i].genre,
+					genre_lower: songs[i].genre,
+					data: songs[i].data,
+					pub: false,
+					upvote: 0,
+					search_string: songs[i].search_string, //actually an array
+					folder_id: folderid,
+					band_id: req.params.bandid,
+					isBand: true
+				});
+				newSong.save(function(err, data) {
+					if (err) {
+						res.status(500).json({message: 'Internal server error: Cannot create song', hasError: true});
+						return {success:false};
+					}
+				})
+			}
+		});
+	});
+	return {success: true};
 };
