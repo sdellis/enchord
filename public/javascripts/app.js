@@ -27,10 +27,8 @@ enchord.factory('Side', function(){
 // for pagination
 enchord.filter('startFrom', function() {
 	return function(input, start) {
-		return function(input, start) {
-			start = +start;
-			return input.slice(start);
-		}
+		start = +start;
+		return input.slice(start);
 	}
 });
 

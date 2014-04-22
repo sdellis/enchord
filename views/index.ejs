@@ -46,7 +46,6 @@
             </nav>
         </header>
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <p>{{ Side.pagetype() }}</p>
             <div ng-switch on="Side.pagetype()">
                 <div ng-switch-default><% include side_default.ejs %></div>
                 <div ng-switch-when="search"><% include side_search.ejs %></div>
