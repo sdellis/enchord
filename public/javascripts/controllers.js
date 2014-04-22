@@ -569,6 +569,66 @@ enchordControllers.controller('BandController', [
 			});
 		}
 	}]);
+enchordControllers.controller('BandViewController', [
+	'$scope', 
+	'$http', 
+	'$location',
+	'Side',
+	function($scope, $http, $location, Side) {
+		$scope.user = {}
+		$scope.band = {}
+		$scope.init = function() {
+			Side.setPagetype('viewband');
+			// $http({
+			// 	method : 'GET',
+			// 	url    : '/search',
+			// 	params : { query : $scope.query }
+			// }).success(function(data) {
+			// 	console.log(data);
+			// 	$scope.globalresults = data.results.global;
+			// 	$scope.localresults = data.results.local;
+			// });
+			// $http({
+			// 	method : 'GET',
+			// 	url    : '/getuserinfo'
+			// }).success(function(data) {
+			// 	console.log(data);
+			// 	if (data.id == undefined) {
+			// 		$location.url('/');
+			// 		return
+			// 	}
+			// 	$scope.user.username = data.username;
+			// 	$scope.user.id = data.id;
+			// });
+			// if ($routeParams._id != undefined) {
+			// 	$http({
+			// 		method : 'GET',
+			// 		url    : '/findband/' + $scope.band._id
+			// 	}).success(function(data){
+			// 		console.log(data);
+			// 		$scope.band = data.band;
+			// 	});
+			// }
+			// TEMP
+			$http({
+				method  : 'GET',
+				url     : '/mysongs'
+			}).success(function(data) {
+				console.log(data);
+				$scope.usersongs = data.usersongs;
+				$scope.pagetype = "search";
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
+		}
+	}]);
+
 /* OLD CODE */
 /* front-end parser */
 // $scope.parse = function() {
