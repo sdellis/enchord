@@ -1,29 +1,18 @@
 <aside class="right-side" ng-controller="BandController" ng-init="init()">
             <h2 style="padding-left: 20px;">Edit Band</h2>
-            <form action="#" method="get" style="padding-left: 50px; padding-top: 20px; max-width:475px;">
+            <form style="padding-left: 50px; padding-top: 20px; max-width:475px;">
                 <h4> Band Info </h4>  
-                <input type="text" name="band-name" class="form-control" placeholder="Heemin and the Heartbreakers"/><br>
-                <input type="text" name="frontman" class="form-control" placeholder="Heemin" readonly/><br>
+                <input type="text" name="bandname" class="form-control" ng-model="band.name" /><br>
+                <input type="text" name="frontman" class="form-control" placeholder="{{band.leader.name}}" readonly/><br>
                 <h4> Band Members</h4>
-                <div style="margin-bottom:10px;">
-                    <input type="text" name="member1" class="form-control" placeholder="Eugene" style="display:inline-block;" readonly/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
-                </div>
-                <div style="margin-bottom:10px;">
-                    <input type="text" name="member1" class="form-control" placeholder="Matt" style="display:inline-block;" readonly/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
-                </div>
-                <div style="margin-bottom:10px;">
-                    <input type="text" name="member1" class="form-control" placeholder="Jessie" style="display:inline-block;" readonly/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
-                </div>
-                <div style="margin-bottom:10px;">
-                    <input type="text" name="member1" class="form-control" placeholder="Andrew" style="display:inline-block;" readonly/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+
+                <div style="margin-bottom:10px;" data-ng-repeat="member in band.members">
+                    <input type="text" class="form-control" placeholder="{{member.name}}" style="display:inline-block;" readonly/>
+                    <button ng-click="removemember('{{member.id}}')"class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
                 </div>
                 <div>                
-                    <input type="text" name="member1" class="form-control" placeholder="Add Username" style="display:inline-block;"/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-plus"></i></button>
+                    <input type="text" ng-model="newuser" class="form-control" placeholder="Add Username" style="display:inline-block;"/>
+                    <button ng-click="addmember(newuser)" class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-plus"></i></button>
                 </div>
                 <button class="button" style="background-color: rgb(77, 144, 254) !important;
 background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important; margin-top: 20px; margin-bottom: 50px;">Update Band</button>

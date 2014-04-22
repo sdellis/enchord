@@ -1,11 +1,11 @@
-<aside class="right-side">
+<aside class="right-side" ng-controller="ProfileController" ng-init="init()">
     <section class="content-header">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">My Library</li>
         </ol>
     </section>
-    <table class="table" ng-controller="ProfileController" ng-init="init()">
+    <table class="table">
         <thead>
             <tr>
                 <th></th>
@@ -14,11 +14,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs">
+            <tr data-ng-repeat="song in usersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td></td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
             </tr>
         </tbody>
+        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
+            Previous
+        </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+        <button ng-disabled="currentPage >= data.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
+            Next
+        </button>
     </table>
 </aside>

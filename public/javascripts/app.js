@@ -23,11 +23,21 @@ enchord.factory('Side', function(){
   };
 });
 
-enchord.run(['$rootScope', function($rootScope, $routeProvider){
-	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		$route.reload();
-	});
-}]);
+// for pagination
+enchord.filter('startFrom', function() {
+	return function(input, start) {
+		return function(input, start) {
+			start = +start;
+			return input.slice(start);
+		}
+	}
+});
+
+// enchord.run(['$rootScope', function($rootScope, $routeProvider){
+// 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
+// 		$route.reload();
+// 	});
+// }]);
  
 // enchord.controller('ctrl', function($scope){});
 

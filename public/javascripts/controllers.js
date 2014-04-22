@@ -32,6 +32,8 @@ enchordControllers.controller('ProfileController', [
 	'$location',
 	'Side',
 	function($scope, $http, $location, Side){
+		$scope.currentPage = 0;
+		$scope.pageSize = 10;
 		$scope.Side = Side;
 		$scope.usersongs = {};
 		$scope.init = function() {
@@ -53,9 +55,8 @@ enchordControllers.controller('ProfileController', [
 				}
 			});
 		}
-		$scope.search = function() {
-			$scope.pagetype = "search";
-			$location.url("about");
+		$scope.numberOfPages = function() {
+			return Math.ceil($scope.usersongs.length/$scope.pageSize);
 		}
 	}]);
 // Search page controller 
@@ -475,6 +476,8 @@ enchordControllers.controller('BandController', [
 	'$location',
 	'Side',
 	function($scope, $http, $location, Side) {
+		$scope.user = {}
+		$scope.band = {}
 		$scope.init = function() {
 			Side.setPagetype('band');
 			// $http({
@@ -486,6 +489,84 @@ enchordControllers.controller('BandController', [
 			// 	$scope.globalresults = data.results.global;
 			// 	$scope.localresults = data.results.local;
 			// });
+			$http({
+				method : 'GET',
+				url    : '/getuserinfo'
+			}).success(function(data) {
+				console.log(data);
+				if (data.id == undefined) {
+					$location.url('/');
+					return
+				}
+				$scope.user.username = data.username;
+				$scope.user.id = data.id;
+			});
+			if ($routeParams._id != undefined) {
+				$http({
+					method : 'GET',
+					url    : '/findband/' + $scope.band._id
+				}).success(function(data){
+					console.log(data);
+					$scope.band = data.band;
+				});
+			}
+		}
+		$scope.createband = function() {
+			$http({
+				method : 'POST',
+				url    : '/createband',
+				params : {bandname : $scope.band.name}
+			}).success(function(data){
+				console.log(data);
+				$location.url('editband/' + data.band._id);
+			})
+		}
+		$scope.editband = function() {
+			$http({
+				method : 'POST',
+				url    : '/editband',
+				params : {band : $scope.band}
+			}).success(function(data){
+				console.log(data);
+			})
+		}
+		$scope.addmember = function(username) {
+			$http({
+				method : 'POST',
+				url    : '/addmember',
+				params : {bandid : $scope.band._id, username : username}
+			}).success(function(data){
+				console.log(data);
+				if (!data.success) {
+				} else {
+					$http({
+						method : 'GET',
+						url    : '/findband/' + $scope.band._id
+					}).success(function(data){
+						console.log(data);
+						$scope.band = data.band;
+					});
+				}
+			});
+		}
+		$scope.deletemember = function(userid) {
+			$http({
+				method : 'POST',
+				url    : '/deletemember',
+				params : {bandid : $scope.band._id, userid : userid}
+			}).success(function(data){
+				console.log(data);
+				if (!data.success) {
+				} else {
+					$http({
+						method : 'GET',
+						url    : '/findband/' + $scope.band._id
+					}).success(function(data){
+						console.log(data);
+						$scope.band = data.band;
+					});
+				}
+			});
 		}
 	}]);
 /* OLD CODE */
