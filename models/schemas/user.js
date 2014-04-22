@@ -45,7 +45,7 @@ var User = mongoose.Schema({
         email        : String,
         name         : String
     },
-    folders: Array
+    bands: Array //list of band ids
 });
 
 User.methods.generateHash = function(password) {
