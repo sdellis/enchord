@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Enchord</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+        <style type="text/css">
+            body {
+                font-family: avenir;
+            }
+        </style>
+    </head>
+
+    <body class="skin-black">
+        <header class="header">
+            <a href="index.html" class="logo" style="font-family:avenir;">
+                Enchord
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>Andrew <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header bg-black" style="background:url('img/blur-background08.jpg'); background-size:contain;">
+                                    <img src="img/default.png" class="img-circle" alt="User Image" />
+                                    <p>
+                                        Andrew
+                                    </p>
+                                </li>
+                                <li class="user-body">
+                                    <div class="col-xs-6 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-6 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Account Settings</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">Sign Out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <aside class="left-side sidebar-offcanvas">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="img/feature2.png" class="img-circle" alt="User Image" />
+                        </div>
+                        <div class="pull-left info" style="padding-top: 8%;">
+                            <p>Hello, Andrew</p>
+                        </div>
+                    </div>
+
+                    <ul class="sidebar-menu">
+                        <li class="active">
+                            <a href="viewband.html">
+                                <i class="fa fa-backward"></i> <span>Back to Band</span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+
+            <aside class="right-side">
+            <h2 style="padding-left: 20px;">Edit Folder</h2>
+            <form action="#" method="get" style="padding-left: 50px; padding-top: 20px; max-width:475px;">
+                <h4> Folder Info </h4>  
+                <input type="text" name="foldername" class="form-control" placeholder="Folder Name"/><br>
+                <input type="text" name="owner" class="form-control" placeholder="user.username" readonly/><br>
+                <h4> Songs</h4>
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song1" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song2" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song3" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <input type="text" name="member1" class="form-control" placeholder="Song4" style="display:inline-block;" readonly/>
+                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+                </div>
+                <button class="button" style="background-color: rgb(77, 144, 254) !important;
+background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important; margin-top: 20px; margin-bottom: 50px;">Update Folder</button>
+<button class="button" style="background-color: rgb(200, 80, 70) !important;
+background-image: -webkit-linear-gradient(top,rgb(250, 80, 70),rgb(250, 80, 80)) !important; margin-top: 20px; margin-bottom: 50px;"><i class="fa fa-times"></i> Delete Folder</button>
+            </form>
+            
+                
+                
+            </aside>
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js/AdminLTE/app.js" type="text/javascript"></script>
+        <script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>        
+    </body>
+</html>

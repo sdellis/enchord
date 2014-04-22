@@ -58,6 +58,16 @@
                     <li><a href="#"><i class="fa fa-angle-double-right"></i>Lose Yourself to Dance</a></li>
                 </ul>
             </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-plus"></i> <span>Create a Folder</span>
+                </a>
+                <ul class="treeview-menu">
+                    <form class="sidebar-form" type="GET" action="/search" name="searchForm" style="height:100%; width:100%; padding-left: 0px; margin-left:0px; margin-top:0px; background-color:#222;">
+                            <input type="text" name="query" placeholder="Enter new folder name" ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                    </form>
+                </ul>
+            </li>
         </ul>
         <form class="sidebar-form" name="folderForm">
             <div class="input-group" ng-controller="FolderController">
