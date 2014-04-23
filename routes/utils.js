@@ -89,6 +89,7 @@ exports.loadSongEdit = function(req, res) {
 	});
 }
 
+//middleware
 exports.isAuthor = function(req, res, next) {
 	var id = req.params._id;
 	
@@ -119,6 +120,33 @@ exports.isAuthor = function(req, res, next) {
 		
 		} else {
 			res.redirect('/login');
+		}
+	});
+}
+//for get request
+exports.isAuthorOfSong = function (req, res) {
+	var id = req.params._id;
+
+	findSong(id, res, function(docs) {
+		if (req. isAuthenticated()) {
+			if (docs['isBand'] == false) {
+				if (getAuthorId(req) == docs.author_id) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					console.log(docs);
+					console.log(isInBand);
+					if (isInBand == -1) {
+						return false;
+					} return true;
+				})
+			}
+		} else {
+			return false;
 		}
 	});
 }
@@ -450,23 +478,7 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
-exports.isAuthorOfSong = function (req, res) {
-	var id = req.params._id;
-	songSchema.findById(id, function(err, docs) {
-		var user = getAuthorId(req);
-		if (err) {
-			res.status(500).json({message: 'Internal server error: cannot find song', hasError: true});
-		} else if (!docs) {
-			return undefined;
-		} else {
-			if (docs.author_id == user) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	});
-}
+
 
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
