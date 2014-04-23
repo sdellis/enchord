@@ -8,7 +8,7 @@
         <h4> Songs</h4>
 
         <div style="margin-bottom:10px;" data-ng-repeat="song in folder.foldersongs">
-            <input type="text" name="member1" class="form-control" placeholder="song.title" style="display:inline-block;" readonly/>
+            <input type="text" name="member1" class="form-control" placeholder="{{song.title}}" style="display:inline-block;" readonly/>
             <button ng-click="deletesong(song._id)" class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
         </div>
 

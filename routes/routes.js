@@ -148,7 +148,7 @@ module.exports = function(app, passport, db) {
 				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: req.param._id
-			})
+			});
 		})
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
