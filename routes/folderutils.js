@@ -201,21 +201,22 @@ exports.makeFolder = function(req, res) {
 }*/
 
 exports.renameFolder = function(req, res) {
-	var folderid = req.params.folderid;
+	var folderid = req.body.folderid;
 	
-	folderSchema.update({_id: folderid, author_id: getAuthorId(req)}, {name: req.params.name}, function(err, numberAffected, rawResponse) {
+	folderSchema.update({_id: folderid, author_id: getAuthorId(req)}, {name: req.body.name}, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error', hasError: true});
 			return;
 		}
 		console.log('success edit');
-		res.render('folderview.ejs', { //just shows a no info page for now
-			title: 'enchord', 
-			isNew: false, 
-			authorName: '',
-			results: []
-		});
+		res.send({success: true});
+		// res.render('folderview.ejs', { //just shows a no info page for now
+		// 	title: 'enchord', 
+		// 	isNew: false, 
+		// 	authorName: '',
+		// 	results: []
+		// });
 		return;
 	});	
 

@@ -135,7 +135,8 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
-		app.get('/members/editfolder/:_id', function(req, res){
+		// TODO: should check whether author of folder
+		app.get('/members/editfolder/:_id', isLoggedIn, function(req, res){
 			res.render('editfolder.ejs', {
 				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
@@ -238,7 +239,7 @@ module.exports = function(app, passport, db) {
 		
 		//app.get('/sharefolder/:folderid&:userid', isLoggedIn, folderutils.shareFolder);
 		
-		app.get('/renamefolder/:folderid&:name', isLoggedIn, folderutils.renameFolder);
+		app.post('/renamefolder', isLoggedIn, folderutils.renameFolder);
 		
 		app.post('/deletefolder', isLoggedIn, folderutils.deleteFolder);
 		

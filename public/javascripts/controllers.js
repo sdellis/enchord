@@ -780,6 +780,18 @@ enchordControllers.controller('FolderViewController', [
 				});
 			}
 		}
+		$scope.updatefolder = function() {
+			$http({
+				method  : 'POST',
+				url     : '/renamefolder',
+				data    : $.param({folderid: $scope.folderid, name: $scope.folder.name}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				if (data.success)
+					console.log("success");
+			});
+		}
 		$scope.deletefolder = function() {
 			$http({
 				method  : 'POST',
