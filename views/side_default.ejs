@@ -25,35 +25,8 @@
                     <i class="fa fa-plus"></i> <span>Create a Song</span>
                 </a>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-plus"></i> <span>Create a Band</span>
-                </a>
-                <ul class="treeview-menu">
-                    <form class="sidebar-form" name="bandForm">
-                        <div class="input-group" ng-controller="BandController">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new band name" ng-model="band.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="name"/>
-                            <!-- added button back because need to handle submission with ng-click -->
-                            <span class="input-group-btn">
-                                <button ng-click="createband()" type='submit' name='create' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </ul>
-            </li>
 
-           <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-users"></i> <span>My Bands</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Heemin and the Heartbreakers</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Red Hot Heemin Peppers</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Guns N' Heemins</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i>Van Heemin</a></li>
-                </ul>
-            </li>
+
             
             <li class="treeview">
                 <a href="#">
