@@ -780,6 +780,10 @@ enchordControllers.controller('FolderViewController', [
 				});
 			}
 		}
+		$scope.deletesong = function(songid) {
+			console.log(songid);
+		}
+
 		$scope.updatefolder = function() {
 			$http({
 				method  : 'POST',

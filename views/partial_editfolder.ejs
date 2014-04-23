@@ -1,24 +1,24 @@
 <aside class="right-side">
-            <h2 style="padding-left: 20px;">Edit Folder</h2>
-            <form style="padding-left: 50px; padding-top: 20px; max-width:475px;">
-                <h4> Folder Info </h4>  
-                <input type="text" name="foldername" ng-model="folder.name" class="form-control" placeholder="Folder Name"/><br>
-                <!-- <input type="text" name="owner" class="form-control" placeholder="user.username" readonly/><br> -->
-                
-                <h4> Songs</h4>
+    <h2 style="padding-left: 20px;">Edit Folder</h2>
+    <form style="padding-left: 50px; padding-top: 20px; max-width:475px;">
+        <h4> Folder Info </h4>  
+        <input type="text" name="foldername" ng-model="folder.name" class="form-control" placeholder="Folder Name"/><br>
+        <!-- <input type="text" name="owner" class="form-control" placeholder="user.username" readonly/><br> -->
+        
+        <h4> Songs</h4>
 
-                <div style="margin-bottom:10px;" data-ng-repeat="song in folder.foldersongs">
-                    <input type="text" name="member1" class="form-control" placeholder="song.title" style="display:inline-block;" readonly/>
-                    <button class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
-                </div>
+        <div style="margin-bottom:10px;" data-ng-repeat="song in folder.foldersongs">
+            <input type="text" name="member1" class="form-control" placeholder="song.title" style="display:inline-block;" readonly/>
+            <button ng-click="deletesong(song._id)" class="btn btn-mini" style="display:inline-block; margin-top:5px;"><i class= "fa fa-times"></i></button>
+        </div>
 
-                <button class="button" ng-click="updatefolder()" style="background-color: rgb(77, 144, 254) !important;
-                background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important; margin-top: 20px; margin-bottom: 50px;">Update Folder</button>
+        <button class="button" ng-click="updatefolder()" style="background-color: rgb(77, 144, 254) !important;
+        background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important; margin-top: 20px; margin-bottom: 50px;">Update Folder</button>
 
-                <button class="button" ng-click="deletefolder()" style="background-color: rgb(200, 80, 70) !important;
-                background-image: -webkit-linear-gradient(top,rgb(250, 80, 70),rgb(250, 80, 80)) !important; margin-top: 20px; margin-bottom: 50px;"><i class="fa fa-times"></i> Delete Folder</button>
-            </form>
-            
-                
-                
-            </aside>
+        <button class="button" ng-click="deletefolder()" style="background-color: rgb(200, 80, 70) !important;
+        background-image: -webkit-linear-gradient(top,rgb(250, 80, 70),rgb(250, 80, 80)) !important; margin-top: 20px; margin-bottom: 50px;"><i class="fa fa-times"></i> Delete Folder</button>
+    </form>
+
+        
+        
+</aside>
