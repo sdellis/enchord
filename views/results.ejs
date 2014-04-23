@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang='en' ng-app='enchord'>
-    <head>
+    <head>f
         <% include head.ejs %>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -15,8 +15,8 @@
         </style>
     </head>
     <body class="skin-black">
-        <header class="header" style="position:fixed;">
-            <a href="index.html" class="logo" style="font-family:avenir;">
+        <header class="header">
+            <a href="/" class="logo" style="font-family:avenir;">
                 Enchord
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
@@ -27,41 +27,24 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div class="navbar-right">
-                    <ul class="nav navbar-nav">                        
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="glyphicon glyphicon-user"></i>
-                                <span>Andrew <i class="caret"></i></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="user-header bg-black" style="background:url('img/blur-background08.jpg'); background-size:contain;">
-                                    <img src="img/default.png" class="img-circle" alt="User Image" />
-                                    <p>
-                                        Andrew
-                                    </p>
-                                </li>
-                                <li class="user-body">
-                                    <div class="col-xs-6 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-6 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </li>
-                                <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Account Settings</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign Out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                    <!-- IF LOGGED IN -->
+                    <% if(isLoggedIn) { %>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#"><i class="fa fa-cogs"></i>  Account Settings</a></li>
+                        <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign Out</a></li>
                     </ul>
+                    <!-- NOT LOGGED IN -->
+                    <% } else { %>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/signup"><i class="fa fa-cogs"></i>  Sign Up</a></li>
+                        <li><a href="/login"><i class="fa fa-sign-out"></i> Login</a></li>
+                    </ul>
+                    <% } %>
+
                 </div>
             </nav>
         </header>
+
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <aside class="left-side sidebar-offcanvas"  style="position:fixed;">
                 <section class="sidebar">
@@ -84,6 +67,8 @@
                     </form>
 
                     <ul class="sidebar-menu">
+                        <% include side_search.ejs %>
+                        <% include partial_results.ejs %>
                         <li class="active">
                             <a href="#">
                                 <i class="fa fa-headphones"></i> <span>Everything</span>
