@@ -30,12 +30,12 @@
                     <i class="fa fa-plus"></i> <span>Create a Band</span>
                 </a>
                 <ul class="treeview-menu">
-                    <form class="sidebar-form" name="folderForm">
-                        <div class="input-group" ng-controller="FolderController">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new band name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="name"/>
+                    <form class="sidebar-form" name="bandForm">
+                        <div class="input-group" ng-controller="BandController">
+                            <input type="text" name="name" class="form-control" placeholder="Enter new band name" ng-model="band.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="name"/>
                             <!-- added button back because need to handle submission with ng-click -->
                             <span class="input-group-btn">
-                                <button ng-click="createfolder()" type='submit' name='create' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
+                                <button ng-click="createband()" type='submit' name='create' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
                             </span>
                         </div>
                     </form>

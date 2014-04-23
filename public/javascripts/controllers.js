@@ -550,6 +550,7 @@ enchordControllers.controller('LoginController', ['$scope',
 enchordControllers.controller('BandController', [
 	'$scope', 
 	'$http', 
+	'$window',
 	'$location',
 	'Side',
 	function($scope, $http, $location, Side) {
@@ -565,7 +566,9 @@ enchordControllers.controller('BandController', [
 			// 	console.log(data);
 			// 	$scope.globalresults = data.results.global;
 			// 	$scope.localresults = data.results.local;
-			// });
+			// });// console.log(docs);
+			callback(docs);
+			return;
 			$http({
 				method : 'GET',
 				url    : '/getuserinfo'
@@ -589,14 +592,24 @@ enchordControllers.controller('BandController', [
 			}
 		}
 		$scope.createband = function() {
+			console.log($scope.band);
 			$http({
+				method: 'POST',
+				url : '/createband/',
+				data    : $.param({bandname: $scope.band.name}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$window.location.href='/members';
+			})
+			/*$http({
 				method : 'POST',
 				url    : '/members/createband',
 				params : {bandname : $scope.band.name}
 			}).success(function(data){
 				console.log(data);
 				$location.url('/members/editband/' + data.band._id);
-			})
+			})*/
 		}
 		$scope.editband = function() {
 			$http({

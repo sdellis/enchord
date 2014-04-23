@@ -16,12 +16,13 @@ var utils = require('./utils');
 exports.createBand = function(req, res) {
 	var id = utils.getId(req);
 	var username = utils.getUsername(req);
+	console.log(req.body);
 
 	var newBand = new bandSchema( {
 		name: req.body.bandname,
 		leader: {id: id, name: username}
 	});
-	newBand.member.push({id: id, name: username});
+	newBand.members.push({id: id, name: username});
 	newBand.save(function(err, band) {
 		if (err) {
 			console.log(err);
