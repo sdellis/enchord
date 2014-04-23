@@ -176,31 +176,17 @@ enchordControllers.controller('SongViewController', [
 		$scope.hasAuthor = function() {
 			$http({
 				method : 'GET',
-				url    : '/hasvoted',
+				url    : '/isAuthor',
 				params : { _id : $scope.song._id }
 			}).success(function(data) {
 				console.log(data);
 				$scope.isAuthor = data.isAuthor;
 			});
 		}
-		$scope.init = function(_id) {
-			$http({
-					method  : 'GET',
-					url     : '/'
-				}).success(function(data) {
-					console.log(data);
-					$scope.song = data.song;
-					$scope.parsehtml();
-					$scope.hasvoted();
-				}).error(function(data, status) {
-					console.log(data);
-					console.log(status);
-					if (status == 500) {
-						console.log(status);
-						$scope.message = data.message;
-						$scope.hasError = data.hasError;
-					}
-				});
+		$scope.init = function(_id, isLoggedIn) {
+			$scope.isLoggedIn = isLoggedIn;
+			if (isLoggedIn)
+				$scope.hasAuthor();
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -210,7 +196,8 @@ enchordControllers.controller('SongViewController', [
 					console.log(data);
 					$scope.song = data.song;
 					$scope.parsehtml();
-					$scope.hasvoted();
+					if (isLoggedIn)
+						$scope.hasvoted();
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);

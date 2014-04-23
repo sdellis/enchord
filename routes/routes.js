@@ -95,7 +95,7 @@ module.exports = function(app, passport, db) {
 						console.log(userfolders);
 						res.render('index.ejs', {
 						title:"Members",
-						isLoggedIn: req.isAuthenticated, 
+						isLoggedIn: req.isAuthenticated(), 
 						user: req.user, 
 						username: utils.getUsername(req), 
 						usersongs: usersongs, 
@@ -109,7 +109,7 @@ module.exports = function(app, passport, db) {
 
 		app.get('/members/createsong', isLoggedIn, function(req, res){
 			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: '',
 				isNew: true
@@ -118,7 +118,7 @@ module.exports = function(app, passport, db) {
 
 		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){
 			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: req.params._id,
 				isNew: false
@@ -126,21 +126,25 @@ module.exports = function(app, passport, db) {
 		});
 
 		app.get('/viewsong/:_id', function(req, res){
+			var isLoggedIn = req.isAuthenticated();
+			var username = utils.getUsername(req);
 			res.render('viewsong.ejs', {
-				isLoggedIn: req.isAuthenticated,
-				username: utils.getUsername(req),
+				isLoggedIn: isLoggedIn,
+				username: username,
 				_id: req.params._id
 			});
 		});
 
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				query: req.params.query
 			});
 		});
 
+		app.get('/isAuthor', utils.isAuthorOfSong);
+		
 		app.get('/search', utils.searchSong);
 		
 		app.get('/advsearch', utils.advancedSearch);
@@ -235,7 +239,7 @@ module.exports = function(app, passport, db) {
 
 		/*app.get('/members/createsong', isLoggedIn, function(req, res){
 			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: '',
 				isNew: true
@@ -244,7 +248,7 @@ module.exports = function(app, passport, db) {
 
 		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){
 			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: req.params._id,
 				isNew: false
@@ -253,7 +257,7 @@ module.exports = function(app, passport, db) {
 
 		/*app.get('/members/createband',  isLoggedIn, function(req, res) {
 			res.render('editband.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: '',
 				isNew: true,
@@ -263,7 +267,7 @@ module.exports = function(app, passport, db) {
 
 		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {
 			res.render('editband.ejs', {
-				isLoggedIn: req.isAuthenticated,
+				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
 				_id: req.params._id,
 				isNew:false

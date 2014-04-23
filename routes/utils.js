@@ -460,9 +460,9 @@ exports.isAuthorOfSong = function (req, res) {
 			return undefined;
 		} else {
 			if (docs.author_id == user) {
-				return true;
+				res.send({isAuthor: true});
 			} else {
-				return false;
+				res.send({isAuthor: false});
 			}
 		}
 	});
