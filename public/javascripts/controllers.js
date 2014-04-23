@@ -115,7 +115,7 @@ enchordControllers.controller('SearchController', [
 	'$http',
 	'Side',
 	function($scope, $window, $routeParams, $location, $http, Side) {
-		$scope.query = $routeParams.query;
+		$scope.query = "";
 		$scope.globalresults = [];
 		$scope.localresults = [];
 		// $scope.type = "Both";
@@ -130,23 +130,26 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
-		$scope.init = function() {
+		$scope.init = function(query) {
 			Side.setPagetype('search');
-			$http({
-				method : 'GET',
-				url    : '/search',
-				params : { query : $scope.query }
-			}).success(function(data) {
-				console.log(data);
-				$scope.globalresults = data.results.global;
-				$scope.localresults = data.results.local;
-			});
+			$scope.query = query;
+			if (query != undefined && query.length > 0) {
+				$http({
+					method : 'GET',
+					url    : '/search',
+					params : { query : $scope.query }
+				}).success(function(data) {
+					console.log(data);
+					$scope.globalresults = data.results.global;
+					$scope.localresults = data.results.local;
+				});
+			}
 		}
 		// redirect to search page
 		$scope.search = function() {
 			console.log($scope.query);
 			if ($scope.query != undefined && $scope.query.length > 0) {
-				$location.url('search/' + $scope.query);
+				$window.location.href = '/searchresults/' + $scope.query;
 			}
 		};
 	}]);
@@ -173,24 +176,18 @@ enchordControllers.controller('SongViewController', [
 				$scope.voted = data.voted;
 			});
 		}
-		$scope.init = function(_id) {
+		$scope.hasAuthor = function() {
 			$http({
-					method  : 'GET',
-					url     : '/'
-				}).success(function(data) {
-					console.log(data);
-					$scope.song = data.song;
-					$scope.parsehtml();
-					$scope.hasvoted();
-				}).error(function(data, status) {
-					console.log(data);
-					console.log(status);
-					if (status == 500) {
-						console.log(status);
-						$scope.message = data.message;
-						$scope.hasError = data.hasError;
-					}
-				});
+				method : 'GET',
+				url    : '/isAuthor',
+				params : { _id : $scope.song._id }
+			}).success(function(data) {
+				console.log(data);
+				$scope.isAuthor = data.isAuthor;
+			});
+		}
+		$scope.init = function(_id, isLoggedIn) {
+			$scope.isLoggedIn = isLoggedIn;
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -200,7 +197,10 @@ enchordControllers.controller('SongViewController', [
 					console.log(data);
 					$scope.song = data.song;
 					$scope.parsehtml();
-					$scope.hasvoted();
+					if (isLoggedIn) {
+						$scope.hasvoted();
+						$scope.hasAuthor();
+					}
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -217,10 +217,14 @@ enchordControllers.controller('SongViewController', [
 					genre: '',
 					data: '',
 					_id: '',
+					upvote: 0,
 					pub: true
 				};
 				$scope.parsehtml();
 			}
+		}
+		$scope.gotoeditsong = function() {
+			$window.location.href = "/members/editsong/" + $scope.song._id;
 		}
 		$scope.copysong = function() {
 			// by default set public value to false
@@ -234,7 +238,7 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				
 				// go to edit page
-				var url = '/editsong/' + data.song._id;
+				var url = '/members/editsong/' + data.song._id;
 				$window.location.href = url;
 			}).error(function(data, status) {
 				console.log(data);
@@ -284,11 +288,9 @@ enchordControllers.controller('SongViewController', [
 		}
 
 		$scope.downloadtxt = function() {
-			$http({
-				method  : 'GET',
-				url     : '/downloadsongtxt/' + $scope.song._id
-			});
+			$window.location.href = '/downloadsongtxt/' + $scope.song._id;
 		}
+		
 		$scope.parsehtml = function() {
 			$http({
 				method  : 'POST',
@@ -755,6 +757,40 @@ enchordControllers.controller('FolderController', [
 				$window.location.href='/members';
 			});
 		}
+	}]);
+enchordControllers.controller('AdvancedSearchController', [
+	'$scope', 
+	'$window', 
+	'$routeParams', 
+	'$location', 
+	'$http',
+	'Side',
+	function($scope, $window, $routeParams, $location, $http, Side) {
+		$scope.query = "";
+		$scope.globalresults = [];
+		$scope.localresults = [];
+		$scope.init = function(query) {
+			Side.setPagetype('search');
+			$scope.query = query;
+			if (query != undefined && query.length > 0) {
+				$http({
+					method : 'GET',
+					url    : '/advsearch',
+					params : { query : $scope.query }
+				}).success(function(data) {
+					console.log(data);
+					$scope.globalresults = data.results.global;
+					$scope.localresults = data.results.local;
+				});
+			}
+		}
+		// redirect to search page
+		$scope.search = function() {
+			console.log($scope.query);
+			if ($scope.query != undefined && $scope.query.length > 0) {
+				$window.location.href = '/advsearch/' + $scope.query;
+			}
+		};
 	}]);
 /* OLD CODE */
 /* front-end parser */

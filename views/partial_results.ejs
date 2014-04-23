@@ -2,10 +2,10 @@
     <section class="content-header">
         <h1>
             Search Results
-            <small>500+ songs found</small>
+            <small>{{ globalresults.length + localresults.length}} songs found</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-search"></i> "searchquery"</a></li>
+            <li><a href="#/search/{{query}}"><i class="fa fa-search"></i> "{{query}}"</a></li>
             <li class="active">Results</li>
         </ol>
     </section>
@@ -14,20 +14,17 @@
         <thead>
             <tr>
                 <th style="max-width: 10px;"></th>
-                <th style="max-width: 5px;"></th>
                 <th>Song</th>
                 <th>Arist</th>
                 <th>Created By</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr data-ng-repeat="song in localresults">
                 <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
-                <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td>
-                <td>Soul Meets Body</td>
-                <td>Death Cab For Cutie</td>
-                <td>User</td>
-            </tr>
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
     </table>
@@ -36,19 +33,17 @@
         <thead>
             <tr>
                 <th style="max-width: 10px;"></th>
-                <th style="max-width: 5px;"></th>
                 <th>Song</th>
                 <th>Arist</th>
                 <th>Created By</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr data-ng-repeat="song in globalresults">
                 <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
-                <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td>
-                <td>Song Name</td>
-                <td>Death Cab For Cutie</td>
-                <td>User</td>
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
     </table>   
