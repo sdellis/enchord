@@ -1,0 +1,54 @@
+Hello! If you don't know how to use Enchord's markup language, here is a quick tutorial.
+
+CHORDS, LYRICS, COMMENTS:
+Write lyrics just as you would anywhere else. If you want a chord to appear above certain lyrics, put the chord in [_] before the place you want them to go. Put comments you want printed on the line with chords in <_>.
+
+For example:
+	[G]These are [D7]chords a[Em]bove the [Csus2]lyrics <2x>
+	
+If you want the chords to appear in-line instead of above, start the line with '%'. This is particularly useful if you have a line of just chords.
+
+For example:
+	%[G]  [D7]   [Em]  [Csus2] <2x>
+
+If you have '//' in a line, everything after it in the line will not appear on the chord sheet. 
+
+For example:
+	I really really really love to sing //consider changing these lyrics later
+
+FONT OPTIONS:
+Font options are written inside {_}. You can make text bold, italic, header font, or tab font. Note that chord and chord comment text won't be affected by options other than tab.
+For example:
+	
+	I really want to emphasize this {bold}lyric{end bold}, and also this {italic}lyric{end italic}.
+	{header} This is a header. {end header}
+	
+Tab font uses monospaced font to ensure proper spacing. This is good for guitar tabs. Chords and chord comments can be rendered both inline and above lines.
+For example:
+	{tab}
+	E|--0--
+	B|--0--
+	G|--1--
+	D|--2--
+	A|--2--
+	E|--0--
+	{end tab}
+	
+SECTIONS:
+If something other than a font option is put in {_}, it is recognized as the start of a new section. 
+For example:
+	{Verse 1}
+	I [Abm]love organi[Gb]zation
+	{Chorus}
+	[Fb]Oh how I [Abm7]love organi[Gb/Bb]zation!
+	
+If you have multiple sections with the same name, Enchord will combine them into one for rendering. This is difficult behavior to predict and will probably not produce what you want, so make sure you name your sections different names!
+
+ORDER:
+Enchord will typically just print the song with sections in the order you write them. But if you want to print them out in a specific order, you write an ordering on the first line of the file:
+For example:
+	Order: Verse 1, Chorus, Verse 2, Chorus, Bridge, Final Chorus
+	
+Make sure you write "Order:" and then list the desired sections separated by commas.
+
+Enchord will always print out anything listed before the first section header at the top of the page. This is usually where you would put things like Title, Artist, and any performance note.
