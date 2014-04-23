@@ -7,8 +7,8 @@ var htmlparser = require('../parsers/htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 var grabzit = require("grabzit");
-var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
-						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
+// var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
+// 						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
 
 exports.createSong = function(req, res) {
 	var song = new songSchema({
@@ -89,6 +89,7 @@ exports.loadSongEdit = function(req, res) {
 	});
 }
 
+//middleware
 exports.isAuthor = function(req, res, next) {
 	var id = req.params._id;
 	
@@ -119,6 +120,35 @@ exports.isAuthor = function(req, res, next) {
 		
 		} else {
 			res.redirect('/login');
+		}
+	});
+}
+//for get request
+exports.isAuthorOfSong = function (req, res) {
+	var id = req.params._id;
+
+	findSong(id, res, function(docs) {
+		if (req. isAuthenticated()) {
+			if (docs['isBand'] == false) {
+				if (getAuthorId(req) == docs.author_id) {
+					res.send({isAuthor: true});
+				} else {
+					res.send({isAuthor: false});
+				}
+			} else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					console.log(docs);
+					console.log(isInBand);
+					if (isInBand == -1) {
+						res.send({isAuthor: false});
+					} else {
+						res.send({isAuthor: true});
+					}
+				})
+			}
+		} else {
+			res.send({isAuthor: false});
 		}
 	});
 }
@@ -450,23 +480,23 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
-exports.isAuthorOfSong = function (req, res) {
-	var id = req.params._id;
-	songSchema.findById(id, function(err, docs) {
-		var user = getAuthorId(req);
-		if (err) {
-			res.status(500).json({message: 'Internal server error: cannot find song', hasError: true});
-		} else if (!docs) {
-			return undefined;
-		} else {
-			if (docs.author_id == user) {
-				res.send({isAuthor: true});
-			} else {
-				res.send({isAuthor: false});
-			}
-		}
-	});
-}
+// exports.isAuthorOfSong = function (req, res) {
+// 	var id = req.params._id;
+// 	songSchema.findById(id, function(err, docs) {
+// 		var user = getAuthorId(req);
+// 		if (err) {
+// 			res.status(500).json({message: 'Internal server error: cannot find song', hasError: true});
+// 		} else if (!docs) {
+// 			return undefined;
+// 		} else {
+// 			if (docs.author_id == user) {
+// 				res.send({isAuthor: true});
+// 			} else {
+// 				res.send({isAuthor: false});
+// 			}
+// 		}
+// 	});
+// }
 
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
