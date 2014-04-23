@@ -286,9 +286,9 @@ module.exports = function(app, passport, db) {
 		//app.get('/viewband/:_id', bandutils.loadBandView);
 
 		//voting stuff
-	    app.post('/upvote', utils.upvote);
-	    app.post('/undovote', utils.undovote);
-	    app.get('/hasvoted', utils.hasvoted);
+	    app.post('/upvote', isLoggedIn, utils.upvote);
+	    app.post('/undovote', isLoggedIn, utils.undovote);
+	    app.get('/hasvoted', isLoggedIn, utils.hasvoted);
 
 		app.get('/logout', function(req, res) {
 			req.logout();
