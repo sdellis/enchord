@@ -230,7 +230,15 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/viewfoldersongs/:_id', isLoggedIn, folderutils.getFolderSongs);
 		
-		app.get('/addsongtofolder/:folderid&:songid', isLoggedIn, folderutils.addSongToFolder);
+		//app.get('/addsongtofolder/:folderid&:songid', isLoggedIn, folderutils.addSongToFolder);
+		app.get('/addsongtofolder/:songid', isLoggedIn, function(req, res) {
+			res.render('addtofolder.ejs', {
+				songid: req.params.songid,
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req)
+			});
+		});
+		app.post('/addsongtofolder', isLoggedIn, folderutils.addSongToFolder);
 		
 		//check this, maybe need folderid to check????
 		app.get('/deletesongfromfolder/:songid', isLoggedIn, folderutils.deleteSongFromFolder);

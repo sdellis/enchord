@@ -112,8 +112,8 @@ exports.getFolderSongs = function(req, res) {
 
 //need to check that the user can add songs to this folder
 exports.addSongToFolder = function(req, res) {
-	var songid = req.params.songid;
-	var folderid = req.params.folderid;
+	var songid = req.body.songid;
+	var folderid = req.body.folderid;
 	var authorid = getAuthorId(req);
 	if (authorid == null) {
 		return;
@@ -125,7 +125,6 @@ exports.addSongToFolder = function(req, res) {
 				return;
 			} 
 			console.log('add song to folder success');
-			res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: folderid, results: ''});
 			return;
 		});
 	}
