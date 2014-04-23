@@ -45,19 +45,20 @@ function getMyFolders(req, res, callback) {
 }
 
 function getSongs(req, res, folderid, callback) {
-	folderSchema.findById(folderid, function(err, docs) {
-		var foldername = docs.name;
+	folderSchema.findById(folderid, function(err, folder) {
+		console.log(folder);
+		var foldername = folder.name;
 		var songs = [];
-		songSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, docs) { //search author_id also
+		songSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, foldersongs) { //search author_id also
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
 				return;
-			} else if (!docs) {
+			} else if (!foldersongs) {
 				callback(songs);
 			} else {
 				// console.log(docs);
-				callback(docs);
+				callback({name: foldername, foldersongs: foldersongs});
 				return;	
 			}
 		});
@@ -105,7 +106,7 @@ exports.getFolderSongs = function(req, res) {
 		// 	folderName: foldername,
 		// 	results: data
 		// });
-		res.send({foldersongs: data});
+		res.send({folder: data});
 	});
 }
 
@@ -221,7 +222,7 @@ exports.renameFolder = function(req, res) {
 }
 
 exports.deleteFolder = function(req, res) {
-	var folderid = req.params.folderid;
+	var folderid = req.body.folderid;
 	
 	songSchema.update({folder_id: folderid, author_id: getAuthorId(req)}, {folder_id: ''}, function(err, numberAffected, rawResponse) {
 		if (err) {
@@ -236,12 +237,13 @@ exports.deleteFolder = function(req, res) {
 				res.status(500).json({message: 'Internal server error', hasError: true});
 				return;
 			}
-			res.render('folderview.ejs', { //just shows a no info page for now
-			title: 'enchord', 
-			isNew: false, 
-			authorName: '',
-			results: []
-			});
+			// res.render('folderview.ejs', { //just shows a no info page for now
+			// title: 'enchord', 
+			// isNew: false, 
+			// authorName: '',
+			// results: []
+			// });
+			res.send({success: true});
 			return;
 		});
 		return;

@@ -135,6 +135,13 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
+		app.get('/members/editfolder/:_id', function(req, res){
+			res.render('editfolder.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req),
+				_id: req.params._id
+			});
+		});
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
 				isLoggedIn: req.isAuthenticated(),
@@ -233,7 +240,7 @@ module.exports = function(app, passport, db) {
 		
 		app.get('/renamefolder/:folderid&:name', isLoggedIn, folderutils.renameFolder);
 		
-		app.get('/deletefolder/:folderid', isLoggedIn, folderutils.deleteFolder);
+		app.post('/deletefolder', isLoggedIn, folderutils.deleteFolder);
 		
 		//bands
 
