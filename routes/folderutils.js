@@ -62,24 +62,25 @@ exports.getUserFolders = function(req, res) {
 exports.getFoldersAndSongs = function(req, res, callback) {
 	userfolders = [];
 	getMyFolders(req, res, function(data){
-		var i = 0;
+		// var i = 0;
 		// console.log(data);
-		for (var i in data) {
-			(function(i) {
-    			setTimeout(function() {
-	      			console.log(data[i]._id);
-					getSongs(req, res, data[i]._id, function(songs){
-					userfolders.push({folder: data[i], songs: songs});
-					console.log(i);
-					if (i == data.length - 1) {
-						console.log(userfolders);
-						callback(userfolders);
-					}
-				});
-    		}, i * 1000);
-  			})(i);
-			// console.log(folder[i]);
-		}
+		// for (var i in data) {
+		// 	(function(i) {
+  //   			setTimeout(function() {
+	 //      			console.log(data[i]._id);
+		// 			getSongs(req, res, data[i]._id, function(songs){
+		// 			userfolders.push({folder: data[i], songs: songs});
+		// 			console.log(i);
+		// 			if (i == data.length - 1) {
+		// 				console.log(userfolders);
+		// 				callback(userfolders);
+		// 			}
+		// 		});
+  //   		}, i * 1000);
+  // 			})(i);
+		// 	// console.log(folder[i]);
+		// }
+		callback(data);
 	});
 }
 

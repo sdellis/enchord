@@ -450,6 +450,24 @@ exports.getArtistSongs = function(req, res) {
 
 }
 
+exports.isAuthorOfSong = function (req, res) {
+	var id = req.params._id;
+	songSchema.findById(id, function(err, docs) {
+		var user = getAuthorId(req);
+		if (err) {
+			res.status(500).json({message: 'Internal server error: cannot find song', hasError: true});
+		} else if (!docs) {
+			return undefined;
+		} else {
+			if (docs.author_id == user) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	});
+}
+
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
 	console.log(authorid);
