@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"folder",
+				"folderSchema"
+			],
+			[
 				"isAuth",
 				"isAuthenticated"
 			],
@@ -68,34 +72,20 @@
 	"buffers":
 	[
 		{
-			"file": "routes/bandutils.js",
+			"contents": "Searching 1770 files for \"editsong\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/app.js:\n   10      // .when('/editband/:_id', {templateUrl: 'partials/band_edit'})\n   11      // .when('/viewband/:_id', {templateUrl: 'partials/band_view'})\n   12:     // .when('/createsong', {templateUrl: 'partials/editsong'})\n   13:     // .when('/editsong/:_id', {templateUrl: 'partials/editsong'})\n   14      // .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})\n   15      // // .when('/about', { templateUrl: 'partials/about'})\n   ..\n   86  // 	.when('/edit/:songId',\n   87  // 	{\n   88: // 		controller: 'EditSongController',\n   89  // 		templateUrl: 'partials/edit_song.html',\n   90  // 		resolve: {\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js:\n  216  				\n  217  				// go to edit page\n  218: 				var url = '/editsong/' + data.song._id;\n  219  				$window.location.href = url;\n  220  			}).error(function(data, status) {\n  ...\n  353  			// 	Side.setPagetype(\"createsong\");\n  354  			// else\n  355: 			// 	Side.setPagetype(\"editsong\");\n  356  			if(_id != undefined && _id.length != 0) {\n  357  				var getUrl = '/findsong/' + _id;\n  ...\n  409  				// go to edit page\n  410  				$scope.isNew = false;\n  411: 				$window.location.href='/members/editsong/' + data.song._id;\n  412  				// $location.url(url);\n  413  \n  ...\n  427  			});\n  428  		}\n  429: 		$scope.editsong = function(redirect) {\n  430  			console.log(\"edit \" + $scope.song.title);\n  431  			$scope.song.data = $('#data').val();\n  ...\n  433  			$http({\n  434  				method  : 'POST',\n  435: 				url     : '/editsong',\n  436  				data    : $.param($scope.song),\n  437  				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/folderutils.js:\n  156  }\n  157  \n  158: //maybe make it similar to how editSong works? also later just make an editFolder page to have option to share\n  159  //folder sharing is ONLY FOR BANDS. What it means to share a folder: others can view, edit songs, add songs to the folder\n  160  /*exports.shareFolder = function(req, res) {\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js:\n  109  \n  110  		app.get('/members/createsong', isLoggedIn, function(req, res){\n  111: 			res.render('editsong.ejs', {\n  112  				isLoggedIn: req.isAuthenticated,\n  113  				username: utils.getUsername(req),\n  ...\n  117  		});\n  118  \n  119: 		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){\n  120: 			res.render('editsong.ejs', {\n  121  				isLoggedIn: req.isAuthenticated,\n  122  				username: utils.getUsername(req),\n  ...\n  169  		app.get('/findsong/:_id', utils.getSong)\n  170  		app.get('/createsong', isLoggedIn, function(req, res) {\n  171: 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});\n  172  		});\n  173  \n  174  		app.post('/createsong', isLoggedIn, utils.createSong);\n  175  		\n  176: 		// app.get('/editsong', isLoggedIn, function(req, res) {\n  177: 		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});\n  178  		// });\n  179  		\n  180: 		app.post('/editsong', isLoggedIn, utils.editSong);\n  181  		\n  182: 		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);\n  183  \n  184  		// app.get('/viewsong/:_id', utils.loadSongView);\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js:\n   45  		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});\n   46  		return;\n   47: 		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});\n   48  	});\n   49  };\n   50  \n   51: exports.editSong = function(req, res) {\n   52  	var id = req.body._id;\n   53  	var song = new songSchema({\n   ..\n   86  	\n   87  	var findsong = findSong(id, res, function(docs) {\n   88: 		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});\n   89  	});\n   90  }\n   ..\n  601  \n  602  \n  603: /*exports.editSong = function(req, res) {\n  604  	var id = req.body._id;\n  605  	var song = new songSchema({\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editsong.ejs:\n   47          </header>\n   48          <div class=\"wrapper row-offcanvas row-offcanvas-left\" ng-controller=\"SongEditController\" ng-init=\"init('<%= _id %>')\">\n   49:             <% include side_editsong.ejs %>\n   50:             <% include partial_editsong.ejs %>\n   51          </div>\n   52          <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js\"></script>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_editsong.ejs:\n   42                      <button ng-click=\"createsong()\" class=\"button\" ng-show=\"isNew\" style=\"background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;\" ><i class=\"fa fa-dropbox\"></i> Save</button>\n   43  \n   44:                     <button ng-click=\"editsong(false)\" class=\"button\" ng-show=\"!isNew\" style=\"background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;\" ><i class=\"fa fa-dropbox\"></i> Save</button>\n   45  \n   46:                     <button ng-click=\"editsong(true)\" class=\"button\" ng-show=\"!isNew\" style=\"background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;\"><i class=\"fa fa-check\"></i> Done Editing</button>\n   47  \n   48                      <button class=\"button\" ng-disabled=\"songEditForm.$invalid\" ng-show=\"!isNew\" ng-click=\"deletesong()\" type=\"submit\" class=\"btn btn-default\" style=\"background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;\"><i class=\"fa fa-times\"></i> Delete Song</button>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/index.ejs:\n   52                  <div ng-switch-when=\"band\"><% include side_band.ejs %></div>\n   53                  <div ng-switch-when=\"viewband\"><% include side_viewband.ejs %></div>\n   54:                 <div ng-switch-when=\"createsong\"><% include side_editsong.ejs %></div>\n   55:                 <div ng-switch-when=\"editsong\"><% include side_editsong.ejs %></div>\n   56              </div>\n   57              <div ng-view/>\n\n30 matches across 8 files\n\n\nSearching 1770 files for \"createband\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/app.js:\n    7      // .when('/', { templateUrl: 'partials/library'})\n    8      // .when('/search/:query', {templateUrl: 'partials/search'})\n    9:     // .when('/createband', {templateUrl: 'partials/band_create'})\n   10      // .when('/editband/:_id', {templateUrl: 'partials/band_edit'})\n   11      // .when('/viewband/:_id', {templateUrl: 'partials/band_view'})\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js:\n  560  			}\n  561  		}\n  562: 		$scope.createband = function() {\n  563  			$http({\n  564  				method : 'POST',\n  565: 				url    : '/createband',\n  566  				params : {bandname : $scope.band.name}\n  567  			}).success(function(data){\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js:\n   14  \n   15  \n   16: exports.createBand = function(req, res) {\n   17  	var id = utils.getId(req);\n   18  	var username = utils.getUsername(req);\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js:\n  252  		});*/\n  253  \n  254: 		app.get('/members/createband',  isLoggedIn, function(req, res) {\n  255  			res.render('editband.ejs', {\n  256  				isLoggedIn: req.isAuthenticated,\n  ...\n  260  			});\n  261  		});\n  262: 		app.post('/createband', isLoggedIn, bandutils.createBand);\n  263  \n  264  		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/profile.ejs:\n   63                          </li>\n   64                          <li>\n   65:                             <a href=\"/createband\">\n   66                                  <i class=\"fa fa-plus\"></i> <span>Create a Band</span>\n   67                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/profile_orig.ejs.html:\n   63                          </li>\n   64                          <li>\n   65:                             <a href=\"/createband\">\n   66                                  <i class=\"fa fa-plus\"></i> <span>Create a Band</span>\n   67                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_default.ejs:\n   27              </li>\n   28              <li>\n   29:                 <a href=\"/createband\">\n   30                      <i class=\"fa fa-plus\"></i> <span>Create a Band</span>\n   31                  </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/profile.ejs:\n   63                          </li>\n   64                          <li>\n   65:                             <a href=\"/createband\">\n   66                                  <i class=\"fa fa-plus\"></i> <span>Create a Band</span>\n   67                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/profile_orig.ejs.html:\n   63                          </li>\n   64                          <li>\n   65:                             <a href=\"/createband\">\n   66                                  <i class=\"fa fa-plus\"></i> <span>Create a Band</span>\n   67                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partials/band_create.ejs:\n    5          <input type=\"text\" name=\"bandname\" class=\"form-control\" ng-model=\"band.name\" placeholder=\"Band Name\"/><br>\n    6          <input type=\"text\" name=\"frontman\" class=\"form-control\" placeholder=\"{{user.username}}\" readonly/><br>\n    7:         <button ng-click=\"createband()\" class=\"button\" style=\"background-color: rgb(77, 144, 254) !important;\n    8  background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;\"><i class=\"fa fa-check\"></i> Create Band</button>\n    9      </form>\n\n13 matches across 10 files\n\n\nSearching 1770 files for \"createsong\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/app.js:\n   10      // .when('/editband/:_id', {templateUrl: 'partials/band_edit'})\n   11      // .when('/viewband/:_id', {templateUrl: 'partials/band_view'})\n   12:     // .when('/createsong', {templateUrl: 'partials/editsong'})\n   13      // .when('/editsong/:_id', {templateUrl: 'partials/editsong'})\n   14      // .when('/viewsong/:_id', {templateUrl: 'partials/viewsong'})\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js:\n  209  			$http({\n  210  				method  : 'POST',\n  211: 				url     : '/createsong',\n  212  				data    : $.param($scope.song),\n  213  				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n  ...\n  351  		$scope.init = function(_id) {\n  352  			// if(_id == undefined)\n  353: 			// 	Side.setPagetype(\"createsong\");\n  354  			// else\n  355  			// 	Side.setPagetype(\"editsong\");\n  ...\n  363  					if (data.song == undefined) { // if song does not exist\n  364  						console.log(\"Song not found\");\n  365: 						$window.location.href='/members/createsong';\n  366  						return;\n  367  					}\n  ...\n  392  		}\n  393  \n  394: 		$scope.createsong = function() {\n  395  			console.log(\"create \" + $scope.song.title);\n  396  			console.log($('#data').val());\n  ...\n  401  			$http({\n  402  				method  : 'POST',\n  403: 				url     : '/createsong',\n  404  				data    : $.param($scope.song),\n  405  				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js:\n  108  		});\n  109  \n  110: 		app.get('/members/createsong', isLoggedIn, function(req, res){\n  111  			res.render('editsong.ejs', {\n  112  				isLoggedIn: req.isAuthenticated,\n  ...\n  168  		\n  169  		app.get('/findsong/:_id', utils.getSong)\n  170: 		app.get('/createsong', isLoggedIn, function(req, res) {\n  171  			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});\n  172  		});\n  173  \n  174: 		app.post('/createsong', isLoggedIn, utils.createSong);\n  175  		\n  176  		// app.get('/editsong', isLoggedIn, function(req, res) {\n  ...\n  234  		//bands\n  235  \n  236: 		/*app.get('/members/createsong', isLoggedIn, function(req, res){\n  237  			res.render('editsong.ejs', {\n  238  				isLoggedIn: req.isAuthenticated,\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js:\n   11  						\"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8=\"); // pdf\n   12  \n   13: exports.createSong = function(req, res) {\n   14  	var song = new songSchema({\n   15  		title: req.body.title,\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/profile.ejs:\n   58                      <ul class=\"sidebar-menu\">\n   59                          <li class=\"active\">\n   60:                             <a href=\"/createsong\">\n   61                                  <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   62                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/profile_orig.ejs.html:\n   58                      <ul class=\"sidebar-menu\">\n   59                          <li class=\"active\">\n   60:                             <a href=\"/createsong\">\n   61                                  <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   62                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_default.ejs:\n   22          <ul class=\"sidebar-menu\">\n   23              <li class=\"active\">\n   24:                 <a href=\"members/createsong\">\n   25                      <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   26                  </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_editsong.ejs:\n   23          <ul class=\"sidebar-menu\">\n   24              <li class=\"active\">\n   25:                 <a href=\"/members/createsong\">\n   26                      <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   27                  </a>\n   ..\n   40  \n   41  \n   42:                     <button ng-click=\"createsong()\" class=\"button\" ng-show=\"isNew\" style=\"background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;\" ><i class=\"fa fa-dropbox\"></i> Save</button>\n   43  \n   44                      <button ng-click=\"editsong(false)\" class=\"button\" ng-show=\"!isNew\" style=\"background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;\" ><i class=\"fa fa-dropbox\"></i> Save</button>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/viewband.ejs:\n   78                          </li>\n   79                          <li>\n   80:                             <a href=\"createsong.html\">\n   81                                  <i class=\"fa fa-plus\"></i> <span> Create a Song</span>\n   82                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/editsong.ejs:\n   59                      <ul class=\"sidebar-menu\">\n   60                          <li class=\"active\">\n   61:                             <a href=\"createsong.html\">\n   62                                  <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   63                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/index.ejs:\n   52                  <div ng-switch-when=\"band\"><% include side_band.ejs %></div>\n   53                  <div ng-switch-when=\"viewband\"><% include side_viewband.ejs %></div>\n   54:                 <div ng-switch-when=\"createsong\"><% include side_editsong.ejs %></div>\n   55                  <div ng-switch-when=\"editsong\"><% include side_editsong.ejs %></div>\n   56              </div>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/profile.ejs:\n   58                      <ul class=\"sidebar-menu\">\n   59                          <li class=\"active\">\n   60:                             <a href=\"/createsong\">\n   61                                  <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   62                              </a>\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/old/profile_orig.ejs.html:\n   58                      <ul class=\"sidebar-menu\">\n   59                          <li class=\"active\">\n   60:                             <a href=\"/createsong\">\n   61                                  <i class=\"fa fa-plus\"></i> <span>Create a Song</span>\n   62                              </a>\n\n22 matches across 13 files\n",
 			"settings":
 			{
-				"buffer_size": 3515,
-				"line_ending": "Unix"
+				"buffer_size": 17137,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
 			}
 		},
 		{
-			"file": "views/editband.ejs",
+			"file": "views/profile.ejs",
 			"settings":
 			{
-				"buffer_size": 7093,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "routes/utils.js",
-			"settings":
-			{
-				"buffer_size": 19707,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "views/createband.ejs",
-			"settings":
-			{
-				"buffer_size": 4100,
+				"buffer_size": 11661,
 				"line_ending": "Unix"
 			}
 		},
@@ -103,27 +93,41 @@
 			"file": "routes/routes.js",
 			"settings":
 			{
-				"buffer_size": 7040,
+				"buffer_size": 10097,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "Searching 1740 files for \"folderview\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/folderutils.js:\n   17  	\n   18  	folderSchema.find({author_id: authorid}, function(err, docs) {\n   19: 		res.render('folderview.ejs', {\n   20  			title: 'enchord', \n   21  			isNew: false, \n   ..\n  122  			}\n  123  			console.log('success edit');\n  124: 			res.render('folderview.ejs', { //just shows a no info page for now\n  125  				title: 'enchord', \n  126  				isNew: false, \n  ...\n  143  		}\n  144  		console.log('success edit');\n  145: 		res.render('folderview.ejs', { //just shows a no info page for now\n  146  			title: 'enchord', \n  147  			isNew: false, \n  ...\n  170  				return;\n  171  			}\n  172: 			res.render('folderview.ejs', { //just shows a no info page for now\n  173  			title: 'enchord', \n  174  			isNew: false, \n\n4 matches in 1 file\n",
+			"file": "views/editband.ejs",
 			"settings":
 			{
-				"buffer_size": 854,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
+				"buffer_size": 2613,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/javascripts/controllers.js",
+			"settings":
+			{
+				"buffer_size": 19738,
+				"line_ending": "Unix"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 151.0,
+		"height": 312.0,
 		"selected_items":
 		[
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
 			[
 				"git push",
 				"Git: Push"
@@ -139,10 +143,6 @@
 			[
 				"git: pull",
 				"Git: Pull"
-			],
-			[
-				"html",
-				"Set Syntax: HTML"
 			],
 			[
 				"plain ",
@@ -177,7 +177,7 @@
 				"Preferences: Browse Packages"
 			]
 		],
-		"width": 561.0
+		"width": 444.0
 	},
 	"console":
 	{
@@ -198,20 +198,32 @@
 	},
 	"file_history":
 	[
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editband_orig.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editsong.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_editband.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/createband.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/song.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_default.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/mongoose/contRun.sh",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/mongoose/CONTRIBUTING.md",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/async/component.json",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/nodemailer/examples/example_direct.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/enchord.sublime-project",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/README.md",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/untitled",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/server.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/edit_song.html",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/express/node_modules/connect/node_modules/multiparty/test/standalone/test-content-transfer-encoding.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editband.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/nodemailer/examples/example_direct.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/todo",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/song.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/viewsong.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/folder.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/db.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/user.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/ratings.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/rates.js",
@@ -220,7 +232,6 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parser.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/reset.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/nodemailer.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/jemah.sublime-project",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/.gitignore",
 		"/home/hseog/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
@@ -238,7 +249,6 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/connect-local.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/profile.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/login.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/server.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/passport.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord_2/views/login.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord_2/server.js",
@@ -289,8 +299,7 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/schemas/user.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/signup.html",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/login.html",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/package.json",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/README.md"
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/package.json"
 	],
 	"find":
 	{
@@ -309,6 +318,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"createsong",
+			"createband",
+			"createsong",
+			"createband",
+			"editsong",
+			"#/create",
+			"editsong",
+			"editband",
+			"editsong",
+			"editband",
+			"createband",
+			"/createband",
+			"createsong",
+			"createband",
+			"copy",
+			"findId",
+			"band_",
+			"getauthor",
 			"findsong",
 			"folderview",
 			"bandutils",
@@ -425,6 +452,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"",
 			"t2",
 			"z2",
 			"t2",
@@ -486,382 +514,15 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "routes/bandutils.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3515,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								762,
-								762
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1122.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "views/editband.ejs",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 7093,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
-							],
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "routes/utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19707,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								15967,
-								15967
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 6304.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "views/createband.ejs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4100,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1508,
-								1508
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
-							],
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "routes/routes.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7040,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6195,
-								6195
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1266.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 854,
+						"buffer_size": 17137,
 						"regions":
 						{
 							"match":
@@ -870,20 +531,264 @@
 								"regions":
 								[
 									[
-										217,
-										227
+										327,
+										335
 									],
 									[
-										369,
-										379
+										361,
+										369
 									],
 									[
-										556,
-										566
+										401,
+										409
 									],
 									[
-										724,
-										734
+										632,
+										640
+									],
+									[
+										883,
+										891
+									],
+									[
+										1097,
+										1105
+									],
+									[
+										1317,
+										1325
+									],
+									[
+										1434,
+										1442
+									],
+									[
+										1641,
+										1649
+									],
+									[
+										1905,
+										1913
+									],
+									[
+										2341,
+										2349
+									],
+									[
+										2501,
+										2509
+									],
+									[
+										2575,
+										2583
+									],
+									[
+										2824,
+										2832
+									],
+									[
+										3020,
+										3028
+									],
+									[
+										3089,
+										3097
+									],
+									[
+										3214,
+										3222
+									],
+									[
+										3243,
+										3251
+									],
+									[
+										3283,
+										3291
+									],
+									[
+										3613,
+										3621
+									],
+									[
+										3756,
+										3764
+									],
+									[
+										3949,
+										3957
+									],
+									[
+										4095,
+										4103
+									],
+									[
+										4463,
+										4471
+									],
+									[
+										4517,
+										4525
+									],
+									[
+										5120,
+										5128
+									],
+									[
+										5461,
+										5469
+									],
+									[
+										6403,
+										6411
+									],
+									[
+										6469,
+										6477
+									],
+									[
+										6495,
+										6503
+									],
+									[
+										6881,
+										6891
+									],
+									[
+										7212,
+										7222
+									],
+									[
+										7306,
+										7316
+									],
+									[
+										7513,
+										7523
+									],
+									[
+										7752,
+										7762
+									],
+									[
+										7935,
+										7945
+									],
+									[
+										7970,
+										7980
+									],
+									[
+										8259,
+										8269
+									],
+									[
+										8607,
+										8617
+									],
+									[
+										8914,
+										8924
+									],
+									[
+										9232,
+										9242
+									],
+									[
+										9584,
+										9594
+									],
+									[
+										10090,
+										10100
+									],
+									[
+										10728,
+										10738
+									],
+									[
+										11085,
+										11095
+									],
+									[
+										11329,
+										11339
+									],
+									[
+										11568,
+										11578
+									],
+									[
+										11657,
+										11667
+									],
+									[
+										11854,
+										11864
+									],
+									[
+										12108,
+										12118
+									],
+									[
+										12321,
+										12331
+									],
+									[
+										12509,
+										12519
+									],
+									[
+										12540,
+										12550
+									],
+									[
+										12689,
+										12699
+									],
+									[
+										12981,
+										12991
+									],
+									[
+										13306,
+										13316
+									],
+									[
+										13685,
+										13695
+									],
+									[
+										14030,
+										14040
+									],
+									[
+										14353,
+										14363
+									],
+									[
+										14542,
+										14552
+									],
+									[
+										15359,
+										15369
+									],
+									[
+										15738,
+										15748
+									],
+									[
+										16185,
+										16195
+									],
+									[
+										16580,
+										16590
+									],
+									[
+										16963,
+										16973
 									]
 								],
 								"scope": ""
@@ -892,8 +797,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								10436,
+								10436
 							]
 						],
 						"settings":
@@ -901,6 +806,22 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
@@ -909,6 +830,288 @@
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close"
+							],
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 3,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2937.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "views/profile.ejs",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 11661,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3180,
+								3180
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close"
+							],
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 463.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "routes/routes.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10097,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3099,
+								3109
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1769.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "views/editband.ejs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2613,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close"
+							],
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/javascripts/controllers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19738,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15021,
+								15021
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
@@ -917,18 +1120,22 @@
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
@@ -937,25 +1144,24 @@
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close"
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
 							],
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+							"history_list_is_closing": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5883.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -978,11 +1184,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -1003,7 +1216,7 @@
 	"project": "enchord.sublime-project",
 	"replace":
 	{
-		"height": 40.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1011,6 +1224,22 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"controller",
+				"public/javascripts/controllers.js"
+			],
+			[
+				"editband",
+				"views/editband.ejs"
+			],
+			[
+				"routes",
+				"routes/routes.js"
+			],
+			[
+				"utils.",
+				"routes/utils.js"
+			]
 		],
 		"width": 0.0
 	},

@@ -600,11 +600,11 @@ enchordControllers.controller('BandController', [
 		$scope.createband = function() {
 			$http({
 				method : 'POST',
-				url    : '/createband',
+				url    : '/members/createband',
 				params : {bandname : $scope.band.name}
 			}).success(function(data){
 				console.log(data);
-				$location.url('editband/' + data.band._id);
+				$location.url('/members/editband/' + data.band._id);
 			})
 		}
 		$scope.editband = function() {
