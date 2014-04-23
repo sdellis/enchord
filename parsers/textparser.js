@@ -233,8 +233,11 @@ function parseLine(oneLine, linenum, font) {
 	}
 	
 	var chordAlign = "float";
-	if(oneLine.charAt(0) = '%')
+	if(oneLine.charAt(0) === '%')
+	{
 		chordAlign = "inline";
+		oneLine = oneLine.substring(1);
+	}
 	
 	//Otherwise, read in character by character, usually putting in the lyric line, and calling handlers for brackets.
 	var len = oneLine.length;
