@@ -173,6 +173,16 @@ enchordControllers.controller('SongViewController', [
 				$scope.voted = data.voted;
 			});
 		}
+		$scope.hasAuthor = function() {
+			$http({
+				method : 'GET',
+				url    : '/hasvoted',
+				params : { _id : $scope.song._id }
+			}).success(function(data) {
+				console.log(data);
+				$scope.isAuthor = data.isAuthor;
+			});
+		}
 		$scope.init = function(_id) {
 			$http({
 					method  : 'GET',
@@ -217,6 +227,7 @@ enchordControllers.controller('SongViewController', [
 					genre: '',
 					data: '',
 					_id: '',
+					upvote: 0,
 					pub: true
 				};
 				$scope.parsehtml();
