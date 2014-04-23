@@ -45,7 +45,7 @@
                 </div>
             </nav>
         </header>
-        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongViewController" ng-init="init('<%= _id %>')">
+        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongViewController" ng-init="init('<%= _id %>', <%= isLoggedIn %>)">
             <% include side_viewsong.ejs %>
             <% include partial_viewsong.ejs %>
         </div>

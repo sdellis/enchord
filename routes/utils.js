@@ -7,8 +7,8 @@ var htmlparser = require('../parsers/htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 var grabzit = require("grabzit");
-var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
-						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
+// var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
+// 						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
 
 //------------------Song Related functions -------------------------------------------
 exports.createSong = function(req, res) {
@@ -87,6 +87,70 @@ exports.loadSongEdit = function(req, res) {
 	
 	var findsong = findSong(id, res, function(docs) {
 		res.render('editsong.ejs', {title: 'enchord', isNew: false, song: docs, message: 'Song loaded'});
+	});
+}
+
+//middleware
+exports.isAuthor = function(req, res, next) {
+	var id = req.params._id;
+	
+	var findsong = findSong(id, res, function(docs) {
+		if (req.isAuthenticated()) {
+		
+			if (docs['isBand'] == false) {
+				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+				if (getAuthorId(req) == docs.author_id) {
+					return next();
+				} else {
+					// send message too?
+					res.redirect('/viewsong/' + id);
+				}
+			}
+			else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					if (isInBand == -1) {
+						res.redirect('/viewsong/' + id);
+					}
+					else {
+						return next();
+					}
+				});
+			}
+		
+		
+		} else {
+			res.redirect('/login');
+		}
+	});
+}
+//for get request
+exports.isAuthorOfSong = function (req, res) {
+	var id = req.query._id;
+
+	findSong(id, res, function(docs) {
+		if (req.isAuthenticated()) {
+			if (docs['isBand'] == false) {
+				if (getAuthorId(req) == docs.author_id) {
+					res.send({isAuthor: true});
+				} else {
+					res.send({isAuthor: false});
+				}
+			} else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					console.log(docs);
+					console.log(isInBand);
+					if (isInBand == -1) {
+						res.send({isAuthor: false});
+					} else {
+						res.send({isAuthor: true});
+					}
+				})
+			}
+		} else {
+			res.send({isAuthor: false});
+		}
 	});
 }
 
@@ -466,66 +530,6 @@ function findSong(id, res, callback) {
 }
 
 //-----------------------------------------end search functions -------------------------------
-
-
-
-//middleware
-exports.isAuthor = function(req, res, next) {
-	var id = req.params._id;
-	var findsong = findSong(id, res, function(docs) {
-		if (req.isAuthenticated()) {
-			if (docs['isBand'] == false) {
-				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-				if (getAuthorId(req) == docs.author_id) {
-					return next();
-				} else {
-					// send message too?
-					res.redirect('/viewsong/' + id);
-				}
-			}
-			else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					if (isInBand == -1) {
-						res.redirect('/viewsong/' + id);
-					}
-					else {
-						return next();
-					}
-				});
-			}
-		} else {
-			res.redirect('/login');
-		}
-	});
-}
-//for get request
-exports.isAuthorOfSong = function (req, res) {
-	var id = req.params._id;
-
-	findSong(id, res, function(docs) {
-		if (req. isAuthenticated()) {
-			if (docs['isBand'] == false) {
-				if (getAuthorId(req) == docs.author_id) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					console.log(docs);
-					console.log(isInBand);
-					if (isInBand == -1) {
-						return false;
-					} return true;
-				})
-			}
-		} else {
-			return false;
-		}
-	});
-}
 
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
