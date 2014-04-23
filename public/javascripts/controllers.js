@@ -115,7 +115,7 @@ enchordControllers.controller('SearchController', [
 	'$http',
 	'Side',
 	function($scope, $window, $routeParams, $location, $http, Side) {
-		$scope.query = $routeParams.query;
+		$scope.query = "";
 		$scope.globalresults = [];
 		$scope.localresults = [];
 		// $scope.type = "Both";
@@ -130,23 +130,26 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
-		$scope.init = function() {
+		$scope.init = function(query) {
 			Side.setPagetype('search');
-			$http({
-				method : 'GET',
-				url    : '/search',
-				params : { query : $scope.query }
-			}).success(function(data) {
-				console.log(data);
-				$scope.globalresults = data.results.global;
-				$scope.localresults = data.results.local;
-			});
+			$scope.query = query;
+			if (query != undefined && query.length > 0) {
+				$http({
+					method : 'GET',
+					url    : '/search',
+					params : { query : $scope.query }
+				}).success(function(data) {
+					console.log(data);
+					$scope.globalresults = data.results.global;
+					$scope.localresults = data.results.local;
+				});
+			}
 		}
 		// redirect to search page
 		$scope.search = function() {
 			console.log($scope.query);
 			if ($scope.query != undefined && $scope.query.length > 0) {
-				$location.url('search/' + $scope.query);
+				$window.location.href = '/searchresults/' + $scope.query;
 			}
 		};
 	}]);
@@ -743,6 +746,40 @@ enchordControllers.controller('FolderController', [
 				$window.location.href='/members';
 			});
 		}
+	}]);
+enchordControllers.controller('AdvancedSearchController', [
+	'$scope', 
+	'$window', 
+	'$routeParams', 
+	'$location', 
+	'$http',
+	'Side',
+	function($scope, $window, $routeParams, $location, $http, Side) {
+		$scope.query = "";
+		$scope.globalresults = [];
+		$scope.localresults = [];
+		$scope.init = function(query) {
+			Side.setPagetype('search');
+			$scope.query = query;
+			if (query != undefined && query.length > 0) {
+				$http({
+					method : 'GET',
+					url    : '/advsearch',
+					params : { query : $scope.query }
+				}).success(function(data) {
+					console.log(data);
+					$scope.globalresults = data.results.global;
+					$scope.localresults = data.results.local;
+				});
+			}
+		}
+		// redirect to search page
+		$scope.search = function() {
+			console.log($scope.query);
+			if ($scope.query != undefined && $scope.query.length > 0) {
+				$window.location.href = '/advsearch/' + $scope.query;
+			}
+		};
 	}]);
 /* OLD CODE */
 /* front-end parser */
