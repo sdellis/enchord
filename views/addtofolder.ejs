@@ -37,17 +37,17 @@
                     <!-- NOT LOGGED IN -->
                     <% } else { %>
                     <ul class="nav navbar-nav">
-                        <li><a href="/signup">Sign Up</a></li>
-                        <li><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+                        <li><a href="/signup"><i class="fa fa-cogs"></i>  Sign Up</a></li>
+                        <li><a href="/login"><i class="fa fa-sign-out"></i> Login</a></li>
                     </ul>
                     <% } %>
 
                 </div>
             </nav>
         </header>
-        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongViewController" ng-init="init('<%= _id %>', <%= isLoggedIn %>)">
-            <% include side_viewsong.ejs %>
-            <% include partial_viewsong.ejs %>
+        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="ProfileController" ng-init="init()">
+            <% include side_addtofolder.ejs %>
+            <% include partial_library.ejs %>
         </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
