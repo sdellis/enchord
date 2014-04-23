@@ -774,6 +774,57 @@ enchordControllers.controller('FolderController', [
 		}
 
 	}]);
+enchordControllers.controller('FolderViewController', [
+	'$scope', 
+	'$http', 
+	'$window', 
+	'$routeParams', 
+	'$sce',
+	function($scope, $http, $window, $routeParams, $sce){
+		$scope.folder = {};
+		$scope.folderid = "";
+		$scope.init = function(_id) {
+			$scope.folderid = _id;
+			if(_id != undefined && _id.length != 0) {
+				var getUrl = '/viewfoldersongs/' + _id;
+				$http({
+					method : 'GET',
+					url    : getUrl
+				}).success(function(data) {
+					console.log(data);
+					$scope.folder = data.folder;
+				});
+			}
+		}
+		$scope.deletesong = function(songid) {
+			console.log(songid);
+		}
+
+		$scope.updatefolder = function() {
+			$http({
+				method  : 'POST',
+				url     : '/renamefolder',
+				data    : $.param({folderid: $scope.folderid, name: $scope.folder.name}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				if (data.success)
+					console.log("success");
+			});
+		}
+		$scope.deletefolder = function() {
+			$http({
+				method  : 'POST',
+				url     : '/deletefolder',
+				data    : $.param({folderid: $scope.folderid}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				if (data.success)
+					$window.location.href="/members";
+			});
+		}
+	}]);
 enchordControllers.controller('AdvancedSearchController', [
 	'$scope', 
 	'$window', 

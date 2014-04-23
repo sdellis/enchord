@@ -62,7 +62,7 @@
                 </a>
                 <ul class="treeview-menu">
                 <% for (var i = 0; i < userfolders.length; i++) { %>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
+                    <li><a href="/members/editfolder/<%= userfolders[i]._id %>"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
                 <% } %>
                 </ul>
             </li>
