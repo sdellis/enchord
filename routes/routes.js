@@ -232,15 +232,48 @@ module.exports = function(app, passport, db) {
 		app.get('/deletefolder/:folderid', isLoggedIn, folderutils.deleteFolder);
 		
 		//bands
-		app.get('/createband',  isLoggedIn, function(req, res) {
-			res.render('createband.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+
+		/*app.get('/members/createsong', isLoggedIn, function(req, res){
+			res.render('editsong.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: '',
+				isNew: true
+			});
 		});
+
+		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){
+			res.render('editsong.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: req.params._id,
+				isNew: false
+			});
+		});*/
+
+		/*app.get('/members/createband',  isLoggedIn, function(req, res) {
+			res.render('editband.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: '',
+				isNew: true,
+			});
+		});*/
 		app.post('/createband', isLoggedIn, bandutils.createBand);
+
+		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {
+			res.render('editband.ejs', {
+				isLoggedIn: req.isAuthenticated,
+				username: utils.getUsername(req),
+				_id: req.params._id,
+				isNew:false
+			});
+		});
 
 		app.post('/editband', bandutils.editBand);
 		
 		//prevent access where needed
-		/*app.get('/editband/:_id', bandutils.loadBandEdit); */
+		//app.get('/editband/:_id', bandutils.loadBandEdit); 
 
 		//make sure only band leader deletes
 		app.get('/deleteband', bandutils.deleteBand);
