@@ -116,8 +116,21 @@ exports.addSongToFolder = function(req, res) {
 	var authorid = getAuthorId(req);
 	if (authorid == null) {
 		return;
-	} else {	
-		songSchema.update({_id: songid, author_id: authorid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
+	} else {
+		songSchema.find({_id: songid, author_id: authorid}, function(err, docs){
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
+				return;
+			}
+			docs.folder_id = folderid;
+			docs.save(function(err, docs) {
+				if (err) {
+					console.log('i am sad');
+				}
+			});
+		});	
+		/*songSchema.update({_id: songid, author_id: authorid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
@@ -125,7 +138,7 @@ exports.addSongToFolder = function(req, res) {
 			} 
 			console.log('add song to folder success');
 			return;
-		});
+		});*/
 	}
 }
 
