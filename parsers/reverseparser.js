@@ -4,7 +4,28 @@
 *
 * Use: call reverseParse(input) where input is the string of song text, returns the markup-language version of the song text. 
 */
-var commonheaders = new Array( /^\s*(\d(th|nd|rd|st)?)?\s*verse(s)?([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*chorus(es)?([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*bridge(s)?([ _]*\d+)?\s*:?\s*$/i, /^\s*(\d(th|nd|rd|st)?)?\s*intro(duction)?([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*outro([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*instrumental([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*end(ing)?([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*break(down)([ _]*\d+)?\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*tag([ _]*\d+)?\s*:?\s*$/i)
+
+/*
+Reverse parsing features
+Recognize chord line, lyric line, places chords within following lyric line. (chord comments!) 
+If chord line above chord line or empty line, print chord line on its own.
+If lyric line without preceding chord line, just print lyric line
+Recognize common headers like Verse 1, Chorus, Bridge, Intro, etc.
+Recognize tablature, enclose in {tab}
+Lines directly above Tab also enclosed in tab
+Make beginning of document header font, until first chord line seen or section header seen
+If repeated section headers, try to write to "order" (always write to order?)
+
+Kinds of Lines: 
+chord: common chord forms, more than one space between them, few words, "x#" or "#x" are def. comments
+section header: Common name, ends with colon, all caps, ALONE in line
+tab: many contiguous '-', with some numbers, few letters (towards beginning/end)
+empty: only spaces -- new section
+lyric:default, if not others.
+
+*/
+
+var commonheaders = new Array( /^\s*(\d(th|nd|rd|st)?)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*$/i, /^\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*$/i)
 var emptyLine = /^\s*$/;
 var hasChords = /(\s|,|-|^)([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|$)/g;
 var replaceChords = /(\s|,|-|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|$)?/g;
@@ -45,7 +66,6 @@ function mergeChordLyric(chordLine, lyricLine)
 		lyricLine += " ";
 	var finalLine = "";
 	var i = 0;
-	console.log(lyricLine.length);
 	while(i < lyricLine.length){
 		if(chordLine.charAt(i) === ""){
 			finalLine += lyricLine.substring(i);
@@ -68,7 +88,6 @@ function mergeChordLyric(chordLine, lyricLine)
 			finalLine += '>';
 			finalLine += lyricLine.substring(j,i);
 		}
-		console.log(finalLine);
 	}
 	return finalLine.replace(replaceCommentedChords,"[$1]");
 }
@@ -78,22 +97,113 @@ function bracketInlineChords(chordLine)
 	return "%" + chordLine.replace(replaceChords,"$1[$2]$6");
 }
 
-chordLine = " C G# 2x";
-lyricLine = "Lyrics hello G";
-console.log(mergeChordLyric(chordLine,lyricLine));
+
 
 function reverseParse(input)
 {
-var lines = input.split('\n');
-
-//dummy return;
-return input;
+	var lines = input.split('\n');
+	var currentType;
+	var output = "";
+	var state; //tab, chord, lyric, empty, header
+	for(var i = 0; i < lines.length ; i+=1)
+	{
+		currentType = lineType(lines[i]);
+		
+		switch(state)
+		{
+		case "tab": //already printed
+			switch(currentType)
+			{
+			case "empty": //print
+				output += "{end tab}\n" + lines[i] + "\n";
+				state = "empty";
+				break;
+			case "header": //print
+				output += "{end tab}\n{" + lines[i].replace(":","").trim() + "}\n";
+				state = "header";
+				break;
+			case "tab": //start tab section, print
+				output += lines[i] + "\n";
+				state = "tab";
+				break;
+			case "chord"://DON'T print yet
+				output += "{end tab}\n";
+				state = "chord";
+				break;
+			case "lyric"://print
+			default:
+				output += "{end tab}\n" + lines[i] +"\n";
+				state = "lyric";
+				break;
+			}
+			break;
+		case "chord"://NOT printed
+			switch(currentType)
+			{
+			case "empty": //print inline chords, print line
+				output += bracketInlineChords(lines[i-1]) + "\n\n";
+				state = "empty";
+				break;
+			case "header": //print
+				output += bracketInlineChords(lines[i-1]) + "\n{" + lines[i].replace(":","").trim() + "}\n";
+				state = "header";
+				break;
+			case "tab": //start tab section, print chords in tab section
+				output += "{tab}\n" + bracketInlineChords(lines[i-1]) + "\n" + lines[i] + "\n";
+				state = "tab";
+				break;
+			case "chord"://print previous chord line, don't print next line
+				output += bracketInlineChords(line[i-1]) + "\n"
+				state = "chord";
+				break;
+			case "lyric"://merge the lines, print
+			default:
+				output += mergeChordLyric(lines[i-1],lines[i]) +"\n";
+				state = "lyric";
+				break;
+			}
+			break;
+		case "empty": //already printed
+		case "header": //already printed
+		case "lyric"://already printed
+		default:
+			switch(currentType)
+			{
+			case "empty": //print
+				output += lines[i] + "\n";
+				state = "empty";
+				break;
+			case "header": //print
+				output += "{" + lines[i].replace(":","").trim() + "}\n";
+				state = "header";
+				break;
+			case "tab": //start tab section, print
+				output += "{tab}\n" + lines[i] + "\n";
+				state = "tab";
+				break;
+			case "chord"://DON'T print yet
+				state = "chord";
+				break;
+			case "lyric"://print
+			default:
+				output += lines[i] +"\n";
+				state = "lyric";
+				break;
+			}
+		}
+		
+	}
+	return output;
 }
 
 
 //TESTING
 
 /*
+chordLine = " C G# 2x";
+lyricLine = "Lyrics hello G";
+console.log(mergeChordLyric(chordLine,lyricLine));
+
 var fs = require('fs');
 
 var input = fs.createReadStream('test.txt');
@@ -103,11 +213,6 @@ input.on('data', function(data) {
 		remaining += data;
 	})
 input.on('end', function() {
-	var lines = remaining.split('\n');
-	
-	for(i = 0; i < lines.length; i++){
-		console.log(lines[i]);
-		console.log(bracketInlineChords(lines[i]));
-		}
+	console.log(reverseParse(remaining));
 })
 */

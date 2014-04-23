@@ -1,10 +1,11 @@
-<aside class="right-side" ng-controller="ProfileController" ng-init="init()">
+<aside class="right-side">
     <section class="content-header">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">My Library</li>
+            <li class="active"><%= artist %></li>
         </ol>
     </section>
+    <h1><%= artist %></h1>
     <table class="table">
         <thead>
             <tr>
@@ -18,9 +19,9 @@
         <tbody>
             <tr data-ng-repeat="song in usersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
-                <td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>
-                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
-                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td>
+                <td><a href="/viewsong/<%= results[i]._id %>">{{ results[i].title }}</a></td>
+                <td><a href="/artist/<%= results[i].artist %>{{ results[i].artist }}</a></td>
                 <td>{{ song.genre }}</td>
             </tr>
         </tbody>

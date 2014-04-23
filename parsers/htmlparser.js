@@ -273,11 +273,11 @@ function parseLine(oneLine, linenum, font) {
 	for (var i = 0; i < len; i++) {
 		switch(oneLine[i]){
 		case '[':
-			lines = 2;
+			if(chordAlign === "float") lines = 2; else lines = 1;
 			i+=parseChord(oneLine, i,chordAlign);
 			break;
 		case '<':
-			lines = 2;
+			if(chordAlign === "float") lines = 2; else lines = 1;
 			i+=parseChordComment(oneLine, i,chordAlign); 
 			break;
 		case '{':

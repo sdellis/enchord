@@ -13,7 +13,7 @@
     <table class="table" name="local">
         <thead>
             <tr>
-                <th style="max-width: 10px;"></th>
+                <th style="max-width: 20px;"></th>
                 <th>Song</th>
                 <th>Arist</th>
                 <th>Created By</th>
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="song in localresults">
-                <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
+                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
@@ -32,7 +32,7 @@
     <table class="table" name="global">
         <thead>
             <tr>
-                <th style="max-width: 10px;"></th>
+                <th style="max-width: 20px;"></th>
                 <th>Song</th>
                 <th>Arist</th>
                 <th>Created By</th>
@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="song in globalresults">
-                <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
+                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
