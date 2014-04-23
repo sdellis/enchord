@@ -22,7 +22,11 @@ exports.getUserFolders = function(req, res) { //can only get user's own folder
 		// 	authorName: authorname,
 		// 	results: docs
 		// });
-		res.send({userfolders: docs});
+		if (!docs) {
+			res.send({userfolders: []});
+		} else {
+			res.send({userfolders: docs});
+		}
 	});
 }
 
@@ -32,22 +36,30 @@ function getMyFolders(req, res, callback) {
 	var folders = [];
 
 	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
-		callback(docs);
+		if (!docs) {
+			callback(folders);
+		} else {
+			callback(docs);
+		}
 	});
 }
 
 function getSongs(req, res, folderid, callback) {
 	folderSchema.findById(folderid, function(err, docs) {
 		var foldername = docs.name;
+		var songs = [];
 		songSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, docs) { //search author_id also
 			if (err) {
 				console.log(err);
 				res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
 				return;
+			} else if (!docs) {
+				callback(songs);
+			} else {
+				// console.log(docs);
+				callback(docs);
+				return;	
 			}
-			// console.log(docs);
-			callback(docs);
-			return;
 		});
 		return;
 	});
@@ -101,17 +113,21 @@ exports.getFolderSongs = function(req, res) {
 exports.addSongToFolder = function(req, res) {
 	var songid = req.params.songid;
 	var folderid = req.params.folderid;
-	
-	songSchema.update({_id: songid, author_id: getAuthorId(req)}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
-			return;
-		}
-		console.log('add song to folder success');
-		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: folderid, results: ''});
+	var authorid = getAuthorId(req);
+	if (authorid == null) {
 		return;
-	});
+	} else {	
+		songSchema.update({_id: songid, author_id: authorid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({message: 'Internal server error: Cannot add', hasError: true});
+				return;
+			} 
+			console.log('add song to folder success');
+			res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: folderid, results: ''});
+			return;
+		});
+	}
 }
 
 //DOES NOT DELETE THE SONG. set the folder_id in the song to null
