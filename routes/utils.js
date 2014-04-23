@@ -412,6 +412,9 @@ exports.getArtistSongs = function(req, res) {
 
 function getMySongs(req, res, callback) {
 	var authorid = getAuthorId(req);
+	if (authorid == null) {
+		return;
+	}
 	console.log(authorid);
 	songSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
 		if (err) {
