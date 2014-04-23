@@ -26,7 +26,7 @@
                 <button class="button" ng-show="isLoggedIn && !isAuthor" style="background-color: rgb(77, 144, 254) !important;
                 background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;"><i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy to My Library</button>
 
-                  <button class="button" ng-show="isAuthor" style="background-color: rgb(77, 144, 254) !important;
+                  <button class="button" ng-show="isAuthor" ng-click="gotoeditsong()" style="background-color: rgb(77, 144, 254) !important;
                 background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Song</button>
 
                 <button ng-click="downloadpdf()" class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-download"></i>&nbsp;&nbsp;Download as PDF</button>

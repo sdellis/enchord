@@ -125,7 +125,7 @@ exports.isAuthor = function(req, res, next) {
 }
 //for get request
 exports.isAuthorOfSong = function (req, res) {
-	var id = req.params._id;
+	var id = req.query._id;
 
 	findSong(id, res, function(docs) {
 		if (req. isAuthenticated()) {

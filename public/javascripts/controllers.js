@@ -185,8 +185,6 @@ enchordControllers.controller('SongViewController', [
 		}
 		$scope.init = function(_id, isLoggedIn) {
 			$scope.isLoggedIn = isLoggedIn;
-			if (isLoggedIn)
-				$scope.hasAuthor();
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -196,8 +194,10 @@ enchordControllers.controller('SongViewController', [
 					console.log(data);
 					$scope.song = data.song;
 					$scope.parsehtml();
-					if (isLoggedIn)
+					if (isLoggedIn) {
 						$scope.hasvoted();
+						$scope.hasAuthor();
+					}
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -219,6 +219,9 @@ enchordControllers.controller('SongViewController', [
 				};
 				$scope.parsehtml();
 			}
+		}
+		$scope.gotoeditsong = function() {
+			$window.location.href = "/members/editsong/" + $scope.song._id;
 		}
 		$scope.copysong = function() {
 			// by default set public value to false
