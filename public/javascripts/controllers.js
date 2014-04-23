@@ -238,7 +238,7 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				
 				// go to edit page
-				var url = '/editsong/' + data.song._id;
+				var url = '/members/editsong/' + data.song._id;
 				$window.location.href = url;
 			}).error(function(data, status) {
 				console.log(data);
@@ -288,11 +288,9 @@ enchordControllers.controller('SongViewController', [
 		}
 
 		$scope.downloadtxt = function() {
-			$http({
-				method  : 'GET',
-				url     : '/downloadsongtxt/' + $scope.song._id
-			});
+			$window.location.href = '/downloadsongtxt/' + $scope.song._id;
 		}
+		
 		$scope.parsehtml = function() {
 			$http({
 				method  : 'POST',
