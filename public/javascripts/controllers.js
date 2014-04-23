@@ -152,7 +152,7 @@ enchordControllers.controller('SearchController', [
 	}]);
 
 // Song page (view) controller
-enchordControllers.controller('ViewController', [
+enchordControllers.controller('SongViewController', [
 	'$scope', 
 	'$http', 
 	'$window', 
@@ -161,6 +161,8 @@ enchordControllers.controller('ViewController', [
 	function($scope, $http, $window, $routeParams, $sce){
 		$scope.song = {};
 		$scope.voted = false;
+		$scope.isLoggedIn = false;
+		$scope.isAuthor = false;
 		$scope.hasvoted = function() {
 			$http({
 				method : 'GET',
@@ -172,6 +174,23 @@ enchordControllers.controller('ViewController', [
 			});
 		}
 		$scope.init = function(_id) {
+			$http({
+					method  : 'GET',
+					url     : '/'
+				}).success(function(data) {
+					console.log(data);
+					$scope.song = data.song;
+					$scope.parsehtml();
+					$scope.hasvoted();
+				}).error(function(data, status) {
+					console.log(data);
+					console.log(status);
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+				});
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
@@ -227,7 +246,7 @@ enchordControllers.controller('ViewController', [
 				}
 			});
 		}
-		$scope.testpdf = function() {
+		$scope.downloadpdf = function() {
 			// var doc = new jsPDF();
 			// doc.fromHTML($('#chord_sheet').get(0), 15, 15, {
 			// 	'width': 170
@@ -245,6 +264,7 @@ enchordControllers.controller('ViewController', [
 					// };
 
 					i.src = data;
+					console.log(data);
     				var doc = new jsPDF();
 					doc.addImage(data, 'PNG', 15, 15, i.width/4, i.height/4);
 			 		// generate proper filename
@@ -260,6 +280,13 @@ enchordControllers.controller('ViewController', [
 			 		doc.save(filename);
         		// canvas is the final rendered <canvas> element
     			}
+			});
+		}
+
+		$scope.downloadtxt = function() {
+			$http({
+				method  : 'GET',
+				url     : '/downloadsongtxt/' + $scope.song._id
 			});
 		}
 		$scope.parsehtml = function() {
@@ -562,11 +589,11 @@ enchordControllers.controller('BandController', [
 		$scope.createband = function() {
 			$http({
 				method : 'POST',
-				url    : '/createband',
+				url    : '/members/createband',
 				params : {bandname : $scope.band.name}
 			}).success(function(data){
 				console.log(data);
-				$location.url('editband/' + data.band._id);
+				$location.url('/members/editband/' + data.band._id);
 			})
 		}
 		$scope.editband = function() {
