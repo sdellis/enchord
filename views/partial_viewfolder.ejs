@@ -1,0 +1,26 @@
+<aside class="right-side">
+    <section class="content-header">
+        <h1>
+            Folder Results
+            <small>{{ results.length }} songs</small>
+        </h1>
+    </section>
+    <table class="table" name="global">
+        <thead>
+            <tr>
+                <th style="max-width: 20px;"></th>
+                <th>Song</th>
+                <th>Arist</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="song in foldersongs">
+                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                <td>{{ song.author_name }}</td>
+            </tr>
+        </tbody>
+    </table>   
+</aside>

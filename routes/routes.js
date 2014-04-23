@@ -143,6 +143,13 @@ module.exports = function(app, passport, db) {
 				_id: req.params._id
 			});
 		});
+		app.get('/members/viewfolder/:_id', isLoggedIn, function(req, res) {
+			res.render('viewfolder.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req),
+				_id: req.param._id
+			})
+		})
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
 				isLoggedIn: req.isAuthenticated(),

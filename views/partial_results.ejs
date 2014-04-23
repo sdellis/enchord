@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="song in localresults">
-                <td style="max-width: 10px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> {{song.upvote}}</td>
+                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="song in globalresults">
-                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star-o"></i> 50</td>
+                <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
