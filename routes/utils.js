@@ -10,6 +10,7 @@ var grabzit = require("grabzit");
 var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
 						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
 
+//------------------Song Related functions -------------------------------------------
 exports.createSong = function(req, res) {
 	var song = new songSchema({
 		title: req.body.title,
@@ -89,40 +90,6 @@ exports.loadSongEdit = function(req, res) {
 	});
 }
 
-exports.isAuthor = function(req, res, next) {
-	var id = req.params._id;
-	
-	var findsong = findSong(id, res, function(docs) {
-		if (req.isAuthenticated()) {
-		
-			if (docs['isBand'] == false) {
-				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-				if (getAuthorId(req) == docs.author_id) {
-					return next();
-				} else {
-					// send message too?
-					res.redirect('/viewsong/' + id);
-				}
-			}
-			else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					if (isInBand == -1) {
-						res.redirect('/viewsong/' + id);
-					}
-					else {
-						return next();
-					}
-				});
-			}
-		
-		
-		} else {
-			res.redirect('/login');
-		}
-	});
-}
-
 exports.loadSongView = function(req, res) {
 	var id = req.params._id;
 	
@@ -151,15 +118,6 @@ exports.loadSongView = function(req, res) {
 					}
 				});
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
 			/*
 			if (getAuthorId(req) == docs.author_id) {
@@ -183,6 +141,25 @@ exports.loadSongView = function(req, res) {
 		});
 	});
 }
+
+exports.deleteSong = function(req, res) {
+	var id = req.body._id;
+
+	findSong(id, res, function(docs) {
+		songSchema.remove({_id: id}, function(err) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+			return;
+		}
+		console.log('success delete');
+		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
+		return;
+		});
+	});
+
+};
+
 
 exports.downloadSongTxt = function(req, res) {
 	var id = req.params._id;
@@ -239,6 +216,10 @@ exports.downloadSongTxt = function(req, res) {
 	});
 }
 
+
+//------------------------------------------------------------------------------------------------------------------
+
+
 // exports.downloadSongPdf = function(req, res) {
 // 	console.log("here");
 // 	client.set_pdf_options("http://www.google.com");
@@ -253,23 +234,7 @@ exports.downloadSongTxt = function(req, res) {
 // 	});
 // }
 
-exports.deleteSong = function(req, res) {
-	var id = req.body._id;
-
-	findSong(id, res, function(docs) {
-		songSchema.remove({_id: id}, function(err) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
-			return;
-		}
-		console.log('success delete');
-		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
-		return;
-		});
-	});
-
-};
+//------------------------------------------------Search Songs functions ---------------------
 
 exports.searchSong = function(req, res) {
 	var query1 = {isBand: false}; //do the global search; if song is in band, it is not searchable
@@ -311,11 +276,6 @@ exports.searchSong = function(req, res) {
 		});
 	}
 }
-
-
-
-
-
 
 exports.advancedSearch = function(req, res) {
 	var qTitle, qArtist, qGenre, qAuthor, qType;
@@ -488,6 +448,85 @@ exports.getSong = function(req, res) {
 	});
 }
 
+function findSong(id, res, callback) {
+	songSchema.findById(id, function (err, docs) {
+		if (err) {
+			console.log(err);
+			res.status(500).json({message: 'find error', hasError: true});
+			return;
+		}
+		if (docs == null) {
+			console.log('Song not found');
+			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
+			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
+			return;
+		}
+		callback(docs);
+	});
+}
+
+//-----------------------------------------end search functions -------------------------------
+
+
+
+//middleware
+exports.isAuthor = function(req, res, next) {
+	var id = req.params._id;
+	var findsong = findSong(id, res, function(docs) {
+		if (req.isAuthenticated()) {
+			if (docs['isBand'] == false) {
+				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
+				if (getAuthorId(req) == docs.author_id) {
+					return next();
+				} else {
+					// send message too?
+					res.redirect('/viewsong/' + id);
+				}
+			}
+			else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					if (isInBand == -1) {
+						res.redirect('/viewsong/' + id);
+					}
+					else {
+						return next();
+					}
+				});
+			}
+		} else {
+			res.redirect('/login');
+		}
+	});
+}
+//for get request
+exports.isAuthorOfSong = function (req, res) {
+	var id = req.params._id;
+
+	findSong(id, res, function(docs) {
+		if (req. isAuthenticated()) {
+			if (docs['isBand'] == false) {
+				if (getAuthorId(req) == docs.author_id) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
+					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
+					console.log(docs);
+					console.log(isInBand);
+					if (isInBand == -1) {
+						return false;
+					} return true;
+				})
+			}
+		} else {
+			return false;
+		}
+	});
+}
+
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
 		console.log('empty title');
@@ -522,59 +561,48 @@ exports.getUserInfo = function(req, res) {
 }
 
 function getAuthorId(req) {
-	var id;
-	if (req.user.local.email) {
-		id = req.user._id;
+	if (req.isAuthenticated()) {
+		var id;
+		if (req.user.local.email) {
+			id = req.user._id;
+		}
+		if (req.user.facebook.token) {
+			id = req.user.facebook.id;
+		}
+		if (req.user.twitter.token) {
+			id = req.user.twitter.id;
+		}
+		if (req.user.google.token) {
+			id = req.user.google.id;
+		}
+		return id;
+	} else {
+		return null;
 	}
-	if (req.user.facebook.token) {
-		id = req.user.facebook.id;
-	}
-	if (req.user.twitter.token) {
-		id = req.user.twitter.id;
-	}
-	if (req.user.google.token) {
-		id = req.user.google.id;
-	}
-	return id;
 }
 exports.getId = getAuthorId;
 
 function getAuthorName(req) {
-	var name;
-	if (req.user.local.email) {
-		name = req.user.local.user;
+	if (req.isAuthenticated()) {
+		var name;
+		if (req.user.local.email) {
+			name = req.user.local.user;
+		}
+		if (req.user.facebook.token) {
+			name = req.user.facebook.name;
+		}
+		if (req.user.twitter.token) {
+			name = req.user.twitter.username;
+		}
+		if (req.user.google.token) {
+			name = req.user.google.name;
+		}
+		return name;
+	} else {
+		return null;
 	}
-	if (req.user.facebook.token) {
-		name = req.user.facebook.name;
-	}
-	if (req.user.twitter.token) {
-		name = req.user.twitter.username;
-	}
-	if (req.user.google.token) {
-		name = req.user.google.name;
-	}
-	return name;
 }
 exports.getUsername = getAuthorName;
-
-function findSong(id, res, callback) {
-	songSchema.findById(id, function (err, docs) {
-		if (err) {
-			console.log(err);
-			res.status(500).json({message: 'find error', hasError: true});
-			return;
-		}
-		if (docs == null) {
-			console.log('Song not found');
-			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
-			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
-			return;
-		}
-		callback(docs);
-	});
-
-}
-
 
 function searchResults(err, results, query, req, res) {
 	if (err) {
@@ -633,12 +661,15 @@ function searchResults(err, results, query, req, res) {
 	});
 };*/
 
+
+//--------------------------------------Votes related functions ------------------------
+
 exports.upvote = function(req, res) {
 	console.log(req.body);
 	var id = req.body._id;
 	songSchema.findById(id, function(err, docs) {
 		if (err) {
-			console.log(Err);
+			console.log(err);
 			return;
 		} else if (docs == null) {
 			console.log('song not found');
@@ -655,11 +686,11 @@ exports.upvote = function(req, res) {
 					if (err) {
 						console.log(err);
 					}
-					console.log(docs.upvote);
-					res.send({vote: docs.upvote});
+					console.log(count.upvote);
+					res.send({vote: count.upvote});
 				});
 			} else {
-				return;
+				res.send({vote: docs.upvote});
 			}
 		}
 	})
@@ -717,3 +748,4 @@ exports.hasvoted = function(req, res) {
 		}
 	});
 }
+//----------------------------------------------------------------------------------
