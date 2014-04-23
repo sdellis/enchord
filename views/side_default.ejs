@@ -73,7 +73,7 @@
                 <ul class="treeview-menu">
                     <form class="sidebar-form" name="folderForm">
                         <div class="input-group" ng-controller="FolderController">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="name"/>
+                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="name" style="padding-top:0px;"/>
                             <!-- added button back because need to handle submission with ng-click -->
                             <span class="input-group-btn">
                                 <button ng-click="createfolder()" type='submit' name='create' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
