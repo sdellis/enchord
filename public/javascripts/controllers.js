@@ -62,8 +62,9 @@ enchordControllers.controller('ProfileController', [
 	'$http', 
 	'$location',
 	'$route',
+	'$window',
 	'Side',
-	function($scope, $http, $location, $route, Side){
+	function($scope, $http, $location, $route, $window, Side){
 		$scope.currentPage = 0;
 		$scope.pageSize = 10;
 		$scope.Side = Side;
@@ -729,13 +730,15 @@ enchordControllers.controller('FolderController', [
 	function($scope, $routeParams, $http, $window, $location, $sce, Side) {
 		$scope.folder = {};
 		$scope.userfolders = [];
-		$scope.init = function() {
+		$scope.songid = '';
+		$scope.init = function(songid) {
+			$scope.songid = songid;
 			$http({
 				method  : 'GET',
 				url     : '/myfolders'
 			}).success(function(data) {
 				console.log(data);
-				$scope.userfolders = data.usersongs;
+				$scope.userfolders = data.userfolders;
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -757,6 +760,19 @@ enchordControllers.controller('FolderController', [
 				$window.location.href='/members';
 			});
 		}
+		$scope.addToFolder = function(folderid) {
+			console.log("add to folder" + folderid);
+			$http({
+				method: 'POST',
+				url : '/addsongtofolder',
+				data    : $.param({songid: $scope.songid, folderid: folderid}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$window.location.href='/viewsong/' + songid;
+			});
+		}
+
 	}]);
 enchordControllers.controller('AdvancedSearchController', [
 	'$scope', 
