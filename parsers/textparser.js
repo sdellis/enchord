@@ -262,13 +262,13 @@ function readLines(input, callback) {
 		
 	for(; i < lines.length; i++)
 		parseLine(lines[i], i + 1);
-	//callback(printDoc(orderText));
-	console.log(printDoc(orderText)); //test code
+	callback(printDoc(orderText));
+	//console.log(printDoc(orderText)); //test code
 	
 }
 exports.parseSong = readLines;
 
-
+/*
 var fs = require('fs');
 
 var input = fs.createReadStream('lines.txt');
@@ -280,3 +280,4 @@ input.on('end', function() {
 	readLines(remaining);
 
 	})
+	*/
