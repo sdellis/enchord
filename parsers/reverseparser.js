@@ -203,7 +203,7 @@ function reverseParse(input)
 chordLine = " C G# 2x";
 lyricLine = "Lyrics hello G";
 console.log(mergeChordLyric(chordLine,lyricLine));
-
+*/
 var fs = require('fs');
 
 var input = fs.createReadStream('test.txt');
@@ -215,4 +215,4 @@ input.on('data', function(data) {
 input.on('end', function() {
 	console.log(reverseParse(remaining));
 })
-*/
+

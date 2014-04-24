@@ -1,6 +1,7 @@
 html {
     font-family : sans-serif, sans;
 }
+
 p {
 	page-break-inside : avoid;
 	white-space: pre;
@@ -9,6 +10,9 @@ p {
 .lineerror{
 	color		: red;
 	font-style	: italic;
+	font-size	: 100%;
+    font-weight : normal;
+
 }
 
 .heading {
@@ -22,13 +26,13 @@ p {
 .linechord {
 	font-weight : bold;
 	font-style	:normal; 
-	font-size	:85%
+	font-size	:100%
 }
 
 .linechordcomment{
 	font-weight	: normal; 
     font-style  : italic;
-	font-size	: 85%
+	font-size	: 100%;
 }
 
 span[chord]:before {
@@ -39,7 +43,7 @@ span[chord]:before {
     width       : 0;
     font-weight : bold;
 	font-style	:normal; 
-	font-size	:85%
+	font-size	:100%;
 }
 
 span[chordcomment]:before {
