@@ -208,8 +208,11 @@ color: #868f90;
 	position:absolute;
 }
 .header-unit{
-
-
+	top:0%;
+	left:0%;
+	height: 720px;
+	width:100%;
+	overflow: hidden;
 	border-bottom:15px solid #A3C2F2;
 }
 #wrapper_mbYTP_bgndVideo{
