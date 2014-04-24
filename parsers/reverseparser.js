@@ -62,6 +62,7 @@ function lineType(line)
 //for chord above lyric lines. Merge into one markup line
 function mergeChordLyric(chordLine, lyricLine)
 {
+
 	while(chordLine.length > lyricLine.length)
 		lyricLine += " ";
 	var finalLine = "";
@@ -101,6 +102,7 @@ function bracketInlineChords(chordLine)
 
 function reverseParse(input)
 {
+	input = input.replace(/\r/g,"");
 	var lines = input.split('\n');
 	var currentType;
 	var output = "";
@@ -200,10 +202,11 @@ function reverseParse(input)
 //TESTING
 
 /*
-chordLine = " C G# 2x";
-lyricLine = "Lyrics hello G";
+chordLine = " C G#        	C";
+lyricLine = "Lyrics hello";
 console.log(mergeChordLyric(chordLine,lyricLine));
 */
+
 var fs = require('fs');
 
 var input = fs.createReadStream('test.txt');
