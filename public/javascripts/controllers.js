@@ -66,6 +66,7 @@ enchordControllers.controller('ProfileController', [
 	'Side',
 	function($scope, $http, $location, $route, $window, Side){
 		$scope.currentPage = 0;
+		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
 		$scope.Side = Side;
 		$scope.usersongs = [];
@@ -104,6 +105,8 @@ enchordControllers.controller('ProfileController', [
 			});
 		}
 		$scope.numberOfPages = function() {
+			if ($scope.usersongs.length == 0)
+				return 1;
 			return Math.ceil($scope.usersongs.length/$scope.pageSize);
 		}
 	}]);
@@ -116,6 +119,12 @@ enchordControllers.controller('SearchController', [
 	'$http',
 	'Side',
 	function($scope, $window, $routeParams, $location, $http, Side) {
+		$scope.currentPageGlobal = 0;
+		$scope.pageSizesGlobal = [5, 10, 25, 50];
+		$scope.pageSizeGlobal = 5;
+		$scope.currentPageLocal = 0;
+		$scope.pageSizesLocal = [5, 10, 25, 50];
+		$scope.pageSizeLocal = 5;
 		$scope.query = "";
 		$scope.globalresults = [];
 		$scope.localresults = [];
@@ -153,6 +162,16 @@ enchordControllers.controller('SearchController', [
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
 		};
+		$scope.numberOfPagesGlobal = function() {
+			if ($scope.globalresults.length == 0)
+				return 1;
+			return Math.ceil($scope.globalresults.length/$scope.pageSizeGlobal);
+		}
+		$scope.numberOfPagesLocal = function() {
+			if ($scope.localresults.length == 0)
+				return 1;
+			return Math.ceil($scope.localresults.length/$scope.pageSizeLocal);
+		}
 	}]);
 
 // Song page (view) controller
@@ -757,7 +776,7 @@ enchordControllers.controller('FolderController', [
 				url    : '/createfolder/' + $scope.folder.name
 			}).success(function(data){
 				console.log(data);
-				$window.location.href='/members';
+				$window.location.href='/members/editfolder/' + data.folder._id;
 			});
 		}
 		$scope.addToFolder = function(folderid) {
@@ -800,7 +819,7 @@ enchordControllers.controller('FolderViewController', [
 			console.log(songid);
 		}
 
-		$scope.updatefolder = function() {
+		$scope.renamefolder = function() {
 			$http({
 				method : 'POST',
 				url : '/renamefolder',

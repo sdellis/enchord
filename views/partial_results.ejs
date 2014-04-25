@@ -20,13 +20,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in localresults">
+            <tr data-ng-repeat="song in localresults | startFrom:currentPageLocal*pageSizeLocal | limitTo:pageSizeLocal">
                 <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
+         <button ng-disabled="currentPageLocal == 0" ng-click="currentPageLocal = currentPageLocal-1">
+            Previous
+        </button>
+            {{currentPageLocal+1}}/{{numberOfPagesLocal()}}
+        <button ng-disabled="currentPageLocal >= localresults.length/pageSizeLocal - 1"  ng-click="currentPageLocal = currentPageLocal+1">
+            Next
+        </button>
+        <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> (songs per page)
     </table>
     <h3 style= "padding-left: 15px;">Global</h3>
     <table class="table" name="global">
@@ -39,12 +47,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in globalresults">
+            <tr data-ng-repeat="song in globalresults | startFrom:currentPageGlobal*pageSizeGlobal | limitTo:pageSizeGlobal">
                 <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
+         <button ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1">
+            Previous
+        </button>
+            {{currentPageGlobal+1}}/{{numberOfPagesGlobal()}}
+        <button ng-disabled="currentPageGlobal >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPageGlobal = currentPageGlobal+1">
+            Next
+        </button>
+        <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> (songs per page)
     </table>   
 </aside>
