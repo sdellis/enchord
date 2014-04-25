@@ -367,7 +367,7 @@ enchordControllers.controller('SongEditController', [
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
-				$scope.song.result = data + " parsed";
+				$scope.song.result = data;
 			});
 		}
 
