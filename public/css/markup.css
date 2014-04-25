@@ -1,7 +1,12 @@
 /*html {
     font-family : sans-serif, sans;
 }*/
+body {
+    position: relative;
+}
+
 div.chordSheet p {
+	position: relative
 	page-break-inside : avoid;
 	white-space: pre;
 }
@@ -19,24 +24,32 @@ div.chordSheet .tab {
     font-family		: Courier, monospace;
 }
 
+div.chordSheet .linechord {
+	font-weight : bold;
+	font-style	:normal; 
+}
+
+div.chordSheet .linechordcomment{
+	font-weight	: normal; 
+    font-style  : italic;
+}
+
 div.chordSheet span[chord]:before {
     position    : relative;
-    top         : -1.2em;
+    top         : -1.3em;
     display     : inline-block;
     content     : attr(chord);
     width       : 0;
     font-weight : bold;
 	font-style	:normal; 
-	font-size	:85%
 }
 
 div.chordSheet span[chordcomment]:before {
     position    : relative;
-    top         : -1.2em;
+    top         : -1.3em;
     display     : inline-block;
     content     : attr(chordcomment);
     width       : 0;
 	font-weight	: normal; 
     font-style  : italic;
-	font-size	: 85%
 }
