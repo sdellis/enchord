@@ -249,7 +249,14 @@ module.exports = function(app, passport, db) {
 			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
 		});*/
 		
-		app.get('/artist/:query', utils.getArtistSongs);
+		app.get('/artist/:artistname', function(req, res) {
+			res.render('artistpage.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req),
+				artistname: req.params.artistname
+			});
+		})
+		app.get('/artistpage/:query', utils.getArtistSongs);
 		
 		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
 		
