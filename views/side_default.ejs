@@ -26,19 +26,6 @@
                 </a>
             </li>
 
-
-            
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-folder"></i> <span>My Folders</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                <% for (var i = 0; i < userfolders.length; i++) { %>
-                    <li><a href="/members/editfolder/<%= userfolders[i]._id %>"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
-                <% } %>
-                </ul>
-            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-plus"></i> <span>Create a Folder</span>
@@ -55,6 +42,21 @@
                     </form>
                 </ul>
             </li>
+
+
+            
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>My Folders</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                <% for (var i = 0; i < userfolders.length; i++) { %>
+                    <li><a href="/members/editfolder/<%= userfolders[i]._id %>"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
+                <% } %>
+                </ul>
+            </li>
+            
         </ul>
     </section>
 </aside>

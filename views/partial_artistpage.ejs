@@ -4,6 +4,7 @@
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active"><%= artistname %></li>
         </ol>
+        <p>Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> songs per page</p>
     </section>
     <h1><%= artistname %></h1>
     <table class="table">
@@ -25,13 +26,12 @@
                 <td>{{ song.genre }}</td>
             </tr>
         </tbody>
-        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
-            Previous
-        </button>
-            {{currentPage+1}}/{{numberOfPages()}}
-        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
-            Next
-        </button>
-        <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> (songs per page)
+                <td>{{ song.genre }}</td>     
+        
     </table>
+     <div style="text-align:center">
+        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1"><</button>
+        Page {{currentPage+1}} of {{numberOfPages()}}
+        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">></button>  
+    </div> 
 </aside>
