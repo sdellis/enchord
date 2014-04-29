@@ -548,6 +548,10 @@ enchordControllers.controller('ArtistController', [
 	'$sce',
 	'Side',
 	function($scope, $routeParams, $http, $window, $location, $sce, Side) { 
+		$scope.currentPage = 0;
+		$scope.pageSizes = [10, 25, 50];
+		$scope.pageSize = 10;
+		$scope.artistsongs = [];
 		$scope.init = function(artistname) {
 			$scope.name = artistname;
 			console.log('hello world');
@@ -562,6 +566,11 @@ enchordControllers.controller('ArtistController', [
 					$scope.artistsongs = data.results;
 				});
 			}
+		}
+		$scope.numberOfPages = function() {
+			if ($scope.artistsongs.length == 0)
+				return 1;
+			return Math.ceil($scope.artistsongs.length/$scope.pageSize);
 		}
 	}]);
 
