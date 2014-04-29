@@ -1,0 +1,5 @@
+Chords in [_] appear above lyrics that follow
+Chord-line comments in <_>
+Start chord-only lines with %
+Label new sections using {Section Name}
+Enclose tab with {tab} ... {end tab}
