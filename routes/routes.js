@@ -107,6 +107,27 @@ module.exports = function(app, passport, db) {
 			});			
 		});
 
+		app.get('/members/settings', isLoggedIn, function(req, res) {
+			utils.getMySongs(req, res, function(usersongs) {
+				console.log("In routes");
+				// console.log(usersongs);
+				if (usersongs != undefined) {
+					folderutils.getFoldersAndSongs(req, res, function(userfolders) {
+						console.log(userfolders);
+						res.render('useraccount.ejs', {
+						title:"Members",
+						isLoggedIn: req.isAuthenticated(), 
+						user: req.user, 
+						username: utils.getUsername(req), 
+						usersongs: usersongs, 
+						userfolders: userfolders,
+						message: req.flash('success')
+						});
+					});
+				}
+			});
+		})
+
 		app.get('/members/createsong', isLoggedIn, function(req, res){
 			res.render('editsong.ejs', {
 				isLoggedIn: req.isAuthenticated(),

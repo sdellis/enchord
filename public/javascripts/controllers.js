@@ -366,10 +366,11 @@ enchordControllers.controller('SongEditController', [
 	function($scope, $routeParams, $http, $window, $location, $sce, Side){ 
 		$scope.isNew = true;
 		$scope.hasError = false;
+		$scope.inSave = false;
 		$scope.song = {};
   		var win = $window;
-  		$scope.$watch('songEditForm.$dirty', function(value) {
-    		if(value && !($scope.isNew)) {
+  		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
+    		if(value) {
       			win.onbeforeunload = function(){
         			return 'You have unsaved changes.';
       			};
@@ -441,6 +442,9 @@ enchordControllers.controller('SongEditController', [
 		}
 
 		$scope.createsong = function() {
+			console.log(unWatch);
+			unWatch();
+			win.onbeforeunload = function(){};
 			console.log("create " + $scope.song.title);
 			console.log($('#data').val());
 			console.log($scope.song);
@@ -457,6 +461,7 @@ enchordControllers.controller('SongEditController', [
 				
 				// go to edit page
 				$scope.isNew = false;
+				// console.log($scope.inSave);
 				$window.location.href='/members/editsong/' + data.song._id;
 				// $location.url(url);
 
@@ -476,6 +481,7 @@ enchordControllers.controller('SongEditController', [
 			});
 		}
 		$scope.editsong = function(redirect) {
+			// $scope.inSave = true;
 			console.log("edit " + $scope.song.title);
 			$scope.song.data = $('#data').val();
 			$scope.song = cleanSong($scope.song);
@@ -490,6 +496,7 @@ enchordControllers.controller('SongEditController', [
 				$scope.hasError = data.hasError;
 				$scope.isNew = data.isNew;
 				$scope.songEditForm.$setPristine();
+				$scope.markupForm.$setPristine();
 				if(redirect)
 					$window.location.href = '/members';
 			}).error(function(data, status) {
@@ -501,6 +508,7 @@ enchordControllers.controller('SongEditController', [
 					$scope.hasError = data.hasError;
 				}
 			});
+			// $scope.inSave = false;
 		}
 		$scope.deletesong = function() {
 			console.log("delete " + $scope.song.title);
