@@ -423,6 +423,7 @@ exports.advancedSearch = function(req, res) {
 }
 
 exports.getArtistSongs = function(req, res) {
+	console.log('in getartistsongs');
 	var query = {isBand: false};
 	query['artist_lower'] = req.params.query.toLowerCase();
 	query['pub'] = true;
@@ -457,18 +458,22 @@ exports.getArtistSongs = function(req, res) {
 					message: 'Internal server error: cannot find', 
 					hasError: true
 				});
+				//res.send({results: undefined});
 				return;
-			}
+			} else {
 			console.log(docs);
-			array = docs;
-			res.render('artistpage.ejs', {
-				title: 'enchord', 
-				isNew: false, 
-				results: array, 
-				artist: req.params.query, 
-				message: 'Search results'
-			});
-			return;
+				array = docs;
+				/*res.render('artistpage.ejs', { 
+					title: 'enchord', 
+					isNew: false, 
+					results: array, 
+					username: getAuthorName(req),
+					artist: req.params.query, 
+					isLoggedIn: req.isAuthenticated(),
+					message: 'Search results'
+				});*/
+				res.send({results: docs});
+			}
 		});
 	}
 
