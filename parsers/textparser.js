@@ -162,6 +162,7 @@ case 'end italic': case 'endital': case 'end ital':
 			
 		case 'heading': case 'start heading': case 'startheading':
 		case 'header': case 'start header': case 'startheader':
+		case 'end heading': case 'endheading':
 		case 'end header': case 'endheader':
 			return j-i;
 		default:
