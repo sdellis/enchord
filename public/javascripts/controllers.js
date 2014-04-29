@@ -539,7 +539,7 @@ enchordControllers.controller('SongEditController', [
 	}]);
 
 // Artist controller
-/*enchordControllers.controller('ArtistController', ['$scope',
+enchordControllers.controller('ArtistController', [
 	'$scope', 
 	'$routeParams', 
 	'$http', 
@@ -563,25 +563,25 @@ enchordControllers.controller('SongEditController', [
 				});
 			}
 		}
-	}]);*/
-
-enchordControllers.controller('ArtistController', ['$scope',
-	'$scope', 
-	'$http', 
-	function($scope, $http) {
-		$scope.init = function(query) {
-			$scope.query = query;
-			console.log('hello world');
-			if (query != undefined && query.length > 0) {
-				$http({
-					method : 'GET',
-					url    : '/artistpage/' + query
-				}).success(function(data) {
-					$scope.artistsongs = data.results;
-				});
-			}
-		}
 	}]);
+
+// enchordControllers.controller('ArtistController', ['$scope',
+// 	'$scope', 
+// 	'$http', 
+// 	function($scope, $http) {
+// 		$scope.init = function(query) {
+// 			$scope.query = query;
+// 			console.log('hello world');
+// 			if (query != undefined && query.length > 0) {
+// 				$http({
+// 					method : 'GET',
+// 					url    : '/artistpage/' + query
+// 				}).success(function(data) {
+// 					$scope.artistsongs = data.results;
+// 				});
+// 			}
+// 		}
+// 	}]);
 
 // Signup controller
 enchordControllers.controller('SignupController', ['$scope',

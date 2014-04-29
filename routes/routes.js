@@ -253,7 +253,8 @@ module.exports = function(app, passport, db) {
 			res.render('artistpage.ejs', {
 				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
-				artistname: req.params.artistname
+				artistname: req.params.artistname,
+				userfolders: []
 			});
 		})
 		app.get('/artistpage/:query', utils.getArtistSongs);

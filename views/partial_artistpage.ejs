@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th style="max-width: 20px;"></th>
-                <th style="max-width: 5px;"></th>
+                <!-- <th style="max-width: 5px;"></th> -->
                 <th>Song</th>
                 <th>Artist</th>
                 <th>Genre</th>
@@ -19,9 +19,9 @@
         <tbody>
             <tr data-ng-repeat="song in artistsongs">
                 <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
-                <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td>
-                <td><a href="/viewsong/{{results[i]._id}}">{{ results[i].title }}</a></td>
-                <td><a href="/artist/{{results[i].artist}}">{{ results[i].artist }}</a></td>
+                <!-- <td style="max-width: 5px;"><i style="margin-left: 10px;" class="fa fa-plus"></i></td> -->
+                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.genre }}</td>
             </tr>
         </tbody>
