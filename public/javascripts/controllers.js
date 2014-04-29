@@ -73,6 +73,11 @@ enchordControllers.controller('ProfileController', [
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
+
 		$scope.init = function() {
 			Side.setPagetype('default');
 			$http({
@@ -248,6 +253,16 @@ enchordControllers.controller('SearchController', [
 			if ($scope.localresults.length == 0)
 				return 1;
 			return Math.ceil($scope.localresults.length/$scope.pageSizeLocal);
+		}
+
+		$scope.setPredicateLocal = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
+		}
+
+		$scope.setPredicateGlobal = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
 		}
 	}]);
 
@@ -461,6 +476,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.inSave = false;
 		$scope.song = {};
 		$scope.message = '';
+		$scope.reverseParseMode = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -644,6 +660,14 @@ enchordControllers.controller('SongEditController', [
 				$scope.markupForm = data;
 			});
 		}
+
+		$scope.enterReverseParseMode = function() {
+			$scope.reverseParseMode = true;
+		}
+
+		$scope.reverseParse = function() {
+			$scope.reverseParseMode = false;
+		}
 	}]);
 
 // Artist controller
@@ -660,6 +684,10 @@ enchordControllers.controller('ArtistController', [
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
 		$scope.artistsongs = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
 		$scope.init = function(artistname) {
 			$scope.name = artistname;
 			console.log('hello world');

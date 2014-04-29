@@ -4,13 +4,13 @@
         <!-- MARKUP -->
 
         <!-- This is the reverse parse window -->
-        <!--  <div class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
+          <div ng-show='reverseParseMode' class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-            <textarea id="data" name="data" class="form-control" ng-maxlength="10000" ng-model="song.data" ng-change="parsehtml()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
+            <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="10000" ng-model="reverseParseData" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
             </div>
-            </div> -->
+            </div>
 
-        <div class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
+        <div ng-show='!reverseParseMode' class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
@@ -51,7 +51,7 @@
             </div>
         </div> -->
 
-        <div class="chordSheet col-md-12" ng-bind-html="parsedResult()" style="min-height:656px; max-height: 656px;padding-left:15px; padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; font-size:14px; font-family:Helvetica, sans-serif; overflow-y:scroll;">
+        <div ng-show='!reverseParseMode' class="chordSheet col-md-12" ng-bind-html="parsedResult()" style="min-height:656px; max-height: 656px;padding-left:15px; padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; font-size:14px; font-family:Helvetica, sans-serif; overflow-y:scroll;">
         </div>
     </div>
 	</form>
