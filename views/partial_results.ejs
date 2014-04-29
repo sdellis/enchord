@@ -2,14 +2,15 @@
     <section class="content-header">
         <h1>
             Search Results
-            <small>{{ globalresults.length + localresults.length}} songs found</small>
+            <% if(isLoggedIn) { %><small>{{ globalresults.length + localresults.length}} songs found</small><% } else { %>
+            <small>{{ globalresults.length}} songs found</small><% } %>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#/search/{{query}}"><i class="fa fa-search"></i> "{{query}}"</a></li>
+            <li><a href="/searchresults/{{query}}"><i class="fa fa-search"></i> "{{query}}"</a></li>
             <li class="active">Results</li>
         </ol>
     </section>
-    <h3 style= "padding-left: 15px;">Local</h3>
+    <% if(isLoggedIn) { %><h3 style= "padding-left: 15px;">Local</h3>
     <table class="table" name="local">
         <thead>
             <tr>
@@ -36,7 +37,7 @@
         </button>
         <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> (songs per page)
     </table>
-    <h3 style= "padding-left: 15px;">Global</h3>
+    <h3 style= "padding-left: 15px;">Global</h3><% } %>
     <table class="table" name="global">
         <thead>
             <tr>
