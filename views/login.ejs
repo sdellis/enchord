@@ -38,10 +38,24 @@
                             <a href="auth/google"><img src="./images/google.png" alt="google"></a>
                         </div>
 
-                        <input id="user_password" type="text" placeholder="Username or Email" name="username"onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }"><br/>
-                        <input id="user_password" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }">
+                    <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
+                        <input id="username_email" type="text" placeholder="Username or Email" name="username" class="form-control" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" ng-minlength="3" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_]*$/" ng-model="user.username" required><br/>
+                        <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</span>
+                        <span ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</span>
+                        <span ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</span>
+                        <span ng-show="loginForm.username.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</span>
+                    </div>
 
-                        <input name="commit" type="submit" value="Sign in" onclick="submitOnClick('loginForm')" />
+                    <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+                        <input id="user_password" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" class="form-control" ng-model="user.password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
+                        <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">Enter your password</span>
+                        <span ng-show="loginForm.password.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</span>
+                    </div>
+
+
+                        <input name="commit" type="submit" value="Sign in" onclick="submitOnClick('loginForm')" ng-disabled="loginForm.$invalid"/>
+
+
                         <div class='form-actions'>
                             <a class="password-forgot" href="/signup">Already have an account?</a><br>
                             <a class="password-forgot" href="/forgot">Did you forget your password?</a>
