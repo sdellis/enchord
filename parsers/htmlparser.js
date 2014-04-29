@@ -258,7 +258,7 @@ function parseLine(oneLine, linenum) {
 }
 
 
-function readLines(input, font,  fontsize,callback) {
+function readLines(input, font,  fontsize, callback) {
 	//initialize global variables
 	sectionNumToText = new Array();
 	sectionNumToText[0] = "";

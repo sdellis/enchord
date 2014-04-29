@@ -210,6 +210,7 @@ enchordControllers.controller('SongViewController', [
 		$scope.voted = false;
 		$scope.isLoggedIn = false;
 		$scope.isAuthor = false;
+		$scope.transposed = 0;
 		$scope.hasvoted = function() {
 			$http({
 				method : 'GET',
@@ -374,6 +375,20 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				$scope.song.upvote = data.vote;
 				$scope.voted = false;
+			});
+		}
+		//transpose
+		$scope.transpose = function() {
+			$http({
+				method: 'POST',
+				url: '/view/transpose',
+				//how do i change this to include other stuff?
+				data : $.param({data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				// is this the html shown?
+				$scope.transposed = $scope.transposed + $scope.steps;
+				$scope.song.result = data;
 			});
 		}
 	}]);
@@ -558,6 +573,20 @@ enchordControllers.controller('SongEditController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+			});
+		}
+		//transpose
+		$scope.transpose = function() {
+			$http({
+				method: 'POST',
+				url: '/edit/transpose',
+				//how do i change this to include other stuff?
+				data : $.param({songid: $scope.song.id, data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				// is this the html shown?
+				$scope.transposed = $scope.transposed + $scope.steps;
+				$scope.markupForm = data;
 			});
 		}
 	}]);

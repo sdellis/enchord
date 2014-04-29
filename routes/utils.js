@@ -798,3 +798,24 @@ exports.changePass = function(req, res) {
 		}
 	});
 }
+
+exports.deleteUser = function(req, res) {
+	var username = getAuthorName(req);
+	if (req.user.local) {
+		userSchema.findOne({'local.user':username}, function(err, user) {
+
+		});
+	} else if (req.user.facebook) {
+		userSchema.findOne({'facebook.name':username}, function(err, user) {
+
+		});
+	} else if (req.user.twitter) {
+		userSchema.findOne({'twitter.username':username}, function(err, user) {
+
+		});
+	} else if (req.user.google) {
+		userSchema.findOne({'google.name':username}, function(err, user) {
+
+		});
+	}
+}
