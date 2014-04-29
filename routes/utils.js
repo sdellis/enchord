@@ -779,8 +779,14 @@ exports.changePass = function(req, res) {
 						if (err)
 							return {message: 'failed'};
 					});
+				} else {
+					return {message: 'will never happen'};
 				}
+			} else {
+				return {message: 'old password incorrect'};
 			}
+		} else {
+			return {message: 'will never happen'};
 		}
 	});
 }
