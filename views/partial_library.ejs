@@ -6,7 +6,7 @@
         </ol>
         <p>Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> songs per page</p>
     </section>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th class="col-sm-2"><a href="" ng-click="setPredicate('upvote')"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></a></th>
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <tr  style="cursor:pointer;" data-ng-repeat="song in usersongs | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                 <!--<td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" style="color:black" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>-->
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
