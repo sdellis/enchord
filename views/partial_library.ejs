@@ -9,23 +9,23 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="col-sm-2"></th>
+                <th class="col-sm-2"><a href="" ng-click="setPredicate('upvote')"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></a></th>
                 <!-- <th style="max-width: 5px;"></th> -->
-                <th class="col-sm-6">Song</th>
-                <th class="col-sm-2">Artist</th>
-                <th class="col-sm-2">Genre</th>
-                <th class="col-sm-2">Song Type</th>
+                <th class="col-sm-6"><a href="" ng-click="setPredicate('title')">Song</a></th>
+                <th class="col-sm-2"><a href="" ng-click="setPredicate('artist')">Artist</a></th>
+                <th class="col-sm-2"><a href="" ng-click="setPredicate('genre')">Genre</a></th>
+                <th class="col-sm-2"><a href="" ng-click="setPredicate('pub')">Song Type</a></th>
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <tr data-ng-repeat="song in usersongs | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                 <!--<td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" style="color:black" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>-->
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <td>{{ song.genre }}</td>
                 <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
-                <td ng-show="!song.pub" class="text-center"><i class="fa fa-lock" style="text-align:center;"></i></td>
+                <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
             </tr>
         </tbody>
         

@@ -45,7 +45,7 @@
             </nav>
         </header>
 
-        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SearchController" ng-init="init('<%= query %>')" >
+        <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SearchController" ng-init="init('<%= query %>', <%= isAdvSearch %>, '<%= title %>', '<%= artist %>', '<%= genre %>', '<%= author %>')" >
             <% include side_search.ejs %>
             <% include partial_results.ejs %>
         </div>

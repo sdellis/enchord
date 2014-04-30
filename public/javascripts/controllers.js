@@ -68,6 +68,8 @@ enchordControllers.controller('ProfileController', [
 		$scope.currentPage = 0;
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
+		$scope.predicate = 'upvote';
+		$scope.reverse = false;
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
@@ -108,6 +110,10 @@ enchordControllers.controller('ProfileController', [
 			if ($scope.usersongs.length == 0)
 				return 1;
 			return Math.ceil($scope.usersongs.length/$scope.pageSize);
+		}
+		$scope.setPredicate = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
 		}
 	}]);
 
@@ -159,6 +165,7 @@ enchordControllers.controller('SearchController', [
 		$scope.pageSizesLocal = [5, 10, 25, 50];
 		$scope.pageSizeLocal = 5;
 		$scope.query = "";
+		$scope.isAdvSearch = false;
 		$scope.globalresults = [];
 		$scope.localresults = [];
 		// $scope.type = "Both";
@@ -173,18 +180,41 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
-		$scope.init = function(query) {
+		$scope.init = function(query, adv, title, artist, genre, author) {
 			Side.setPagetype('search');
 			$scope.query = query;
-			if (query != undefined && query.length > 0) {
+			$scope.title = title;
+			$scope.artist = artist;
+			$scope.genre = genre;
+			$scope.author = author;
+			console.log(adv);
+			if (adv == false) {
+				$scope.isAdvSearch = false;
+				console.log(adv);
+				console.log("basic");
+				if (query != undefined && query.length > 0) {
+					$http({
+						method : 'GET',
+						url    : '/search',
+						params : { query : query }
+					}).success(function(data) {
+						console.log(data);
+						$scope.globalresults = data.results.global;
+						$scope.localresults = data.results.local;
+					});
+				}
+			// }
+			} else {
+				$scope.isAdvSearch = true;
+				console.log("adv");
 				$http({
 					method : 'GET',
-					url    : '/search',
-					params : { query : $scope.query }
+					url    : '/advsearch',
+					params : { title: title, artist: artist, genre: genre, author: author }
 				}).success(function(data) {
-					console.log(data);
-					$scope.globalresults = data.results.global;
-					$scope.localresults = data.results.local;
+						console.log(data);
+						$scope.globalresults = data.results.global;
+						$scope.localresults = data.results.local;
 				});
 			}
 		}
@@ -194,7 +224,13 @@ enchordControllers.controller('SearchController', [
 			if ($scope.query != undefined && $scope.query.length > 0) {
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
-		};
+		}
+		$scope.toggleBasicSearch = function() {
+			$scope.isAdvSearch = false;
+		}
+		$scope.toggleAdvSearch = function() {
+			$scope.isAdvSearch = true;
+		}
 		$scope.numberOfPagesGlobal = function() {
 			if ($scope.globalresults.length == 0)
 				return 1;
@@ -219,6 +255,7 @@ enchordControllers.controller('SongViewController', [
 		$scope.voted = false;
 		$scope.isLoggedIn = false;
 		$scope.isAuthor = false;
+		$scope.transposed = 0;
 		$scope.hasvoted = function() {
 			$http({
 				method : 'GET',
@@ -383,6 +420,20 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				$scope.song.upvote = data.vote;
 				$scope.voted = false;
+			});
+		}
+		//transpose
+		$scope.transpose = function() {
+			$http({
+				method: 'POST',
+				url: '/view/transpose',
+				//how do i change this to include other stuff?
+				data : $.param({data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				// is this the html shown?
+				$scope.transposed = $scope.transposed + $scope.steps;
+				$scope.song.result = data;
 			});
 		}
 	}]);
@@ -569,6 +620,20 @@ enchordControllers.controller('SongEditController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+			});
+		}
+		//transpose
+		$scope.transpose = function() {
+			$http({
+				method: 'POST',
+				url: '/edit/transpose',
+				//how do i change this to include other stuff?
+				data : $.param({songid: $scope.song.id, data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				// is this the html shown?
+				$scope.transposed = $scope.transposed + $scope.steps;
+				$scope.markupForm = data;
 			});
 		}
 	}]);
@@ -847,7 +912,7 @@ enchordControllers.controller('FolderController', [
 		$scope.folder = {};
 		$scope.userfolders = [];
 		$scope.songid = '';
-		$scope.init = function(songid) {
+		$scope.init = function() {
 			$scope.songid = songid;
 			$http({
 				method  : 'GET',
@@ -889,6 +954,7 @@ enchordControllers.controller('FolderController', [
 			});
 		}
 
+
 	}]);
 enchordControllers.controller('FolderViewController', [
 	'$scope',
@@ -898,9 +964,27 @@ enchordControllers.controller('FolderViewController', [
 	'$sce',
 	function($scope, $http, $window, $routeParams, $sce){
 		$scope.folder = {};
+		$scope.usersongs = [];
+		$scope.query="";
 		$scope.folderid = "";
+		$scope.addSongMode = false;
 		$scope.init = function(_id) {
 			$scope.folderid = _id;
+			$http({
+				method  : 'GET',
+				url     : '/mysongs'
+			}).success(function(data) {
+				console.log(data);
+				$scope.usersongs = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/viewfoldersongs/' + _id;
 				$http({
@@ -930,16 +1014,25 @@ enchordControllers.controller('FolderViewController', [
 		}
 		$scope.deletefolder = function() {
 			$http({
-			method : 'POST',
-			url : '/deletefolder',
-			data : $.param({folderid: $scope.folderid}),
-			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-		}).success(function(data) {
-			console.log(data);
-			if (data.success)
-			$window.location.href="/members";
-		});
-	}
+				method : 'POST',
+				url : '/deletefolder',
+				data : $.param({folderid: $scope.folderid}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				if (data.success)
+				$window.location.href="/members";
+			});
+		}
+
+		$scope.enterAddSongMode = function() {
+			// console.log("here");
+			$scope.addSongMode = true;
+		}
+		$scope.leaveAddSongMode = function() {
+			// console.log("here");
+			$scope.addSongMode = false;
+		}
 }]);
 enchordControllers.controller('AdvancedSearchController', [
 	'$scope', 
