@@ -761,3 +761,32 @@ exports.hasvoted = function(req, res) {
 	});
 }
 //----------------------------------------------------------------------------------
+
+
+//make your variables oldpass, newpass, and confirmpass
+//only works for local.
+exports.changePass = function(req, res) {
+	var username = getAuthorName(req);
+	userSchema.findOne({'local.user' : username}, function(err, user) {
+		if (err) {
+			return {message: 'failed'};
+		}
+		if (user) {
+			if (user.local.password == req.body.oldpass) {
+				if (req.body.newpass == req.body.confirmpass) {
+					user.local.password = req.body.newpass;
+					user.save(function(err) {
+						if (err)
+							return {message: 'failed'};
+					});
+				} else {
+					return {message: 'will never happen'};
+				}
+			} else {
+				return {message: 'old password incorrect'};
+			}
+		} else {
+			return {message: 'will never happen'};
+		}
+	});
+}
