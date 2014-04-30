@@ -115,10 +115,12 @@ enchordControllers.controller('ProfileController', [
 enchordControllers.controller('ChangePasswordController', [
 	'$scope',
 	'$http',
-	function($scope, $http) {
+	'Messages',
+	function($scope, $http, Messages) {
 		$scope.pass = {};
+		$scope.message = "";
+		$scope.success;
 		$scope.changePassword = function() {
-			console.log("i am running changepw");
 			console.log($scope.pass);
 			$http({
 				method  : 'POST',
@@ -128,8 +130,15 @@ enchordControllers.controller('ChangePasswordController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.pass = {};
+				$scope.message = data.message;
+				$scope.success = data.success;
+				// Messages.setMessage(data.message, data.success);
 			}).error(function(data, status) {
 				console.log("this is a changepw error");
+				$scope.pass = {};
+				$scope.message = data.message;
+				$scope.success = data.success;
+				//Messages.setMessage(data.message, data.success);
 			});
 		};
 	}]);

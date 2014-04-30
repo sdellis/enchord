@@ -1,6 +1,10 @@
-<aside class="right-side">
+<aside class="right-side" ng-controller="ChangePasswordController">
+
+            <div ng-show="message.length > 0 && success" class="alert alert-success">{{message}}</div>
+            <div ng-show="message.length > 0 && !success" class="alert alert-danger">{{message}}</div>
+
             <h2 style="padding-left: 20px;">Account Settings</h2>
-            <form name='changePasswordForm' style="padding-left: 50px; padding-top: 20px; max-width:475px;" ng-controller="ChangePasswordController">
+            <form name='changePasswordForm' style="padding-left: 50px; padding-top: 20px; max-width:475px;" >
                 <input type="text" name="username" class="form-control" placeholder="<%= username %>" readonly/><br>
                 <% if(user.local.email) { %>
                 <input type="password" ng-model="pass.oldpass" name="oldpass" class="form-control" placeholder="Current Password"/><br>
