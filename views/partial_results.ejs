@@ -59,7 +59,7 @@
     </table>   
     <div style="text-align:center">
         <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1"><</button>
-        Page {{currentPage+1}} of {{numberOfPages()}}
-        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">></button>  
+        Page {{currentPage+1}} of {{numberOfPagesGlobal()}}
+        <button ng-disabled="currentPage >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPage = currentPage+1">></button>  
     </div> 
 </aside>

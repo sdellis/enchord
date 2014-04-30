@@ -155,6 +155,7 @@ enchordControllers.controller('SearchController', [
 		$scope.pageSizesLocal = [5, 10, 25, 50];
 		$scope.pageSizeLocal = 5;
 		$scope.query = "";
+		$scope.isAdvSearch = false;
 		$scope.globalresults = [];
 		$scope.localresults = [];
 		// $scope.type = "Both";
@@ -169,18 +170,41 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
-		$scope.init = function(query) {
+		$scope.init = function(query, adv, title, artist, genre, author) {
 			Side.setPagetype('search');
 			$scope.query = query;
-			if (query != undefined && query.length > 0) {
+			$scope.title = title;
+			$scope.artist = artist;
+			$scope.genre = genre;
+			$scope.author = author;
+			console.log(adv);
+			if (adv == false) {
+				$scope.isAdvSearch = false;
+				console.log(adv);
+				console.log("basic");
+				if (query != undefined && query.length > 0) {
+					$http({
+						method : 'GET',
+						url    : '/search',
+						params : { query : query }
+					}).success(function(data) {
+						console.log(data);
+						$scope.globalresults = data.results.global;
+						$scope.localresults = data.results.local;
+					});
+				}
+			// }
+			} else {
+				$scope.isAdvSearch = true;
+				console.log("adv");
 				$http({
 					method : 'GET',
-					url    : '/search',
-					params : { query : $scope.query }
+					url    : '/advsearch',
+					params : { title: title, artist: artist, genre: genre, author: author }
 				}).success(function(data) {
-					console.log(data);
-					$scope.globalresults = data.results.global;
-					$scope.localresults = data.results.local;
+						console.log(data);
+						$scope.globalresults = data.results.global;
+						$scope.localresults = data.results.local;
 				});
 			}
 		}
@@ -190,7 +214,13 @@ enchordControllers.controller('SearchController', [
 			if ($scope.query != undefined && $scope.query.length > 0) {
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
-		};
+		}
+		$scope.toggleBasicSearch = function() {
+			$scope.isAdvSearch = false;
+		}
+		$scope.toggleAdvSearch = function() {
+			$scope.isAdvSearch = true;
+		}
 		$scope.numberOfPagesGlobal = function() {
 			if ($scope.globalresults.length == 0)
 				return 1;

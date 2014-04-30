@@ -401,13 +401,15 @@ exports.advancedSearch = function(req, res) {
 	};
 	var search_results = {global: [], local: []};
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
-		res.render('search.ejs', {
-			title: 'enchord', 
-			isNew: false, 
-			results: search_results, 
-			query: '', 
-			message: 'Empty search',
-			isLoggedIn: req.isAuthenticated()
+		res.render('results.ejs', {
+			isLoggedIn: req.isAuthenticated(),
+			username: getAuthorName(req),
+			query: "",
+			isAdvSearch: true,
+			title: qTitle,
+			artist: qArtist,
+			genre: qGenre,
+			author: qAuthor
 		});
 	else
 	{

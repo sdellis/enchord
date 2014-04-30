@@ -9,9 +9,21 @@
             </div>
         </div>
 
-        <!-- Search controller -->
-        <form class="sidebar-form" name="searchForm">
-            <div class="input-group" ng-controller="SearchController">
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a ng-show="isAdvSearch" ng-click="toggleBasicSearch()">
+                    <i class="fa fa-headphones"></i> <span>Switch to Basic Search</span>
+                </a>
+            </li> 
+            <li>
+                <a ng-show="!isAdvSearch" ng-click="toggleAdvSearch()">
+                    <i class="fa fa-search"></i> <span>Switch to Adv. Search</span>
+                </a>
+            </li>                     
+        </ul>
+
+        <form ng-show="!isAdvSearch" class="sidebar-form" name="searchForm">
+            <div class="input-group">
                 <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
                 <input type="hidden" name="type" value="Both">
                 <span class="input-group-btn">
@@ -20,31 +32,20 @@
             </div>
         </form>
 
-        <ul class="sidebar-menu">
-            <li class="active">
-                <a href="#">
-                    <i class="fa fa-headphones"></i> <span>Everything</span>
-                </a>
-            </li> 
-            <li>
-                <a href="#">
-                    <i class="fa fa-search"></i> <span>Advanced Search</span>
-                </a>
-            </li>                     
-        </ul>
-        <form class="sidebar-form" name="searchForm">
+        <form action="/advsearchresults" type="GET" ng-show="isAdvSearch" class="sidebar-form" name="searchForm">
 
-                <input type="text" name="query" class="form-control" placeholder="Filter by Song Title"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/ style="margin-bottom:15px;">
+                <input type="text" name="title" class="form-control" placeholder="Title"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/ style="margin-bottom:15px;">
 
-                <input type="text" name="quer" class="form-control" placeholder="Filter by Artist"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+                <input type="text" name="artist" class="form-control" placeholder="Artist"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
 
 
-                <input type="text" name="quey" class="form-control" placeholder="Filter by Genre"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+                <input type="text" name="genre" class="form-control" placeholder="Genre"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
  
 
-                <input type="text" name="qury" class="form-control" placeholder="Filter by Username" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:20px;"/>
+                <input type="text" name="author" class="form-control" placeholder="Username" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:20px;"/>
 
-            <button ng-click="editsong(true)" class="button" ng-show="!isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-search"></i> &nbsp;Advanced Search</button>
+            <button class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-search"></i> &nbsp;Advanced Search</button>
         </form>
+
     </section>
 </aside> 

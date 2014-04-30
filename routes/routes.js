@@ -178,7 +178,26 @@ module.exports = function(app, passport, db) {
 			res.render('results.ejs', {
 				isLoggedIn: req.isAuthenticated(),
 				username: utils.getUsername(req),
-				query: req.params.query
+				query: req.params.query,
+				isAdvSearch: false,
+				title: "",
+				artist: "",
+				genre: "",
+				author: ""
+			});
+		});
+
+		app.get('/advsearchresults', function(req, res){
+			console.log(req.query);
+			res.render('results.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req),
+				query: "",
+				isAdvSearch: true,
+				title: req.query.title,
+				artist: req.query.artist,
+				genre: req.query.genre,
+				author: req.query.author
 			});
 		});
 
