@@ -30,9 +30,9 @@ function printDoc(orderLine)
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
 			if(name.charAt(0) === '*') //just print the section name
-				result += sectionNumToName(sectionNameToNum(name.substring(1)))+ "\n"
+				result += sectionNumToName[sectionNameToNum[name.substring(1)]]+ "\n"
 			else //print section name and contents{
-				result += sectionNumToName(sectionNameToNum(name))+ "\n" + getSection(name) + "\n"; 
+				result += sectionNumToName[sectionNameToNum[name]]+ "\n" + getSection(name) + "\n"; 
 		}
 	}
 	else //print off sections in order written
