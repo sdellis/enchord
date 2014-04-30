@@ -3,10 +3,12 @@ var utils = require('./utils');
 var folderutils = require('./folderutils');
 var bandutils = require('./bandutils');
 var User = require('../models/schemas/user');
+var songSchema = require('../models/schemas/song');
 var async = require('async');
 
 var parser = require('../parsers/parser');
-var htmlparser = require('../parsers/htmlparser')
+var htmlparser = require('../parsers/htmlparser');
+var transposer = require('../parsers/transpose');
 var songEmpty = {
 		title: '',
 		artist: '',
@@ -266,6 +268,33 @@ module.exports = function(app, passport, db) {
 				res.send(parsedSong);
 			});
 		});
+
+		app.post('/view/transpose', function(req, res) {
+			console.log('im here');
+			transposer.transpose(req.body.data, req.body.step, req.body.sf, 'html', function(transposedSong) {
+				console.log("In routes: " + transposedSong);
+				res.send(transposedSong);
+			});
+		});
+
+		app.post('/edit/transpose', function(req, res) {
+			console.log('edit transpose');
+			transposer.transpose(req.body.data, req.body.step, req.body.sf, 'txt', function(transposedSong) {
+				songSchema.findById(req.body.songid, function(err, docs) {
+					if (err) {
+						console.log('db error in transpose');
+					} else {
+						docs.data = transposedSong;
+						docs.save(function(err) {
+							if (err) {
+								console.log('db error in transpose');
+							}
+						});
+					}
+				});
+			});
+		});
+
 
 		/*app.get('/search', function(req, res) {
 			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});

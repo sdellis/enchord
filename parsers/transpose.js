@@ -54,7 +54,7 @@ function simpleTransposeNote(note, steps, pref)
    
 function test(steps){return steps}   
  
-function simpleTransposeString(str,steps,pref,doctype)
+function simpleTransposeString(str,steps,pref,doctype, callback)
 {
 	var matcher;
 	switch(doctype)
@@ -74,8 +74,11 @@ function simpleTransposeString(str,steps,pref,doctype)
 	//6th group: Slash chord note
 	//7th group: Slash chord modifiers
 	//8th group: end bracket/span tag end
-	return str.replace(matcher, function(match,p1,p2,p3,p4,p5,p6,p7,p8){if(p4) return p1 + simpleTransposeNote(p2,steps,pref) + p3 + p5 + simpleTransposeNote(p6,steps,pref) + p7 + p8; else return p1 + simpleTransposeNote(p2,steps,pref) + p3 +  p8;});
+	//return str.replace(matcher, function(match,p1,p2,p3,p4,p5,p6,p7,p8){if(p4) return p1 + simpleTransposeNote(p2,steps,pref) + p3 + p5 + simpleTransposeNote(p6,steps,pref) + p7 + p8; else return p1 + simpleTransposeNote(p2,steps,pref) + p3 +  p8;});
+	callback(str.replace(matcher, function(match,p1,p2,p3,p4,p5,p6,p7,p8){if(p4) return p1 + simpleTransposeNote(p2,steps,pref) + p3 + p5 + simpleTransposeNote(p6,steps,pref) + p7 + p8; else return p1 + simpleTransposeNote(p2,steps,pref) + p3 +  p8;}));
 }
+
+exports.transpose = simpleTransposeString;
 
 //--------------TESTING CODE----------------------
 
