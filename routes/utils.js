@@ -783,18 +783,18 @@ exports.changePass = function(req, res) {
 						user.local.password = user.generateHash(req.body.newpass);
 						user.save(function(err) {
 						if (err)
-							res.send({message: 'failed'});
-							res.send({success: true});
+							res.send({success: false, message: 'failed'});
+							res.send({success: true, message: 'password changed'});
 						});
 					}
 				} else {
-					res.send({message: 'new passwords do not match'});
+					res.send({success: false, message: 'new passwords do not match'});
 				}
 			} else {
-				res.send({message: 'old pw incorrect'});
+				res.send({success: false, message: 'old pw incorrect'});
 			}
 		} else {
-			res.send({message: 'will never happen'});
+			res.send({success: false, message: 'will never happen'});
 		}
 	});
 }
