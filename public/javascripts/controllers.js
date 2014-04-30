@@ -1122,8 +1122,10 @@ enchordControllers.controller('FolderViewController', [
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
-				if (data.success)
+				if (data.success) {
 					console.log("success");
+					$window.location.href="/members"
+				}
 			});
 		}
 		$scope.deletefolder = function() {
