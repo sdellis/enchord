@@ -119,6 +119,7 @@ enchordControllers.controller('ChangePasswordController', [
 		$scope.pass = {};
 		$scope.changePassword = function() {
 			console.log("i am running changepw");
+			console.log($scope.pass);
 			$http({
 				method  : 'POST',
 				url     : '/changepassword',
