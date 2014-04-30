@@ -40,7 +40,7 @@
 
                     <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" />
 
-                    <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Transpose</h5>
+                    <!-- <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Transpose</h5>
                     <ul class="nav" style="display:inline-block; padding-top:10px; padding-bottom:30px; width:100%;">
                                 <li style="margin-left:5px; margin-right:15px; display:inline-block; padding-bottom:5px;">
                                     <span class="select">STEPS</span>
@@ -79,7 +79,7 @@
 
                                     </select>
                                 </li>                                 
-                    </ul>
+                    </ul> -->
 
 
                     <input style="margin-left:10px;" type="radio" name="scope" ng-model="song.pub" ng-value=true>&nbsp;&nbsp;&nbsp;Public<br>

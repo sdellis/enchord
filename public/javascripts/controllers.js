@@ -278,6 +278,8 @@ enchordControllers.controller('SongViewController', [
 		$scope.voted = false;
 		$scope.isLoggedIn = false;
 		$scope.isAuthor = false;
+		$scope.font = "Helvetica"
+		$scope.fontsize = "14"
 		$scope.transposed = 0;
 		$scope.hasvoted = function() {
 			$http({
@@ -408,11 +410,12 @@ enchordControllers.controller('SongViewController', [
 			$http({
 				method  : 'POST',
 				url     : '/parsesonghtml',
-				data    : $.param($scope.song),
+				data    : $.param({data: $scope.song.data, font: $scope.font, fontsize: $scope.fontsize}),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.result = data;
+				$scope.message = data.message;
 			});
 		}
 
@@ -478,6 +481,8 @@ enchordControllers.controller('SongEditController', [
 		$scope.inSave = false;
 		$scope.song = {};
 		$scope.message = '';
+		$scope.font = "Helvetica"
+		$scope.fontsize = "14"
 		$scope.reverseParseMode = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
@@ -494,7 +499,7 @@ enchordControllers.controller('SongEditController', [
 			$http({
 				method  : 'POST',
 				url     : '/parsesonghtml',
-				data    : $.param($scope.song),
+				data    : $.param({data: $scope.song.data, font: $scope.font, fontsize: $scope.fontsize}),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);

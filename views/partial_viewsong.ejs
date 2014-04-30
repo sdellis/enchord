@@ -1,5 +1,27 @@
 <aside class="right-side" style="background:#fff;">
 	<!-- <div id="chord_sheet">temp</div> -->
-	<div id="chord_sheet" class="chordSheet" ng-bind-html="parsedResult()" style="padding-left:15px; padding-top:15px; font-family:Helvetica, sans-serif; ">
+	 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
+    <li style="margin-left:5px; margin-right:15px; display:inline-block;">
+	    <span class="select">FONT</span>
+	    <select id="thickness" class="input-mini" ng-model="font" ng-change="parsehtml()" style="background:#383A3C;">
+	        <option ng-value="Arial">Arial</option>
+	        <option ng-value="Helvetica">Helvetica</option>
+	        <option ng-value="Raleway">Raleway</option>
+	    </select>
+  	</li>
+    <li style="margin-right:15px; display:inline-block;">
+        <span class="select">SIZE</span>
+        <select id="thickness" ng-model="fontsize" class="input-mini" ng-change="parsehtml()" style="background:#383A3C;">
+            <option ng-value="8">8</option>
+            <option ng-value="10">10</option>
+            <option ng-value="12">12</option>
+            <option ng-value="14">14</option>
+            <option ng-value="16">16</option>
+            <option ng-value="18">18</option>
+            <option ng-value="20">20</option>
+        </select>
+    </li>                                 
+</ul>
+	<div id="chord_sheet" class="chordSheet" ng-bind-html="parsedResult()" style="padding-left:15px; padding-top:15px; ">
 	</div>
 </aside>
