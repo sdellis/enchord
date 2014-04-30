@@ -401,13 +401,15 @@ exports.advancedSearch = function(req, res) {
 	};
 	var search_results = {global: [], local: []};
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
-		res.render('search.ejs', {
-			title: 'enchord', 
-			isNew: false, 
-			results: search_results, 
-			query: '', 
-			message: 'Empty search',
-			isLoggedIn: req.isAuthenticated()
+		res.render('results.ejs', {
+			isLoggedIn: req.isAuthenticated(),
+			username: getAuthorName(req),
+			query: "",
+			isAdvSearch: true,
+			title: qTitle,
+			artist: qArtist,
+			genre: qGenre,
+			author: qAuthor
 		});
 	else
 	{
@@ -797,4 +799,25 @@ exports.changePass = function(req, res) {
 			res.send({success: false, message: 'will never happen'});
 		}
 	});
+}
+
+exports.deleteUser = function(req, res) {
+	var username = getAuthorName(req);
+	if (req.user.local) {
+		userSchema.findOne({'local.user':username}, function(err, user) {
+
+		});
+	} else if (req.user.facebook) {
+		userSchema.findOne({'facebook.name':username}, function(err, user) {
+
+		});
+	} else if (req.user.twitter) {
+		userSchema.findOne({'twitter.username':username}, function(err, user) {
+
+		});
+	} else if (req.user.google) {
+		userSchema.findOne({'google.name':username}, function(err, user) {
+
+		});
+	}
 }
