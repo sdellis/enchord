@@ -5,7 +5,7 @@
                 <img src="/images/default.png" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info" style="padding-top: 8%;">
-                <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } %>
+                <p>Hello, <%= username %></p>
             </div>
         </div>
         <ul class="sidebar-menu">
@@ -16,11 +16,11 @@
             </li>
             <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Folder Info</h5>
             <form class="sidebar-form" name="songEditForm" novalidate style="color:#fff;">
-                    <input type="text" name="Folder Name" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Folder Name" /><br>
+                    <input type="text" name="Folder Name" class="form-control" ng-model="folder.name" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
 
-                    <button ng-click="createsong()" class="button" ng-show="!isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Edit </button>
+                    <button class="button" ng-click="enterEditMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Edit </button>
 
-                    <button class="button" ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Save</button>
+                    <button class="button" type="submit" ng-click="renamefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Save</button>
             </form>
             
         </ul>

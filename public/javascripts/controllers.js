@@ -180,6 +180,14 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
+		$scope.$watch('pageSizeLocal', function(value) {
+			console.log('here');
+			$scope.currentPageLocal = 0;
+		})
+		$scope.$watch('pageSizeGlobal', function(value) {
+			console.log('here');
+			$scope.currentPageGlobal = 0;
+		})
 		$scope.init = function(query, adv, title, artist, genre, author) {
 			Side.setPagetype('search');
 			$scope.query = query;
@@ -1027,6 +1035,10 @@ enchordControllers.controller('FolderViewController', [
 				if (data.success)
 				$window.location.href="/members";
 			});
+		}
+
+		$scope.enterEditMode = function() {
+			$scope.editFolderMode = true;
 		}
 
 		$scope.enterAddSongMode = function() {
