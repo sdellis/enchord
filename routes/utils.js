@@ -771,24 +771,32 @@ exports.changePass = function(req, res) {
 	var username = getAuthorName(req);
 	userSchema.findOne({'local.user' : username}, function(err, user) {
 		if (err) {
-			return {message: 'failed'};
+			res.send({message: 'failed'});
 		}
 		if (user) {
-			if (user.local.password == req.body.oldpass) {
+			console.log(req.body.oldpass);
+			console.log(user.validPassword(req.body.oldpass));
+			if (user.validPassword(req.body.oldpass)) {
 				if (req.body.newpass == req.body.confirmpass) {
-					user.local.password = req.body.newpass;
-					user.save(function(err) {
+					if (req.body.newpass == req.body.oldpass) {
+						res.send({message: 'new password is same as old'});
+					}
+					else {
+						user.local.password = user.generateHash(req.body.newpass);
+						user.save(function(err) {
 						if (err)
-							return {message: 'failed'};
-					});
+							res.send({success: false, message: 'failed'});
+							res.send({success: true, message: 'password changed'});
+						});
+					}
 				} else {
-					return {message: 'will never happen'};
+					res.send({success: false, message: 'new passwords do not match'});
 				}
 			} else {
-				return {message: 'old password incorrect'};
+				res.send({success: false, message: 'old pw incorrect'});
 			}
 		} else {
-			return {message: 'will never happen'};
+			res.send({success: false, message: 'will never happen'});
 		}
 	});
 }

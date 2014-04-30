@@ -24,6 +24,23 @@ enchord.factory('Side', function(){
   };
 });
 
+//doesn't work :(
+enchord.factory('Messages', function() {
+  var message = '';
+  var success = false;
+  return {
+    getMessage: function() {console.log('here'); return message;},
+    getSuccess: function() {return success;},
+    setMessage: function(newmessage, newsuccess) {
+      message = newmessage;
+      success = newsuccess;
+      console.log("this is in app");
+      console.log(success);
+      console.log(message);
+    }
+  }
+});
+
 // for pagination
 enchord.filter('startFrom', function() {
 	return function(input, start) {
