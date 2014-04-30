@@ -2,7 +2,6 @@
 <!--<html lang='en' ng-app='enchord'>-->
 <html ng-app="enchord">
 <head>
-    <% include head.ejs %>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,206 +9,108 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="#">
 
-    <title>Enchord</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+        <!-- Angular js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+    <!-- Custom Angular js -->
+    <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/animations.js"></script>
+    <script src="/javascripts/controllers.js"></script>
+    <script src="/javascripts/filters.js"></script>
+    <script src="/javascripts/services.js"></script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <title>Enchord</title>
+    <link rel="stylesheet" href="css/elusive-iconfont-master/css/elusive-webfont.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Montserrat' rel='stylesheet' type='text/css'>
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
-<body>
-    <div class="site-wrapper">
-        <div class="overlay"></div>
+<body class="index">
+      <header class="masthead">
 
-        <div class="header-unit">
-            <video id="video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0"> 
-            <source src="video/bg2.mp4" type="video/mp4"> Video not supported </video>
-        </div><!-- end .header-unit -->
-
-        <div class="cover-container" data-stellar-background-ratio="0.5">
-            <nav class="navbar navbar-default" id="main-navbar" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                      <a class="navbar-brand" href="/"><img id="logo-header"src="./images/logo.gif"><span class="logo-text">Enchord</span></a>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="navbar-collapse">
-                     
-
-                        <ul class="nav navbar-nav navbar-right">
-                            <!--<li><a href="#">About</a></li>-->
-                            <li class="modern-nav-li"><a href="/login">Sign In</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
+         <div class="toolbar">
+            <h1 class="logo"><a href="/">Enchord</a></h1>
+            <nav>
+               <span>Already have an account?</span>
+               <a class="button outline" href="/login">Login</a>
             </nav>
+         </div>
 
-            <div class="row" id="hero-row">
-                <div class="col-md-12 col-md-offset-6 center">
-                    <div class="inner cover white-text inner-center">
-                        <h1 class="cover-heading">Enchord</h1>
-                    </div>
-                </div>
+         <div class="inner">
+            <h1>Create chord sheets in minutes.</h1>
+            <p>Enchord is a simple and easy-to-use chord sheet editor and manager for musicians of all abilities.</p>
+            <a class="button large blue" href="/signup">Get Started</a>
+            <h6 style="color: rgba(255, 255, 255, 0.4)">Sign up, it's free</h6>
+         </div>
+         <img src="images/feature.png" alt=""/>
+      </header>
 
-                <div class="row">
-                    <div class="col-md-16 col-md-offset-4 center white-text bottom-margin-normal">
-                        <p class="lead">Chord sheets for the contemporary musician.</p>
-                    </div>
-                </div> 
-                <div class="row">
-                    <form class="search" name="searchForm" ng-controller="SearchController">
-                        <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
-                        <input type="hidden" name="type" value="Global">
-                        <button ng-click="search()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto;"></button>
-                    </form>   
-                </div><br><br>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-8 center white-text bottom-margin-normal">
-                        <a class="btn login-button" href="/signup">Sign Up</a>
-                        <a class="btn login-button modern-button" href="#features-start">Learn More</a>
-                    </div>
-                </div> 
+      <div>
+         <section class="content-mobile">
+            <div class="inner">
+               <h2>Beautiful chord sheets. Optimized for <span data-typer-targets="Desktop, iPad, Android, Windows Phone, PDF, .txt">Mobile</span>.</h2>
+               <p>Your chord sheet is automatically made to adapt itself to any device, font size, and most popular file formats. iPad, iPhone, Android, it doesn't matter. Your work will always look its absolute best. No coding or design skills required.</p>
+               <img src="images/mobile-friendly.png" alt="">
             </div>
+         </section>
 
-        </div>
-
-        <div class="row blue" id="features-start">
-            <div class="col-md-8 col-md-offset-2">
-                <!--<p class="large-text white-text" id="about-text">   </p>-->
+         <section class="content-features">
+            <div class="inner">
+               <h2>So simple to use, even Nickelback could do it.</h2>
+               <p>Start writing and sharing songs in minutes. Find a song, customize it to your needs, and get back to the performance&mdash;all without missing a beat.</p>
+               <ul>
+                  <li>
+                     <i class="ss-icon animated tada" style="color: #a0d040">robot</i>
+                     <h4>Device agnostic</h4>
+                     <p>Enjoy your chord sheets at home and on the go, and in multiple file formats of our choice.</p>
+                  </li>
+                  <li>
+                     <i class="ss-icon animated tada">view</i>
+                     <h4>Waiting to be discovered</h4>
+                     <p>Join a community of talented artists.</p>
+                  </li>
+                  <li>
+                     <i class="ss-icon animated tada" style="color: #cb3e84">store</i>
+                     <h4>Simple to use</h4>
+                     <p>Enchord's chord sheet editor couldn't be easier to use. Simply use our intuitive markup to write your songs. We'll take care of the rest.</p>
+                  </li>
+                  <li>
+                     <i class="ss-icon animated tada" style="color: #e6c840">smile</i>
+                     <h4>Easy to share</h4>
+                     <p> Contribute to our quickly growing collection of chord sheets.</p>
+                  </li>
+               </ul>
             </div>
-        </div>
-            
-        <section id="integrated" class="grey features-row">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3" >
-                    <div class="features-image-rounded"  
-                    data-0="opacity:0;margin-left:0%;"
-                    data-500="" 
-                    data-600="opacity:1;margin-left:6%;position:static;" > 
-                        <img src="/images/feature3.png" alt="">
-                    </div>
-                </div>
+         </section>
+      </div>
 
-                <div class="col-md-10 col-md-offset-2 description">
-                    <h2>
-                        Integrated
-                    </h2>
-                    <p>
-                    Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
-                    </p>
-                </div>
-            </div>
-        </section>
+      <section class="content-signup">
+         <div class="inner">
+            <h2>Sign up for early access to our beta</h2>
+            <p>In order to ensure we provide a quality service, we are signing people up on a first-come, first-served basis. Be among the first to access Enchord!</p>
+            <a class="button large blue" href="/signup">Get Started</a>
+         </div>
+      </section>
 
-        <section id="connected" class="white features-row">
-            <div class="row">
-                <div class="col-md-10 col-md-offset-3 description">
-                    <h2>
-                        Connected
-                    </h2>
-                    <p>
-                        Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
-                    </p>
-                </div>
+      <footer>
+         <nav>
+            <ul>
+               <li><a href="/signup">Sign Up</a></li>
+               <li><a href="/login">Login</a></li>
+               <li><a href="#">About Us</a></li>
+            </ul>
+         </nav>
+         Made with &nbsp;<i class="el-icon-heart"></i>&nbsp; in Princeton.
+      </footer>
 
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="features-image-rounded"                    
-                    data-0="opacity:0;margin-left:0%;"
-                    data-1000="" 
-                    data-1100="opacity:1;margin-left:6%;position:static;" >  
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="/js/jquery.typer.js"></script>
+      <script>
+         $(function() { $('[data-typer-targets]').typer(); });
+      </script>
 
-                        <img src="/images/feature4.png" alt="">
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="intelligent" class="grey features-row">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="features-image-rounded"                    
-                    data-0="opacity:0;margin-left:0%;"
-                    data-1500="" 
-                    data-1510="opacity:1;margin-left:6%;position:static;">
-                        <img src="/images/feature3.png" alt="">
-                    </div>                
-                </div>
-
-                <div class="col-md-10 col-md-offset-2 description">
-                    <h2>
-                        Intelligent
-                    </h2>
-                    <p>
-                        Bacon ipsum dolor sit amet tail pork belly capicola short loin salami, hamburger tenderloin ball tip meatball kielbasa prosciutto shankle. Pig frankfurter shankle andouille doner. Salami shoulder biltong filet mignon turducken. Ham hock flank brisket meatball pork belly spare ribs kevin frankfurter tongue porchetta.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- <div id="footer" class="full-width blue white-text">
-            <div class="row-fluid">
-                <h1 class="white-text center"> ©              
-                    <div class=" center">
-                        <img id="logo-footer"src="">
-                    </div>
-                </h1>
-            </div>
-            </div>
-        </div> -->
-
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/skrollr.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/jquery.mb.YTPlayer.js"></script>
-
-
-        <script type="text/javascript">
-                    var s = skrollr.init({
-                    edgeStrategy: 'set', 
-                }); 
-            $(function(){    
-                $(".movie").mb_YTPlayer();
-                $('a[href*=#]:not([href=#])').click(function() {
-                    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-                        var target = $(this.hash);
-                        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-                        if (target.length) {
-                            $('html,body').animate({
-                              scrollTop: target.offset().top
-                            }, 1000);
-                            return false;
-                        }
-                    }
-                });
-
-                var menu = $('#main-navbar');
-                var top = menu.offset().top;
-                $(window).scroll(function (event) {
-                // what the y position of the scroll is
-                    var y = $(this).scrollTop();
-                        if (y >= top + 400) {
-                            menu.addClass('navbar-fixed-top');
-                            $("#logo-header").attr('src', './images/logo.gif');
-
-                        } else {
-                            menu.removeClass('navbar-fixed-top');
-                            $("#logo-header").attr('src', './images/logo.gif');
-
-                        }
-                    });
-            });
-        </script>
-</body>
+   </body>
 </html>
