@@ -264,7 +264,7 @@ module.exports = function(app, passport, db) {
 
 		app.post('/parsesonghtml', function(req, res) {
 			console.log(req.body);
-			htmlparser.parseSongHTML(req.body.data, "Courier", "12px", function(parsedSong) {
+			htmlparser.parseSongHTML(req.body.data, req.body.font, req.body.fontsize + "px", function(parsedSong) {
 				console.log("In routes: " + parsedSong);
 				res.send(parsedSong);
 			});
