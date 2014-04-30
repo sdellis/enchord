@@ -8,16 +8,16 @@
     <table class="table">
         <thead>
             <tr>
-                <th style="max-width: 20px;"></th>
+                <th style="max-width: 20px;"><a href="" ng-click="setPredicate('upvote')"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></a></th>
                 <!-- <th style="max-width: 5px;"></th> -->
-                <th>Song</th>
-                <th>Artist</th>
-                <th>Genre</th>
-                <th>Song Type</th>
+                <th><a href="" ng-click="setPredicate('title')">Song</a></th>
+                <th><a href="" ng-click="setPredicate('artist')">Artist</a></th>
+                <th><a href="" ng-click="setPredicate('genre')">Genre</a></th>
+                <th><a href="" ng-click="setPredicate('pub')">Song Type</a></th>
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <tr data-ng-repeat="song in usersongs | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td style="max-width: 20px;"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <!--<td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" style="color:black" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>-->
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>

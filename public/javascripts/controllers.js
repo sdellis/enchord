@@ -68,6 +68,8 @@ enchordControllers.controller('ProfileController', [
 		$scope.currentPage = 0;
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
+		$scope.predicate = 'upvote';
+		$scope.reverse = false;
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
@@ -108,6 +110,10 @@ enchordControllers.controller('ProfileController', [
 			if ($scope.usersongs.length == 0)
 				return 1;
 			return Math.ceil($scope.usersongs.length/$scope.pageSize);
+		}
+		$scope.setPredicate = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
 		}
 	}]);
 // Search page controller 
@@ -812,7 +818,7 @@ enchordControllers.controller('FolderController', [
 		$scope.folder = {};
 		$scope.userfolders = [];
 		$scope.songid = '';
-		$scope.init = function(songid) {
+		$scope.init = function() {
 			$scope.songid = songid;
 			$http({
 				method  : 'GET',
@@ -854,6 +860,7 @@ enchordControllers.controller('FolderController', [
 			});
 		}
 
+
 	}]);
 enchordControllers.controller('FolderViewController', [
 	'$scope',
@@ -863,9 +870,27 @@ enchordControllers.controller('FolderViewController', [
 	'$sce',
 	function($scope, $http, $window, $routeParams, $sce){
 		$scope.folder = {};
+		$scope.usersongs = [];
+		$scope.query="";
 		$scope.folderid = "";
+		$scope.addSongMode = false;
 		$scope.init = function(_id) {
 			$scope.folderid = _id;
+			$http({
+				method  : 'GET',
+				url     : '/mysongs'
+			}).success(function(data) {
+				console.log(data);
+				$scope.usersongs = data.usersongs;
+			}).error(function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == 500) {
+					console.log(status);
+					$scope.message = data.message;
+					$scope.hasError = data.hasError;
+				}
+			});
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/viewfoldersongs/' + _id;
 				$http({
@@ -895,16 +920,25 @@ enchordControllers.controller('FolderViewController', [
 		}
 		$scope.deletefolder = function() {
 			$http({
-			method : 'POST',
-			url : '/deletefolder',
-			data : $.param({folderid: $scope.folderid}),
-			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-		}).success(function(data) {
-			console.log(data);
-			if (data.success)
-			$window.location.href="/members";
-		});
-	}
+				method : 'POST',
+				url : '/deletefolder',
+				data : $.param({folderid: $scope.folderid}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				if (data.success)
+				$window.location.href="/members";
+			});
+		}
+
+		$scope.enterAddSongMode = function() {
+			// console.log("here");
+			$scope.addSongMode = true;
+		}
+		$scope.leaveAddSongMode = function() {
+			// console.log("here");
+			$scope.addSongMode = false;
+		}
 }]);
 enchordControllers.controller('AdvancedSearchController', [
 	'$scope', 
