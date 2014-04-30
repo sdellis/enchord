@@ -20,7 +20,7 @@
             <li><a href="#">Artist: {{song.artist}}</a></li>
             <li><a href="#">Author: {{song.author_name}}</a></li>
             <li><a href="#">Genre: {{song.genre}}</a></li>
-            <li ng-show="voted && isLoggedIn" ng-click="undovote()"><a href="#"><i class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</a></li>
+            <li ng-show="voted && isLoggedIn" ng-click="undovote()"><a href="#"><i class="fa fa-star" style="color:#f1c40f;"></i> {{song.upvote}}</a></li>
             <li ng-show="!voted && isLoggedIn" ng-click="upvote()"><a href="#"><i class="fa fa-star"></i> {{song.upvote}}</a></li>
             <li ng-show="!isLoggedIn"><a href="#"><i class="fa fa-star"></i> {{song.upvote}}</a></li>
 

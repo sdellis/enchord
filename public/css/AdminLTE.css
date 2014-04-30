@@ -2565,11 +2565,11 @@ Component: timeline
 */
 /* skin-black navbar */
 .skin-black .navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid #eee;
+  background-color: #0b0d0f;
+  border-bottom: 1px solid #0b0d0f;
 }
 .skin-black .navbar .nav a {
-  color: #333333;
+  color: #fff;
 }
 .skin-black .navbar .nav > li > a:hover,
 .skin-black .navbar .nav > li > a:active,
@@ -2584,7 +2584,7 @@ Component: timeline
   margin-right: 10px;
 }
 .skin-black .navbar .sidebar-toggle .icon-bar {
-  background: #333333;
+  background: #fff;
 }
 .skin-black .navbar .sidebar-toggle:hover .icon-bar {
   background: #999999 !important;
