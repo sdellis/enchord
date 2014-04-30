@@ -9,6 +9,7 @@ var async = require('async');
 var parser = require('../parsers/parser');
 var htmlparser = require('../parsers/htmlparser');
 var transposer = require('../parsers/transpose');
+var reverseparser = require('../parsers/reverseparser');
 var songEmpty = {
 		title: '',
 		artist: '',
@@ -268,6 +269,15 @@ module.exports = function(app, passport, db) {
 				res.send(parsedSong);
 			});
 		});
+
+		app.post('/reverseparse', function(req, res) {
+			console.log(req.body.data);
+			reverseparser.reverseParser(req.body.data, function(reverseParsedSong) {
+				console.log("In routes: " + reverseParsedSong);
+				res.send(reverseParsedSong)
+			});
+		})
+
 
 		app.post('/view/transpose', function(req, res) {
 			console.log('im here');

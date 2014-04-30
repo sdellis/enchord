@@ -415,10 +415,12 @@ enchordControllers.controller('SongViewController', [
 				$scope.song.result = data;
 			});
 		}
+
 		// Guarantee that returned html is clean
 		$scope.parsedResult = function() {
 			return $sce.trustAsHtml($scope.song.result);
 		}
+
 		//upvote
 		$scope.upvote = function() {
 			$http({
@@ -666,7 +668,16 @@ enchordControllers.controller('SongEditController', [
 		}
 
 		$scope.reverseParse = function() {
-			$scope.reverseParseMode = false;
+			$http({
+				method: 'POST',
+				url: '/reverseparse',
+				data: $.param({data: $scope.reveseParsedSong}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.data = data;
+				$scope.reverseParseMode = false;
+			})
 		}
 	}]);
 
