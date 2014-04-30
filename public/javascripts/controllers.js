@@ -73,6 +73,11 @@ enchordControllers.controller('ProfileController', [
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
+
 		$scope.init = function() {
 			Side.setPagetype('default');
 			$http({
@@ -679,6 +684,10 @@ enchordControllers.controller('ArtistController', [
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
 		$scope.artistsongs = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
 		$scope.init = function(artistname) {
 			$scope.name = artistname;
 			console.log('hello world');
