@@ -4,7 +4,11 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var User = require('../models/schemas/user');
+var songSchema = require('../models/schemas/song');
 var configAuth = require('./auth');
+
+var demosong = require('../parsers/songTutorial').song;
+//var demosong = "";
 
 module.exports = function(passport) {
 	passport.serializeUser(function(user, done) {
@@ -54,9 +58,11 @@ module.exports = function(passport) {
 							newUser.local.resetPasswordToken = null;
 							newUser.local.resetPasswordExpires = 0;
 							console.log(newUser);
-							newUser.save(function(err) {
+							newUser.save(function(err, user) {
 								if (err)
 									throw err;
+								console.log(user);
+								addDemoSong(user.local.user, user._id);
 								return done(null, newUser);
 							});
 						}
@@ -150,9 +156,10 @@ module.exports = function(passport) {
 						newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
 						newUser.facebook.email = profile.emails[0].value;
 
-						newUser.save(function(err) {
+						newUser.save(function(err, user) {
 							if (err)
 								throw err;
+							addDemoSong(user.facebook.name, user.facebook.id);
 							return done(null, newUser);
 						});
 					}
@@ -169,6 +176,7 @@ module.exports = function(passport) {
 	        user.save(function(err) {
 	        	if (err) 
 	        		throw err;
+	        	addDemoSong(user.facebook.name, user.facebook.id);
 	        	return done(null, user);
 	        });
 		}
@@ -204,9 +212,10 @@ module.exports = function(passport) {
 		                newUser.twitter.username = profile.username;
 		                newUser.twitter.displayName = profile.displayName;
 
-		                newUser.save(function(err) {
+		                newUser.save(function(err, user) {
 		                	if (err)
 		                		throw err;
+		                	addDemoSong(user.twitter.username, user.twitter.id);
 		                	return done(null, newUser);
 		                });
 	    			}
@@ -222,6 +231,7 @@ module.exports = function(passport) {
 	        user.save(function(err) {
 	        	if (err) 
 	        		throw err;
+	        	addDemoSong(user.twitter.username, user.twitter.id);
 	        	return done(null, user);
 	        });
 	    }
@@ -257,9 +267,10 @@ module.exports = function(passport) {
 		                newUser.google.name  = profile.displayName;
 		                newUser.google.email = profile.emails[0].value; // pull the first email
 
-		                newUser.save(function(err) {
+		                newUser.save(function(err, user) {
 		                    if (err)
 		                        throw err;
+		                    addDemoSong(user.google.name, user.google.id);
 		                    return done(null, newUser);
 		                });
 		            }
@@ -274,6 +285,7 @@ module.exports = function(passport) {
 		    user.save(function(err) {
 				if (err)
 					throw err;
+				addDemoSong(user.google.name, user.google.id);
 				return done(null, newUser);
 			});
 		}
@@ -303,4 +315,31 @@ function isRFC822ValidEmail(sEmail) {
   }
   
   return false;
+}
+
+function addDemoSong(username, userid) {
+	var song = new songSchema({
+		title: "Instructions",
+		title_lower: "instructions",
+		artist: "Enchord",
+		artist_lower: "enchord",
+		author_id: userid,
+		author_name: username, //original creator
+		author_lower: username.toLowerCase(),
+		genre: "Instructional",
+		genre_lower: "instructional",
+		data: demosong,
+		pub: false,
+		upvote: 0,
+		search_string: ['How', 'to', 'write', 'a', 'song'], //actually an array
+		folder_id: '',
+		band_id: '',
+		isBand: false
+	});
+	song.save(function(err, docs) {
+		if (err) {
+			console.log('why is it failing?');
+		}
+		console.log(docs);
+	})
 }
