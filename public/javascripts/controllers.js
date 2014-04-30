@@ -1071,6 +1071,20 @@ enchordControllers.controller('FolderViewController', [
 			});
 		}
 		$scope.deletesong = function(songid) {
+				$http({
+					method : 'GET',
+					url : '/deletesongfromfolder/' + songid
+				}).success(function(data) {
+					console.log(data);
+					var getUrl = '/viewfoldersongs/' + $scope.folderid;
+					$http({
+						method : 'GET',
+						url : getUrl
+					}).success(function(data) {
+						console.log(data);
+						$scope.folder = data.folder;
+					});	
+				});
 			console.log(songid);
 		}
 

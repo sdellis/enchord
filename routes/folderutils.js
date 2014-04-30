@@ -158,7 +158,8 @@ exports.deleteSongFromFolder = function(req, res) {
 			return;
 		}
 		console.log('delete song from folder success');
-		res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: 'empty', results: ''});
+		res.send({success: true});
+		// res.render('foldersongs.ejs', {title: 'enchord', isNew: false, folderName: 'empty', results: ''});
 		return;
 	});
 }

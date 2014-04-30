@@ -7,24 +7,35 @@
     </section>
     <div ng-show="!addSongMode">
     <table class="table" name="global">
+        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
+            Previous
+        </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
+            Next
+        </button>
+        Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> (songs per page)
         <thead>
             <tr>
-                <th class="col-sm-2"></th>
+                <th class="col-sm-2"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></th>
                 <th class="col-sm-6">Song</th>
                 <th class="col-sm-2">Artist</th>
                 <th class="col-sm-2">Genre</th>
-                <th class="col-sm-2"></th>
-                <th class="col-sm-2">Delete?</th>
+                <th class="col-sm-2">Type</th>
+                <th class="col-sm-2" ng-show="editFolderMode">Delete?</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in folder.foldersongs">
+            <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
-                <td><i class="fa fa-chevron-up"></i></td>
-                <td><i class="fa fa-chevron-down"></i></td>
-                <td><i class="fa fa-times"></i></td>
+                <!-- <td><i class="fa fa-chevron-up"></i></td>
+                <td><i class="fa fa-chevron-down"></i></td> -->
+                <td>{{ song.genre }}</td>
+                <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
+                <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
+                <td ng-show="editFolderMode"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
             </tr>
         </tbody>
     </table>
@@ -34,7 +45,7 @@
     <div ng-show="addSongMode">
        <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter Songs" />
         
-            <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
+        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
             Previous
         </button>
             {{currentPage+1}}/{{numberOfPages()}}
