@@ -90,13 +90,13 @@
 
                     <button ng-show='reverseParseMode' ng-click='reverseParse()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-undo"></i> Reverse Parse</button>
 
-                    <button ng-click="createsong()" class="button" ng-show="isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Create Song</button>
 
-                    <button ng-click="editsong(false)" class="button" ng-show="!isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+                    <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
 
-                    <button ng-click="editsong(true)" class="button" ng-show="!isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button>
+                    <button ng-click="editsong(true)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button>
 
-                    <button class="button" ng-disabled="songEditForm.$invalid" ng-show="!isNew" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
+                    <button class="button" ng-show="!isNew && !reverseParseMode" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
             </form>
         </ul>
 
