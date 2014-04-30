@@ -249,6 +249,16 @@ enchordControllers.controller('SearchController', [
 				return 1;
 			return Math.ceil($scope.localresults.length/$scope.pageSizeLocal);
 		}
+
+		$scope.setPredicateLocal = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
+		}
+
+		$scope.setPredicateGlobal = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
+		}
 	}]);
 
 // Song page (view) controller
