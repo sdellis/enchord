@@ -471,6 +471,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.inSave = false;
 		$scope.song = {};
 		$scope.message = '';
+		$scope.reverseParseMode = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -653,6 +654,14 @@ enchordControllers.controller('SongEditController', [
 				$scope.transposed = $scope.transposed + $scope.steps;
 				$scope.markupForm = data;
 			});
+		}
+
+		$scope.enterReverseParseMode = function() {
+			$scope.reverseParseMode = true;
+		}
+
+		$scope.reverseParse = function() {
+			$scope.reverseParseMode = false;
 		}
 	}]);
 
