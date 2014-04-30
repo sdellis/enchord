@@ -7,14 +7,14 @@
     </section>
     <div ng-show="!addSongMode">
     <table class="table" name="global">
-        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
+        <button ng-disabled="currentPageFolder == 0" ng-click="currentPageFolder = currentPageFolder-1">
             Previous
         </button>
-            {{currentPage+1}}/{{numberOfPages()}}
-        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
+            {{currentPageFolder+1}}/{{numberOfPagesFolder()}}
+        <button ng-disabled="currentPageFolder >= foldersongs.length/pageSizeFolder - 1"  ng-click="currentPageFolder = currentPageFolder+1">
             Next
         </button>
-        Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> (songs per page)
+        Display <select ng-model="pageSizeFolder" ng-options="pageSizeFolder for pageSizeFolder in pageSizesFolder"></select> (songs per page)
         <thead>
             <tr>
                 <th class="col-sm-2"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></th>
@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPageFolder*pageSizeFolder | limitTo:pageSizeFolder">
                 <td><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
@@ -45,14 +45,14 @@
     <div ng-show="addSongMode">
        <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter Songs" />
         
-        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1">
+        <button ng-disabled="currentPageAddSongs == 0" ng-click="currentPageAddSongs = currentPageAddSongs-1">
             Previous
         </button>
-            {{currentPage+1}}/{{numberOfPages()}}
-        <button ng-disabled="currentPage >= usersongs.length/pageSize - 1"  ng-click="currentPage = currentPage+1">
+            {{currentPageAddSongs+1}}/{{numberOfPagesAddSongs()}}
+        <button ng-disabled="currentPageAddSongs >= usersongs.length/pageSizeAddSongs - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
             Next
         </button>
-        Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> (songs per page)
+        Display <select ng-model="pageSizeAddSongs" ng-options="pageSizeAddSongs for pageSizeAddSongs in pageSizesAddSongs"></select> (songs per page)
         <table class="table table-hover">
         <thead>
             <tr>
@@ -65,7 +65,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="song in usersongs | filter:query | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize" ng-click="addToFolder(song._id)">
+            <tr data-ng-repeat="song in usersongs | filter:query | orderBy:predicate:reverse | startFrom:currentPageAddSongs*pageSizeAddSongs | limitTo:pageSizeAddSongs" ng-click="addToFolder(song._id)">
                 <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                 <!--<td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" style="color:black" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>-->
                 <td>{{ song.title }}</a></td>

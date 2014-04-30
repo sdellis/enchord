@@ -1021,13 +1021,28 @@ enchordControllers.controller('FolderViewController', [
 	'$routeParams',
 	'$sce',
 	function($scope, $http, $window, $routeParams, $sce){
+		$scope.currentPageFolder = 0;
+		$scope.currentPageAddSongs = 0;
+		$scope.pageSizesFolder = [10, 25, 50];
+		$scope.pageSizeFolder = 10;
+		$scope.pageSizesAddSongs = [10, 25, 50];
+		$scope.pageSizeAddSongs = 10;
 		$scope.folder = {};
-		$scope.foldersongs = {};
+		$scope.foldersongs = [];
 		$scope.usersongs = [];
 		$scope.query="";
 		$scope.folderid = "";
 		$scope.addSongMode = false;
 		$scope.editFolderMode = false;
+		$scope.$watch('pageSizeFolder', function(value) {
+			console.log('here');
+			$scope.currentPageFolder = 0;
+		});
+		$scope.$watch('pageSizeAddSongs', function(value) {
+			console.log('here');
+			$scope.currentPageAddSongs = 0;
+		});
+
 		$scope.init = function(_id) {
 			$scope.folderid = _id;
 			$http({
@@ -1053,6 +1068,7 @@ enchordControllers.controller('FolderViewController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.folder = data.folder;
+					$scope.foldersongs = data.folder.foldersongs;
 				});
 			}
 		}
@@ -1074,6 +1090,7 @@ enchordControllers.controller('FolderViewController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.folder = data.folder;
+					$scope.foldersongs = data.folder.foldersongs;
 				});
 			});
 		}
@@ -1135,6 +1152,20 @@ enchordControllers.controller('FolderViewController', [
 			// console.log("here");
 			$scope.addSongMode = false;
 		}
+
+
+		$scope.numberOfPagesFolder = function() {
+			if ($scope.foldersongs.length == 0)
+				return 1;
+			return Math.ceil($scope.foldersongs.length/$scope.pageSizeFolder);
+		}
+
+		$scope.numberOfPagesAddSongs = function() {
+			if ($scope.usersongs.length == 0)
+				return 1;
+			return Math.ceil($scope.usersongs.length/$scope.pageSizeAddSongs);
+		}
+
 }]);
 enchordControllers.controller('AdvancedSearchController', [
 	'$scope', 
