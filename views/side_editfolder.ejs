@@ -18,9 +18,15 @@
             <form class="sidebar-form" name="songEditForm" novalidate style="color:#fff;">
                     <input type="text" name="Folder Name" class="form-control" ng-model="folder.name" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
 
-                    <button class="button" ng-click="enterEditMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Edit </button>
+                    <button class="button" ng-show="!addSongMode" ng-click="enterAddSongMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Add Songs </button>
 
-                    <button class="button" type="submit" ng-click="renamefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Save</button>
+                    <button class="button" ng-show="addSongMode" ng-click="leaveAddSongMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Leave Adding Songs </button>
+
+                    <button class="button" ng-show="!addSongMode" ng-click="enterEditMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Edit </button>
+
+                    <button class="button" type="submit" ng-show="!addSongMode" ng-click="renamefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Rename</button>
+
+                    <button class="button" type="submit" ng-show="!addSongMode" ng-click="deletefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete</button>
             </form>
             
         </ul>

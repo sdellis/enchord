@@ -970,6 +970,7 @@ enchordControllers.controller('FolderViewController', [
 	'$sce',
 	function($scope, $http, $window, $routeParams, $sce){
 		$scope.folder = {};
+		$scope.foldersongs = {};
 		$scope.usersongs = [];
 		$scope.query="";
 		$scope.folderid = "";
@@ -1033,6 +1034,9 @@ enchordControllers.controller('FolderViewController', [
 
 		$scope.enterEditMode = function() {
 			$scope.editFolderMode = true;
+		}
+		$scope.leaveEditMode = function() {
+			$scope.editFolderMode = false;
 		}
 
 		$scope.enterAddSongMode = function() {
