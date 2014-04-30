@@ -668,15 +668,17 @@ enchordControllers.controller('SongEditController', [
 		}
 
 		$scope.reverseParse = function() {
+			console.log($scope.reverseParseData);
 			$http({
 				method: 'POST',
 				url: '/reverseparse',
-				data: $.param({data: $scope.reveseParsedSong}),
+				data: $.param({data: $scope.reverseParseData}),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.data = data;
 				$scope.reverseParseMode = false;
+				$scope.parsehtml();
 			})
 		}
 	}]);

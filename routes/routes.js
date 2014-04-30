@@ -271,9 +271,9 @@ module.exports = function(app, passport, db) {
 		});
 
 		app.post('/reverseparse', function(req, res) {
-			console.log(req.body.data);
+			console.log("data: " + req.body.data);
 			reverseparser.reverseParser(req.body.data, function(reverseParsedSong) {
-				console.log("In routes: " + reverseParsedSong);
+				console.log("In routes reverse parser: " + reverseParsedSong);
 				res.send(reverseParsedSong)
 			});
 		})
