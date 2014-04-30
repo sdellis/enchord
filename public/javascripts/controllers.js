@@ -672,6 +672,10 @@ enchordControllers.controller('ArtistController', [
 				return 1;
 			return Math.ceil($scope.artistsongs.length/$scope.pageSize);
 		}
+		$scope.setPredicate = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
+		}
 	}]);
 
 // enchordControllers.controller('ArtistController', ['$scope',
