@@ -73,6 +73,11 @@ enchordControllers.controller('ProfileController', [
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
+
 		$scope.init = function() {
 			Side.setPagetype('default');
 			$http({
@@ -410,10 +415,12 @@ enchordControllers.controller('SongViewController', [
 				$scope.song.result = data;
 			});
 		}
+
 		// Guarantee that returned html is clean
 		$scope.parsedResult = function() {
 			return $sce.trustAsHtml($scope.song.result);
 		}
+
 		//upvote
 		$scope.upvote = function() {
 			$http({
@@ -471,6 +478,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.inSave = false;
 		$scope.song = {};
 		$scope.message = '';
+		$scope.reverseParseMode = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -654,6 +662,23 @@ enchordControllers.controller('SongEditController', [
 				$scope.markupForm = data;
 			});
 		}
+
+		$scope.enterReverseParseMode = function() {
+			$scope.reverseParseMode = true;
+		}
+
+		$scope.reverseParse = function() {
+			$http({
+				method: 'POST',
+				url: '/reverseparse',
+				data: $.param({data: $scope.reveseParsedSong}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.data = data;
+				$scope.reverseParseMode = false;
+			})
+		}
 	}]);
 
 // Artist controller
@@ -670,6 +695,10 @@ enchordControllers.controller('ArtistController', [
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
 		$scope.artistsongs = [];
+		$scope.$watch('pageSize', function(value) {
+			console.log('here');
+			$scope.currentPage = 0;
+		})
 		$scope.init = function(artistname) {
 			$scope.name = artistname;
 			console.log('hello world');

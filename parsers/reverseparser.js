@@ -99,6 +99,9 @@ function bracketInlineChords(chordLine)
 }
 
 
+exports.reverseParser = function(input, callback) {
+	callback(reverseParse(input));
+};
 
 function reverseParse(input)
 {
@@ -206,7 +209,7 @@ chordLine = " C G#        	C";
 lyricLine = "Lyrics hello";
 console.log(mergeChordLyric(chordLine,lyricLine));
 */
-
+/*
 var fs = require('fs');
 
 var input = fs.createReadStream('test.txt');
@@ -219,3 +222,4 @@ input.on('end', function() {
 	console.log(reverseParse(remaining));
 })
 
+*/
