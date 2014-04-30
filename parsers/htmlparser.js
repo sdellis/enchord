@@ -177,6 +177,7 @@ function parseOption(oneLine, i,lines){
 		case 'header': case 'start header': case 'startheader':
 			lyricLine += "<span class='heading'>";
 			return j-i;
+		case 'end heading': case 'endheading':
 		case 'end header': case 'endheader':
 			lyricLine += "</span>";
 			return j-i;
