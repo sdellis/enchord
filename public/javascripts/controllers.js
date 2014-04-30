@@ -460,6 +460,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.hasError = false;
 		$scope.inSave = false;
 		$scope.song = {};
+		$scope.message = '';
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -480,6 +481,7 @@ enchordControllers.controller('SongEditController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.result = data;
+				$scope.message = data.message;
 			});
 		}
 
@@ -590,7 +592,7 @@ enchordControllers.controller('SongEditController', [
 				$scope.songEditForm.$setPristine();
 				$scope.markupForm.$setPristine();
 				if(redirect)
-					$window.location.href = '/members';
+					$window.location.href = '/viewsong/'.concat($scope.song._id);
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -677,6 +679,10 @@ enchordControllers.controller('ArtistController', [
 			if ($scope.artistsongs.length == 0)
 				return 1;
 			return Math.ceil($scope.artistsongs.length/$scope.pageSize);
+		}
+		$scope.setPredicate = function(predicate) {
+			$scope.predicate = predicate;
+			$scope.reverse = !$scope.reverse;
 		}
 	}]);
 

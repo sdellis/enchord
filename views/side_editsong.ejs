@@ -28,17 +28,67 @@
             </li>
             <!-- <h3 ng-show"isNew" style="color:white">New Song</h3> -->
             
+
+            <!-- Confirmation message for Save MAKE IT LOOK BETTER-->
+            <div ng-show="message.length > 0" class="alert alert-success">{{message}}</div>
+
             <!-- <form action="POST" class="sidebar-form" name="songEditForm" novalidate> -->
             <form class="sidebar-form" name="songEditForm" novalidate style="color:#fff;">
                     <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Title" /><br>
 
                     <input type="text" name="artist" class="form-control" placeholder="Artist" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
 
-                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" /><br>
+                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" />
+
+                    <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Transpose</h5>
+                    <ul class="nav" style="display:inline-block; padding-top:10px; padding-bottom:30px; width:100%;">
+                                <li style="margin-left:5px; margin-right:15px; display:inline-block; padding-bottom:5px;">
+                                    <span class="select">STEPS</span>
+                                    <select id="thickness" class="input-mini" style="background:#383A3C;">
+                                        <option value="0">0</option>
+                                        <option value="+1">+1</option>
+                                        <option value="+2">+2</option>
+                                        <option value="+3">+3</option>
+                                        <option value="+4">+4</option>
+                                        <option value="+5">+5</option>
+                                        <option value="+6">+6</option>
+                                        <option value="+7">+7</option>
+                                        <option value="+8">+8</option>
+                                        <option value="+9">+9</option>
+                                        <option value="+10">+10</option>
+                                        <option value="+11">+11</option>
+                                        <option value="-1">-1</option>
+                                        <option value="-2">-2</option>
+                                        <option value="-3">-3</option>
+                                        <option value="-4">-4</option>
+                                        <option value="-5">-5</option>
+                                        <option value="-6">-6</option>
+                                        <option value="-7">-7</option>
+                                        <option value="-8">-8</option>
+                                        <option value="-9">-9</option>
+                                        <option value="-10">-10</option>
+                                        <option value="-11">-11</option>
+
+                                    </select>
+                                </li>
+                                <li style="margin-left:5px;margin-right:15px; display:inline-block;">
+                                    <span class="select">PREFERENCE</span>&nbsp;&nbsp;
+                                    <select id="thickness" class="input-mini" style="background:#383A3C;">
+                                        <option value="s">&#9839;</option>
+                                        <option value="f">&#9837;</option>
+
+                                    </select>
+                                </li>                                 
+                    </ul>
+
 
                     <input style="margin-left:10px;" type="radio" name="scope" ng-model="song.pub" ng-value=true>&nbsp;&nbsp;&nbsp;Public<br>
                     <input style="margin-left:10px; margin-bottom: 30px;" type="radio" name="scope" ng-model="song.pub" ng-value=false >&nbsp;&nbsp;&nbsp;Private
 
+                    
+                    <button ng-click="createsong()" class="button" ng-show="isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button>
+
+                    <button ng-click="createsong()" class="button" ng-show="isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-undo"></i> Reverse Parse</button>
 
                     <button ng-click="createsong()" class="button" ng-show="isNew" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
 
