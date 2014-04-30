@@ -43,7 +43,7 @@ exports.createSong = function(req, res) {
 		console.log('success saved');
 		console.log(song);
 		
-		res.send({song: song, message: 'Successfully created', hasError: false, isNew: false});
+		res.send({song: song, message: 'Song Created', hasError: false, isNew: false});
 		return;
 		// res.render('editsong.ejs', {title: 'enchord', isNew: false, song: product, message: 'Successfully created'});
 	});
@@ -76,7 +76,7 @@ exports.editSong = function(req, res) {
 				return;
 			}
 			console.log('success edit');
-			res.send({song: song, message: 'Successfully saved', hasError: false, isNew: false});
+			res.send({song: song, message: 'Song Saved', hasError: false, isNew: false});
 			return;
 		});	
 	});
@@ -217,7 +217,7 @@ exports.deleteSong = function(req, res) {
 			return;
 		}
 		console.log('success delete');
-		res.send({message: 'Successfully deleted', hasError: false, isNew: false, isDeleted: true});
+		res.send({message: 'Song Deleted', hasError: false, isNew: false, isDeleted: true});
 		return;
 		});
 	});
@@ -235,7 +235,7 @@ exports.downloadSongTxt = function(req, res) {
 				fs.writeFile('./' + id + '.txt', parsedSong, function(err) {
 					if(err) {
 						console.log(err);
-						res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+						res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
 						return;
 					} else {
 						console.log('success!');
@@ -266,7 +266,7 @@ exports.downloadSongTxt = function(req, res) {
 							fs.unlink('./' + id + '.txt', function (err) {
 								if (err) {
 									console.log(err);
-									res.status(500).json({message: 'Internal server error: Cannot delete', hasError: true});
+									res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
 									return;
 								} else {
 									console.log('success delete file');
@@ -529,7 +529,7 @@ function findSong(id, res, callback) {
 		}
 		if (docs == null) {
 			console.log('Song not found');
-			res.send({message: 'Cannot find song', hasError: false, isNew: false, isDeleted: false});
+			res.send({message: 'Cannot Find Song', hasError: false, isNew: false, isDeleted: false});
 			//res.status(500).json({message: 'Internal server error: Cannot find song to delete', hasError: true});
 			return;
 		}
@@ -542,12 +542,12 @@ function findSong(id, res, callback) {
 function checkFields(song, res) {
 	if (song.title.trim() == '') {
 		console.log('empty title');
-		res.send({song: song, message: 'Error: Empty title', hasError: true, isNew: true});
+		res.send({song: song, message: 'Error: Empty Title', hasError: true, isNew: true});
 		return false;
 	}
 	if (song.artist.trim() == '') {
 		console.log('empty artist');
-		res.send({song: song, message: 'Error: Empty artist', hasError: true, isNew: true});
+		res.send({song: song, message: 'Error: Empty Artist', hasError: true, isNew: true});
 		return false;
 	}
 	return true;
@@ -619,7 +619,7 @@ exports.getUsername = getAuthorName;
 function searchResults(err, results, query, req, res) {
 	if (err) {
 		console.log(err);
-		res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
+		res.status(500).json({message: 'Internal server error: cannot search', hasError: true});
 		return;
 	}
 	console.log(results.global);
@@ -777,24 +777,24 @@ exports.changePass = function(req, res) {
 			if (user.validPassword(req.body.oldpass)) {
 				if (req.body.newpass == req.body.confirmpass) {
 					if (req.body.newpass == req.body.oldpass) {
-						res.send({message: 'new password is same as old'});
+						res.send({message: 'Please type in a new password'});
 					}
 					else {
 						user.local.password = user.generateHash(req.body.newpass);
 						user.save(function(err) {
 						if (err)
-							res.send({success: false, message: 'failed'});
-							res.send({success: true, message: 'password changed'});
+							res.send({success: false, message: 'Failed'});
+							res.send({success: true, message: 'Password Changed'});
 						});
 					}
 				} else {
-					res.send({success: false, message: 'new passwords do not match'});
+					res.send({success: false, message: 'Confirm password did not match new password'});
 				}
 			} else {
-				res.send({success: false, message: 'old pw incorrect'});
+				res.send({success: false, message: 'The current password was incorrect'});
 			}
 		} else {
-			res.send({success: false, message: 'will never happen'});
+			res.send({success: false, message: 'Will Never Happen'});
 		}
 	});
 }

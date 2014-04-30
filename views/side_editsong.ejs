@@ -28,6 +28,10 @@
             </li>
             <!-- <h3 ng-show"isNew" style="color:white">New Song</h3> -->
             
+
+            <!-- Confirmation message for Save MAKE IT LOOK BETTER-->
+            <div ng-show="message.length > 0" class="alert alert-success">{{message}}</div>
+
             <!-- <form action="POST" class="sidebar-form" name="songEditForm" novalidate> -->
             <form class="sidebar-form" name="songEditForm" novalidate style="color:#fff;">
                     <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Title" /><br>
