@@ -27,11 +27,11 @@ lyric:default, if not others.
 
 var commonheaders = new Array( /^\s*(\d(th|nd|rd|st)?)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*$/i, /^\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*$/i)
 var emptyLine = /^\s*$/;
-var hasChords = /(\s|,|-|^)([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|$)/g;
-var replaceChords = /(\s|,|-|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|$)?/g;
+var hasChords = /(\s|,|-|\(|^)([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|\)|$)/g;
+var replaceChords = /(\s|,|-|\(|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|\)|$)?/g;
 var replaceCommentedChords = /<([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)>/g;
 var justChords = /^((\s+|\s|,|-|)[A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?(\s+|,|-|))+$/;
-var tabLine = /^([A-G][#b]?)*\s*\|*\s*\d*-+(\d|-)+/i;
+var tabLine = /^([A-G][#b]?)*\s*[\|:]*\s*[x\d]*-+[x\d\|-]+/i;
 
 function lineType(line)
 {
@@ -53,7 +53,7 @@ function lineType(line)
 	var chords = 0;
 	for(var i = 0; i < words.length ; i += 1)
 		if(justChords.test(words[i])) chords +=1;
-	if(chords * 2 > words.length)
+	if(chords * 2 >= words.length)
 		return "chord";
 	//otherwise, a lyric line
 	return "lyric";
@@ -110,7 +110,12 @@ function reverseParse(input)
 	var currentType;
 	var output = "";
 	var state; //tab, chord, lyric, empty, header
-	for(var i = 0; i < lines.length ; i+=1)
+	var i = 0;
+	if(lineType(lines[0]) === "lyric"){ //title 
+		output += "{header}" + lines[0] + "{end header}\n";
+		i = 1;
+	}
+	for(; i < lines.length ; i+=1)
 	{
 		currentType = lineType(lines[i]);
 		
@@ -198,6 +203,22 @@ function reverseParse(input)
 		}
 		
 	}
+	//loop done, now what? loose ends
+	switch(state)
+	{
+		case "tab": //end tab section
+			output += "{end tab}\n"
+			break;
+		case "chord"://print final line of chords
+		output += bracketInlineChords(lines[i-1]) + "\n";
+			break;
+		case "lyric"://nothing to be done!
+		case "empty":
+		case "header":
+		default:
+			break;
+	}
+
 	return output;
 }
 
@@ -221,5 +242,4 @@ input.on('data', function(data) {
 input.on('end', function() {
 	console.log(reverseParse(remaining));
 })
-
 */

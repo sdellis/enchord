@@ -3,14 +3,25 @@
 }*/
 body {
     position: relative;
+	overflow:visible;
 }
 
+div.chordSheet {
+	position: relative;
+	float:none
+}
 div.chordSheet p {
-	position: relative
-	page-break-inside : avoid;
+	position: relative;
+	page-break-inside: avoid;
 	white-space: pre;
 }
-
+div.chordSheet p:after
+ {
+	content: '';
+    display:block;
+    height:0px;
+    visibility: hidden;
+}
 div.chordSheet .lineerror{
 	color		: red;
 	font-style	: italic;
@@ -20,6 +31,7 @@ div.chordSheet .heading {
     font-weight : bold;
     font-size   : 125%;
 }
+
 div.chordSheet .tab {
     font-family		: Courier, monospace;
 }
