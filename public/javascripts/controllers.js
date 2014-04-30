@@ -116,6 +116,29 @@ enchordControllers.controller('ProfileController', [
 			$scope.reverse = !$scope.reverse;
 		}
 	}]);
+
+// Change PW controller
+enchordControllers.controller('ChangePasswordController', [
+	'$scope',
+	'$http',
+	function($scope, $http) {
+		$scope.pass = {};
+		$scope.changePassword = function() {
+			console.log("i am running changepw");
+			$http({
+				method  : 'POST',
+				url     : '/changepassword',
+				data    : $.param($scope.pass),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.pass = {};
+			}).error(function(data, status) {
+				console.log("this is a changepw error");
+			});
+		};
+	}]);
+
 // Search page controller 
 enchordControllers.controller('SearchController', [
 	'$scope', 

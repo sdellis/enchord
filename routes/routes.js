@@ -85,6 +85,9 @@ module.exports = function(app, passport, db) {
 
 		app.post('/reset/:token', mailer.confirm);
 
+
+		app.post('/changepassword', isLoggedIn, utils.changePass);
+
 		// refactor this
 		app.get('/members', isLoggedIn, function(req, res) {
 			utils.getMySongs(req, res, function(usersongs) {
