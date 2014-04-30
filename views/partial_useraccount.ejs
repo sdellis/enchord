@@ -1,12 +1,12 @@
 <aside class="right-side">
             <h2 style="padding-left: 20px;">Account Settings</h2>
-            <form action="#" method="get" style="padding-left: 50px; padding-top: 20px; max-width:475px;">
+            <form style="padding-left: 50px; padding-top: 20px; max-width:475px;" ng-controller="ChangePasswordController">
                 <input type="text" name="username" class="form-control" placeholder="<%= username %>" readonly/><br>
                 <% if(user.local.email) { %>
-                <input type="text" name="current_pw" class="form-control" placeholder="Current Password"/><br>
-                <input type="text" name="new_pw" class="form-control" placeholder="New Password"/><br>
-                <input type="text" name="confirm_new_pw" class="form-control" placeholder="Confirm New Password"/><br>
-                <button class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;"><i class="fa fa-check"></i>Change Password</button> 
+                <input type="text" model="pass.oldpass" name="oldpass" class="form-control" placeholder="Current Password"/><br>
+                <input type="text" model="pass.newpass" name="newpass" class="form-control" placeholder="New Password"/><br>
+                <input type="text" model="pass.confirmpass" name="confirmpass" class="form-control" placeholder="Confirm New Password"/><br>
+                <button ng-click="changePassword()" class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;"><i class="fa fa-check"></i>Change Password</button> 
                 <% } %>
             </form>   
             </aside>
