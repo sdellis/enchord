@@ -58,8 +58,8 @@
         <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> (songs per page)
     </table>   
     <div style="text-align:center">
-        <button ng-disabled="currentPage == 0" ng-click="currentPage = currentPage-1"><</button>
-        Page {{currentPage+1}} of {{numberOfPagesGlobal()}}
-        <button ng-disabled="currentPage >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPage = currentPage+1">></button>  
+        <button ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1"><</button>
+        Page {{currentPageGlobal+1}} of {{numberOfPagesGlobal()}}
+        <button ng-disabled="currentPageGlobal >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPageGlobal = currentPageGlobal+1">></button>  
     </div> 
 </aside>
