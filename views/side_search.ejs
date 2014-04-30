@@ -30,7 +30,21 @@
                 <a href="#">
                     <i class="fa fa-search"></i> <span>Advanced Search</span>
                 </a>
-            </li> 
+            </li>                     
         </ul>
+        <form class="sidebar-form" name="searchForm">
+
+                <input type="text" name="query" class="form-control" placeholder="Filter by Song Title"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/ style="margin-bottom:15px;">
+
+                <input type="text" name="quer" class="form-control" placeholder="Filter by Artist"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+
+
+                <input type="text" name="quey" class="form-control" placeholder="Filter by Genre"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+ 
+
+                <input type="text" name="qury" class="form-control" placeholder="Filter by Username" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:20px;"/>
+
+            <button ng-click="editsong(true)" class="button" ng-show="!isNew" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-search"></i> &nbsp;Advanced Search</button>
+        </form>
     </section>
 </aside> 
