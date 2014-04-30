@@ -30,9 +30,9 @@ function printDoc(orderLine)
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
 			if(name.charAt(0) === '*') //just print the section name
-				result += toTitleCase(name.substring(1))+ "\n"
+				result += sectionNumToName(sectionNameToNum(name.substring(1)))+ "\n"
 			else //print section name and contents{
-				result += toTitleCase(name)+ "\n" + getSection(name) + "\n"; 
+				result += sectionNumToName(sectionNameToNum(name))+ "\n" + getSection(name) + "\n"; 
 		}
 	}
 	else //print off sections in order written
@@ -175,7 +175,7 @@ case 'end italic': case 'endital': case 'end ital':
 		if(lyricLine !== '')
 			pushToSection(sectionNumToText.length - 1,lines);
 		sectionNumToText.push('');
-		sectionNumToName.push(option);
+		sectionNumToName.push(oneLine.substring(i+1,j).trim());
 		sectionNameToNum[option] = sectionNumToText.length - 1;
 			//sections[currentSection] += '<span class="lineerror">WARNING: Multiple defitions of section ' + toTitleCase(currentSection) + '. Rename or consolidate sections.\n</span>\n';
 	}

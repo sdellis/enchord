@@ -35,14 +35,14 @@ function printDoc(font,fontsize,orderLine)
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
 			if(name.charAt(0) === '*') //just print the section name
-				result += "<p><span class='heading'>"+toTitleCase(name.substring(1))+ "</span><p>\n"
+				result += "<p><span class='heading'>"+sectionNumToName(sectionNameToNum(name.substring(1)))+ "</span><p>\n"
 			else //print section name and contents{
-				result += "<p><span class='heading'>"+toTitleCase(name)+ "</span>\n" + getSection(name) + "</p>\n"; 
+				result += "<p><span class='heading'>"+sectionNumToName(sectionNameToNum(name))+ "</span>\n" + getSection(name) + "</p>\n"; 
 		}
 	}
 	else //print off sections in order written
 		for( var i = 1; i <sectionNumToText.length;i++) { 
-		result += "<p><span class='heading'>" + toTitleCase(sectionNumToName[i]) + "</span>\n" + sectionNumToText[i] + "</p>\n";
+		result += "<p><span class='heading'>" + sectionNumToName[i] + "</span>\n" + sectionNumToText[i] + "</p>\n";
 		}
 	
 	return result;
@@ -193,7 +193,7 @@ function parseOption(oneLine, i,lines){
 		if(lyricLine !== '')
 			pushToSection(sectionNumToText.length - 1,lines);
 		sectionNumToText.push('');
-		sectionNumToName.push(option);
+		sectionNumToName.push(oneLine.substring(i+1,j).trim());
 		sectionNameToNum[option] = sectionNumToText.length - 1;
 			//sections[currentSection] += '<span class="lineerror">WARNING: Multiple defitions of section ' + toTitleCase(currentSection) + '. Rename or consolidate sections.\n</span>\n';
 	}
