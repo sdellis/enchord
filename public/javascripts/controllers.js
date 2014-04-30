@@ -991,6 +991,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.query="";
 		$scope.folderid = "";
 		$scope.addSongMode = false;
+		$scope.editFolderMode = false;
 		$scope.init = function(_id) {
 			$scope.folderid = _id;
 			$http({
@@ -1018,6 +1019,27 @@ enchordControllers.controller('FolderViewController', [
 					$scope.folder = data.folder;
 				});
 			}
+		}
+		$scope.addToFolder = function(songid) {
+			console.log("add to folder" + $scope.folderid);
+			console.log(songid);
+			$http({
+				method: 'POST',
+				url : '/addsongtofolder',
+				data    : $.param({songid: songid, folderid: $scope.folderid}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.addSongMode = false;
+				var getUrl = '/viewfoldersongs/' + $scope.folderid;
+				$http({
+					method : 'GET',
+					url : getUrl
+				}).success(function(data) {
+					console.log(data);
+					$scope.folder = data.folder;
+				});
+			});
 		}
 		$scope.deletesong = function(songid) {
 			console.log(songid);
