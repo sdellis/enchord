@@ -35,7 +35,7 @@ function printDoc(font,fontsize,orderLine)
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
 			if(name.charAt(0) === '*') //just print the section name
-				result += "<p><span class='heading'>"+sectionNumToName(sectionNameToNum(name.substring(1)))+ "</span><p>\n"
+				result += "<p><span class='heading'>"+sectionNumToName(sectionNameToNum(name.substring(1)))+ "</span>\n<p>\n"
 			else //print section name and contents{
 				result += "<p><span class='heading'>"+sectionNumToName(sectionNameToNum(name))+ "</span>\n" + getSection(name) + "</p>\n"; 
 		}
