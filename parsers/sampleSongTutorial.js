@@ -1,5 +1,5 @@
-order: Welcome!, seeing is believing, exactly where it should go, look here!, sections and ordering,Verse 1, Chorus, Chorus, Verse 2, *Verse 2, importing songs from elsewhere
-{heading 200%}"How To Write A Song" Song{end header}
+var str = "order: Welcome!, seeing is believing, exactly where it should go, look here!, sections and ordering,Verse 1, Chorus, Chorus, Verse 2, *Verse 2, importing songs from elsewhere
+{heading 200%}\"How To Write A Song\" Song{end header}
 {bold}By: The Enchord Developers {end bold}
 {ital}(Okay, it's not really a song... but we think it's helpful anyways!){end ital}
 
@@ -57,4 +57,6 @@ Note that anything before the first labeled section will always be printed at th
 {Importing songs from elsewhere}
 Have a favorite chord sheet or tab from another website? Simply copy and paste the 
  text into the import feature and Enchord will do its best to put it
-into our mark-up language for easy manipulation.
+into our mark-up language for easy manipulation.";
+
+exports.song = str;
