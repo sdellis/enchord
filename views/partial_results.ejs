@@ -29,9 +29,10 @@
             </tr>
         </tbody>
 
-        <p>Display <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> songs per page</p>
+        <p style="margin-left:15px; margin-bottom:15px;" >Display <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> songs per page</p>
     </table>
-    <div style="text-align:center">
+    <div style="text-align:center;">
+
         <button ng-disabled="currentPageLocal == 0" ng-click="currentPageLocal = currentPageLocal-1">
             <
         </button>
@@ -58,7 +59,9 @@
                 <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
-        <p>Display <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> songs per page</p>
+
+        <p style="margin-left:15px; margin-bottom:15px;" >Display <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> songs per page </p>
+
     </table>   
     <div style="text-align:center">
         <button ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1"><</button>
