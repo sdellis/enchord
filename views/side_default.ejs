@@ -42,6 +42,38 @@
                 </ul>
             </li>
             
+            <li class="treeview">
+            <!-- Button trigger modal -->
+            <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#folder_create">
+              Create new Folder
+            </button> -->
+            <a data-toggle="modal" data-target="#folder_create">
+              <i class="fa fa-plus"></i> <span>Create a Folder</span>
+            </a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="folder_create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="FolderController">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Create a New Folder</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form class="sidebar-form" name="folderForm">
+                        <div class="input-group">
+                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" style="padding-top:0px;"/>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" ng-click="createfolder()" class="btn btn-primary">Create Folder</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </li>
         </ul>
     </section>
 </aside>
