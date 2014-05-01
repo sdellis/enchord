@@ -28,15 +28,18 @@
                 <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
-         <button ng-disabled="currentPageLocal == 0" ng-click="currentPageLocal = currentPageLocal-1">
-            Previous
-        </button>
-            {{currentPageLocal+1}}/{{numberOfPagesLocal()}}
-        <button ng-disabled="currentPageLocal >= localresults.length/pageSizeLocal - 1"  ng-click="currentPageLocal = currentPageLocal+1">
-            Next
-        </button>
-        <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> (songs per page)
+
+        <p>Display <select ng-model="pageSizeLocal" ng-options="pageSizeLocal for pageSizeLocal in pageSizesLocal"></select> songs per page</p>
     </table>
+    <div style="text-align:center">
+        <button ng-disabled="currentPageLocal == 0" ng-click="currentPageLocal = currentPageLocal-1">
+            <
+        </button>
+            Page {{currentPageLocal+1}} of {{numberOfPagesLocal()}}
+        <button ng-disabled="currentPageLocal >= localresults.length/pageSizeLocal - 1"  ng-click="currentPageLocal = currentPageLocal+1">
+            >
+        </button>
+    </div>
     <h3 style= "padding-left: 15px;">Searching Enchord</h3><% } %>
     <table class="table" name="global">
         <thead>
@@ -55,7 +58,7 @@
                 <td>{{ song.author_name }}</td>
             </tr>
         </tbody>
-        <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> (songs per page)
+        <p>Display <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> songs per page</p>
     </table>   
     <div style="text-align:center">
         <button ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1"><</button>

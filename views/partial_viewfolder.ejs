@@ -7,14 +7,7 @@
     </section>
     <div ng-show="!addSongMode">
     <table class="table" name="global">
-        <button ng-disabled="currentPageFolder == 0" ng-click="currentPageFolder = currentPageFolder-1">
-            Previous
-        </button>
-            {{currentPageFolder+1}}/{{numberOfPagesFolder()}}
-        <button ng-disabled="currentPageFolder >= foldersongs.length/pageSizeFolder - 1"  ng-click="currentPageFolder = currentPageFolder+1">
-            Next
-        </button>
-        Display <select ng-model="pageSizeFolder" ng-options="pageSizeFolder for pageSizeFolder in pageSizesFolder"></select> (songs per page)
+
         <thead>
             <tr>
                 <th class="col-sm-2"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></th>
@@ -38,7 +31,17 @@
                 <td ng-show="editFolderMode"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
             </tr>
         </tbody>
+        <p>Display <select ng-model="pageSizeFolder" ng-options="pageSizeFolder for pageSizeFolder in pageSizesFolder"></select> songs per page</p>
     </table>
+    <div style="text-align:center">
+        <button ng-disabled="currentPageFolder == 0" ng-click="currentPageFolder = currentPageFolder-1">
+            <
+        </button>
+            Page {{currentPageFolder+1}} of {{numberOfPagesFolder()}}
+        <button ng-disabled="currentPageFolder >= foldersongs.length/pageSizeFolder - 1"  ng-click="currentPageFolder = currentPageFolder+1">
+            >
+        </button>
+    </div>
     </div>
 
     <!-- add song -->
