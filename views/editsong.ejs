@@ -17,35 +17,7 @@
 </head>
 
 <body class="skin-black" ng-controller="ProfileController">
-        <header class="header">
-            <a href="/" class="logo" style="font-family:avenir;">
-                Enchord
-            </a>
-            <nav class="navbar navbar-static-top" role="navigation">
-                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <div class="navbar-right">
-                    <!-- IF LOGGED IN -->
-                    <% if(isLoggedIn) { %>
-                    <ul class="nav navbar-nav">
-                        <li><a href="/members/settings"><i class="fa fa-cogs"></i>  Account Settings</a></li>
-                        <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign Out</a></li>
-                    </ul>
-                    <!-- NOT LOGGED IN -->
-                    <% } else { %>
-                    <ul class="nav navbar-nav">
-                        <li><a href="/signup"><i class="fa fa-cogs"></i>  Sign Up</a></li>
-                        <li><a href="/login"><i class="fa fa-sign-out"></i> Login</a></li>
-                    </ul>
-                    <% } %>
-
-                </div>
-            </nav>
-        </header>
+        <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongEditController" ng-init="init('<%= _id %>')">
             <% include side_editsong.ejs %>
             <% include partial_editsong.ejs %>
