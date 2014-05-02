@@ -3,7 +3,7 @@ var async = require('async');
 var crypto = require('crypto');
 var User = require('../models/schemas/user');
 
-
+/* This function sends the reset email message to the given email */
 exports.sendmail = function(req, res) {
 	async.waterfall([
 		function(done) {
@@ -66,6 +66,7 @@ exports.sendmail = function(req, res) {
 	});
 }
 
+/* this function sends a confirmation email when a user has reset their password */
 exports.confirm = function(req, res) {
 	console.log(req.body);
 	console.log(req.params.token);

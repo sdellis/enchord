@@ -8,9 +8,10 @@ var songSchema = require('../models/schemas/song');
 var configAuth = require('./auth');
 
 var demosong = require('../parsers/songTutorial').song;
-//var demosong = "";
 
 module.exports = function(passport) {
+
+	/* these two functions are necessary to sign users in and out */
 	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
@@ -21,6 +22,7 @@ module.exports = function(passport) {
 		})
 	});
 
+	/* local sign up strategy */
 	passport.use('local-signup', new LocalStrategy({
 		usernameField: 'username',
 		passwordField: 'password',
@@ -72,6 +74,7 @@ module.exports = function(passport) {
 		});
 	}));
 
+	/* local log in strategy */
 	passport.use('local-login', new LocalStrategy({
 		usernameField: 'username',
 		passwordField: 'password',
@@ -109,22 +112,9 @@ module.exports = function(passport) {
 				return done(null, user);			
 			});	
 		}
-		/* User.findOne({ field : username }, function(err, user) {
-			
-			if (err) 
-				return done(err);
-			if (!user){
-				console.log('no user');
-				return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
-			}
-			if (!user.validPassword(password)) {
-				console.log('no password');
-				return done(null, false, req.flash('loginMessage', 'Invalid username and password pair.'));
-			}
-			return done(null, user);			
-		});*/
 	}));
 
+	/* Facebook log in strategy */
 	passport.use(new FacebookStrategy({
 		clientID: configAuth.facebookAuth.clientID,
 		clientSecret: configAuth.facebookAuth.clientSecret,
@@ -166,7 +156,9 @@ module.exports = function(passport) {
 				});
 			});
 		} else {
-			var user = req.user;
+			console.log('user is already signed in');
+	    	throw err;
+			/*var user = req.user;
 
 			user.facebook.id = profile.id;
 			user.facebook.token = token;
@@ -178,10 +170,11 @@ module.exports = function(passport) {
 	        		throw err;
 	        	addDemoSong(user.facebook.name, user.facebook.id);
 	        	return done(null, user);
-	        });
+	        });*/
 		}
 	}));
 
+	/* Twitter log in strategy */
 	passport.use(new TwitterStrategy({
 		consumerKey     : configAuth.twitterAuth.consumerKey,
         consumerSecret  : configAuth.twitterAuth.consumerSecret,
@@ -222,7 +215,9 @@ module.exports = function(passport) {
 	    		});
 	    	});
 	    } else {
-	    	var user = req.user;
+	    	console.log('user is already signed in');
+	    	throw err;
+	    	/*var user = req.user;
 			user.twitter.id = profile.id;
 		    user.twitter.token = token;
 	        user.twitter.username = profile.username;
@@ -233,9 +228,11 @@ module.exports = function(passport) {
 	        		throw err;
 	        	addDemoSong(user.twitter.username, user.twitter.id);
 	        	return done(null, user);
-	        });
+	        });*/
 	    }
     }));
+
+	/* Google log in strategy */
     passport.use(new GoogleStrategy({
         clientID: configAuth.googleAuth.clientID,
         clientSecret: configAuth.googleAuth.clientSecret,
@@ -277,7 +274,9 @@ module.exports = function(passport) {
 		        });
 		    });
 		} else {
-			var user = req.user;
+			console.log('user is already signed in');
+	    	throw err;
+			/*var user = req.user;
             user.google.id = profile.id;
             user.google.token = token;
             user.google.name  = profile.displayName;
@@ -287,12 +286,12 @@ module.exports = function(passport) {
 					throw err;
 				addDemoSong(user.google.name, user.google.id);
 				return done(null, newUser);
-			});
+			});*/
 		}
-
     }));
 }
 
+/* Regex checking for if the inputted value is in the from of an email.*/
 function isRFC822ValidEmail(sEmail) {
   var sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
   var sDtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]';
@@ -317,6 +316,7 @@ function isRFC822ValidEmail(sEmail) {
   return false;
 }
 
+/* adds the instructional song into the user's library given their username and userid */
 function addDemoSong(username, userid) {
 	var song = new songSchema({
 		title: "Instructions",

@@ -21,18 +21,15 @@ var songEmpty = {
 
 module.exports = function(app, passport, db) {
 
+	/* make sure db is connected before allowing user to call routes*/
 	db.mongoose.once('open', function callback() {
+
+		/* ------------------------ home page ---------------------------------- */
 		app.get('/', protectLogin, function(req, res){
 	 		res.render('home', { title: 'Enchord' });
 		});
 
-		// app.get('/home', function(req, res){
-		// 	res.render('home.ejs');
-		// })
-		
-		// app.get('/about', function(req, res){
-		// 	res.render('about.ejs', {title:"enchord"});
-		// });
+		/* ------------------------ login routes ---------------------------------- */
 
 		app.get('/login', protectLogin, function(req, res){
 			res.render('login', {title: "enchord", message: req.flash('loginMessage')});
@@ -42,6 +39,10 @@ module.exports = function(app, passport, db) {
 			failureRedirect: '/login',
 			failureFlash : true // allow flash messages
 		}));
+		app.get('/logout', function(req, res) {
+			req.logout();
+			res.redirect('/');
+		});
 		app.get('/signup', protectLogin, function(req, res){
 			res.render('signup', {title: "enchord", message: req.flash('signupMessage')});
 		});
@@ -50,6 +51,27 @@ module.exports = function(app, passport, db) {
 			failureRedirect: '/signup',
 			failureFlash : true // allow flash messages
 		}));
+
+		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+		app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+			successRedirect : '/members',
+			failureRedirect : '/login'
+		}));
+
+		app.get('/auth/twitter', passport.authenticate('twitter'));
+
+		app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+			successRedirect : '/members',
+			failureRedirect : '/login'
+		}));
+
+		app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+		app.get('/auth/google/callback', passport.authenticate('google', {
+			successRedirect : '/members',
+			failureRedirect : '/login'
+        }));
 
 		app.get('/forgot', function(req, res) {
 			res.render('forgot', {
@@ -88,8 +110,12 @@ module.exports = function(app, passport, db) {
 
 		app.post('/reset/:token', mailer.confirm);
 
+		
+		/*app.get('/forgot', function (req, res) {
+			res.render('forgot.ejs', {title:"Members", user:req.user});
+		}); */
 
-		app.post('/changepassword', isLoggedIn, utils.changePass);
+		/* ------------------------logged in routes -------------------------------- */
 
 		// refactor this
 		app.get('/members', isLoggedIn, function(req, res) {
@@ -132,7 +158,21 @@ module.exports = function(app, passport, db) {
 					});
 				}
 			});
-		})
+		});
+
+		app.post('/changepassword', isLoggedIn, utils.changePass);
+
+
+		app.post('/createsong', isLoggedIn, utils.createSong);
+		
+		// app.get('/editsong', isLoggedIn, function(req, res) {
+		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
+		// });
+		
+		app.post('/editsong', isLoggedIn, utils.editSong);
+		
+		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);
+
 
 		app.get('/members/createsong', isLoggedIn, function(req, res){
 			res.render('editsong.ejs', {
@@ -152,16 +192,6 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
-		app.get('/viewsong/:_id', function(req, res){
-			var isLoggedIn = req.isAuthenticated();
-			var username = utils.getUsername(req);
-			res.render('viewsong.ejs', {
-				isLoggedIn: isLoggedIn,
-				username: username,
-				_id: req.params._id
-			});
-		});
-
 		// TODO: should check whether author of folder
 		app.get('/members/editfolder/:_id', isLoggedIn, function(req, res){
 			res.render('editfolder.ejs', {
@@ -176,7 +206,20 @@ module.exports = function(app, passport, db) {
 				username: utils.getUsername(req),
 				_id: req.param._id
 			});
-		})
+		});
+
+		/* ------------------------- non logged in routes ------------------------*/
+
+		app.get('/viewsong/:_id', function(req, res){
+			var isLoggedIn = req.isAuthenticated();
+			var username = utils.getUsername(req);
+			res.render('viewsong.ejs', {
+				isLoggedIn: isLoggedIn,
+				username: username,
+				_id: req.params._id
+			});
+		});
+
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
 				isLoggedIn: req.isAuthenticated(),
@@ -204,47 +247,18 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
+
+
 		app.get('/isAuthor', utils.isAuthorOfSong);
 		
 		app.get('/search', utils.searchSong);
 		
 		app.get('/advsearch', utils.advancedSearch);
 
-		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-
-		app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-		}));
-
-		app.get('/auth/twitter', passport.authenticate('twitter'));
-
-		app.get('/auth/twitter/callback', passport.authenticate('twitter', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-		}));
-
-		app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-		app.get('/auth/google/callback', passport.authenticate('google', {
-			successRedirect : '/members',
-			failureRedirect : '/login'
-        }));
-		
-		app.get('/findsong/:_id', utils.getSong)
+		app.get('/findsong/:_id', utils.getSong);
 		app.get('/createsong', isLoggedIn, function(req, res) {
 			res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
 		});
-
-		app.post('/createsong', isLoggedIn, utils.createSong);
-		
-		// app.get('/editsong', isLoggedIn, function(req, res) {
-		// 	res.render('editsong.ejs', {title: 'enchord', isNew: true, song: songEmpty, message: ''});
-		// });
-		
-		app.post('/editsong', isLoggedIn, utils.editSong);
-		
-		app.get('/editsong/:_id', utils.isAuthor, utils.loadSongEdit);
 
 		// app.get('/viewsong/:_id', utils.loadSongView);
 
@@ -310,6 +324,8 @@ module.exports = function(app, passport, db) {
 			res.render('search.ejs', {title: 'enchord', query: req.query.query, isLoggedIn: true, results: []});
 		});*/
 		
+		/* ------------------- artist routes --------------------------- */
+
 		app.get('/artist/:artistname', function(req, res) {
 			res.render('artistpage.ejs', {
 				isLoggedIn: req.isAuthenticated(),
@@ -320,8 +336,9 @@ module.exports = function(app, passport, db) {
 		})
 		app.get('/artistpage/:query', utils.getArtistSongs);
 		
-		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
 		
+		
+		/* ---------------------- folders routes -------------------------------- */		
 		//folder testing stuff
 		app.get('/myfolders', isLoggedIn, folderutils.getUserFolders);
 		
@@ -348,25 +365,26 @@ module.exports = function(app, passport, db) {
 		
 		app.post('/deletefolder', isLoggedIn, folderutils.deleteFolder);
 		
-		//bands
 
-		/*app.get('/members/createsong', isLoggedIn, function(req, res){
-			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated(),
-				username: utils.getUsername(req),
-				_id: '',
-				isNew: true
-			});
+		/* --------------------- voting routes ---------------------------- */
+		//voting stuff
+	    app.post('/upvote', isLoggedIn, utils.upvote);
+	    app.post('/undovote', isLoggedIn, utils.undovote);
+	    app.get('/hasvoted', isLoggedIn, utils.hasvoted);
+
+		
+	    // ?????
+		app.get('/partials/:filename', function(req, res){
+			var filename = req.params.filename;
+			if(!filename) return; // todo
+			res.render("partials/" + filename);
 		});
 
-		app.get('/members/editsong/:_id', utils.isAuthor, function(req, res){
-			res.render('editsong.ejs', {
-				isLoggedIn: req.isAuthenticated(),
-				username: utils.getUsername(req),
-				_id: req.params._id,
-				isNew: false
-			});
-		});*/
+
+		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
+
+
+		/* ---------------------- bands routes ------------------------- */
 
 		/*app.get('/members/createband',  isLoggedIn, function(req, res) {
 			res.render('editband.ejs', {
@@ -376,7 +394,7 @@ module.exports = function(app, passport, db) {
 				isNew: true,
 			});
 		});*/
-		app.post('/createband', isLoggedIn, bandutils.createBand);
+		/*app.post('/createband', isLoggedIn, bandutils.createBand);
 
 		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {
 			res.render('editband.ejs', {
@@ -385,64 +403,17 @@ module.exports = function(app, passport, db) {
 				_id: req.params._id,
 				isNew:false
 			});
-		});
+		});*/
 
-		app.post('/editband', bandutils.editBand);
-		
-		//prevent access where needed
-		//app.get('/editband/:_id', bandutils.loadBandEdit); 
+		//app.post('/editband', bandutils.editBand);
 
 		//make sure only band leader deletes
-		app.get('/deleteband', bandutils.deleteBand);
-		app.get('/importFolder', bandutils.importFolder);
+		/*app.get('/deleteband', bandutils.deleteBand);
+		app.get('/importFolder', bandutils.importFolder); */
 
 		//app.get('/viewband/:_id', bandutils.loadBandView);
 
-		//voting stuff
-	    app.post('/upvote', isLoggedIn, utils.upvote);
-	    app.post('/undovote', isLoggedIn, utils.undovote);
-	    app.get('/hasvoted', isLoggedIn, utils.hasvoted);
-
-		app.get('/logout', function(req, res) {
-			req.logout();
-			res.redirect('/');
-		});
-		app.get('/forgot', function (req, res) {
-			res.render('forgot.ejs', {title:"Members", user:req.user});
-		});
-
-		app.get('/partials/:filename', function(req, res){
-			var filename = req.params.filename;
-			if(!filename) return; // todo
-			res.render("partials/" + filename);
-		});
-// 		app.post('/forgot', function (req, res) {
-//     var email = req.body.email;
-//     var reset = forgot(email, function (err) {
-//         if (err) res.end('Error sending message: ' + err)
-//         else res.end('Check your inbox for a password reset message.')
-//     });
-
-//     reset.on('request', function (req_, res_) {
-//         req_.session.reset = { email : email, id : reset.id };
-//         fs.createReadStream(__dirname + '/forgot.html').pipe(res_);
-//     });
-// });
-
-// app.post('/reset', function (req, res) {
-//     if (!req.session.reset) return res.end('reset token not set');
-
-//     var password = req.body.password;
-//     var confirm = req.body.confirm;
-//     if (password !== confirm) return res.end('passwords do not match');
-
-//     // update the user db here
-
-//     forgot.expire(req.session.reset.id);
-//     delete req.session.reset;
-//     res.end('password reset');
-// });
-		// app.get('/test', function(req, res){res.render('test.ejs');});
+		/* ---------------------------------------------------- */
 	});
 }
 
