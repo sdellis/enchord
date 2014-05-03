@@ -1,0 +1,8 @@
+<div class="user-panel">
+    <div class="pull-left image">
+        <img src="/images/default.png" class="img-circle" alt="User Image" />
+    </div>
+    <div class="pull-left info" style="padding-top: 8%;">
+        <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } else { %><p>Hello, Guest</p><% } %>
+    </div>
+</div>

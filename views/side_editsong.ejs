@@ -1,25 +1,6 @@
 <aside class="left-side sidebar-offcanvas">
     <section class="sidebar">
-
-        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="/images/default.png" class="img-circle" alt="User Image" />
-            </div>
-            <div class="pull-left info" style="padding-top: 8%;">
-                <% if(isLoggedIn) { %><p>Hello, <%= username %></p><% } %>
-            </div>
-        </div>
-
-        <form class="sidebar-form" name="searchForm">
-            <div class="input-group" ng-controller="SearchController">
-                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
-                <input type="hidden" name="type" value="Both">
-                <span class="input-group-btn">
-                    <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-                </span>
-            </div>
-        </form>
-
+        <% include sidepartial_userinfo.ejs %>
         <ul class="sidebar-menu">
             <li class="active">
                 <a href="/members/createsong">
@@ -98,6 +79,16 @@
 
                     <button class="button" ng-show="!isNew && !reverseParseMode" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
             </form>
+
+            <div class="modal fade message-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    {{message}}
+                  </div>
+                </div>
+              </div>
+            </div>
         </ul>
 
     </section>

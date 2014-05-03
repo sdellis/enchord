@@ -614,8 +614,11 @@ enchordControllers.controller('SongEditController', [
 				$scope.isNew = data.isNew;
 				$scope.songEditForm.$setPristine();
 				$scope.markupForm.$setPristine();
-				if(redirect)
+				if(redirect) {
 					$window.location.href = '/viewsong/'.concat($scope.song._id);
+				} else {
+					$('.message-modal-sm').modal('show');
+				}
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
