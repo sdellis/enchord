@@ -15,10 +15,6 @@ module.exports = mongoose.model('song', {
 	pub: Boolean,
 	search_string: Array,
 	upvote: Number,
-	//downvote: Number,
-	//rates: [{user_id: String, rating: Number}]
 	rates: [String],
-	folder_id: String,
-	band_id: String,
-	isBand: Boolean
+	folder_id: String
 });

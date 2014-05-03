@@ -332,9 +332,7 @@ function addDemoSong(username, userid) {
 		pub: false,
 		upvote: 0,
 		search_string: ['How', 'to', 'write', 'a', 'song'], //actually an array
-		folder_id: '',
-		band_id: '',
-		isBand: false
+		folder_id: ''
 	});
 	song.save(function(err, docs) {
 		if (err) {

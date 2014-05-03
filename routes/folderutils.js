@@ -15,7 +15,7 @@ exports.getUserFolders = function(req, res) { //can only get user's own folder
 	var authorname = getAuthorName(req);
 	var folders = [];
 
-	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
+	folderSchema.find({author_id: authorid}, function(err, docs) {
 		// res.render('folderview.ejs', {
 		// 	title: 'enchord', 
 		// 	isNew: false, 
@@ -35,7 +35,7 @@ function getMyFolders(req, res, callback) {
 	var authorname = getAuthorName(req);
 	var folders = [];
 
-	folderSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
+	folderSchema.find({author_id: authorid}, function(err, docs) {
 		if (!docs) {
 			callback(folders);
 		} else {
@@ -171,9 +171,7 @@ exports.makeFolder = function(req, res) {
 	var folder = new folderSchema({
 		name: foldername,
 		author_id: authorid,
-		author_name: authorname,
-		isBand: false,
-		band_id: ''
+		author_name: authorname
 	});
 	folder.save(function(err, docs, numberAffected) {
 		if (err) {

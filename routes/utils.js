@@ -26,9 +26,7 @@ exports.createSong = function(req, res) {
 		pub: req.body.pub,
 		upvote: 0,
 		search_string: req.body.title.toLowerCase().concat(' ', req.body.artist.toLowerCase()).split(' '), //actually an array
-		folder_id: '',
-		band_id: '',
-		isBand: false
+		folder_id: ''
 	});
 	
 	if(!checkFields(song, res))
@@ -96,28 +94,13 @@ exports.isAuthor = function(req, res, next) {
 	
 	var findsong = findSong(id, res, function(docs) {
 		if (req.isAuthenticated()) {
-		
-			if (docs['isBand'] == false) {
-				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-				if (getAuthorId(req) == docs.author_id) {
-					return next();
-				} else {
-					// send message too?
-					res.redirect('/viewsong/' + id);
-				}
+
+			if (getAuthorId(req) == docs.author_id) {
+				return next();
+			} else {
+				// send message too?
+				res.redirect('/viewsong/' + id);
 			}
-			else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					if (isInBand == -1) {
-						res.redirect('/viewsong/' + id);
-					}
-					else {
-						return next();
-					}
-				});
-			}
-		
 		
 		} else {
 			res.redirect('/login');
@@ -130,23 +113,10 @@ exports.isAuthorOfSong = function (req, res) {
 
 	findSong(id, res, function(docs) {
 		if (req.isAuthenticated()) {
-			if (docs['isBand'] == false) {
-				if (getAuthorId(req) == docs.author_id) {
-					res.send({isAuthor: true});
-				} else {
-					res.send({isAuthor: false});
-				}
+			if (getAuthorId(req) == docs.author_id) {
+				res.send({isAuthor: true});
 			} else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					console.log(docs);
-					console.log(isInBand);
-					if (isInBand == -1) {
-						res.send({isAuthor: false});
-					} else {
-						res.send({isAuthor: true});
-					}
-				})
+				res.send({isAuthor: false});
 			}
 		} else {
 			res.send({isAuthor: false});
@@ -162,33 +132,13 @@ exports.loadSongView = function(req, res) {
 		var isLoggedIn;
 		if (req.isAuthenticated()) {
 			isLoggedIn = true;
-			
-			if (docs['isBand'] == false) {
-				//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-				if (getAuthorId(req) == docs.author_id) {
-					isAuthor = true;
-				} else {
-					isAuthor = false;
-				}
-			}
-			else {
-				bandSchema.find({_id: docs['band_id']}, function(err, docs) {
-					var isInBand = docs['members'].indexOf({id: getAuthorId(req), name: getAuthorName(req)});
-					if (isInBand == -1) {
-						isAuthor = false;
-					}
-					else {
-						isAuthor = true;
-					}
-				});
-			}
-			//if (docs.author_id.indexOf(getAuthorId(req)) >= 0) {
-			/*
+
 			if (getAuthorId(req) == docs.author_id) {
 				isAuthor = true;
 			} else {
 				isAuthor = false;
-			}*/
+			}
+			
 		} else {
 			isAuthor = false;
 			isLoggedIn = false;
@@ -301,8 +251,8 @@ exports.downloadSongTxt = function(req, res) {
 //------------------------------------------------Search Songs functions ---------------------
 
 exports.searchSong = function(req, res) {
-	var query1 = {isBand: false}; //do the global search; if song is in band, it is not searchable
-	var query2 = {isBand: false}; //break into 2 queries for easy or statement for Both
+	var query1 = {}; //do the global search; if song is in band, it is not searchable
+	var query2 = {}; //break into 2 queries for easy or statement for Both
 	if (req.query.query == undefined) {
 		query1['search_string'] = '';
 		query2['search_string'] = '';
@@ -364,8 +314,8 @@ exports.advancedSearch = function(req, res) {
 		qAuthor = req.query.author.toLowerCase();
 	console.log(qAuthor);
 	
-	var query1 = {isBand: false}; //if song belongs to a band, it is always not searchable
-	var query2 = {isBand: false};
+	var query1 = {}; //if song belongs to a band, it is always not searchable
+	var query2 = {};
 	
 	if (qTitle != '') {
 		query1['title_lower'] = qTitle;
@@ -426,11 +376,11 @@ exports.advancedSearch = function(req, res) {
 
 exports.getArtistSongs = function(req, res) {
 	console.log('in getartistsongs');
-	var query = {isBand: false};
+	var query = {};
 	query['artist_lower'] = req.params.query.toLowerCase();
 	query['pub'] = true;
 	
-	var queryprivate = {isBand: false};
+	var queryprivate = {};
 	queryprivate['pub'] = false;
 	if (req.isAuthenticated()) {
 		queryprivate['artist_lower'] = req.params.query.toLowerCase();
@@ -463,7 +413,7 @@ exports.getArtistSongs = function(req, res) {
 				//res.send({results: undefined});
 				return;
 			} else {
-			console.log(docs);
+				console.log(docs);
 				array = docs;
 				/*res.render('artistpage.ejs', { 
 					title: 'enchord', 
@@ -487,7 +437,7 @@ function getMySongs(req, res, callback) {
 		return;
 	}
 	console.log(authorid);
-	songSchema.find({author_id: authorid, isBand: false}, function(err, docs) {
+	songSchema.find({author_id: authorid}, function(err, docs) {
 		if (err) {
 			console.log(err);
 			res.status(500).json({message: 'Internal server error: cannot find', hasError: true});
