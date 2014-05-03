@@ -1,7 +1,6 @@
 var mailer = require('../config/nodemailer');
 var utils = require('./utils');
 var folderutils = require('./folderutils');
-var bandutils = require('./bandutils');
 var User = require('../models/schemas/user');
 var songSchema = require('../models/schemas/song');
 var async = require('async');
@@ -384,37 +383,6 @@ module.exports = function(app, passport, db) {
 
 		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
 
-
-		/* ---------------------- bands routes ------------------------- */
-
-		/*app.get('/members/createband',  isLoggedIn, function(req, res) {
-			res.render('editband.ejs', {
-				isLoggedIn: req.isAuthenticated(),
-				username: utils.getUsername(req),
-				_id: '',
-				isNew: true,
-			});
-		});*/
-		/*app.post('/createband', isLoggedIn, bandutils.createBand);
-
-		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {
-			res.render('editband.ejs', {
-				isLoggedIn: req.isAuthenticated(),
-				username: utils.getUsername(req),
-				_id: req.params._id,
-				isNew:false
-			});
-		});*/
-
-		//app.post('/editband', bandutils.editBand);
-
-		//make sure only band leader deletes
-		/*app.get('/deleteband', bandutils.deleteBand);
-		app.get('/importFolder', bandutils.importFolder); */
-
-		//app.get('/viewband/:_id', bandutils.loadBandView);
-
-		/* ---------------------------------------------------- */
 	});
 }
 
