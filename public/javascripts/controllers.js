@@ -94,6 +94,7 @@ enchordControllers.controller('ProfileController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 			$http({
 				method  : 'GET',
@@ -109,6 +110,7 @@ enchordControllers.controller('ProfileController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.numberOfPages = function() {
@@ -151,7 +153,8 @@ enchordControllers.controller('ChangePasswordController', [
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
-				$('.message-modal-sm').modal('show');
+				//$('.message-modal-sm').modal('show');
+				$window.location.href = '/errorpage';
 				//Messages.setMessage(data.message, data.success);
 			});
 		};
@@ -223,6 +226,8 @@ enchordControllers.controller('SearchController', [
 						console.log(data);
 						$scope.globalresults = data.results.global;
 						$scope.localresults = data.results.local;
+					}).error(function(data, status) {
+						$window.location.href = '/errorpage';
 					});
 				}
 			// }
@@ -237,6 +242,8 @@ enchordControllers.controller('SearchController', [
 						console.log(data);
 						$scope.globalresults = data.results.global;
 						$scope.localresults = data.results.local;
+				}).error(function(data, status) {
+						$window.location.href = '/errorpage';
 				});
 			}
 		}
@@ -301,6 +308,8 @@ enchordControllers.controller('SongViewController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.voted = data.voted;
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.hasAuthor = function() {
@@ -311,6 +320,8 @@ enchordControllers.controller('SongViewController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.isAuthor = data.isAuthor;
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.init = function(_id, isLoggedIn) {
@@ -336,6 +347,7 @@ enchordControllers.controller('SongViewController', [
 						$scope.message = data.message;
 						$scope.hasError = data.hasError;
 					}
+					$window.location.href = '/errorpage';
 				});
 			} else {
 				$scope.song = {
@@ -375,6 +387,7 @@ enchordControllers.controller('SongViewController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.downloadpdf = function() {
@@ -447,6 +460,8 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				$scope.song.upvote = data.vote;
 				$scope.voted = true;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		//undo vote
@@ -460,6 +475,8 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				$scope.song.upvote = data.vote;
 				$scope.voted = false;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		//transpose
@@ -609,6 +626,7 @@ enchordControllers.controller('SongEditController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.editsong = function(redirect) {
@@ -644,6 +662,7 @@ enchordControllers.controller('SongEditController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 			console.log($scope.isSongSaved)
 			// $scope.inSave = false;
@@ -675,6 +694,7 @@ enchordControllers.controller('SongEditController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 		//transpose
@@ -748,6 +768,8 @@ enchordControllers.controller('ArtistController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.artistsongs = data.results;
+				}).error(function(data, status) {
+					$window.location.href = '/errorpage';
 				});
 			}
 		}
@@ -850,6 +872,8 @@ enchordControllers.controller('BandController', [
 				}
 				$scope.user.username = data.username;
 				$scope.user.id = data.id;
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 			if ($routeParams._id != undefined) {
 				$http({
@@ -871,7 +895,9 @@ enchordControllers.controller('BandController', [
 			}).success(function(data) {
 				console.log(data);
 				$window.location.href='/members';
-			})
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
+			});
 			/*$http({
 				method : 'POST',
 				url    : '/members/createband',
@@ -888,7 +914,9 @@ enchordControllers.controller('BandController', [
 				params : {band : $scope.band}
 			}).success(function(data){
 				console.log(data);
-			})
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
+			});
 		}
 		$scope.addmember = function(username) {
 			$http({
@@ -907,6 +935,8 @@ enchordControllers.controller('BandController', [
 						$scope.band = data.band;
 					});
 				}
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.deletemember = function(userid) {
@@ -924,6 +954,8 @@ enchordControllers.controller('BandController', [
 					}).success(function(data){
 						console.log(data);
 						$scope.band = data.band;
+					}).error(function(data, status) {
+						$window.location.href = '/errorpage';
 					});
 				}
 			});
@@ -985,6 +1017,7 @@ enchordControllers.controller('BandViewController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 	}]);
@@ -1016,6 +1049,7 @@ enchordControllers.controller('FolderController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -1027,8 +1061,11 @@ enchordControllers.controller('FolderController', [
 			}).success(function(data){
 				console.log(data);
 				$window.location.href='/members/editfolder/' + data.folder._id;
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
+		/*
 		$scope.addToFolder = function(folderid) {
 			console.log("add to folder" + folderid);
 			$http({
@@ -1039,8 +1076,10 @@ enchordControllers.controller('FolderController', [
 			}).success(function(data) {
 				console.log(data);
 				$window.location.href='/members';
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
-		}
+		}*/
 
 
 	}]);
@@ -1093,6 +1132,7 @@ enchordControllers.controller('FolderViewController', [
 					$scope.message = data.message;
 					$scope.hasError = data.hasError;
 				}
+				$window.location.href = '/errorpage';
 			});
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/viewfoldersongs/' + _id;
@@ -1104,6 +1144,8 @@ enchordControllers.controller('FolderViewController', [
 					$scope.folder = data.folder;
 					$scope.foldername = $scope.folder.name;
 					$scope.foldersongs = data.folder.foldersongs;
+				}).error(function(data, status) {
+					$window.location.href = '/errorpage';
 				});
 			}
 		}
@@ -1131,6 +1173,8 @@ enchordControllers.controller('FolderViewController', [
 					$scope.folder = data.folder;
 					$scope.foldersongs = data.folder.foldersongs;
 				});*/
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.deletesong = function(songid) {
@@ -1146,6 +1190,8 @@ enchordControllers.controller('FolderViewController', [
 					}).success(function(data) {
 						console.log(data);
 						$scope.folder = data.folder;
+					}).error(function(data, status) {
+						$window.location.href = '/errorpage';
 					});	
 				});
 			console.log(songid);
@@ -1166,6 +1212,8 @@ enchordControllers.controller('FolderViewController', [
 					$('.message-modal-sm').modal('show');
 					//$window.location.href="/members"
 				}
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 		$scope.deletefolder = function() {
@@ -1181,6 +1229,8 @@ enchordControllers.controller('FolderViewController', [
 				console.log(data);
 				if (data.success)
 					$window.location.href="/members";
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -1214,6 +1264,8 @@ enchordControllers.controller('FolderViewController', [
 				console.log(data);
 				$scope.folder = data.folder;
 				$scope.foldersongs = data.folder.foldersongs;
+			}).error(function(data, status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -1255,6 +1307,8 @@ enchordControllers.controller('AdvancedSearchController', [
 					console.log(data);
 					$scope.globalresults = data.results.global;
 					$scope.localresults = data.results.local;
+				}).error(function(data, status) {
+					$window.location.href = '/errorpage';
 				});
 			}
 		}
