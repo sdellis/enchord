@@ -10,6 +10,13 @@
   <form class="new_user" id="new_user" action="/forgot" method="post" name="loginForm" novalidate>
         <p style="line-height:1.4em;">Forgot your password? It happens. Enter your email address below and we'll email you with further instructions.</p>
         <p>If you remember your password, <a href="/login">log in here</a></p>
+        <!-- show any messages that come back with authentication -->
+                    <% if (messageerror.length > 0) { %>
+                          <p style="text-align:center; color:red;"><%= messageerror %></p>
+                    <% } %>
+                    <% if (messageinfo.length > 0) { %>
+                          <p style="text-align:center; color:green;"><%= messageinfo %></p>
+                    <% } %>
         <div style="line-height:2.0em;"><label for="user_email">Email</label><br />
         <input autofocus="autofocus" type="email" placeholder="Email" name ="email" ng-model="user.email" ng-minlength="3" ng-maxlength="50" required><br/>
 

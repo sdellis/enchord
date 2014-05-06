@@ -1,0 +1,60 @@
+order: Welcome!, seeing is believing, exactly where it should go, look here!, sections and ordering,Verse 1, Chorus, Chorus, Verse 2, *Verse 2, importing songs from elsewhere
+{heading 200%}"How To Write A Song" Song{end header}
+{bold}By: The Enchord Developers {end bold}
+{ital}(Okay, it's not really a song... but we think it's helpful anyways!){end ital}
+
+{Welcome!}
+Hello, and welcome to Enchord! Using our simple yet powerful mark-up language,
+we make it easy to write easy-to-read chord sheets. This is an overview of what 
+you can do with it. Feel free to mess around and try things for yourself here!
+
+{Seeing is believing}
+When you type in our mark-up language on the {bold}left{end bold} side,
+you see what a printed-outsheet looks like on the {bold}right{end bold} side. 
+It's easy to see what you'll get.
+
+{Exactly where it should go}
+Let say you want a chord above a word. Then simply put the chord
+in square brackets before the [Ebmaj7]word like this. Magic! It appears perfectly
+above where you wanted. You can also make comments<like this comment> on the line above
+using angled brackets. You can even put chords mid[Csus/G]word.
+
+If you have line with just chords, put a '%' at the beginning of the line, like this:
+%   [A]   [D]   [E]   -   ||  [F#m] [Bm7] [Esus] [E]  ||   [A]
+You can also put other stuff and spaces as you like.
+
+By putting chords in brackets, you ensure clean tranposition. You can use the tranpose feature when viewing and writing; 
+
+{Look here!}
+You can also format your lyrics with {bold}bold{end bold} tags and {italic}italic{end italic} tags -- even {bold}{ital}both{endbold}{endital}
+ if you like. Also, you can make {header}headers{end header} with {header 250%}variable{end header} {header 80%}sizes{end header}.
+Note that {bold}<comment>bold{endbold} and {italic}[C]italic{enditalic} tags don't affect chords or chord comments, which are bolded and italic.
+
+If you have a guitar/bass/ukelele/whatever tab, enclose it in tab tags like this:
+{tab}
+E|---0----2---0---|
+B|---0----3---2---|
+G|---1----2---2---|
+D|---2----0---2---|
+A|---2--------0---|
+E|---0------------| (3x)
+{end tab}
+This will ensure proper character sizing.
+
+{Sections and Ordering}
+Label the start of a new section with curly braces, like the name of this section.
+Some more typical examples might be Verse 1, Chorus, etc.
+
+If you want to display these sections in a certain order, perhaps different from 
+the order written, begin the first line of the document like this:
+                 Order: Verse 1, Chorus, Bridge, Chorus, *Chorus
+An asterisk (*) will cause the name of the section to print, but not the content. 
+Note that anything before the first labeled section will always be printed at the top. 
+
+{Chorus} I'm printed twice
+{Verse 1}I'm printed first but written second
+{Verse 2}My content is only printed the first time
+{Importing songs from elsewhere}
+Have a favorite chord sheet or tab from another website? Simply copy and paste the 
+ text into the import feature and Enchord will do its best to put it
+into our mark-up language for easy manipulation.

@@ -25,12 +25,12 @@ lyric:default, if not others.
 
 */
 
-var commonheaders = new Array( /^\s*(\d(th|nd|rd|st)?)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*$/i, /^\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*$/i)
+var commonheaders = new Array( /^\s*((\d(th|nd|rd|st)?)|last|final)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*((\d(th|nd|rd|st)?)|last|final)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*$/i, /^\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*$/i,/^\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*$/i)
 var emptyLine = /^\s*$/;
 var hasChords = /(\s|,|-|\(|^)([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|\)|$)/g;
-var replaceChords = /(\s|,|-|\(|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|\)|$)?/g;
-var replaceCommentedChords = /<([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)>/g;
-var justChords = /^((\s+|\s|,|-|)[A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?(\s+|,|-|))+$/;
+var replaceChords = /(\s|,|-|\(|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}\(?(sus|add)?\d{0,2}\)?(\/[A-G][#b]?)?)(\s|,|-|\)|$)?/g;
+var replaceCommentedChords = /<([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}\(?(sus|add)?\d{0,2}\)?(\/[A-G][#b]?)?)>/g;
+var justChords = /^((\s+|\s|,|-|)[A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}\(?(sus|add)?\d{0,2}\)?(\/[A-G][#b]?)?(\s+|,|-|))+$/;
 var tabLine = /^([A-G][#b]?)*\s*[\|:]*\s*[x\d]*-+[x\d\|-]+/i;
 
 function lineType(line)
@@ -92,7 +92,40 @@ function mergeChordLyric(chordLine, lyricLine)
 	}
 	return finalLine.replace(replaceCommentedChords,"[$1]");
 }
+//for chord above lyric lines. Merge into one markup line. Intelligently puts chords at beginning of words
+function mergeChordLyricSmart(chordLine, lyricLine)
+{
 
+	while(chordLine.length > lyricLine.length)
+		lyricLine += " ";
+	var finalLine = "";
+	var i = 0;
+	var word = 0;
+	while(i < lyricLine.length){
+		if(chordLine.charAt(i) === ""){
+			finalLine += lyricLine.substring(i);
+			break;
+		}
+		else if(chordLine.charAt(i).match(/\s/))
+		{
+			finalLine += lyricLine.charAt(i);
+			i +=1;
+		}
+		else
+		{
+			var j = i;
+			finalLine += '<';
+			while(!chordLine.charAt(i).match(/\s/) && i < chordLine.length)
+			{
+				finalLine += chordLine.charAt(i)
+				i+=1;
+			}
+			finalLine += '>';
+			finalLine += lyricLine.substring(j,i);
+		}
+	}
+	return finalLine.replace(replaceCommentedChords,"[$1]");
+}
 function bracketInlineChords(chordLine)
 {
 	return "%" + chordLine.replace(replaceChords,"$1[$2]$6");
@@ -163,7 +196,7 @@ function reverseParse(input)
 				state = "tab";
 				break;
 			case "chord"://print previous chord line, don't print next line
-				output += bracketInlineChords(line[i-1]) + "\n"
+				output += bracketInlineChords(lines[i-1]) + "\n"
 				state = "chord";
 				break;
 			case "lyric"://merge the lines, print

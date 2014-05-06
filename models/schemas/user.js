@@ -14,14 +14,12 @@ var User = mongoose.Schema({
 		user: { 
 			type: String,
 			validate: [validatePrescenseOf, 'a Username is required'],
-			set: toLower,
-			//index: {unique: true}
+			set: toLower
 		},
 		email: { 
 			type: String,
 			validate: [validatePrescenseOf, 'a Email is required'],
-			set: toLower,
-			//index: {unique: true}
+			set: toLower
 		},
 		password: String,
 		resetPasswordToken: String,
@@ -44,8 +42,7 @@ var User = mongoose.Schema({
         token        : String,
         email        : String,
         name         : String
-    },
-    bands: Array //list of band ids
+    }
 });
 
 User.methods.generateHash = function(password) {

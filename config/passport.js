@@ -1,3 +1,5 @@
+/* this file defines the strategies we use for signup and logins for all the different types of login */
+
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
@@ -7,6 +9,7 @@ var User = require('../models/schemas/user');
 var songSchema = require('../models/schemas/song');
 var configAuth = require('./auth');
 
+// this is the song that is added to every new user 
 var demosong = require('../parsers/songTutorial').song;
 
 module.exports = function(passport) {
