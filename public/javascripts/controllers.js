@@ -496,9 +496,11 @@ enchordControllers.controller('SongEditController', [
 		$scope.font = "Helvetica"
 		$scope.fontsize = "14"
 		$scope.reverseParseMode = false;
+		$scope.isSongSaved = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
+    			$scope.isSongSaved = false;
       			win.onbeforeunload = function(){
         			return 'You have unsaved changes.';
       			};
@@ -626,10 +628,13 @@ enchordControllers.controller('SongEditController', [
 				$scope.isNew = data.isNew;
 				$scope.songEditForm.$setPristine();
 				$scope.markupForm.$setPristine();
+				$scope.isSongSaved = true;
+				console.log($scope.isSongSaved);
 				if(redirect) {
 					$window.location.href = '/viewsong/'.concat($scope.song._id);
 				} else {
-					$('.message-modal-sm').modal('show');
+					console.log('here');
+					// $('.message-modal-sm').modal('show');
 				}
 			}).error(function(data, status) {
 				console.log(data);
@@ -640,9 +645,13 @@ enchordControllers.controller('SongEditController', [
 					$scope.hasError = data.hasError;
 				}
 			});
+			console.log($scope.isSongSaved)
 			// $scope.inSave = false;
 		}
 		$scope.deletesong = function() {
+			if (!confirm("Are you sure you want to delete this song?")) {
+				return;
+			}
 			console.log("delete " + $scope.song.title);
 			$http({
 				method  : 'POST',
@@ -1159,6 +1168,9 @@ enchordControllers.controller('FolderViewController', [
 			});
 		}
 		$scope.deletefolder = function() {
+			if (!confirm("Are you sure you want to delete this folder?")) {
+				return;
+			}
 			$http({
 				method : 'POST',
 				url : '/deletefolder',
@@ -1179,6 +1191,13 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.enterAddSongMode = function() {
+			for(var i = 0; i < $scope.foldersongs.length; i++) {
+				var song  = $scope.foldersongs[i];
+				var index = $scope.usersongs.indexOf(song);
+				if (index > -1) {
+				    $scope.usersongs.splice(index, 1);
+				}
+			}
 			// console.log("here");
 			$scope.addSongMode = true;
 		}
