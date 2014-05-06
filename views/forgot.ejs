@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang='en' ng-app='enchord'>
 <head>
+ <!-- Angular js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+  <!-- Custom Angular js -->
+  <script src="/javascripts/app.js"></script>
+  <script src="/javascripts/animations.js"></script>
+  <script src="/javascripts/controllers.js"></script>
+  <script src="/javascripts/filters.js"></script>
+  <script src="/javascripts/services.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
   <link href="css/login.css" rel="stylesheet">
 </head>
 <body ng-controller="LoginController">
 <div id='wrapper'>
 <div id='content'>
-  <form class="new_user" id="new_user" action="/forgot" method="post" name="loginForm" novalidate>
+  <form class="new_user" id="new_user" action="/forgot" method="post" name="forgotForm" novalidate>
         <p style="line-height:1.4em;">Forgot your password? It happens. Enter your email address below and we'll email you with further instructions.</p>
         <p>If you remember your password, <a href="/login">log in here</a></p>
         <!-- show any messages that come back with authentication -->
-                    <% if (messageerror.length > 0) { %>
-                          <p style="text-align:center; color:red;"><%= messageerror %></p>
-                    <% } %>
-                    <% if (messageinfo.length > 0) { %>
-                          <p style="text-align:center; color:green;"><%= messageinfo %></p>
-                    <% } %>
+        <% if (messageerror.length > 0) { %>
+              <p style="text-align:center; color:red;"><%= messageerror %></p>
+        <% } %>
+        <% if (messageinfo.length > 0) { %>
+              <p style="text-align:center; color:green;"><%= messageinfo %></p>
+        <% } %>
+
         <div style="line-height:2.0em;"><label for="user_email">Email</label><br />
-        <input autofocus="autofocus" type="email" placeholder="Email" name ="email" ng-model="user.email" ng-minlength="3" ng-maxlength="50" required><br/>
+        <div class="form-group" id="email_group" ng-class="{'has-error' : forgotForm.email.$invalid && !forgotForm.email.$pristine }">
+          <input autofocus="autofocus" type="email" placeholder="Email" name ="email" ng-model="user.email" ng-minlength="3" ng-maxlength="50" required><br/>
+          <p ng-show="forgotForm.email.$error.required && !forgotForm.email.$pristine" class="help-block">Enter your email</p>
+          <p ng-show="forgotForm.email.$error.email" class="help-block">Enter a valid email</p>
+        </div>
 
         <div><input name="commit" type="submit" value="Reset my password" onclick="submitOnClick('loginForm')"/></div>
 

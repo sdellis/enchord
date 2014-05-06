@@ -45,12 +45,12 @@
             <a class="button large blue" href="/signup">Get Started</a>
             <h6 style="color: rgba(255, 255, 255, 0.4)">Sign up, it's free</h6>
          </div>
-
           <div style="display:inline;">
               <form class="search" name="searchForm" ng-controller="SearchController">
-                  <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+                  <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" autofocus>
                   <input type="hidden" name="type" value="Global">
-                  <button ng-click="search()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button>
+                  <button ng-show="searchForm.$invalid" ng-click="errorpopup()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button>
+                  <button ng-show="!searchForm.$invalid" ng-click="search()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button>
               </form>   
           </div>
          <img src="images/featuretemp.png" alt=""/>
