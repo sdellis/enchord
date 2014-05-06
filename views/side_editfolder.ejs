@@ -24,6 +24,16 @@
                     <button class="button" type="submit" ng-show="!addSongMode && !editFolderMode" ng-click="deletefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Folder</button>
             </form>
             
+            <div class="modal fade message-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    {{message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
         </ul>
     </section>
 </aside> 

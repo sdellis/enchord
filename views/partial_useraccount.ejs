@@ -1,8 +1,5 @@
 <aside class="right-side" ng-controller="ChangePasswordController">
 
-            <div ng-show="message.length > 0 && success" class="alert alert-success">{{message}}</div>
-            <div ng-show="message.length > 0 && !success" class="alert alert-danger">{{message}}</div>
-
             <h2 style="padding-left: 20px;">Account Settings</h2>
             <form name='changePasswordForm' style="padding-left: 50px; padding-top: 20px; max-width:475px;" >
                 <input type="text" name="username" class="form-control" placeholder="<%= username %>" readonly/><br>
@@ -13,4 +10,15 @@
                 <button ng-click="changePassword()" class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;"><i class="fa fa-check"></i>Change Password</button> 
                 <% } %>
             </form>   
+
+            <div class="modal fade message-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    {{message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             </aside>

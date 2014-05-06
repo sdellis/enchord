@@ -143,12 +143,15 @@ enchordControllers.controller('ChangePasswordController', [
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
+				$('.message-modal-sm').modal('show');
+
 				// Messages.setMessage(data.message, data.success);
 			}).error(function(data, status) {
 				console.log("this is a changepw error");
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
+				$('.message-modal-sm').modal('show');
 				//Messages.setMessage(data.message, data.success);
 			});
 		};
@@ -1039,6 +1042,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.folderid = "";
 		$scope.addSongMode = false;
 		$scope.editFolderMode = false;
+		$scope.message = '';
 		$scope.$watch('pageSizeFolder', function(value) {
 			console.log('here');
 			$scope.currentPageFolder = 0;
@@ -1087,7 +1091,11 @@ enchordControllers.controller('FolderViewController', [
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
-				$scope.addSongMode = false;
+				//$scope.addSongMode = false;
+				$scope.message = data.message;
+				$('.message-modal-sm').modal('show');
+
+				/*
 				var getUrl = '/viewfoldersongs/' + $scope.folderid;
 				$http({
 					method : 'GET',
@@ -1096,7 +1104,7 @@ enchordControllers.controller('FolderViewController', [
 					console.log(data);
 					$scope.folder = data.folder;
 					$scope.foldersongs = data.folder.foldersongs;
-				});
+				});*/
 			});
 		}
 		$scope.deletesong = function(songid) {
@@ -1127,7 +1135,9 @@ enchordControllers.controller('FolderViewController', [
 				console.log(data);
 				if (data.success) {
 					console.log("success");
-					$window.location.href="/members"
+					$scope.message = data.message;
+					$('.message-modal-sm').modal('show');
+					//$window.location.href="/members"
 				}
 			});
 		}
@@ -1158,6 +1168,15 @@ enchordControllers.controller('FolderViewController', [
 		$scope.leaveAddSongMode = function() {
 			// console.log("here");
 			$scope.addSongMode = false;
+			var getUrl = '/viewfoldersongs/' + $scope.folderid;
+			$http({
+				method : 'GET',
+				url : getUrl
+			}).success(function(data) {
+				console.log(data);
+				$scope.folder = data.folder;
+				$scope.foldersongs = data.folder.foldersongs;
+			});
 		}
 
 
