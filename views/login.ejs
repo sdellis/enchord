@@ -40,16 +40,16 @@
 
                     <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
                         <input id="username_email" type="text" placeholder="Username or Email" name="username" class="form-control" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" ng-minlength="3" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_]*$/" ng-model="user.username" required><br/>
-                        <p ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">Enter your username</p>
-                        <p ng-show="loginForm.username.$error.minlength" class="help-block">Username is too short</p>
-                        <p ng-show="loginForm.username.$error.maxlength" class="help-block">Username is too long</p>
-                        <p ng-show="loginForm.username.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or '-' or '_'</p>
+                        <p ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your username</p>
+                        <p ng-show="loginForm.username.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Username is too short</p>
+                        <p ng-show="loginForm.username.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Username is too long</p>
+                        <p ng-show="loginForm.username.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or '-' or '_'</p>
                     </div>
 
                     <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
                         <input id="user_password" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" class="form-control" ng-model="user.password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
-                        <p ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">Enter your password</p>
-                        <p ng-show="loginForm.password.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                        <p ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password</p>
+                        <p ng-show="loginForm.password.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
                     </div>
 
 

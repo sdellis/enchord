@@ -1062,6 +1062,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.foldername;
 		$scope.foldersongs = [];
 		$scope.usersongs = [];
+		$scope.usersongsforadd = [];
 		$scope.query="";
 		$scope.folderid = "";
 		$scope.addSongMode = false;
@@ -1193,9 +1194,10 @@ enchordControllers.controller('FolderViewController', [
 		$scope.enterAddSongMode = function() {
 			for(var i = 0; i < $scope.foldersongs.length; i++) {
 				var song  = $scope.foldersongs[i];
-				var index = $scope.usersongs.indexOf(song);
+				$scope.usersongsforadd = $scope.usersongs;
+				var index = $scope.usersongsforadd.indexOf(song);
 				if (index > -1) {
-				    $scope.usersongs.splice(index, 1);
+				    $scope.usersongsforadd.splice(index, 1);
 				}
 			}
 			// console.log("here");
