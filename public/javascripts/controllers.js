@@ -1032,7 +1032,8 @@ enchordControllers.controller('FolderViewController', [
 	'$window',
 	'$routeParams',
 	'$sce',
-	function($scope, $http, $window, $routeParams, $sce){
+	'$filter',
+	function($scope, $http, $window, $routeParams, $sce, $filter){
 		$scope.currentPageFolder = 0;
 		$scope.currentPageAddSongs = 0;
 		$scope.pageSizesFolder = [10, 25, 50];
@@ -1191,9 +1192,10 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.numberOfPagesAddSongs = function() {
-			if ($scope.usersongs.length == 0)
+			var filteredList = $filter('filter')($scope.usersongs, $scope.query)
+			if (filteredList.length == 0)
 				return 1;
-			return Math.ceil($scope.usersongs.length/$scope.pageSizeAddSongs);
+			return Math.ceil(filteredList.length/$scope.pageSizeAddSongs);
 		}
 
 }]);
