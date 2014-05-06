@@ -155,6 +155,12 @@ enchordControllers.controller('ChangePasswordController', [
 				//Messages.setMessage(data.message, data.success);
 			});
 		};
+		//matching?
+		$scope.passMatch = true;
+		// check that passwords match
+		$scope.checkPass = function() {
+			$scope.passMatch = $scope.changePasswordForm.pass.newpass.$viewValue == $scope.changePasswordForm.pass.confirmpass.$viewValue;
+		}
 	}]);
 
 // Search page controller 
@@ -240,6 +246,9 @@ enchordControllers.controller('SearchController', [
 			if ($scope.query != undefined && $scope.query.length > 0) {
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
+		}
+		$scope.errorpopup = function() {
+			alert("testing");
 		}
 		$scope.toggleBasicSearch = function() {
 			$scope.isAdvSearch = false;

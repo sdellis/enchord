@@ -27,21 +27,21 @@
             		<div class="form-group" ng-class="{ 'has-error' : resetForm.password.$invalid && !resetForm.password.$pristine }">
                         <label class="control-label" for="password"> New Password</label>
                         <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="8" ng-maxlength="20" placeholder="Password" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
-                        <span ng-show="resetForm.password.$error.required && !resetForm.password.$pristine" class="help-block">Enter your password</span>
-                        <span ng-show="resetForm.password.$error.minlength" class="help-block">Password is too short</span>
-                        <span ng-show="resetForm.password.$error.maxlength" class="help-block">Password is too long</span>
-                        <span ng-show="resetForm.password.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</span>
+                        <p ng-show="resetForm.password.$error.required && !resetForm.password.$pristine" class="help-block">Enter your password</p>
+                        <p ng-show="resetForm.password.$error.minlength" class="help-block">Password is too short</p>
+                        <p ng-show="resetForm.password.$error.maxlength" class="help-block">Password is too long</p>
+                        <p ng-show="resetForm.password.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
                     </div>
 
                     <!-- PASSWORD CONFIRMATION -->
                     <div class="form-group" ng-class="{ 'has-error' : (resetForm.password_repeat.$invalid || (!passMatch && !resetForm.password.$invalid)) && !resetForm.password_repeat.$pristine}">
                         <label class="control-label" for="password_repeat">Confirm Password</label>
                         <input type="password" name="password_repeat" class="form-control" ng-model="user.password_repeat" ng-minlength="8" ng-maxlength="20" placeholder="Confirm Password" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
-                        <span ng-show="resetForm.password_repeat.$error.required && !resetForm.password_repeat.$pristine" class="help-block">Enter your password again</span>
-                        <span ng-show="resetForm.password_repeat.$error.minlength" class="help-block">Password is too short</span>
-                        <span ng-show="resetForm.password_repeat.$error.maxlength" class="help-block">Password is too long</span>
-                        <span ng-show="!passMatch && !resetForm.password_repeat.$invalid && !resetForm.password.$invalid" class="help-block">Passwords do not match</span>
-                        <span ng-show="resetForm.password_repeat.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</span>
+                        <p ng-show="resetForm.password_repeat.$error.required && !resetForm.password_repeat.$pristine" class="help-block">Enter your password again</p>
+                        <p ng-show="resetForm.password_repeat.$error.minlength" class="help-block">Password is too short</p>
+                        <p ng-show="resetForm.password_repeat.$error.maxlength" class="help-block">Password is too long</p>
+                        <p ng-show="!passMatch && !resetForm.password_repeat.$invalid && !resetForm.password.$invalid" class="help-block">Passwords do not match</p>
+                        <p ng-show="resetForm.password_repeat.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
                     </div>
                     <input ng-disabled="resetForm.$invalid || !passMatch" name="commit" type="submit" value="Update password" onclick="submitOnClick('resetForm')" ng-disabled="resetForm.$invalid"/>
     	       </form>

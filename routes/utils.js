@@ -6,9 +6,6 @@ var parser = require('../parsers/textparser'); // parser
 var htmlparser = require('../parsers/htmlparser'); // parser
 var fs = require('fs');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
-var grabzit = require("grabzit");
-// var client = new grabzit("Y2JiZmJlMjM4M2Y3NDIxNzlhZGNjZDI0OWFkZThkZjg=", 
-// 						"KQA/Pz8DKQ4/Pz8/fT9MIT8/Pz8/GV4ePz8/Pz9jPz8="); // pdf
 
 //------------------Song Related functions -------------------------------------------
 exports.createSong = function(req, res) {

@@ -17,5 +17,6 @@ module.exports = mongoose.model('song', {
 	search_string: Array,
 	upvote: Number,
 	rates: [String],
-	folder_id: String
+	folder_id: String,
+	rank_in_folder: Number
 });

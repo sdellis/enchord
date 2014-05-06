@@ -4,10 +4,28 @@
             <form name='changePasswordForm' style="padding-left: 50px; padding-top: 20px; max-width:475px;" >
                 <input type="text" name="username" class="form-control" placeholder="<%= username %>" readonly/><br>
                 <% if(user.local.email) { %>
-                <input type="password" ng-model="pass.oldpass" name="oldpass" class="form-control" placeholder="Current Password"/><br>
-                <input type="password" ng-model="pass.newpass" name="newpass" class="form-control" placeholder="New Password"/><br>
-                <input type="password" ng-model="pass.confirmpass" name="confirmpass" class="form-control" placeholder="Confirm New Password"/><br>
-                <button ng-click="changePassword()" class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;"><i class="fa fa-check"></i>Change Password</button> 
+                    <div class="form-group" ng-class="{'has-error' : changePasswordForm.pass.oldpass.$invalid && !changePasswordForm.pass.oldpass.$pristine }">
+                        <input type="password" ng-model="pass.oldpass" name="oldpass" class="form-control" placeholder="Current Password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required/>
+                        <p ng-show="changePasswordForm.pass.oldpass.$error.required && !changePasswordForm.pass.oldpass.$pristine" class="help-block">Enter your password</p>
+                        <p ng-show="changePasswordForm.pass.oldpass.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error' : changePasswordForm.pass.newpass.$invalid && !changePasswordForm.pass.newpass.$pristine }">
+                        <input type="password" ng-model="pass.newpass" name="newpass" class="form-control" placeholder="New Password" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required/>
+                        <p ng-show="changePasswordForm.pass.newpass.$error.required && !changePasswordForm.pass.newpass.$pristine" class="help-block">Enter your password</p>
+                        <p ng-show="changePasswordForm.pass.newpass.$error.minlength" class="help-block">Password is too short</p>
+                        <p ng-show="changePasswordForm.pass.newpass.$error.maxlength" class="help-block">Password is too long</p>
+                        <p ng-show="changePasswordForm.pass.newpass.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : changePasswordForm.pass.confirmpass.$invalid && !changePasswordForm.pass.confirmpass.$pristine }">
+                        <input type="password" ng-model="pass.confirmpass" name="confirmpass" class="form-control" placeholder="Confirm New Password" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required/>
+                        <p ng-show="changePasswordForm.pass.confirmpass.$error.required && !changePasswordForm.pass.confirmpass.$pristine" class="help-block">Enter your password</p>
+                        <p ng-show="changePasswordForm.pass.confirmpass.$error.minlength" class="help-block">Password is too short</p>
+                        <p ng-show="changePasswordForm.pass.confirmpass.$error.maxlength" class="help-block">Password is too long</p>
+                        <p ng-show="!passMatch && !changePasswordForm.pass.confirmpass.$invalid && !changePasswordForm.pass.confirmpass.$invalid" class="help-block">Passwords do not match</p>
+                        <p ng-show="changePasswordForm.pass.confirmpass.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                    </div>
+                    <button ng-click="changePassword()" class="button" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important; margin-top: 20px;"><i class="fa fa-check"></i>Change Password</button> 
                 <% } %>
             </form>   
 
