@@ -1,3 +1,5 @@
+exports.purify = purify;
+
 function purify (query) {
 	var n = query.length;
 	for (var i=0; i<n; i++) {
@@ -40,4 +42,4 @@ function invalid (c) {
 
 
 
-console.log(purify('!@#$%^&*()_+'));
+//console.log(purify('!@#$%^&*()_+'));
