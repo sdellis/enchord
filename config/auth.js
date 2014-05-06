@@ -1,3 +1,4 @@
+/* necessary tokens to connect our application to social platforms for login */
 module.exports = {
 
 	'facebookAuth' : {

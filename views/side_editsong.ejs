@@ -2,11 +2,16 @@
     <section class="sidebar">
         <% include sidepartial_userinfo.ejs %>
         <ul class="sidebar-menu">
+            <% include sidepartial_searchbar.ejs %>
             <li class="active">
-                <a href="/members/createsong">
-                    <i class="fa fa-plus"></i> <span>Create a Song</span>
-                </a>
+                <a href="/members" ng-show="isNew">
+                    <i class="fa fa-backward"></i> <span>Back to My Library</span>
+                </a> 
+                <a ng-click="editsong(true)" href="#" ng-show="!isNew">
+                    <i class="fa fa-backward"></i> <span>Save and View Song</span>
+                </a> 
             </li>
+            <h5 style="color:#fff; margin-left: 5%; margin-top:15%;"> Song Info</h5>
             <!-- <h3 ng-show"isNew" style="color:white">New Song</h3> -->
             
 
@@ -67,15 +72,17 @@
                     <input style="margin-left:10px; margin-bottom: 30px;" type="radio" name="scope" ng-model="song.pub" ng-value=false >&nbsp;&nbsp;&nbsp;Private
 
                     
-                    <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button>
+                    
 
                     <button ng-show='reverseParseMode' ng-click='reverseParse()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-undo"></i> Reverse Parse</button>
 
-                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Create Song</button>
+                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
 
                     <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+                    
+                    <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button>
 
-                    <button ng-click="editsong(true)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button>
+                    <!-- <button  ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button> -->
 
                     <button class="button" ng-show="!isNew && !reverseParseMode" ng-click="deletesong()" type="submit" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Song</button>
             </form>

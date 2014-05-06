@@ -11,15 +11,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var path = require('path');
 
-var MongoStore = require('connect-mongo')(express);
-
 require('./config/passport')(passport);
-
-// var forgot = require('password-reset')({
-// 	uri: 'http://localhost:8000/password_reset',
-// 	from: 'password-robot@localhost',
-// 	host: 'localhost', port : 25,
-// });
 
 // all environments
 //app.set('port', process.env.PORT || 3000);
@@ -34,19 +26,12 @@ app.configure(function() {
 
 	app.use(express.session({
 		secret: 'enchord',
-		/*store: new MongoStore({
-			mongoose_connection: db
-		})*/
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(flash());
-	// app.use(forgot.middleware);
 });
 
-//app.use(express.json());
-//app.use(express.urlencoded());
-//app.use(express.methodOverride());
 	
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);

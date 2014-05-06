@@ -10,7 +10,7 @@
             </div>
             </div>
 
-        <div ng-show='!reverseParseMode' class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
+        <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
@@ -70,7 +70,7 @@
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
-                <li style="display:inline-block;">
+                <li style="display:inline-block; margin-right:15px;">
                                     <span class="select">FONT</span>
                                     <select id="thickness" class="input-mini" ng-model="font" ng-change="parsehtml()" style="background:#383A3C;">
                                         <option ng-value="Arial">Arial</option>

@@ -1,3 +1,6 @@
+/* this file has all the necessary code to send emails to reset password and confirm when
+	the email has been changed */
+	
 var nodemailer = require('nodemailer');
 var async = require('async');
 var crypto = require('crypto');
