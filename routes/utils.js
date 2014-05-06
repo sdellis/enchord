@@ -331,15 +331,16 @@ exports.advancedSearch = function(req, res) {
 	}
 	if (qAuthor != '') {
 		query1['author_lower'] = qAuthor;
+		query2['author_lower'] = qAuthor;
 	}
 	
 	query1['pub'] = true;
 	//query2['pub'] = false;
 	if (req.isAuthenticated()) {
-		query2['author_id'] = getAuthorId(req);
+		query2['author_id'] = getAuthorId(req);//this way a username search will not show local songs of another user
 	}
 	else {
-		query2 = {'search_string': ''}; //not logged in, do not search private songs
+		query2['search_string'] = ''; //not logged in, do not search private songs
 	}
 	
 	var originalQuery = {
@@ -368,7 +369,7 @@ exports.advancedSearch = function(req, res) {
 			search_results['global'] = docs;
 			songSchema.find(query2, function(err, docs) {
 				search_results['local'] = docs;
-				searchResults(err, search_results, originalQuery, req, res); //FIX THIS PART
+				searchResults(err, search_results, originalQuery, req, res);
 			});
 		});
 	}
