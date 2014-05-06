@@ -675,6 +675,10 @@ enchordControllers.controller('SongEditController', [
 			$scope.reverseParseMode = true;
 		}
 
+		$scope.leaveReverseParseMode = function() {
+			$scope.reverseParseMode = false;
+		}
+
 		$scope.reverseParse = function() {
 			console.log($scope.reverseParseData);
 			$http({

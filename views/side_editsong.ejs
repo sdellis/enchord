@@ -76,6 +76,8 @@
 
                     <button ng-show='reverseParseMode' ng-click='reverseParse()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-undo"></i> Reverse Parse</button>
 
+                    <button ng-show='reverseParseMode' ng-click='leaveReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Cancel</button>
+
                     <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
 
                     <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
