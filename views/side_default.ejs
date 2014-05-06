@@ -5,43 +5,12 @@
         <!-- <form class="sidebar-form" type="GET" action="/search" name="searchForm"> -->
         <%= include sidepartial_searchbar.ejs %>
         <ul class="sidebar-menu">
-            <li class="active">
+            <li>
                 <a href="/members/createsong">
                     <i class="fa fa-plus"></i> <span>Create a Song</span>
                 </a>
             </li>
 
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-plus"></i> <span>Create a Folder</span>
-                </a>
-                <ul class="treeview-menu">
-                    <form class="sidebar-form" name="folderForm">
-                        <div class="input-group" ng-controller="FolderController">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" style="padding-top:0px;"/>
-                            <!-- added button back because need to handle submission with ng-click -->
-                            <span class="input-group-btn">
-                                <button ng-click="createfolder()"  ng-disabled="folderForm.$invalid"type='submit' id='search-btn' class="btn btn-flat"><i class="fa fa-plus"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </ul>
-            </li>
-
-
-            
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-folder"></i> <span>My Folders</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                <% for (var i = 0; i < userfolders.length; i++) { %>
-                    <li><a href="/members/editfolder/<%= userfolders[i]._id %>"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
-                <% } %>
-                </ul>
-            </li>
-            
             <li class="treeview">
             <!-- Button trigger modal -->
             <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#folder_create">
@@ -74,6 +43,19 @@
               </div>
             </div>
             </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>My Folders</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                <% for (var i = 0; i < userfolders.length; i++) { %>
+                    <li><a href="/members/editfolder/<%= userfolders[i]._id %>"><i class="fa fa-angle-double-right"></i><%= userfolders[i].name %></a></li>
+                <% } %>
+                </ul>
+            </li>
+            
         </ul>
     </section>
 </aside>
