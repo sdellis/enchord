@@ -1,9 +1,10 @@
 <aside class="right-side">
     <section class="content-header">
         <h1>
-            Folder {{foldername}}
+            {{foldername}}
             <small>{{ folder.foldersongs.length }} songs</small>
-        </h1>
+        </h1><br>
+        <p>Display <select ng-model="pageSizeFolder" ng-options="pageSizeFolder for pageSizeFolder in pageSizesFolder"></select> songs per page</p>
     </section>
     <div ng-show="!addSongMode">
     <table class="table" name="global">
@@ -31,7 +32,7 @@
                 <td ng-show="editFolderMode"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
             </tr>
         </tbody>
-        <p>Display <select ng-model="pageSizeFolder" ng-options="pageSizeFolder for pageSizeFolder in pageSizesFolder"></select> songs per page</p>
+        
     </table>
     <div style="text-align:center">
         <button ng-disabled="currentPageFolder == 0" ng-click="currentPageFolder = currentPageFolder-1">
