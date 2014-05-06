@@ -1050,6 +1050,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.pageSizesAddSongs = [10, 25, 50];
 		$scope.pageSizeAddSongs = 10;
 		$scope.folder = {};
+		$scope.foldername;
 		$scope.foldersongs = [];
 		$scope.usersongs = [];
 		$scope.query="";
@@ -1091,6 +1092,7 @@ enchordControllers.controller('FolderViewController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.folder = data.folder;
+					$scope.foldername = $scope.folder.name;
 					$scope.foldersongs = data.folder.foldersongs;
 				});
 			}
@@ -1150,6 +1152,7 @@ enchordControllers.controller('FolderViewController', [
 				if (data.success) {
 					console.log("success");
 					$scope.message = data.message;
+					$scope.foldername = $scope.folder.name;
 					$('.message-modal-sm').modal('show');
 					//$window.location.href="/members"
 				}
@@ -1164,7 +1167,7 @@ enchordControllers.controller('FolderViewController', [
 			}).success(function(data) {
 				console.log(data);
 				if (data.success)
-				$window.location.href="/members";
+					$window.location.href="/members";
 			});
 		}
 
