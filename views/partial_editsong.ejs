@@ -10,7 +10,7 @@
             </div>
             </div>
 
-        <div ng-show='!reverseParseMode' class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
+        <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
@@ -51,7 +51,7 @@
             </div>
         </div> -->
 
-        <div ng-show='!reverseParseMode' class="chordSheet col-md-12" ng-bind-html="parsedResult()" style="min-height:656px; max-height: 656px;padding-left:15px; padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
+        <div ng-show='!reverseParseMode' class="chordSheet col-md-6" ng-bind-html="parsedResult()" style="min-height:656px; max-height: 656px;padding-left:15px; padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
         </div>
     </div>
 	</form>
