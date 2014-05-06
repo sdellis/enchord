@@ -65,20 +65,22 @@
 
                                     </select>
                                 </li>                                 
-                    </ul> -->
+                    </ul> --><br>
 
 
                     <input style="margin-left:10px;" type="radio" name="scope" ng-model="song.pub" ng-value=true>&nbsp;&nbsp;&nbsp;Public<br>
                     <input style="margin-left:10px; margin-bottom: 30px;" type="radio" name="scope" ng-model="song.pub" ng-value=false >&nbsp;&nbsp;&nbsp;Private
 
                     
-                    <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button>
+                    
 
                     <button ng-show='reverseParseMode' ng-click='reverseParse()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-undo"></i> Reverse Parse</button>
 
-                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Create Song</button>
+                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
 
                     <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Save</button>
+                    
+                    <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button>
 
                     <!-- <button  ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-check"></i> Done Editing</button> -->
 

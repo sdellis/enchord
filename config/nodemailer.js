@@ -1,3 +1,6 @@
+/* this file has all the necessary code to send emails to reset password and confirm when
+	the email has been changed */
+	
 var nodemailer = require('nodemailer');
 var async = require('async');
 var crypto = require('crypto');
@@ -52,7 +55,7 @@ exports.sendmail = function(req, res) {
 			smtpTransport.sendMail(mailOptions, function(err) {
 				if (err)
 					console.log("can't send email");
-				req.flash('info', 'An email has been sent to ' + user.email + ' with further instructions.');
+				req.flash('info', 'An email has been sent to ' + user.local.email + '.');
 				console.log('success');
 				done(err, 'done');
 			});

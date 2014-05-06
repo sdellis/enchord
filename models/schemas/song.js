@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+/* all the lower case things are for searching purposes */
 module.exports = mongoose.model('song', {
 	title: String,
 	title_lower: String,
