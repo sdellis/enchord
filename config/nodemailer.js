@@ -55,7 +55,7 @@ exports.sendmail = function(req, res) {
 			smtpTransport.sendMail(mailOptions, function(err) {
 				if (err)
 					console.log("can't send email");
-				req.flash('info', 'An email has been sent to ' + user.email + ' with further instructions.');
+				req.flash('info', 'An email has been sent to ' + user.local.email + '.');
 				console.log('success');
 				done(err, 'done');
 			});
