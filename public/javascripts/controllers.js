@@ -143,15 +143,24 @@ enchordControllers.controller('ChangePasswordController', [
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
+				$('.message-modal-sm').modal('show');
+
 				// Messages.setMessage(data.message, data.success);
 			}).error(function(data, status) {
 				console.log("this is a changepw error");
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
+				$('.message-modal-sm').modal('show');
 				//Messages.setMessage(data.message, data.success);
 			});
 		};
+		//matching?
+		$scope.passMatch = true;
+		// check that passwords match
+		$scope.checkPass = function() {
+			$scope.passMatch = $scope.changePasswordForm.pass.newpass.$viewValue == $scope.changePasswordForm.pass.confirmpass.$viewValue;
+		}
 	}]);
 
 // Search page controller 
@@ -237,6 +246,9 @@ enchordControllers.controller('SearchController', [
 			if ($scope.query != undefined && $scope.query.length > 0) {
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
+		}
+		$scope.errorpopup = function() {
+			alert("testing");
 		}
 		$scope.toggleBasicSearch = function() {
 			$scope.isAdvSearch = false;
@@ -675,6 +687,10 @@ enchordControllers.controller('SongEditController', [
 			$scope.reverseParseMode = true;
 		}
 
+		$scope.leaveReverseParseMode = function() {
+			$scope.reverseParseMode = false;
+		}
+
 		$scope.reverseParse = function() {
 			console.log($scope.reverseParseData);
 			$http({
@@ -1025,7 +1041,8 @@ enchordControllers.controller('FolderViewController', [
 	'$window',
 	'$routeParams',
 	'$sce',
-	function($scope, $http, $window, $routeParams, $sce){
+	'$filter',
+	function($scope, $http, $window, $routeParams, $sce, $filter){
 		$scope.currentPageFolder = 0;
 		$scope.currentPageAddSongs = 0;
 		$scope.pageSizesFolder = [10, 25, 50];
@@ -1033,12 +1050,14 @@ enchordControllers.controller('FolderViewController', [
 		$scope.pageSizesAddSongs = [10, 25, 50];
 		$scope.pageSizeAddSongs = 10;
 		$scope.folder = {};
+		$scope.foldername;
 		$scope.foldersongs = [];
 		$scope.usersongs = [];
 		$scope.query="";
 		$scope.folderid = "";
 		$scope.addSongMode = false;
 		$scope.editFolderMode = false;
+		$scope.message = '';
 		$scope.$watch('pageSizeFolder', function(value) {
 			console.log('here');
 			$scope.currentPageFolder = 0;
@@ -1073,6 +1092,7 @@ enchordControllers.controller('FolderViewController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.folder = data.folder;
+					$scope.foldername = $scope.folder.name;
 					$scope.foldersongs = data.folder.foldersongs;
 				});
 			}
@@ -1087,7 +1107,11 @@ enchordControllers.controller('FolderViewController', [
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
-				$scope.addSongMode = false;
+				//$scope.addSongMode = false;
+				$scope.message = data.message;
+				$('.message-modal-sm').modal('show');
+
+				/*
 				var getUrl = '/viewfoldersongs/' + $scope.folderid;
 				$http({
 					method : 'GET',
@@ -1096,7 +1120,7 @@ enchordControllers.controller('FolderViewController', [
 					console.log(data);
 					$scope.folder = data.folder;
 					$scope.foldersongs = data.folder.foldersongs;
-				});
+				});*/
 			});
 		}
 		$scope.deletesong = function(songid) {
@@ -1127,7 +1151,10 @@ enchordControllers.controller('FolderViewController', [
 				console.log(data);
 				if (data.success) {
 					console.log("success");
-					$window.location.href="/members"
+					$scope.message = data.message;
+					$scope.foldername = $scope.folder.name;
+					$('.message-modal-sm').modal('show');
+					//$window.location.href="/members"
 				}
 			});
 		}
@@ -1140,7 +1167,7 @@ enchordControllers.controller('FolderViewController', [
 			}).success(function(data) {
 				console.log(data);
 				if (data.success)
-				$window.location.href="/members";
+					$window.location.href="/members";
 			});
 		}
 
@@ -1158,6 +1185,15 @@ enchordControllers.controller('FolderViewController', [
 		$scope.leaveAddSongMode = function() {
 			// console.log("here");
 			$scope.addSongMode = false;
+			var getUrl = '/viewfoldersongs/' + $scope.folderid;
+			$http({
+				method : 'GET',
+				url : getUrl
+			}).success(function(data) {
+				console.log(data);
+				$scope.folder = data.folder;
+				$scope.foldersongs = data.folder.foldersongs;
+			});
 		}
 
 
@@ -1168,9 +1204,10 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.numberOfPagesAddSongs = function() {
-			if ($scope.usersongs.length == 0)
+			var filteredList = $filter('filter')($scope.usersongs, $scope.query)
+			if (filteredList.length == 0)
 				return 1;
-			return Math.ceil($scope.usersongs.length/$scope.pageSizeAddSongs);
+			return Math.ceil(filteredList.length/$scope.pageSizeAddSongs);
 		}
 
 }]);

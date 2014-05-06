@@ -6,10 +6,6 @@ var fs = require('fs');
 var utils = require('./utils');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 
-//FIX ALL THE RENDER PAGES!!!!!!!!!!!!!
-//also make sure to check that it is the right user in each of the functions
-
-
 exports.getUserFolders = function(req, res) { //can only get user's own folder
 	var authorid = getAuthorId(req);
 	var authorname = getAuthorName(req);
@@ -133,7 +129,7 @@ exports.addSongToFolder = function(req, res) {
 					console.log('i am sad');
 				}
 			});
-			res.send({success: true});
+			res.send({success: true, message: 'Song Added'});
 		});	
 		/*songSchema.update({_id: songid, author_id: authorid}, {folder_id: folderid}, function(err, numberAffected, rawResponse) {
 			if (err) {
@@ -225,7 +221,7 @@ exports.renameFolder = function(req, res) {
 			return;
 		}
 		console.log('success edit');
-		res.send({success: true});
+		res.send({success: true, message: 'Folder Renamed'});
 		// res.render('folderview.ejs', { //just shows a no info page for now
 		// 	title: 'enchord', 
 		// 	isNew: false, 

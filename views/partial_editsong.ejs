@@ -4,9 +4,16 @@
         <!-- MARKUP -->
 
         <!-- This is the reverse parse window -->
+<<<<<<< HEAD
           <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
+=======
+          <div ng-show='reverseParseMode' class="col-md-12" style="top:0px; left:0px; padding-right:0px;">
+            <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.reverseParseData.$invalid && !markupForm.reverseParseData.$pristine }">
+>>>>>>> 5b8d9d4e2bffe4cabd09c5db123b697a732e0cf5
             <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="100000" ng-model="reverseParseData" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
+            <span ng-show="markupForm.reverseParseData.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
+            <span ng-show="markupForm.reverseParseData.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<>'&#34;|~/\#%^*+=</span>
             </div>
             </div>
 

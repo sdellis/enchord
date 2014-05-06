@@ -1,7 +1,7 @@
 <aside class="right-side">
     <section class="content-header">
         <h1>
-            Folder {{folder.name}}
+            Folder {{foldername}}
             <small>{{ folder.foldersongs.length }} songs</small>
         </h1>
     </section>
@@ -47,6 +47,7 @@
     <!-- add song -->
     <div ng-show="addSongMode">
        <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter Songs" />
+       <!-- it would look bad to have messages here -->
         
         <p>Display <select ng-model="pageSizeAddSongs" ng-options="pageSizeAddSongs for pageSizeAddSongs in pageSizesAddSongs"></select> songs per page </p>
         <table class="table table-hover">
@@ -77,7 +78,7 @@
             <button ng-disabled="currentPageAddSongs == 0" ng-click="currentPageAddSongs = currentPageAddSongs-1">
                 <
             </button>
-                Page {{currentPage+1}} of {{numberOfPages()}}
+                Page {{currentPageAddSongs+1}} of {{numberOfPagesAddSongs()}}
             <button ng-disabled="currentPageAddSongs >= usersongs.length/pageSizeAddSongs - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
                 >
             </button>
