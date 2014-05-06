@@ -91,39 +91,17 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "Searching 2072 files for \"bandutils\"\n\n/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js:\n    2  var utils = require('./utils');\n    3  var folderutils = require('./folderutils');\n    4: var bandutils = require('./bandutils');\n    5  var User = require('../models/schemas/user');\n    6  var songSchema = require('../models/schemas/song');\n    .\n  396  			});\n  397  		});*/\n  398: 		/*app.post('/createband', isLoggedIn, bandutils.createBand);\n  399  \n  400  		app.get('/members/editband/:_id', isLoggedIn, function(req, res) {\n  ...\n  407  		});*/\n  408  \n  409: 		//app.post('/editband', bandutils.editBand);\n  410  \n  411  		//make sure only band leader deletes\n  412: 		/*app.get('/deleteband', bandutils.deleteBand);\n  413: 		app.get('/importFolder', bandutils.importFolder); */\n  414  \n  415: 		//app.get('/viewband/:_id', bandutils.loadBandView);\n  416  \n  417  		/* ---------------------------------------------------- */\n\n7 matches in 1 file\n",
-			"settings":
-			{
-				"buffer_size": 971,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "routes/utils.js",
-			"settings":
-			{
-				"buffer_size": 20284,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "routes/routes.js",
-			"settings":
-			{
-				"buffer_size": 11761,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 312.0,
+		"height": 374.0,
 		"selected_items":
 		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
 			[
 				"html",
 				"Set Syntax: HTML"
@@ -159,10 +137,6 @@
 			[
 				"plain ",
 				"Set Syntax: Plain Text"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
 			],
 			[
 				"align",
@@ -210,33 +184,43 @@
 	},
 	"file_history":
 	[
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/folderutils.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/song.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/folder.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/passport.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/reset.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/db.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/signup.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/login.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/songTutorial.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/forgot.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_default.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/home.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_useraccount.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_viewfolder.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_editfolder.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_editsong.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/sidepartial_searchbar.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/reset.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/folder.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/song.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/user.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/server.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/routes.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/utils.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_library.ejs",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/sampleSongTutorial.txt",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/package.json",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/nodemailer.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/auth.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/config/passport.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/htmlparser.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/helpblurb.txt",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/folderutils.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/routes/bandutils.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/db.js",
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/songTutorial.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_results.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_library.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_viewsong.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/sampleSongTutorial.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/sampleSongTutorial.txt",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/signup.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/partial_artistpage.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/artistpage.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/transpose.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/user.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/parsers/htmlparser.js",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/side_default.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/javascripts/controllers.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/addtofolder.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/password-reset/node_modules/pony/node_modules/seq/node_modules/chainsaw/examples/add_do.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/nodemailer/node_modules/readable-stream/float.patch",
@@ -248,7 +232,6 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editband_orig.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/editsong.ejs",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/views/createband.ejs",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/models/schemas/band.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/mongoose/contRun.sh",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/mongoose/CONTRIBUTING.md",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/async/component.json",
@@ -256,7 +239,6 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/enchord.sublime-project",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/README.md",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/untitled",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/server.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/edit_song.html",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/node_modules/express/node_modules/connect/node_modules/multiparty/test/standalone/test-content-transfer-encoding.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/todo",
@@ -329,8 +311,7 @@
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/auth.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/schemas/user.js",
 		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/signup.html",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/login.html",
-		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/package.json"
+		"/home/hseog/Dropbox/princeton/14spring/cos333/enchord/public/partials/login.html"
 	],
 	"find":
 	{
@@ -349,6 +330,29 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"form",
+			"addsongform",
+			"form",
+			"changePasswordForm.confirmpass",
+			"changePasswordForm.newpass",
+			"loginForm",
+			"data",
+			"input",
+			"form",
+			"useraccount",
+			"partial_useraccount",
+			"input",
+			"form",
+			"span",
+			"grabzit",
+			"grab",
+			"grabitz",
+			"mongostore",
+			"MongoStore",
+			"connect-mongo",
+			"password-reset",
+			"grabzit",
+			"crypto",
 			"bandutils",
 			"isband",
 			"band_id",
@@ -453,30 +457,7 @@
 			"handle_",
 			"todo",
 			"icmp",
-			"profile",
-			"localhost",
-			"flash",
-			"todo",
-			"uint8_t",
-			"time",
-			"zone",
-			"ndate",
-			"ph",
-			"h ",
-			"ptz",
-			"pyear",
-			"pdate",
-			"pmon",
-			"pval",
-			"s[",
-			"m[",
-			"prevM",
-			"prevH",
-			"prevTZ",
-			"pday",
-			"prevVal",
-			"pmon",
-			"pyear"
+			"profile"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -484,6 +465,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"changePasswordForm.pass.confirmpass",
+			"changePasswordForm.pass.newpass",
+			"changePasswordForm",
+			"p",
 			"",
 			"t2",
 			"z2",
@@ -546,275 +531,13 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 971,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										211,
-										220
-									],
-									[
-										234,
-										243
-									],
-									[
-										441,
-										450
-									],
-									[
-										610,
-										619
-									],
-									[
-										719,
-										728
-									],
-									[
-										776,
-										785
-									],
-									[
-										849,
-										858
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
-							],
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
 			]
 		},
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 1,
-					"file": "routes/utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 20284,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7332,
-								7332
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 2495.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "routes/routes.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11761,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11453,
-								11453
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 4191.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -875,6 +598,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"html",
+				"parsers/htmlparser.js"
+			],
 			[
 				"controller",
 				"public/javascripts/controllers.js"
