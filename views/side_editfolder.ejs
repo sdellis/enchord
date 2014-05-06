@@ -9,6 +9,7 @@
             </li>
             <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Folder Info</h5>
             <form class="sidebar-form" name="folderForm" novalidate style="color:#fff;">
+
                     <input ng-disabled="editFolderMode" type="text" name="Folder Name" class="form-control" ng-model="folder.name" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/" required /><br>
 
                     <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="enterAddSongMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Add Songs </button>
@@ -20,6 +21,7 @@
                     <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="leaveEditMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-dropbox"></i> Leave Editing Folder </button>
 
                     <button ng-disabled="folderForm.$invalid" class="button" type="submit" ng-show="!addSongMode && !editFolderMode" ng-click="renamefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;">Rename Folder</button>
+                    <!-- should i show dummy button if invalid characters? -->
 
                     <button class="button" type="submit" ng-show="!addSongMode && !editFolderMode" ng-click="deletefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-times"></i> Delete Folder</button>
             </form>

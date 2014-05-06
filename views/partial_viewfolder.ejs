@@ -47,6 +47,7 @@
     <!-- add song -->
     <div ng-show="addSongMode">
        <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter Songs" />
+       <!-- it would look bad to have messages here -->
         
         <p>Display <select ng-model="pageSizeAddSongs" ng-options="pageSizeAddSongs for pageSizeAddSongs in pageSizesAddSongs"></select> songs per page </p>
         <table class="table table-hover">
