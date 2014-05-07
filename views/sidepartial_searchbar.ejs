@@ -1,10 +1,10 @@
 <form class="sidebar-form" name="searchForm">
     <div class="input-group" ng-controller="SearchController">
-        <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+        <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" name="query"/>
         <input type="hidden" name="type" value="Both">
         <span class="input-group-btn">
             <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
         </span>
     </div>
 </form>
-<a href="/advsearchpage">Go to Advanced Search</a>
+<!-- <a href="/advsearchpage">Go to Advanced Search</a> -->

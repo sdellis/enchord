@@ -46,6 +46,19 @@ var getDate = function() {
 	return today;
 }
 
+//for searching. get rid of invalid characters
+function purify(query, possib) {
+	var n = query.length;
+	for (var i=0; i<n; i++) {
+		if (possib.indexOf(query.charAt(i)) == -1) {
+			query = query.slice(0, i) + query.slice(i+1, query.length);
+			i--;
+			n--;
+		}
+	}
+	return query;
+}
+
 var enchordControllers = angular.module('enchordControllers', ['ngSanitize']);
 
 // Home page controller
@@ -205,8 +218,14 @@ enchordControllers.controller('SearchController', [
 			console.log('here');
 			$scope.currentPageGlobal = 0;
 		})
-		$scope.init = function(query, adv, title, artist, genre, author) {
+		$scope.init = function(query_uc, adv, title_uc, artist_uc, genre_uc, author_uc) {
 			Side.setPagetype('search');
+			var query = purify(query_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
+			var title = purify(title_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
+			var artist = purify(artist_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
+			var genre = purify(genre_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\' ()');
+			var author = purify(author_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'*+,;= ()');
+
 			$scope.query = query;
 			$scope.title = title;
 			$scope.artist = artist;
@@ -251,11 +270,9 @@ enchordControllers.controller('SearchController', [
 		$scope.search = function() {
 			console.log($scope.query);
 			if ($scope.query != undefined && $scope.query.length > 0) {
+				$scope.query = purify($scope.query, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
-		}
-		$scope.errorpopup = function() {
-			alert("testing");
 		}
 		$scope.toggleBasicSearch = function() {
 			$scope.isAdvSearch = false;
@@ -628,6 +645,9 @@ enchordControllers.controller('SongEditController', [
 				}
 				$window.location.href = '/errorpage';
 			});
+		}
+		$scope.errorinfields = function() {
+			alert('error in fields');
 		}
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
@@ -1101,6 +1121,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.foldername;
 		$scope.foldersongs = [];
 		$scope.usersongs = [];
+		$scope.filteredsongs = [];
 		$scope.usersongsforadd = [];
 		$scope.query="";
 		$scope.folderid = "";
@@ -1124,6 +1145,7 @@ enchordControllers.controller('FolderViewController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.usersongs = data.usersongs;
+				$scope.filteredsongs = data.usersongs;
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -1160,8 +1182,14 @@ enchordControllers.controller('FolderViewController', [
 			}).success(function(data) {
 				console.log(data);
 				//$scope.addSongMode = false;
-				$scope.message = data.message;
-				$('.message-modal-sm').modal('show');
+				//$scope.message = data.message;
+				//$('.message-modal-sm').modal('show');
+
+				var filteredsongsids = $scope.filteredsongs.map(function(song) {
+					return song._id;
+				});
+				var index = filteredsongsids.indexOf(songid);
+				$scope.filteredsongs.splice(index, 1);
 
 				/*
 				var getUrl = '/viewfoldersongs/' + $scope.folderid;
@@ -1190,6 +1218,7 @@ enchordControllers.controller('FolderViewController', [
 					}).success(function(data) {
 						console.log(data);
 						$scope.folder = data.folder;
+						$scope.foldersongs = data.folder.foldersongs;
 					}).error(function(data, status) {
 						$window.location.href = '/errorpage';
 					});	
@@ -1198,6 +1227,7 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.renamefolder = function() {
+			console.log($scope.folder.name);
 			$http({
 				method : 'POST',
 				url : '/renamefolder',
@@ -1209,7 +1239,8 @@ enchordControllers.controller('FolderViewController', [
 					console.log("success");
 					$scope.message = data.message;
 					$scope.foldername = $scope.folder.name;
-					$('.message-modal-sm').modal('show');
+					$('#folder_rename').modal('hide');
+					// $('.message-modal-sm').modal('show');
 					//$window.location.href="/members"
 				}
 			}).error(function(data, status) {
@@ -1241,16 +1272,18 @@ enchordControllers.controller('FolderViewController', [
 			$scope.editFolderMode = false;
 		}
 
+		$scope.showEditFoldername = function() {
+			$('#folder_rename').modal('show');
+		}
+
 		$scope.enterAddSongMode = function() {
-			for(var i = 0; i < $scope.foldersongs.length; i++) {
-				var song  = $scope.foldersongs[i];
-				$scope.usersongsforadd = $scope.usersongs;
-				var index = $scope.usersongsforadd.indexOf(song);
-				if (index > -1) {
-				    $scope.usersongsforadd.splice(index, 1);
-				}
-			}
-			// console.log("here");
+			var foldersongsids = $scope.foldersongs.map(function(song) {
+				return song._id;
+			});
+
+			$scope.filteredsongs = $scope.usersongs.filter(function(song) {
+				return foldersongsids.indexOf(song._id) == -1;
+			});	
 			$scope.addSongMode = true;
 		}
 		$scope.leaveAddSongMode = function() {
@@ -1269,7 +1302,6 @@ enchordControllers.controller('FolderViewController', [
 			});
 		}
 
-
 		$scope.numberOfPagesFolder = function() {
 			if ($scope.foldersongs.length == 0)
 				return 1;
@@ -1277,92 +1309,9 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.numberOfPagesAddSongs = function() {
-			var filteredList = $filter('filter')($scope.usersongs, $scope.query)
+			var filteredList = $filter('filter')($scope.filteredsongs, $scope.query)
 			if (filteredList.length == 0)
 				return 1;
 			return Math.ceil(filteredList.length/$scope.pageSizeAddSongs);
 		}
-
 }]);
-enchordControllers.controller('AdvancedSearchController', [
-	'$scope', 
-	'$window', 
-	'$routeParams', 
-	'$location', 
-	'$http',
-	'Side',
-	function($scope, $window, $routeParams, $location, $http, Side) {
-		$scope.query = "";
-		$scope.globalresults = [];
-		$scope.localresults = [];
-		$scope.init = function(query) {
-			Side.setPagetype('search');
-			$scope.query = query;
-			if (query != undefined && query.length > 0) {
-				$http({
-					method : 'GET',
-					url    : '/advsearch',
-					params : { query : $scope.query }
-				}).success(function(data) {
-					console.log(data);
-					$scope.globalresults = data.results.global;
-					$scope.localresults = data.results.local;
-				}).error(function(data, status) {
-					$window.location.href = '/errorpage';
-				});
-			}
-		}
-		// redirect to search page
-		$scope.search = function() {
-			console.log($scope.query);
-			if ($scope.query != undefined && $scope.query.length > 0) {
-				$window.location.href = '/advsearch/' + $scope.query;
-			}
-		};
-	}]);
-/* OLD CODE */
-/* front-end parser */
-// $scope.parse = function() {
-// 	//readLines($scope.song.data, function(data){$scope.song.result = data});
-// 	console.log($scope.song.data);
-// 	$http({
-// 		method  : 'GET',
-// 		url     : '/parsesong',
-// 		params  : { data : $scope.song.data }
-// 		//headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-// 	}).success(function(data) {
-// 		console.log(data);
-// 		$scope.song.result = data + " parsed";
-// 	});
-// 	$http({
-// 		method  : 'POST',
-// 		url     : '/parsesong',
-// 		data    : $.param($scope.song),
-// 		headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-// 	}).success(function(data) {
-// 		console.log(data);
-// 		$scope.song.result = data + " parsed";
-// 	});
-// }
-/* profile controller */
-// enchordControllers.controller('ProfileController', ['$scope', '$http',
-// 	function($scope, $http){
-// 		$scope.usersongs = {};
-// 		$scope.init = function() {
-// 			$http({
-// 				method  : 'GET',
-// 				url     : '/mysongs'
-// 			}).success(function(data) {
-// 				console.log(data);
-// 				$scope.usersongs = data.sersongs;
-// 			}).error(function(data, status) {
-// 				console.log(data);
-// 				console.log(status);
-// 				if (status == 500) {
-// 					console.log(status);
-// 					$scope.message = data.message;
-// 					$scope.hasError = data.hasError;
-// 				}
-// 			});
-// 		}
-// 	}]);
