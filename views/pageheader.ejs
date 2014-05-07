@@ -13,14 +13,14 @@
             <!-- IF LOGGED IN -->
             <% if(isLoggedIn) { %>
             <ul class="nav navbar-nav">
-                <li><a href="/members/settings"><i class="fa fa-cogs"></i>  Account Settings</a></li>
-                <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                <li><a href="/members/settings">Account Settings</a></li>
+                <li><a href="/logout">Sign Out</a></li>
             </ul>
             <!-- NOT LOGGED IN -->
             <% } else { %>
             <ul class="nav navbar-nav">
-                <li><a href="/signup"><i class="fa fa-cogs"></i>  Sign Up</a></li>
-                <li><a href="/login"><i class="fa fa-sign-out"></i> Login</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/login">Login</a></li>
             </ul>
             <% } %>
         </div>
