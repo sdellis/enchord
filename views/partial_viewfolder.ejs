@@ -15,7 +15,7 @@
                 <th class="col-sm-6">Song</th>
                 <th class="col-sm-2">Artist</th>
                 <th class="col-sm-2">Genre</th>
-                <th class="col-sm-2">Type</th>
+                <th class="col-sm-2" style="padding-right:5%; text-align:center;"> </th>
                 <th class="col-sm-2" ng-show="editFolderMode">Delete?</th>
             </tr>
         </thead>
@@ -29,7 +29,7 @@
                 <td>{{ song.genre }}</td>
                 <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
                 <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
-                <td ng-show="editFolderMode"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
+                <td ng-show="editFolderMode" style="text-align:center;"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
             </tr>
         </tbody>
         
