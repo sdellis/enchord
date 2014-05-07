@@ -12,12 +12,6 @@
             <li><a href="#">Author: <%= username %></a></li>
             <form class="sidebar-form" name="folderForm" novalidate style="color:#fff;">
 
-<<<<<<< HEAD
-                    <input ng-disabled="editFolderMode" type="text" name="Folder Name" class="form-control" ng-model="folder.name" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/" style="color:#eee;" required /><br>
-=======
-                    <!-- input ng-disabled="editFolderMode" type="text" name="Folder Name" class="form-control" ng-model="folder.name" ng-minlength="1" ng-maxlength="100" placeholder="Folder Name" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_]*$/" required /><br> -->
->>>>>>> a0e3476d50a73f6cb21c32a40ad53c9bfaa93616
-
                     <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="enterAddSongMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-plus"></i> Add Songs</button>
 
                     <button class="button" ng-show="addSongMode && editFolderMode" ng-click="leaveAddSongMode()" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Back</button>
