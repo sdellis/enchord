@@ -220,6 +220,19 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
+		app.get('/searchresults', function(req, res){
+			res.render('results.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				username: utils.getUsername(req),
+				query: "",
+				isAdvSearch: false,
+				title: "",
+				artist: "",
+				genre: "",
+				author: ""
+			});
+		});
+
 		app.get('/searchresults/:query', function(req, res){
 			res.render('results.ejs', {
 				isLoggedIn: req.isAuthenticated(),

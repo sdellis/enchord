@@ -17,7 +17,12 @@
     </section>
 
     <div ng-show="globalresults.length + localresults.length == 0">
-    <h3 style= "padding-left: 15px;"><small>Search did not match any results.</small></h3>
+    <h3 style= "padding-left: 15px;">Didn't find what you were looking for? Here are some tips:</h3>
+    <ul>
+        <li>Our search engine does not search the lyrics. We don't want to flood you with too many results!</li>
+        <li>Make sure everything is spelled EXACTLY as you want it. For example, "beatles" will show songs by the Beatles, but "betles" will not.</li>
+        <li>Maybe we don't yet have what you're looking for. We're still growing our chord sheet database rapidly, but you can go ahead and use our easy-to-use editor to create your own songs <a href="/members/createsong">here</a>!</li>
+    </ul>
     </div>
 
     <div ng-show="globalresults.length + localresults.length > 0">

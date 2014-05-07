@@ -6,49 +6,14 @@
         <!-- This is the reverse parse window -->
           <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; height:100vh; width:100%;">
             <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
-                <li  ng-show='!reverseParseMode' style="margin-left:5px; margin-right:15px; display:inline-block;">
-                                    <span class="select">STEPS</span>
-                                    <select id="thickness" class="input-mini" ng-model="steps" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="0">0</option>
-                                        <option ng-value="+1">+1</option>
-                                        <option ng-value="+2">+2</option>
-                                        <option ng-value="+3">+3</option>
-                                        <option ng-value="+4">+4</option>
-                                        <option ng-value="+5">+5</option>
-                                        <option ng-value="+6">+6</option>
-                                        <option ng-value="+7">+7</option>
-                                        <option ng-value="+8">+8</option>
-                                        <option ng-value="+9">+9</option>
-                                        <option ng-value="+10">+10</option>
-                                        <option ng-value="+11">+11</option>
-                                        <option ng-value="-1">-1</option>
-                                        <option ng-value="-2">-2</option>
-                                        <option ng-value="-3">-3</option>
-                                        <option ng-value="-4">-4</option>
-                                        <option ng-value="-5">-5</option>
-                                        <option ng-value="-6">-6</option>
-                                        <option ng-value="-7">-7</option>
-                                        <option ng-value="-8">-8</option>
-                                        <option ng-value="-9">-9</option>
-                                        <option ng-value="-10">-10</option>
-                                        <option ng-value="-11">-11</option>
-                                    </select>
-                                </li>
-                                <li  ng-show='!reverseParseMode'style="margin-right:15px; display:inline-block;">
-                                    <span class="select">PREFERENCE</span>
-                                    <select id="thickness" ng-model="preference" class="input-mini" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="s">&#9839;</option>
-                                        <option ng-value="f">&#9837;</option>
-                                    </select>
-                                </li>
-   
-                                <li ng-show='reverseParseMode' style="margin-left:84%;">
-                                    <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
-                                    <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
-                                </li>                         
-                            </ul>
-            <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="100000" ng-model="reverseParseData" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="font-family:Courier; min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
+            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">           
+                <% include partialmini_transpose.ejs %>
+                <li ng-show='reverseParseMode' style="margin-left:84%;">
+                    <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
+                    <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
+                </li>                         
+            </ul>
+            <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="10000000" ng-model="reverseParseData" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="font-family:Courier; min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
             </div>
             </div>
 
@@ -56,46 +21,12 @@
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
-                <li style="margin-left:5px; margin-right:15px; display:inline-block;">
-                                    <span class="select">STEPS</span>
-                                    <select id="thickness" class="input-mini" ng-model="steps" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="0">0</option>
-                                        <option ng-value="+1">+1</option>
-                                        <option ng-value="+2">+2</option>
-                                        <option ng-value="+3">+3</option>
-                                        <option ng-value="+4">+4</option>
-                                        <option ng-value="+5">+5</option>
-                                        <option ng-value="+6">+6</option>
-                                        <option ng-value="+7">+7</option>
-                                        <option ng-value="+8">+8</option>
-                                        <option ng-value="+9">+9</option>
-                                        <option ng-value="+10">+10</option>
-                                        <option ng-value="+11">+11</option>
-                                        <option ng-value="-1">-1</option>
-                                        <option ng-value="-2">-2</option>
-                                        <option ng-value="-3">-3</option>
-                                        <option ng-value="-4">-4</option>
-                                        <option ng-value="-5">-5</option>
-                                        <option ng-value="-6">-6</option>
-                                        <option ng-value="-7">-7</option>
-                                        <option ng-value="-8">-8</option>
-                                        <option ng-value="-9">-9</option>
-                                        <option ng-value="-10">-10</option>
-                                        <option ng-value="-11">-11</option>
-                                    </select>
-                                </li>
-                                <li style="margin-right:15px; display:inline-block;">
-                                    <span class="select">PREFERENCE</span>
-                                    <select id="thickness" ng-model="preference" class="input-mini" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="s">&#9839;</option>
-                                        <option ng-value="f">&#9837;</option>
-                                    </select>
-                                </li>
-                                <li style="display:inline-block;">
-                                    <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>                             
-                            </ul>
+                    <% include partialmini_transpose.ejs %>
+                    <li style="display:inline-block;">
+                        <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>                             
+                </ul>
 
-                <textarea id="data" name="data" class="form-control" ng-maxlength="100000" ng-model="song.data" ng-change="parsehtml()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="height:100vh; font-family:Courier;resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" spellcheck="false"></textarea>
+                <textarea id="data" name="data" class="form-control" ng-maxlength="10000000" ng-model="song.data" ng-change="parsehtml()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="height:100vh; font-family:Courier;resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" spellcheck="false"></textarea>
                 <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" >-->
                 <span ng-show="markupForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
                 <span ng-show="markupForm.data.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<>'&#34;|~/\#%^*+=</span>
@@ -112,49 +43,7 @@
 
         <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; padding-left:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-                <!-- Make sure this has id = data -->
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
-                <li style="display:inline-block; margin-right:15px;">
-                                    <span class="select">FONT</span>
-                                    <select id="thickness" class="input-mini" ng-model="font" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="Arial">Arial</option>
-										<option ng-value="Audiowide">Audiowide</option>
-										<option ng-value="Courier">Courier</option>
-										<option ng-value="Droid Sans">Droid Sans</option>
-										<option ng-value="Droid Sans Mono">Droid Sans Mono</option>
-										<option ng-value="Droid Serif">Droid Serif</option>
-										<option ng-value="Georgia">Georgia</option>
-										<option ng-value="Helvetica">Helvetica</option>
-										<option ng-value="Inconsolata">Inconsolata</option>
-										<option ng-value="Merriweather">Merriweather</option>
-										<option ng-value="Open Sans">Open Sans</option>
-										<option ng-value="Oxygen">Oxygen</option>
-										<option ng-value="Oxygen Mono">Oxygen Mono</option>
-										<option ng-value="Playfair Display">Playfair Display</option>
-										<option ng-value="PT Mono">PT Mono</option>
-										<option ng-value="PT Serif">PT Serif</option>
-										<option ng-value="Raleway">Raleway</option>
-										<option ng-value="Rokkitt">Rokkitt</option>
-										<option ng-value="Special Elite">Special Elite</option>
-										<option ng-value="Times New Roman">Times New Roman</option>
-										<option ng-value="Ubuntu">Ubuntu</option>
-										<option ng-value="Ubuntu Mono">Ubuntu Mono</option>
-										<option ng-value="Verdana">Verdana</option>
-                                    </select>
-                                </li>
-                                <li style= "display:inline-block;">
-                                    <span class="select">SIZE</span>
-                                    <select id="thickness" ng-model="fontsize" class="input-mini" ng-change="parsehtml()" style="background:#383A3C;">
-                                        <option ng-value="8">8</option>
-                                        <option ng-value="10">10</option>
-                                        <option ng-value="12">12</option>
-                                        <option ng-value="14">14</option>
-                                        <option ng-value="16">16</option>
-                                        <option ng-value="18">18</option>
-                                        <option ng-value="20">20</option>
-                                    </select>
-                                </li>                                 
-                            </ul>
+                <% include partialmini_fonts.ejs %>
 
                 <div ng-show='!reverseParseMode' class="chordSheet col-md-6" ng-bind-html="parsedResult()" style="height:100vh; max-width:200px;min-width:100%;padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
         </div>

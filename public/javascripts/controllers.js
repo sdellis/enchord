@@ -568,6 +568,7 @@ enchordControllers.controller('SongEditController', [
 			// 	Side.setPagetype("createsong");
 			// else
 			// 	Side.setPagetype("editsong");
+			$(".help-popover").popover(); // show popover
 			if(_id != undefined && _id.length != 0) {
 				var getUrl = '/findsong/' + _id;
 				$http({
