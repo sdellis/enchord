@@ -15,13 +15,13 @@
                 <th class="col-sm-6">Song</th>
                 <th class="col-sm-2">Artist</th>
                 <th class="col-sm-2">Genre</th>
-                <th class="col-sm-2">Type</th>
+                <th class="col-sm-2" style="padding-right:5%; text-align:center;"> </th>
                 <th class="col-sm-2" ng-show="editFolderMode">Delete?</th>
             </tr>
         </thead>
         <tbody>
             <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPageFolder*pageSizeFolder | limitTo:pageSizeFolder">
-                <td><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
+                <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <!-- <td><i class="fa fa-chevron-up"></i></td>
@@ -29,7 +29,7 @@
                 <td>{{ song.genre }}</td>
                 <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
                 <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
-                <td ng-show="editFolderMode"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
+                <td ng-show="editFolderMode" style="text-align:center;"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times"></i></a></td>
             </tr>
         </tbody>
         
@@ -39,7 +39,7 @@
             <
         </button>
             Page {{currentPageFolder+1}} of {{numberOfPagesFolder()}}
-        <button ng-disabled="currentPageFolder >= foldersongs.length/pageSizeFolder - 1"  ng-click="currentPageFolder = currentPageFolder+1">
+        <button ng-disabled="currentPageFolder >= numberOfPagesFolder() - 1"  ng-click="currentPageFolder = currentPageFolder+1">
             >
         </button>
     </div>
@@ -63,7 +63,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="song in usersongs | filter:query | orderBy:predicate:reverse | startFrom:currentPageAddSongs*pageSizeAddSongs | limitTo:pageSizeAddSongs" ng-click="addToFolder(song._id)">
+                <tr data-ng-repeat="song in filteredsongs | filter:query | orderBy:predicate:reverse | startFrom:currentPageAddSongs*pageSizeAddSongs | limitTo:pageSizeAddSongs" ng-click="addToFolder(song._id)">
                     <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                     <!--<td style="max-width: 5px;"><a href="/addsongtofolder/{{song._id}}" style="color:black" ><i style="margin-left: 10px;" class="fa fa-plus"></i></a></td>-->
                     <td>{{ song.title }}</a></td>
@@ -80,7 +80,7 @@
                 <
             </button>
                 Page {{currentPageAddSongs+1}} of {{numberOfPagesAddSongs()}}
-            <button ng-disabled="currentPageAddSongs >= usersongs.length/pageSizeAddSongs - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
+            <button ng-disabled="currentPageAddSongs >= numberOfPagesAddSongs() - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
                 >
             </button>
 
