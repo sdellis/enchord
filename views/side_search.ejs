@@ -2,12 +2,22 @@
     <section class="sidebar">
         <% include sidepartial_userinfo.ejs %>
         <ul class="sidebar-menu">
-            <li class="active">
+            <% if(isLoggedIn) { %><li class="active">
+                <a href="/members">
+                    <i class="fa fa-backward"></i> <span>Back to My Library</span>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="/members/createsong">
+                    <i class="fa fa-plus"></i> <span>Create a New Song</span>
+                </a>
+            </li> --><% } %>
+            <li >
                 <a href="" ng-show="isAdvSearch" ng-click="toggleBasicSearch()">
                     <i class="fa fa-headphones"></i>Switch to Basic Search
                 </a>
             </li> 
-            <li class="active" style="border-top:0px;">
+            <li style="border-top:0px;">
                 <a href="" ng-show="!isAdvSearch" ng-click="toggleAdvSearch()">
                     <i class="fa fa-search"></i>Switch to Adv. Search
                 </a>

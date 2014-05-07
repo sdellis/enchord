@@ -80,7 +80,7 @@
                 <
             </button>
                 Page {{currentPageAddSongs+1}} of {{numberOfPagesAddSongs()}}
-            <button ng-disabled="currentPageAddSongs >= usersongs.length/pageSizeAddSongs - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
+            <button ng-disabled="currentPageAddSongs >= numberOfPagesAddSongs() - 1"  ng-click="currentPageAddSongs = currentPageAddSongs+1">
                 >
             </button>
 
