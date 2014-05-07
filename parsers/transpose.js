@@ -22,9 +22,9 @@ var flatscale = ['A','Bb','Cb','C','Db','D','Eb','E','F','Gb','G','Ab'];
 //var keyfullscales = {'C': ['C','C','C#','Db','D','D']}
 //Intervals: Unison, augmented unison, diminished second, second,augmented second, minor third, major third, fourth, augmented fourth, diminished fifth, augmented fifth,minor sixth, major sixth, minor seventh, major seventh,
 
-var txtmatcher = new RegExp(/(\[ *)([A-G][b#]?)([^\[]*?)((\/ *)([A-G][b#]?)([^\[]*?))?(\])/g);
+var txtmatcher = new RegExp(/(\[ *\(? *)([A-G][b#]?)([^\[]*?)((\/ *)([A-G][b#]?)([^\[]*?))?(\)? *\])/g);
 
-var htmlmatcher = new RegExp(/(< *span *chord *= *" *)([A-G][b#]?)([^<]*?)((\/ *)([A-G][b#]?)([^<]*?))?(" *>)/g);
+var htmlmatcher = new RegExp(/(< *span *chord *= *" *\(? *)([A-G][b#]?)([^<]*?)((\/ *)([A-G][b#]?)([^<]*?))?(\)? *" *>)/g);
 
 
 
