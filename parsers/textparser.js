@@ -29,6 +29,7 @@ function printDoc(orderLine)
 		var sectArray = orderLine.substring(6).split(",");
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
+			if(name === "") continue;
 			if(name.charAt(0) === '*') //just print the section name
 				result += sectionNumToName[sectionNameToNum[name.substring(1)]]+ "\n"
 			else //print section name and contents{
