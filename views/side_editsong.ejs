@@ -79,15 +79,12 @@
                     <!-- when valid -->
                     <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode && !songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
 
-<<<<<<< HEAD
                     <button ng-click="errorinfields()" class="button" ng-show="!isNew && !reverseParseMode && songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
-
+                    
                     <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode && !songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
-=======
-                     <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode && !isSongSaved" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
 
                     <button class="button" ng-show="!isNew && !reverseParseMode && isSongSaved" style="background-color: #2ecc71" ><i class="fa fa-check"></i> Successfully Saved</button>
->>>>>>> a1fdc573096d1a1efccf6863c7ab95af200f71d2
+
                     
                     <!--<button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button> -->
 
