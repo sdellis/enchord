@@ -1198,6 +1198,7 @@ enchordControllers.controller('FolderViewController', [
 		}
 
 		$scope.renamefolder = function() {
+			console.log($scope.folder.name);
 			$http({
 				method : 'POST',
 				url : '/renamefolder',
@@ -1209,7 +1210,8 @@ enchordControllers.controller('FolderViewController', [
 					console.log("success");
 					$scope.message = data.message;
 					$scope.foldername = $scope.folder.name;
-					$('.message-modal-sm').modal('show');
+					$('#folder_rename').modal('hide');
+					// $('.message-modal-sm').modal('show');
 					//$window.location.href="/members"
 				}
 			}).error(function(data, status) {
@@ -1239,6 +1241,10 @@ enchordControllers.controller('FolderViewController', [
 		}
 		$scope.leaveEditMode = function() {
 			$scope.editFolderMode = false;
+		}
+
+		$scope.showEditFoldername = function() {
+			$('#folder_rename').modal('show');
 		}
 
 		$scope.enterAddSongMode = function() {
