@@ -175,7 +175,7 @@ enchordControllers.controller('ChangePasswordController', [
 		$scope.passMatch = true;
 		// check that passwords match
 		$scope.checkPass = function() {
-			$scope.passMatch = $scope.changePasswordForm.pass.newpass.$viewValue == $scope.changePasswordForm.pass.confirmpass.$viewValue;
+			$scope.passMatch = $scope.changePasswordForm.newpass.$viewValue == $scope.changePasswordForm.confirmpass.$viewValue;
 		}
 	}]);
 

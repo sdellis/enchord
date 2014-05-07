@@ -179,7 +179,8 @@ exports.downloadSongTxt = function(req, res) {
 		console.log(docs);
 		if (docs) {
 			parser.parseSong(docs.data, function(parsedSong) {
-				fs.writeFile('./' + id + '.txt', parsedSong, function(err) {
+				songtext = "Title: " + docs.title + "\nArtist: " + docs.artist + "\nAuthor: " + docs.author_name + "\n" + parsedSong;
+				fs.writeFile('./' + id + '.txt', songtext, function(err) {
 					if(err) {
 						console.log(err);
 						res.status(500).json({message: 'Internal server error: Cannot download', hasError: true});
