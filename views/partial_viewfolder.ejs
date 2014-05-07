@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPageFolder*pageSizeFolder | limitTo:pageSizeFolder">
-                <td><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></i> {{song.upvote}}</td>
+                <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
                 <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                 <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                 <!-- <td><i class="fa fa-chevron-up"></i></td>

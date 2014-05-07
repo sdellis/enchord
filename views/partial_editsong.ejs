@@ -45,7 +45,7 @@
    
                                 <li ng-show='reverseParseMode' style="margin-left:84%;">
                                     <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
-                                    <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836">Cancel</button>
+                                    <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
                                 </li>                         
                             </ul>
             <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="100000" ng-model="reverseParseData" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="min-height:656px; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" placeholder="Copy and paste your chord sheet here..."></textarea>
