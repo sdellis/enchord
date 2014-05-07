@@ -14,11 +14,11 @@
 
                     <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="enterAddSongMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" ><i class="fa fa-plus"></i> Add Songs</button>
 
-                    <button class="button" ng-show="addSongMode && editFolderMode" ng-click="leaveAddSongMode()" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Cancel</button>
+                    <button class="button" ng-show="addSongMode && editFolderMode" ng-click="leaveAddSongMode()" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Back</button>
 
                     <button class="button" ng-show="!addSongMode && !editFolderMode" ng-click="enterEditMode()" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Edit Folder</button>
 
-                    <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="leaveEditMode()" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Cancel</button>
+                    <button class="button" ng-show="!addSongMode && editFolderMode" ng-click="leaveEditMode()" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Back</button>
 
                     <button ng-disabled="folderForm.$invalid" class="button" type="submit" ng-show="!addSongMode && !editFolderMode" ng-click="renamefolder()" class="btn btn-default" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;">Rename Folder</button>
                     <!-- should i show dummy button if invalid characters? -->
