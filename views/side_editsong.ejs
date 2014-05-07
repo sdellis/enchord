@@ -16,11 +16,11 @@
 
             <!-- <form action="POST" class="sidebar-form" name="songEditForm" novalidate> -->
             <form class="sidebar-form" name="songEditForm" novalidate style="color:#fff;">
-                    <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Title" /><br>
+                    <input type="text" name="title" class="form-control" ng-class="{ 'has-error' : songEditForm.title.$invalid && !songEditForm.title.$pristine }" ng-model="song.title" ng-minlength="1" ng-maxlength="100" placeholder="Title" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\'()]*$/" required class="form-control" placeholder="Title" /><br>
 
-                    <input type="text" name="artist" class="form-control" placeholder="Artist" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required /><br>
+                    <input type="text" name="artist" class="form-control" placeholder="Artist" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\'()]*$/" required /><br>
 
-                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_ ]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" />
+                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9\-\_\' ()]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" />
 
                     <!-- <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Transpose</h5>
                     <ul class="nav" style="display:inline-block; padding-top:10px; padding-bottom:30px; width:100%;">
@@ -74,9 +74,14 @@
 
                     <button ng-show='reverseParseMode' ng-click='leaveReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" >Cancel</button>
 
-                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
+                    <!-- when invalid -->
+                    <button ng-click="errorinfields()" class="button" ng-show="isNew && !reverseParseMode && songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
+                    <!-- when valid -->
+                    <button ng-click="createsong()" ng-disabled="songEditForm.$invalid || songEditForm.$pristine" class="button" ng-show="isNew && !reverseParseMode && !songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Create Song</button>
 
-                    <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
+                    <button ng-click="errorinfields()" class="button" ng-show="!isNew && !reverseParseMode && songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
+
+                    <button ng-click="editsong(false)" ng-disabled="songEditForm.$invalid" class="button" ng-show="!isNew && !reverseParseMode && !songEditForm.$invalid" style="background-color: rgb(77, 144, 254) !important; background-image: -webkit-linear-gradient(top,rgb(77, 144, 254),rgb(71, 135, 237)) !important;border-color: rgb(48, 121, 237) !important;" >Save</button>
                     
                     <!--<button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;" ><i class="fa fa-upload"></i> Upload a Song</button> -->
 

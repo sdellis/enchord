@@ -16,7 +16,7 @@
 
         <form ng-show="!isAdvSearch" class="sidebar-form" name="searchForm">
             <div class="input-group">
-                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/>
+                <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" name="query"/>
                 <input type="hidden" name="type" value="Both">
                 <span class="input-group-btn">
                     <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
@@ -26,15 +26,15 @@
 
         <form action="/advsearchresults" type="GET" ng-show="isAdvSearch" class="sidebar-form" name="searchForm">
 
-                <input type="text" ng-model="title" name="title" class="form-control" placeholder="Title"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query"/ style="margin-bottom:15px;">
+                <input type="text" ng-model="title" name="title" class="form-control" placeholder="Title"  type="text" class="form-control" id="query" name="query"/ style="margin-bottom:15px;">
 
-                <input type="text" ng-model="artist" name="artist" class="form-control" placeholder="Artist"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+                <input type="text" ng-model="artist" name="artist" class="form-control" placeholder="Artist"  type="text" class="form-control" id="query" name="query" style="margin-bottom:15px;"/>
 
 
-                <input type="text" ng-model="genre" name="genre" class="form-control" placeholder="Genre"  type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:15px;"/>
+                <input type="text" ng-model="genre" name="genre" class="form-control" placeholder="Genre"  type="text" class="form-control" id="query" name="query" style="margin-bottom:15px;"/>
  
 
-                <input type="text" ng-model="author" name="author" class="form-control" placeholder="Username" type="text" class="form-control" id="query" ng-pattern="/^[A-Za-z0-9 \$\!\-\_\' ]*$/" name="query" style="margin-bottom:20px;"/>
+                <input type="text" ng-model="author" name="author" class="form-control" placeholder="Username" type="text" class="form-control" id="query" name="query" style="margin-bottom:20px;"/>
 
             <button class="button" style="background:-webkit-linear-gradient(bottom,#4d4d4d, #2f2f2f);background:-moz-linear-gradient(bottom,#4d4d4d, #2f2f2f); border:1px solid #222;"><i class="fa fa-search"></i> &nbsp;Advanced Search</button>
         </form>
