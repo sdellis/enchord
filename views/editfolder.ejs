@@ -12,6 +12,7 @@
 <body class="skin-black" ng-controller="ProfileController" style="font-family:'Proxima Nova', sans-serif;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-Controller = "FolderViewController" ng-init="init('<%= _id %>')">
+            <% include loading %>
             <% include side_editfolder %>
             <% include partial_viewfolder %>
         </div>

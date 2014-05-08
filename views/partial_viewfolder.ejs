@@ -28,8 +28,16 @@
                 </ul>
             </div>
     <div ng-show="!addSongMode">
+    <section class="content-header">
+        <h3>
+            Folder: {{foldername}}
+            <small ng-show="foldersongs.length != 1">{{ foldersongs.length}} songs</small>
+            <small ng-show="foldersongs.length == 1">{{ foldersongs.length}} song</small>
+        </h3>
+    </section>
     <div ng-show="foldersongs.length == 0">
         <h3 style= "padding-left: 15px;">This folder is empty</h3>
+        <p style="padding-left:20px;">To add songs to the folder,  click "Edit Folder" on the right.</p>
     </div>
     <div ng-show="foldersongs.length > 0">
         <table class="table" name="global">

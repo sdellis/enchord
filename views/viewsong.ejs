@@ -11,6 +11,7 @@
 <body class="skin-black" ng-controller="ProfileController" style="background:#fff;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongViewController" ng-init="init('<%= _id %>', <%= isLoggedIn %>)">
+            <% include loading.ejs %>
             <% include side_viewsong.ejs %>
             <% include partial_viewsong.ejs %>
         </div>

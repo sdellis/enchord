@@ -11,6 +11,7 @@
 <body class="skin-black" ng-controller="SongEditController" style="font-family:'Proxima Nova', sans-serif;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="ArtistController" ng-init="init('<%= artistname %>')">
+            <% include loading %>
             <% include side_artistpage.ejs %>
             <% include partial_artistpage.ejs %>
         </div>
