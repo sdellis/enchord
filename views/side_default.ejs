@@ -30,15 +30,17 @@
                   </div>
                   <div class="modal-body">
                     <form class="sidebar-form" name="folderForm">
-                        <div class="input-group">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" style="padding-top:0px;"/>
+                        <div class="input-group" ng-class="{ 'has-error' : folderForm.name.$invalid && !folderForm.password.$pristine">
+                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_]*$/" style="padding-top:0px;" required/>
+                            <p ng-show="folderForm.name.$error.required && !folderForm.name.$pristine" class="help-block" style="margin-top:0px; color:red;">Foldername cannot be empty</p>
+                            <p ng-show="folderForm.name.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or ! $ - _</p>
                             <!-- it would look bad to have messages here -->
                         </div>
                     </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" ng-click="createfolder()" class="btn btn-primary">Create Folder</button>
+                    <button type="button" ng-disabled="folderForm.$invalid" ng-click="createfolder()" class="btn btn-primary">Create Folder</button>
                   </div>
                 </div>
               </div>

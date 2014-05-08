@@ -650,7 +650,7 @@ enchordControllers.controller('SongEditController', [
 			});
 		}
 		$scope.errorinfields = function() {
-			alert('error in fields');
+			alert('Error on inputs:\n-Song title and artists should only have the following characters:\n\t-A-Za-z0-9 $?!&-_\'()\n-Genre should only have the following characters:\n\t-A-Za-z0-9 $-_\'()\n\nTitle and Artist fields cannot be empty.');
 		}
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
