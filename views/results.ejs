@@ -9,6 +9,7 @@
     <body class="skin-black" style="font-family:'Proxima Nova', sans-serif;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SearchController" ng-init="init('<%= query %>', <%= isAdvSearch %>, '<%= title %>', '<%= artist %>', '<%= genre %>', '<%= author %>')" >
+            <% include loading.ejs %>
             <% include side_search.ejs %>
             <% include partial_results.ejs %>
         </div>

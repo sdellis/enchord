@@ -12,6 +12,14 @@
                     <!-- <span class="select">{{currentPage + 1}} of {{numberOfPages()}}</span> -->
                 </ul>
             </div>
+    <section class="content-header">
+        <h1>
+            Artist: <%= artistname %>
+            <small ng-show="globalresults.length != 1">{{ artistsongs.length}} songs</small>
+            <small ng-show="globalresults.length == 1">{{ artistsongs.length}} song</small>
+        </h1>
+    </section>
+            
     <table class="table table-hover">
         <thead>
             <tr>
