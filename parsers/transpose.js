@@ -54,8 +54,9 @@ function simpleTransposeNote(note, steps, pref)
    
 function test(steps){return steps}   
  
-function simpleTransposeString(str,steps,pref,doctype, callback)
+function simpleTransposeString(str,steps_s,pref,doctype, callback)
 {
+	var steps = parseInt(steps_s, 10);
 	var matcher;
 	switch(doctype)
 	{
