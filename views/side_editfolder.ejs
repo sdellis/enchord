@@ -7,8 +7,8 @@
                     <i class="fa fa-backward"></i> <span>Back to My Library</span>
                 </a>
             </li>
-            <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Folder Info</h5>
-            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Name: {{ foldername }}<span ng-click="showEditFoldername()" style="padding-left: 50%;"><i style="color:#fff; cursor:pointer;" class="fa fa-pencil"></i></span></li>
+            <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Folder Info<span ng-click="showEditFoldername()" style="padding-left: 55%;"><i style="color:#fff; cursor:pointer;" class="fa fa-pencil"></i></span></h5>
+            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Name: {{ foldername }}</li>
             <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Author: <%= username %></li>
             <form class="sidebar-form" name="folderForm" novalidate style="color:#fff;">
 
@@ -40,9 +40,8 @@
             <div class="modal fade" id="folder_rename" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog" >
                 <div class="modal-content" style="width:100%;">
-                  <div class="modal-header" style="padding: 10px 15px 8px;text-align: center;box-shadow: none !important;background: #f5f5f5;border: none;border-radius: 3px 3px 0 0;border-bottom: 0px solid #eee;">
-<!--                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
- -->                    <h4 class="modal-title" style="text-align:center;"id="myModalLabel">Create a New Folder</h4>
+                  <div class="modal-header" style="padding: 10px 15px 8px;text-align: center;box-shadow: none !important;background: #f5f5f5;border: none;border-radius: 3px 3px 0 0;border-bottom: 0px solid #eee;">    
+                    <h4 class="modal-title" style="text-align:center;"id="myModalLabel">Rename Folder</h4>
                   </div>
                   <div class="modal-body" style="padding-bottom:0px; width:100%;">
                   <form class="sidebar-form" name="folderForm">
