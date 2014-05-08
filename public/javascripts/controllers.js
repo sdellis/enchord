@@ -51,7 +51,7 @@ enchordControllers.controller('ProfileController', [
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
 		$scope.predicate = 'upvote';
-		$scope.reverse = false;
+		$scope.reverse = true;
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
@@ -160,13 +160,15 @@ enchordControllers.controller('SearchController', [
 		$scope.currentPageGlobal = 0;
 		$scope.pageSizesGlobal = [5, 10, 25, 50];
 		$scope.pageSizeGlobal = 5;
-		$scope.currentPageLocal = 0;
-		$scope.pageSizesLocal = [5, 10, 25, 50];
-		$scope.pageSizeLocal = 5;
+		$scope.predicate = 'upvote';
+		$scope.reverse = true
+		//$scope.currentPageLocal = 0;
+		//$scope.pageSizesLocal = [5, 10, 25, 50];
+		//$scope.pageSizeLocal = 5;
 		$scope.query = "";
 		$scope.isAdvSearch = false;
 		$scope.globalresults = [];
-		$scope.localresults = [];
+		//$scope.localresults = [];
 		// $scope.type = "Both";
 		// $scope.advquery = {}
 		// $scope.init = function(query, type, title, artist, genre, author) {
@@ -179,10 +181,12 @@ enchordControllers.controller('SearchController', [
 		// 		author: author
 		// 	};
 		// }
+		/*
 		$scope.$watch('pageSizeLocal', function(value) {
 			console.log('here');
 			$scope.currentPageLocal = 0;
-		})
+		})*/
+
 		$scope.$watch('pageSizeGlobal', function(value) {
 			console.log('here');
 			$scope.currentPageGlobal = 0;
@@ -213,7 +217,7 @@ enchordControllers.controller('SearchController', [
 					}).success(function(data) {
 						console.log(data);
 						$scope.globalresults = data.results.global;
-						$scope.localresults = data.results.local;
+						//$scope.localresults = data.results.local;
 					}).error(function(data, status) {
 						$window.location.href = '/errorpage';
 					});
@@ -229,7 +233,7 @@ enchordControllers.controller('SearchController', [
 				}).success(function(data) {
 						console.log(data);
 						$scope.globalresults = data.results.global;
-						$scope.localresults = data.results.local;
+						//$scope.localresults = data.results.local;
 				}).error(function(data, status) {
 						$window.location.href = '/errorpage';
 				});
@@ -254,16 +258,18 @@ enchordControllers.controller('SearchController', [
 				return 1;
 			return Math.ceil($scope.globalresults.length/$scope.pageSizeGlobal);
 		}
+		/*
 		$scope.numberOfPagesLocal = function() {
 			if ($scope.localresults.length == 0)
 				return 1;
 			return Math.ceil($scope.localresults.length/$scope.pageSizeLocal);
-		}
+		}*/
 
+		/*
 		$scope.setPredicateLocal = function(predicate) {
 			$scope.predicate = predicate;
 			$scope.reverse = !$scope.reverse;
-		}
+		}*/
 
 		$scope.setPredicateGlobal = function(predicate) {
 			$scope.predicate = predicate;
@@ -790,6 +796,8 @@ enchordControllers.controller('ArtistController', [
 		$scope.currentPage = 0;
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
+		$scope.predicate = 'upvote';
+		$scope.reverse = true
 		$scope.artistsongs = [];
 		$scope.$watch('pageSize', function(value) {
 			console.log('here');

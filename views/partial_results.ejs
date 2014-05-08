@@ -2,13 +2,16 @@
     <section class="content-header">
         <h1>
             Search Results
+            <!--
             <% if(isLoggedIn) { %>
                 <small ng-show="globalresults.length + localresults.length != 1">{{ globalresults.length + localresults.length}} songs found</small>
                 <small ng-show="globalresults.length + localresults.length == 1">{{ globalresults.length + localresults.length}} song found</small>
-            <% } else { %>
+            <% } else{ %>
                 <small ng-show="globalresults.length != 1">{{ globalresults.length}} songs found</small>
                 <small ng-show="globalresults.length == 1">{{ globalresults.length}} song found</small>
-            <% } %>
+            <% } %> -->
+            <small ng-show="globalresults.length != 1">{{ globalresults.length}} songs found</small>
+            <small ng-show="globalresults.length == 1">{{ globalresults.length}} song found</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="/searchresults/{{query}}"><i class="fa fa-search"></i> "{{query}}"</a></li>
@@ -16,7 +19,7 @@
         </ol>
     </section>
 
-    <div ng-show="globalresults.length + localresults.length == 0">
+    <div ng-show="globalresults.length == 0">
     <h3 style= "padding-left: 15px;">Didn't find what you were looking for? Here are some tips:</h3>
     <ul style="padding-right:20px;">
         <li>Our search engine does not search the lyrics. We don't want to flood you with too many results!</li>
@@ -25,10 +28,11 @@
     </ul>
     </div>
 
-    <div ng-show="globalresults.length + localresults.length > 0">
+    <!--
+    <div ng-show="globalresults.length > 0">
         <% if(isLoggedIn) { %><h3 style= "padding-left: 15px;">Searching My Library
-        <small ng-show="globalresults.length != 1">{{ localresults.length}} songs found</small>
-        <small ng-show="globalresults.length == 1">{{ localresults.length}} song found</small></h3>
+        <small ng-show="localresults.length != 1">{{ localresults.length}} songs found</small>
+        <small ng-show="localresults.length == 1">{{ localresults.length}} song found</small></h3>
         <table class="table" name="local">
             <thead>
                 <tr>
@@ -59,12 +63,13 @@
                 >
             </button>
         </div>
-    </div>
+    </div> -->
 
-    <div ng-show="globalresults.length + localresults.length > 0">
+    <div ng-show="globalresults.length > 0">
+        <!--
         <h3 style= "padding-left: 15px;">Searching Enchord
         <small ng-show="globalresults.length != 1">{{ globalresults.length}} songs found</small>
-        <small ng-show="globalresults.length == 1">{{ globalresults.length}} song found</small></h3><% } %>
+        <small ng-show="globalresults.length == 1">{{ globalresults.length}} song found</small></h3><% } %> -->
         <table class="table" name="global">
             <thead>
                 <tr>
