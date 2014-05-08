@@ -330,19 +330,22 @@ module.exports = function(app, passport, db) {
 
 		app.post('/edit/transpose', function(req, res) {
 			console.log('edit transpose');
+			console.log(req.body);
 			transposer.transpose(req.body.data, req.body.step, req.body.sf, 'txt', function(transposedSong) {
-				songSchema.findById(req.body.songid, function(err, docs) {
-					if (err) {
-						console.log('db error in transpose');
-					} else {
-						docs.data = transposedSong;
-						docs.save(function(err) {
-							if (err) {
-								console.log('db error in transpose');
-							}
-						});
-					}
-				});
+				console.log(transposedSong);
+				res.send({transposedSong: transposedSong});
+				// songSchema.findById(req.body.songid, function(err, docs) {
+				// 	if (err) {
+				// 		console.log('db error in transpose search');
+				// 	} else {
+						
+				// 		// docs.save(function(err) {
+				// 		// 	if (err) {
+				// 		// 		console.log('db error in transpose save');
+				// 		// 	}
+				// 		// });
+				// 	}
+				// });
 			});
 		});
 

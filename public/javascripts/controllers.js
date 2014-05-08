@@ -527,8 +527,10 @@ enchordControllers.controller('SongEditController', [
 		$scope.inSave = false;
 		$scope.song = {};
 		$scope.message = '';
-		$scope.font = "Helvetica"
-		$scope.fontsize = "14"
+		$scope.font = "Helvetica";
+		$scope.fontsize = "14";
+		$scope.steps = "0";
+		$scope.preference = "♯"
 		$scope.reverseParseMode = false;
 		$scope.isSongSaved = false;
   		var win = $window;
@@ -648,7 +650,7 @@ enchordControllers.controller('SongEditController', [
 			});
 		}
 		$scope.errorinfields = function() {
-			alert('error in fields');
+			alert('Error on inputs:\n-Song title and artists should only have the following characters:\n\t-A-Za-z0-9 $?!&-_\'()\n-Genre should only have the following characters:\n\t-A-Za-z0-9 $-_\'()\n\nTitle and Artist fields cannot be empty.');
 		}
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
@@ -720,16 +722,25 @@ enchordControllers.controller('SongEditController', [
 		}
 		//transpose
 		$scope.transpose = function() {
+			console.log($scope.song);
+			var pref = ''
+			if ($scope.preference == '♯') {
+				pref = 's'
+			} else {
+				pref = 'f';
+			}
 			$http({
 				method: 'POST',
 				url: '/edit/transpose',
-				//how do i change this to include other stuff?
-				data : $.param({songid: $scope.song.id, data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				data : $.param({data: $scope.song.data, step: $scope.steps, sf: pref}),
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
-				// is this the html shown?
-				$scope.transposed = $scope.transposed + $scope.steps;
-				$scope.markupForm = data;
+				console.log(data);
+				$scope.song.data = data.transposedSong;
+				$scope.parsehtml();
+				$scope.steps = 0;
+				// $scope.transposed = $scope.transposed + $scope.steps;
+				// $scope.markupForm = data;
 			});
 		}
 
