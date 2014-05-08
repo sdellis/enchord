@@ -1,4 +1,4 @@
-<li  ng-show='transposeMode && !reverseParseMode' style="margin-left:5px; margin-right:15px; display:inline-block;">
+<li ng-show='transposeMode && !reverseParseMode' style="margin-left:5px; margin-right:15px; display:inline-block;">
     <span class="select">STEPS</span>
     <select id="thickness" class="input-mini" ng-model="steps" style="background:#383A3C;">
 
@@ -27,16 +27,19 @@
         <option ng+value="+11">+11</option>
     </select>
 </li>
-<li ng-show='transposeMode && !reverseParseMode' style="margin-right:15px; display:inline-block;">
+<li ng-show='transposeMode && !reverseParseMode' style="margin-right:10px; display:inline-block;">
     <span class="select">PREFERENCE</span>
     <select id="thickness" ng-model="preference" class="input-mini" style="background:#383A3C;">
         <option ng-value="♯">&#9839;</option>
         <option ng-value="♭">&#9837;</option>
     </select>
 </li>
-<li style="display:inline-block;">
-    <button ng-show='!transposeMode && !reverseParseMode' ng-click='enterTranspose()' class="btn-switch">Transpose</button> 
+<li style="display:inline-block; margin-left:15px; margin-right:10px;" ng-show='!transposeMode && !reverseParseMode'>
+    <button ng-click='enterTranspose()' class="btn-switch">Transpose</button> 
 </li>
-<li style="display:inline-block;">
-    <button ng-show='transposeMode && !reverseParseMode' ng-click='transpose()' class="btn-switch">Go!</button> 
+<li style="display:inline-block; margin-right:10px;" ng-show='transposeMode && !reverseParseMode'>
+    <button  ng-click='transpose()' class="btn-switch">Submit</button> 
+</li>
+<li style="display:inline-block;" ng-show='transposeMode && !reverseParseMode'>
+    <button  ng-click='leaveTranspose()' class="btn-switch">Cancel</button> 
 </li>
