@@ -3,6 +3,7 @@
     	<% if(user.facebook) { %>
     		<img src="https://graph.facebook.com/<%=user.facebook.id%>/picture" class="img-circle" alt="User Image" />	
     	<% } else if(user.twitter) { %>
+    		<% console.log(user.twitter.username); %>
 			<img src="http://res.cloudinary.com/demo/image/twitter_name/<%=user.twitter.username%>.jpg" class="img-circle" alt="User Image" />
 		<% } else if(user.google) { %>
 		 	<img src="/images/default.png" class="img-circle" alt="User Image" />
