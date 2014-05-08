@@ -14,37 +14,6 @@ var cleanSong = function(song) {
 		song.pub=true;
 	return song;
 }
-var getDate = function() {
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth()+1; //January is 0!
-	var yyyy = today.getFullYear();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	var s = today.getSeconds();
-	var ms = today.getMilliseconds();
-
-	if(dd<10) {
-    	dd='0'+dd
-	} 
-	if(mm<10) {
-    	mm='0'+mm
-	}
-	if(h<10) {
-    	h='0'+h
-	} 
-	if(m<10) {
-    	m='0'+m
-	} 
-	if(s<10) {
-    	s='0'+s
-	} 
-	if(ms<10) {
-    	ms='0'+ms
-	} 
-	today = mm+dd+yyyy+h+m+s+ms;
-	return today;
-}
 
 //for searching. get rid of invalid characters
 function purify(query, possib) {
@@ -322,6 +291,9 @@ enchordControllers.controller('SongViewController', [
 		$scope.isAuthor = false;
 		$scope.font = "Helvetica"
 		$scope.fontsize = "14"
+		$scope.steps = "0";
+		$scope.preference = "♯";
+		$scope.origData = "";
 		$scope.transposed = 0;
 		$scope.hasvoted = function() {
 			$http({
@@ -357,6 +329,7 @@ enchordControllers.controller('SongViewController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.song = data.song;
+					$scope.origData = $scope.song.data;
 					$scope.parsehtml();
 					if (isLoggedIn) {
 						$scope.hasvoted();
@@ -504,17 +477,35 @@ enchordControllers.controller('SongViewController', [
 		}
 		//transpose
 		$scope.transpose = function() {
+			console.log($scope.origData);
+			var pref = ''
+			if ($scope.preference == '♯') {
+				pref = 's'
+			} else {
+				pref = 'f';
+			}
 			$http({
 				method: 'POST',
-				url: '/view/transpose',
-				//how do i change this to include other stuff?
-				data : $.param({data: $scope.songdata, step: $scope.steps, sf: $scope.sf}),
+				url: '/edit/transpose',
+				data : $.param({data: $scope.origData, step: $scope.steps, sf: pref}),
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
-				// is this the html shown?
-				$scope.transposed = $scope.transposed + $scope.steps;
-				$scope.song.result = data;
+				console.log(data);
+				$scope.song.data = data.transposedSong;
+				$scope.parsehtml();
+				$scope.leaveTranspose();
+				// $scope.steps = 0;
+				// $scope.transposed = $scope.transposed + $scope.steps;
+				// $scope.markupForm = data;
 			});
+		}
+
+		$scope.enterTranspose = function() {
+			$scope.transposeMode = true;
+		}
+
+		$scope.leaveTranspose = function() {
+			$scope.transposeMode = false;
 		}
 	}]);
 
@@ -539,6 +530,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.preference = "♯"
 		$scope.reverseParseMode = false;
 		$scope.isSongSaved = false;
+		$scope.transposeMode = false;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -552,10 +544,11 @@ enchordControllers.controller('SongEditController', [
   		});
 
 		$scope.parsehtml = function() {
+			var puredata = purify($scope.song.data, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
 			$http({
 				method  : 'POST',
 				url     : '/parsesonghtml',
-				data    : $.param({data: $scope.song.data, font: $scope.font, fontsize: $scope.fontsize}),
+				data    : $.param({data: puredata, font: $scope.font, fontsize: $scope.fontsize}),
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
@@ -622,7 +615,8 @@ enchordControllers.controller('SongEditController', [
 			console.log("create " + $scope.song.title);
 			console.log($('#data').val());
 			console.log($scope.song);
-			$scope.song.data = $('#data').val();
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			$scope.song.data = puredata;
 			$scope.song = cleanSong($scope.song);
 			console.log($scope.song);
 			$http({
@@ -661,7 +655,8 @@ enchordControllers.controller('SongEditController', [
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
 			console.log("edit " + $scope.song.title);
-			$scope.song.data = $('#data').val();
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			$scope.song.data = puredata;
 			$scope.song = cleanSong($scope.song);
 			$http({
 				method  : 'POST',
@@ -735,16 +730,19 @@ enchordControllers.controller('SongEditController', [
 			} else {
 				pref = 'f';
 			}
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			$scope.song.data = puredata;
 			$http({
 				method: 'POST',
 				url: '/edit/transpose',
-				data : $.param({data: $scope.song.data, step: $scope.steps, sf: pref}),
+				data : $.param({data: puredata, step: $scope.steps, sf: pref}),
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);
 				$scope.song.data = data.transposedSong;
 				$scope.parsehtml();
 				$scope.steps = 0;
+				$scope.leaveTranspose();
 				// $scope.transposed = $scope.transposed + $scope.steps;
 				// $scope.markupForm = data;
 			});
@@ -758,12 +756,21 @@ enchordControllers.controller('SongEditController', [
 			$scope.reverseParseMode = false;
 		}
 
+		$scope.enterTranspose = function() {
+			$scope.transposeMode = true;
+		}
+
+		$scope.leaveTranspose = function() {
+			$scope.transposeMode = false;
+		}
+
 		$scope.reverseParse = function() {
 			console.log($scope.reverseParseData);
+			var puredata = purify($scope.reverseParseData, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
 			$http({
 				method: 'POST',
 				url: '/reverseparse',
-				data: $.param({data: $scope.reverseParseData}), 
+				data: $.param({data: puredata}), 
 				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data) {
 				console.log(data);

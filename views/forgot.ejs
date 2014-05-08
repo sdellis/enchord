@@ -33,8 +33,8 @@
         <div style="line-height:2.0em;"><label for="user_email">Email</label><br />
         <div class="form-group" id="email_group" ng-class="{'has-error' : forgotForm.email.$invalid && !forgotForm.email.$pristine }">
           <input autofocus="autofocus" type="email" placeholder="Email" name ="email" ng-model="user.email" ng-minlength="3" ng-maxlength="50" required><br/>
-          <p ng-show="forgotForm.email.$error.required && !forgotForm.email.$pristine" class="help-block">Enter your email</p>
-          <p ng-show="forgotForm.email.$error.email" class="help-block">Enter a valid email</p>
+          <p ng-show="forgotForm.email.$error.required && !forgotForm.email.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your email</p>
+          <p ng-show="forgotForm.email.$error.email" class="help-block" style="margin-top:0px; color:red;">Enter a valid email</p>
         </div>
 
         <div><input name="commit" type="submit" value="Reset my password" onclick="submitOnClick('loginForm')"/></div>

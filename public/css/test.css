@@ -741,3 +741,8 @@ margin-right:15px;
       margin-left: 5px !important;
 }
 
+.btn:disabled {
+      color:#000;
+      background-color: #000;
+}
+

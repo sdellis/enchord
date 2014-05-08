@@ -24,7 +24,7 @@ function printDoc(font,fontsize,orderLine)
 		font = 'sans';
 	if(!fontsize)
 		fontsize = '12px';
-	result+= '<style> div.chordSheet {font-family:' + font +';\nfont-size:' + fontsize + ';}</style>\n ';
+	result+= '<style> div.chordSheet {font-family:' + font +',Helvetica, sans ;\nfont-size:' + fontsize + ';}</style>\n ';
 	
 	//Top section
 	result += "<p>" + sectionNumToText[0]+"</p>\n";
@@ -34,10 +34,21 @@ function printDoc(font,fontsize,orderLine)
 		var sectArray = orderLine.substring(6).split(",");
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
+			if(name === "") continue;
+
 			if(name.charAt(0) === '*') //just print the section name
-				result += "<p><span class='heading'>"+sectionNumToName[sectionNameToNum[name.substring(1)]]+ "</span>\n<p>\n"
-			else //print section name and contents{
-				result += "<p><span class='heading'>"+sectionNumToName[sectionNameToNum[name]]+ "</span>\n" + getSection(name) + "</p>\n"; 
+			{
+				if(!sectionNameToNum[name.substring(1)]) 
+					result += "<p><span class='heading'>" + name.substring(1) +"</span><span class=\"lineerror\"> is not a recognized section.</span>\n<p>\n";
+				else
+					result += "<p><span class='heading'>"+sectionNumToName[sectionNameToNum[name.substring(1)]]+ "</span>\n<p>\n"
+			}
+			else { //print section name and contents
+				if(!sectionNameToNum[name]) 
+					result += "<p><span class='heading'>" + name +"</span><span class=\"lineerror\"> is not a recognized section.</span>\n<p>\n";
+				else
+					result += "<p><span class='heading'>"+sectionNumToName[sectionNameToNum[name]]+ "</span>\n" + getSection(name) + "</p>\n"; 
+			}
 		}
 	}
 	else //print off sections in order written
@@ -173,6 +184,9 @@ function parseOption(oneLine, i,lines){
 		case 'end tab': case 'endtab':
 			lyricLine += "</span>";
 			return j-i;
+		/*case 'new page': case 'page break': case 'newpage': case 'pagebreak':
+			lyricLine += "<span class='pagebreak'> </span>";
+			return j-i;*/
 		case 'heading': case 'start heading': case 'startheading':
 		case 'header': case 'start header': case 'startheader':
 			lyricLine += "<span class='heading'>";
