@@ -544,7 +544,7 @@ enchordControllers.controller('SongEditController', [
   		});
 
 		$scope.parsehtml = function() {
-			var puredata = purify($scope.song.data, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			var puredata = purify($scope.song.data, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
 			$http({
 				method  : 'POST',
 				url     : '/parsesonghtml',
@@ -615,7 +615,7 @@ enchordControllers.controller('SongEditController', [
 			console.log("create " + $scope.song.title);
 			console.log($('#data').val());
 			console.log($scope.song);
-			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
 			$scope.song.data = puredata;
 			$scope.song = cleanSong($scope.song);
 			console.log($scope.song);
@@ -685,7 +685,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
 			console.log("edit " + $scope.song.title);
-			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
 			$scope.song.data = puredata;
 			$scope.song = cleanSong($scope.song);
 			$http({
@@ -760,7 +760,7 @@ enchordControllers.controller('SongEditController', [
 			} else {
 				pref = 'f';
 			}
-			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
 			$scope.song.data = puredata;
 			$http({
 				method: 'POST',
@@ -796,7 +796,7 @@ enchordControllers.controller('SongEditController', [
 
 		$scope.reverseParse = function() {
 			console.log($scope.reverseParseData);
-			var puredata = purify($scope.reverseParseData, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=');
+			var puredata = purify($scope.reverseParseData, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
 			$http({
 				method: 'POST',
 				url: '/reverseparse',
