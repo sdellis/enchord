@@ -4,6 +4,10 @@ var sectionNameToNum;
 var lyricLine;
 var orderText;
 
+var fontTypes = {"Arial": "sans-serif","Audiowide":"sans-serif","Courier":"monospace","Droid Sans":"sans-serif","Droid Sans Mono":"monospace","Droid Serif":"serif","Georgia":"serif","Helvetica":"sans-serif","Inconsolata":"monospace","Open Sans":"sans-serif","Oxygen":"sans-serif","Oxygen Mono":"monospace","Playfair Display":"serif","PT Mono":"monospace","PT Serif":"serif","PT Sans":"sans-serif","Raleway":"sans-serif","Rokkitt":"serif","Special Elite":"serif","Times New Roman":"serif","Ubuntu":"sans-serif","Ubuntu Mono":"monospace","Verdana":"sans-serif"}; //list of fonts and their backup types
+var fontToMono = {"Droid Sans":"Droid Sans Mono","Droid Serif":"Droid Sans Mono","Oxygen":"Oxygen Mono","PT Serif":"PT Mono","PT Sans":"PT Mono","Ubuntu":"Ubuntu Mono"}
+
+
 function toTitleCase(str)
 {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -24,7 +28,7 @@ function printDoc(font,fontsize,orderLine)
 		font = 'sans';
 	if(!fontsize)
 		fontsize = '12px';
-	result+= '<style> div.chordSheet {font-family:' + font +',Helvetica, sans ;\nfont-size:' + fontsize + ';}</style>\n ';
+	result+= '<style> div.chordSheet {font-family:' + font + ',' + (fontTypes[font]||'sans') + ',Helvetica, sans ;\nfont-size:' + fontsize + ';}\ndiv.chordSheet .tab {font-family	: ' + ((fontTypes[font] === "monospace")? font : (fontToMono[font]||"Courier") )+ ',monospace ;}</style>\n ';
 	
 	//Top section
 	result += "<p>" + sectionNumToText[0]+"</p>\n";
