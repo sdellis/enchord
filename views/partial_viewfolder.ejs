@@ -26,33 +26,38 @@
                 </ul>
             </div>
     <div ng-show="!addSongMode">
-    <table class="table" name="global">
+    <div ng-show="foldersongs.length == 0">
+        <h3 style= "padding-left: 15px;">This folder is empty</h3>
+    </div>
+    <div ng-show="foldersongs.length > 0">
+        <table class="table" name="global">
 
-        <thead>
-            <tr>
-                <th class="col-sm-2"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></th>
-                <th class="col-sm-6">Song</th>
-                <th class="col-sm-2">Artist</th>
-                <th class="col-sm-2">Genre</th>
-                <th class="col-sm-2" style="padding-right:5%; text-align:center;"> </th>
-                <th class="col-sm-2" style="padding-right:5%;" ng-show="editFolderMode"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPageFolder*pageSizeFolder | limitTo:pageSizeFolder">
-                <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
-                <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
-                <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
-                <!-- <td><i class="fa fa-chevron-up"></i></td>
-                <td><i class="fa fa-chevron-down"></i></td> -->
-                <td>{{ song.genre }}</td>
-                <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
-                <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
-                <td ng-show="editFolderMode" style="text-align:center;"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times" style="color: #d14836;"></i></a></td>
-            </tr>
-        </tbody>
-        
-    </table>
+            <thead>
+                <tr>
+                    <th class="col-sm-2"><i style="margin-left: 20px;" class="fa fa-star" style="color:yellow;"></th>
+                    <th class="col-sm-6">Song</th>
+                    <th class="col-sm-2">Artist</th>
+                    <th class="col-sm-2">Genre</th>
+                    <th class="col-sm-2" style="padding-right:5%; text-align:center;"> </th>
+                    <th class="col-sm-2" style="padding-right:5%;" ng-show="editFolderMode"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="song in folder.foldersongs | startFrom:currentPageFolder*pageSizeFolder | limitTo:pageSizeFolder">
+                    <td><i style="margin-left: 20px; color:#f1c40f" class="fa fa-star"></i> {{song.upvote}}</td>
+                    <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
+                    <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
+                    <!-- <td><i class="fa fa-chevron-up"></i></td>
+                    <td><i class="fa fa-chevron-down"></i></td> -->
+                    <td>{{ song.genre }}</td>
+                    <td ng-show="song.pub"><i class="fa fa-globe"></i></td> <!-- Probably have different images here -->
+                    <td ng-show="!song.pub"><i class="fa fa-lock"></i></td>
+                    <td ng-show="editFolderMode" style="text-align:center;"><a href="" ng-click="deletesong(song._id)"><i class="fa fa-times" style="color: #d14836;"></i></a></td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
    <!--  <div style="text-align:center">
         <button ng-disabled="currentPageFolder == 0" ng-click="currentPageFolder = currentPageFolder-1">
             <
