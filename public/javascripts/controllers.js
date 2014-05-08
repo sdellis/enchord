@@ -243,7 +243,7 @@ enchordControllers.controller('SearchController', [
 		$scope.search = function() {
 			console.log($scope.query);
 			if ($scope.query != undefined && $scope.query.length > 0) {
-				$scope.query = purify($scope.query, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
+				$scope.query = purify($scope.query, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ().,');
 				$window.location.href = '/searchresults/' + $scope.query;
 			}
 		}
