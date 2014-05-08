@@ -146,6 +146,7 @@ exports.loadSongView = function(req, res) {
 			title: 'enchord', 
 			isNew: false, 
 			isAuthor: isAuthor, 
+			user: req.user, 
 			isLoggedIn: isLoggedIn, 
 			song: docs, 
 			message: 'Song loaded'
@@ -361,6 +362,7 @@ exports.advancedSearch = function(req, res) { //REMOVE QUERY2 LATER
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
 		res.render('results.ejs', {
 			isLoggedIn: req.isAuthenticated(),
+			user: req.user, 
 			username: getAuthorName(req),
 			query: "",
 			isAdvSearch: true,
@@ -408,6 +410,7 @@ exports.getArtistSongs = function(req, res) {
 			title: 'enchord', 
 			isNew: false, 
 			results: array, 
+			user: req.user, 
 			query: req.params.query, 
 			message: 'Empty query',
 			isLoggedIn: req.isAuthenticated()
