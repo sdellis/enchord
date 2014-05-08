@@ -1,4 +1,17 @@
 <aside class="right-side">
+    <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
+                <!-- Make sure this has id = data -->
+        <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir; padding-left:10px;">
+            <div style="float:right; margin-right:1.5%;">
+                <span class="select">DISPLAYING</span>
+                <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> 
+                <span class="select">SONGS PER PAGE</span> 
+            </div>
+            <button class="btn" ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1" style="float:left;background:transparent; hover:cursor;text-decoration: none;padding: 0 14px;line-height: 30px;position: relative;color: #666;font-size: 14px;text-shadow: 0px 0px 1px #666;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">◀</button>
+            <button class="btn" ng-disabled="currentPageGlobal >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPageGlobal = currentPageGlobal+1" style="float:left;background:transparent; hover:cursor;text-decoration: none;padding: 0 14px;line-height: 30px;position: relative;color: #666;font-size: 14px;text-shadow: 0px 0px 1px #666;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">▶</button>
+            <!-- <span class="select">{{currentPage + 1}} of {{numberOfPages()}}</span> -->
+        </ul>
+    </div>
     <section class="content-header">
         <h1>
             Search Results
@@ -81,20 +94,20 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="song in globalresults | orderBy:predicate:reverse | startFrom:currentPageGlobal*pageSizeGlobal | limitTo:pageSizeGlobal">
-                    <td style="max-width: 20px;"><i style="margin-left: 20px;color:yellow;" class="fa fa-star"></i> {{song.upvote}}</td>
+                    <td style="max-width: 20px;"><i style="margin-left: 20px;color:#f1c40f;" class="fa fa-star"></i> {{song.upvote}}</td>
                     <td><a href="/viewsong/{{song._id}}">{{ song.title }}</a></td>
                     <td><a href="/artist/{{song.artist}}">{{ song.artist }}</a></td>
                     <td>{{ song.author_name }}</td>
                 </tr>
             </tbody>
 
-            <p style="margin-left:15px; margin-bottom:15px;" >Display <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> songs per page </p>
+            <!-- <p style="margin-left:15px; margin-bottom:15px;" >Display <select ng-model="pageSizeGlobal" ng-options="pageSizeGlobal for pageSizeGlobal in pageSizesGlobal"></select> songs per page </p> -->
 
         </table>   
-        <div style="text-align:center">
+        <!-- <div style="text-align:center">
             <button ng-disabled="currentPageGlobal == 0" ng-click="currentPageGlobal = currentPageGlobal-1"><</button>
             Page {{currentPageGlobal+1}} of {{numberOfPagesGlobal()}}
             <button ng-disabled="currentPageGlobal >= globalresults.length/pageSizeGlobal - 1"  ng-click="currentPageGlobal = currentPageGlobal+1">></button>  
-        </div> 
+        </div>  -->
     </div>
 </aside>
