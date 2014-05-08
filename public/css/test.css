@@ -746,3 +746,10 @@ margin-right:15px;
       background-color: #000;
 }
 
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}

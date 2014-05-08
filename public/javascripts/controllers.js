@@ -55,6 +55,7 @@ enchordControllers.controller('ProfileController', [
 		$scope.Side = Side;
 		$scope.usersongs = [];
 		$scope.userfolders = [];
+		$scope.isLoading = true;
 		$scope.$watch('pageSize', function(value) {
 			console.log('here');
 			$scope.currentPage = 0;
@@ -68,22 +69,23 @@ enchordControllers.controller('ProfileController', [
 			}).success(function(data) {
 				console.log(data);
 				$scope.usersongs = data.usersongs;
-			}).error(function(data, status) {
-				console.log(data);
-				console.log(status);
-				if (status == 500) {
+				$http({
+					method  : 'GET',
+					url     : '/myfolders'
+				}).success(function(data) {
+					console.log(data);
+					$scope.userfolders = data.userfolders;
+					$scope.isLoading = false;
+				}).error(function(data, status) {
+					console.log(data);
 					console.log(status);
-					$scope.message = data.message;
-					$scope.hasError = data.hasError;
-				}
-				$window.location.href = '/errorpage';
-			});
-			$http({
-				method  : 'GET',
-				url     : '/myfolders'
-			}).success(function(data) {
-				console.log(data);
-				$scope.userfolders = data.userfolders;
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+					$window.location.href = '/errorpage';
+				});
 			}).error(function(data, status) {
 				console.log(data);
 				console.log(status);
@@ -161,11 +163,13 @@ enchordControllers.controller('SearchController', [
 		$scope.pageSizesGlobal = [10, 25, 50];
 		$scope.pageSizeGlobal = 10;
 		$scope.predicate = 'upvote';
-		$scope.reverse = true
+		$scope.reverse = true;
+		$scope.isLoading = true;
 		//$scope.currentPageLocal = 0;
 		//$scope.pageSizesLocal = [5, 10, 25, 50];
 		//$scope.pageSizeLocal = 5;
 		$scope.query = "";
+		$scope.displayQuery = "";
 		$scope.isAdvSearch = false;
 		$scope.globalresults = [];
 		//$scope.localresults = [];
@@ -200,6 +204,7 @@ enchordControllers.controller('SearchController', [
 			var author = purify(author_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'*+,;= ()');
 
 			$scope.query = query;
+			$scope.displayQuery = query;
 			$scope.title = title;
 			$scope.artist = artist;
 			$scope.genre = genre;
@@ -217,6 +222,7 @@ enchordControllers.controller('SearchController', [
 					}).success(function(data) {
 						console.log(data);
 						$scope.globalresults = data.results.global;
+						$scope.isLoading = false;
 						//$scope.localresults = data.results.local;
 					}).error(function(data, status) {
 						$window.location.href = '/errorpage';
@@ -233,6 +239,7 @@ enchordControllers.controller('SearchController', [
 				}).success(function(data) {
 						console.log(data);
 						$scope.globalresults = data.results.global;
+						$scope.isLoading = false;
 						//$scope.localresults = data.results.local;
 				}).error(function(data, status) {
 						$window.location.href = '/errorpage';
@@ -295,6 +302,7 @@ enchordControllers.controller('SongViewController', [
 		$scope.preference = "♯";
 		$scope.origData = "";
 		$scope.transposed = 0;
+		$scope.isLoading = true;
 		$scope.hasvoted = function() {
 			$http({
 				method : 'GET',
@@ -335,6 +343,7 @@ enchordControllers.controller('SongViewController', [
 						$scope.hasvoted();
 						$scope.hasAuthor();
 					}
+					$scope.isLoading = false;
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -356,6 +365,7 @@ enchordControllers.controller('SongViewController', [
 					pub: true
 				};
 				$scope.parsehtml();
+				$scope.isLoading = false;
 			}
 		}
 		$scope.gotoeditsong = function() {
@@ -531,6 +541,7 @@ enchordControllers.controller('SongEditController', [
 		$scope.reverseParseMode = false;
 		$scope.isSongSaved = false;
 		$scope.transposeMode = false;
+		$scope.isLoading = true;
   		var win = $window;
   		var unWatch = $scope.$watch('songEditForm.$dirty || markupForm.$dirty', function(value) {
     		if(value) {
@@ -585,6 +596,7 @@ enchordControllers.controller('SongEditController', [
 					$scope.song = data.song;
 					$scope.isNew = false;
 					$scope.parsehtml();
+					$scope.isLoading = false;
 				}).error(function(data, status) {
 					console.log(data);
 					console.log(status);
@@ -604,6 +616,7 @@ enchordControllers.controller('SongEditController', [
 					pub: true
 				};
 				$scope.parsehtml();
+				$scope.isLoading = false;
 			}
 			console.log($scope.isNew);
 		}
@@ -829,6 +842,7 @@ enchordControllers.controller('ArtistController', [
 		$scope.predicate = 'upvote';
 		$scope.reverse = true
 		$scope.artistsongs = [];
+		$scope.isLoading = true;
 		$scope.$watch('pageSize', function(value) {
 			console.log('here');
 			$scope.currentPage = 0;
@@ -845,6 +859,7 @@ enchordControllers.controller('ArtistController', [
 				}).success(function(data) {
 					console.log(data);
 					$scope.artistsongs = data.results;
+					$scope.isLoading = false;
 				}).error(function(data, status) {
 					$window.location.href = '/errorpage';
 				});
@@ -1185,6 +1200,7 @@ enchordControllers.controller('FolderViewController', [
 		$scope.addSongMode = false;
 		$scope.editFolderMode = false;
 		$scope.message = '';
+		$scope.isLoading = true;
 		$scope.$watch('pageSizeFolder', function(value) {
 			console.log('here');
 			$scope.currentPageFolder = 0;
@@ -1223,6 +1239,7 @@ enchordControllers.controller('FolderViewController', [
 					$scope.folder = data.folder;
 					$scope.foldername = $scope.folder.name;
 					$scope.foldersongs = data.folder.foldersongs;
+					$scope.isLoading = false;
 				}).error(function(data, status) {
 					$window.location.href = '/errorpage';
 				});
