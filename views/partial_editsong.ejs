@@ -43,7 +43,9 @@
 
         <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; padding-left:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-                <% include partialmini_fonts.ejs %>
+                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">
+                    <% include partialmini_fonts.ejs %>
+                </ul>
 
                 <div ng-show='!reverseParseMode' class="chordSheet col-md-6" ng-bind-html="parsedResult()" style="height:100vh; max-width:200px;min-width:100%;padding-top:15px; padding-right:0px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
         </div>
