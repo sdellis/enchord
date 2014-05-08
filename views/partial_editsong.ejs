@@ -21,9 +21,9 @@
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
                 <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">
-                    <% include partialmini_transpose.ejs %>
                     <li style="display:inline-block;">
                         <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>                             
+                    <% include partialmini_transpose.ejs %>
                 </ul>
 
                 <textarea id="data" name="data" class="form-control" ng-maxlength="10000000" ng-model="song.data" ng-change="parsehtml()" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'&#34;&lsquo;&rsquo;&ldquo;&rdquo;&ndash;&mdash;\~\|\/\\\#\%\^\*\+\=]*$/" style="height:100vh; font-family:Courier;resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px;" spellcheck="false"></textarea>
