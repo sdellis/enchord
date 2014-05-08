@@ -53,7 +53,7 @@ function lineType(line)
 	var chords = 0;
 	for(var i = 0; i < words.length ; i += 1)
 		if(justChords.test(words[i])) chords +=1;
-	if(chords * 2 >= words.length)
+	if(chords >= words.length * 3)
 		return "chord";
 	//otherwise, a lyric line
 	return "lyric";
