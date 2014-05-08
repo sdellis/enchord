@@ -1,5 +1,5 @@
 <header class="header">
-    <a href="/" class="logo" style="font-family:avenir;">
+    <a href="/" class="logo">
         Enchord
     </a>
     <nav class="navbar navbar-static-top" role="navigation">
@@ -9,18 +9,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
-        <div class="navbar-right">
+        <div class="navbar-right" style="font-family:avenir; font-size:11px; font-weight:600;">
             <!-- IF LOGGED IN -->
             <% if(isLoggedIn) { %>
             <ul class="nav navbar-nav">
-                <li><a href="/members/settings">Account Settings</a></li>
-                <li><a href="/logout">Sign Out</a></li>
+                <li><a href="/members/settings">ACCOUNT SETTINGS</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
             </ul>
             <!-- NOT LOGGED IN -->
             <% } else { %>
             <ul class="nav navbar-nav">
-                <li><a href="/signup">Sign Up</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">SIGN UP</a></li>
+                <li><a href="/login">LOGIN</a></li>
             </ul>
             <% } %>
         </div>

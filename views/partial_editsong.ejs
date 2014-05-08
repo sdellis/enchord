@@ -6,9 +6,9 @@
         <!-- This is the reverse parse window -->
           <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; height:100vh; width:100%;">
             <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">           
+            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">           
                 <% include partialmini_transpose.ejs %>
-                <li ng-show='reverseParseMode' style="margin-left:84%;">
+                <li ng-show='reverseParseMode' style="margin-left:1%;">
                     <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
                     <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
                 </li>                         
@@ -20,7 +20,7 @@
         <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
+                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">
                     <% include partialmini_transpose.ejs %>
                     <li style="display:inline-block;">
                         <button ng-show='!reverseParseMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>                             

@@ -1,6 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic);
 
-@import url(http://fonts.googleapis.com/css?family=Kaushan+Script);
 /*! 
  *   AdminLTE v1.2
  *   Author: AlmsaeedStudio.com
@@ -14,7 +12,7 @@
 html,
 body {
   overflow-x: hidden!important;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100%;
   background: #f9f9f9;
@@ -128,7 +126,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
 }
 /* Page Header */
 .page-header {
@@ -401,7 +399,7 @@ body > .header .logo {
   text-align: center;
   padding: 0 10px;
   width: 220px;
-  font-family: 'Kaushan Script', cursive;
+  font-family: 'Proxima Nova', sans-serif;
   font-weight: 500;
   height: 50px;
   display: block;
@@ -1759,7 +1757,11 @@ Component: timeline
 .btn.btn-default:hover,
 .btn.btn-default:active,
 .btn.btn-default.hover {
-  background-color: #f4f4f4!important;
+  background-color: transparent;!important;
+}
+
+.btn.btn-default.nohov:hover{
+  background-color:#222;
 }
 .btn.btn-default.btn-flat {
   border-bottom-color: #d9dadc;
@@ -2577,7 +2579,6 @@ Component: timeline
 .skin-black .navbar .nav .open > a,
 .skin-black .navbar .nav .open > a:hover,
 .skin-black .navbar .nav .open > a:focus {
-  background: #ffffff;
   color: #999999;
 }
 .skin-black .navbar .navbar-right > .nav {
@@ -3431,4 +3432,8 @@ button:hover{
   -o-transition: all 500ms ease;
   transition: all 500ms ease;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+button .btn .pagination {
+  background-color: #E6E6E6;text-decoration: none;padding: 0 14px;line-height: 40px;position: relative;color: #666;font-size: 14px;text-shadow: 0px 0px 1px #666;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;
 }
