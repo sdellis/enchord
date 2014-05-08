@@ -189,10 +189,10 @@ enchordControllers.controller('SearchController', [
 		})
 		$scope.init = function(query_uc, adv, title_uc, artist_uc, genre_uc, author_uc) {
 			Side.setPagetype('search');
-			var query = purify(query_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
-			var title = purify(title_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
-			var artist = purify(artist_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ()');
-			var genre = purify(genre_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\' ()');
+			var query = purify(query_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ().,');
+			var title = purify(title_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ().,');
+			var artist = purify(artist_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&-_\' ().,');
+			var genre = purify(genre_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\' ().,');
 			var author = purify(author_uc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'*+,;= ()');
 
 			$scope.query = query;
