@@ -33,7 +33,7 @@ function simpleTransposeNote(note, steps, pref)
 		{
 			//note should be /[A-G][b#]?/
 			//steps any integer
-			//pref either 'b' or '#'
+			//pref either 'f' or 's'
 			var i;
 			if(!(note in lookup))
 				return '?'
@@ -44,9 +44,9 @@ function simpleTransposeNote(note, steps, pref)
 			
 			switch(pref)
 			{
-				case 'b':case 'flat':case 'Flat':
+				case 'f':case 'flat':case 'Flat':
 				return flatscale[o];break;
-				case '#':case 'sharp':case 'Sharp':
+				case 's':case 'sharp':case 'Sharp':
 				default:
 					return sharpscale[o];break;
 			}	
