@@ -650,8 +650,38 @@ enchordControllers.controller('SongEditController', [
 			});
 		}
 		$scope.errorinfields = function() {
-			alert('Error on inputs:\n-Song title and artists should only have the following characters:\n\t-A-Za-z0-9 $?!&-_\'()\n-Genre should only have the following characters:\n\t-A-Za-z0-9 $-_\'()\n\nTitle and Artist fields cannot be empty.');
+			$scope.message = "";
+			if($scope.songEditForm.title.$error.required)
+				$scope.message = $scope.message.concat("Title field cannot be empty.<br><br>");
+			if($scope.songEditForm.title.$error.maxlength)
+				$scope.message = $scope.message.concat("Title field cannot be longer than 100 characters.<br><br>");
+			if(!$scope.songEditForm.title.$error.required && !$scope.songEditForm.title.$error.maxlength && $scope.songEditForm.title.$invalid)
+				$scope.message = $scope.message.concat("Title field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.songEditForm.artist.$error.required)
+				$scope.message = $scope.message.concat("Artist field cannot be empty.<br><br>");
+			if($scope.songEditForm.artist.$error.maxlength)
+				$scope.message = $scope.message.concat("Artist field cannot be longer than 100 characters.<br><br>");
+			if(!$scope.songEditForm.artist.$error.required && !$scope.songEditForm.artist.$error.maxlength && $scope.songEditForm.artist.$invalid)
+				$scope.message = $scope.message.concat("Artist field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.songEditForm.genre.$error.maxlength)
+				$scope.message = $scope.message.concat("Genre field cannot be longer than 100 characters.<br><br>");
+			if($scope.songEditForm.genre.$invalid)
+				$scope.message = $scope.message.concat("Genre field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.message != "")
+				$scope.message = "Error in inputs:<br><br>".concat($scope.message);
+			$scope.errorSetHTML();
+			$('.message-modal-sm').modal('show');
+
+			//alert('Error on inputs:\n-Song title and artists should only have the following characters:\n\t-A-Za-z0-9 $?!&-_\'()\n-Genre should only have the following characters:\n\t-A-Za-z0-9 $-_\'()\n\nTitle and Artist fields cannot be empty.');
 		}
+
+		$scope.errorSetHTML = function() {
+			return $sce.trustAsHtml($scope.message);
+		}
+
 		$scope.editsong = function(redirect) {
 			// $scope.inSave = true;
 			console.log("edit " + $scope.song.title);
