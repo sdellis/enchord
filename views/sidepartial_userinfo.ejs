@@ -1,11 +1,13 @@
 <div class="user-panel">
     <div class="pull-left image">
-    	<% if(user.facebook.token) { %>
-    		<img src="https://graph.facebook.com/<%=user.facebook.id%>/picture" class="img-circle" alt="User Image" />	
-    	<% } else if(user.twitter.token) { %>
-			<img src="http://res.cloudinary.com/demo/image/twitter_name/<%=user.twitter.username%>.jpg" class="img-circle" alt="User Image" />
-		<% } else if(user.google.token) { %>
-		 	<img src="/images/default.png" class="img-circle" alt="User Image" />
+   		<% if (isLoggedIn) { %>
+	    	<% if(user.facebook.token) { %>
+	    		<img src="https://graph.facebook.com/<%=user.facebook.id%>/picture" class="img-circle" alt="User Image" />	
+	    	<% } else if(user.twitter.token) { %>
+				<img src="http://res.cloudinary.com/demo/image/twitter_name/<%=user.twitter.username%>.jpg" class="img-circle" alt="User Image" />
+			<% } else if(user.google.token) { %>
+			 	<img src="/images/default.png" class="img-circle" alt="User Image" />
+			<% } %>
 		<% } else { %>
 			<img src="/images/default.png" class="img-circle" alt="User Image" />
 		<% } %>

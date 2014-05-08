@@ -25,7 +25,7 @@ lyric:default, if not others.
 
 */
 
-var commonheaders = new Array( /^\s*\[?\s*((\d(th|nd|rd|st)?)|last|final)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*((\d(th|nd|rd|st)?)|last|final|pre-?)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i, /^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(\d* *solo([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*\]?\s*$/i)
+var commonheaders = new Array( /^\s*\[?\s*((\d(th|nd|rd|st)?)|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last|final)?\s*(verse(s)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*((\d(th|nd|rd|st)?)|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last|final|pre-?)?\s*(chorus(es)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(bridge(s)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i, /^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(intro(duction)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(outro([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(instrumental([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(\d* *solo([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(end(ing)?([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(break(down)([ _]*\d+)?)\s*:?\s*\]?\s*$/i,/^\s*\[?\s*(\d(th|nd|rd|st)?)?\s*(tag([ _]*\d+)?)\s*:?\s*\]?\s*$/i)
 var emptyLine = /^\s*$/;
 var hasChords = /(\s|,|-|\(|^)([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}(sus|add)?\d{0,2}(\/[A-G][#b]?)?)(\s|,|-|\)|$)/g;
 var replaceChords = /(\s|,|-|\(|^)?([A-G][#b]?(m|min|dim|maj|sus|aug|\+)?\d{0,2}\(?(sus|add)?\d{0,2}\)?(\/[A-G][#b]?)?)(\s|,|-|\)|$)?/g;
@@ -48,12 +48,12 @@ function lineType(line)
 	//is it a chord line?
 	if(justChords.test(line))
 		return "chord";
-	//if more than half of the words are chords
+	//if more than one third of the words are chords
 	var words = line.trim().split(/\s+/g)
 	var chords = 0;
 	for(var i = 0; i < words.length ; i += 1)
 		if(justChords.test(words[i])) chords +=1;
-	if(chords >= words.length * 3)
+	if(chords * 3>= words.length)
 		return "chord";
 	//otherwise, a lyric line
 	return "lyric";
