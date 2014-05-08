@@ -14,14 +14,18 @@ div.chordSheet p {
 	position: relative;
 	page-break-inside: avoid;
 	white-space: pre;
+	margin: 0px;
 }
-div.chordSheet p:after
+/*div.chordSheet p:after
  {
 	content: '';
     display:block;
     height:0px;
     visibility: hidden;
 }
+.pagebreak {
+	page-break-after: always; 
+}*/
 div.chordSheet .lineerror{
 	color		: red;
 	font-style	: italic;
