@@ -158,8 +158,8 @@ enchordControllers.controller('SearchController', [
 	'Side',
 	function($scope, $window, $routeParams, $location, $http, Side) {
 		$scope.currentPageGlobal = 0;
-		$scope.pageSizesGlobal = [5, 10, 25, 50];
-		$scope.pageSizeGlobal = 5;
+		$scope.pageSizesGlobal = [10, 25, 50];
+		$scope.pageSizeGlobal = 10;
 		$scope.predicate = 'upvote';
 		$scope.reverse = true
 		//$scope.currentPageLocal = 0;
