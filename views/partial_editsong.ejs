@@ -6,7 +6,7 @@
         <!-- This is the reverse parse window -->
           <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;width:100%;">
             <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">           
+            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">           
                 <% include partialmini_transpose.ejs %>
                 <li ng-show='reverseParseMode' style="margin-left:1%;">
                     <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
@@ -21,7 +21,7 @@
         <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; ">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">                           
+                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">                           
                     <% include partialmini_transpose.ejs %>
                     <li style="display:inline-block;">
                         <button ng-show='!reverseParseMode && !transposeMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>
@@ -45,7 +45,7 @@
 
         <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; padding-left:0px;">
             <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir;">
+                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
                     <% include partialmini_fonts.ejs %>
                     <li style="display:inline-block; float:right; margin-right:15px;" >
                         <button class="btn-switch" onclick="window.open('http://www.enchord.me/viewsong/536afe29f29fef02009c4999');">Help</button> 
