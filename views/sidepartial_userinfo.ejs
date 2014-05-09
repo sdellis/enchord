@@ -5,13 +5,8 @@
 	    		<img src="https://graph.facebook.com/<%=user.facebook.id%>/picture" class="img-circle" alt="User Image" />	
 	    	<% } else if(user.twitter.token) { %>
 				<img src="http://res.cloudinary.com/demo/image/twitter_name/<%=user.twitter.username%>.jpg" class="img-circle" alt="User Image" />
-<<<<<<< HEAD
-			<% } else { %>
-			 	<img src="/images/default.png" class="img-circle" alt="User Image" />
-=======
 			<% } else if(user.google.token) { %>
 			 	<img src="/images/default_icon.png" class="img-circle" alt="User Image" />
->>>>>>> 458818152d4c6fe5e9db0973229777550eedf4db
 			<% } %>
 		<% } else { %>
 			<img src="/images/default_icon.png" class="img-circle" alt="User Image" />
