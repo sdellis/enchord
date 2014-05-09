@@ -46,7 +46,8 @@ enchordControllers.controller('ProfileController', [
 	'$route',
 	'$window',
 	'Side',
-	function($scope, $http, $location, $route, $window, Side){
+	'$filter',
+	function($scope, $http, $location, $route, $window, Side, $filter){
 		$scope.currentPage = 0;
 		$scope.pageSizes = [10, 25, 50];
 		$scope.pageSize = 10;
@@ -98,9 +99,11 @@ enchordControllers.controller('ProfileController', [
 			});
 		}
 		$scope.numberOfPages = function() {
-			if ($scope.usersongs.length == 0)
+			var filteredList = $filter('filter')($scope.usersongs, $scope.filter)
+			if (filteredList.length == 0)
 				return 1;
-			return Math.ceil($scope.usersongs.length/$scope.pageSize);
+			console.log(Math.ceil(filteredList.length/$scope.pageSize));
+			return Math.ceil(filteredList.length/$scope.pageSize);
 		}
 		$scope.setPredicate = function(predicate) {
 			$scope.predicate = predicate;
