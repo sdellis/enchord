@@ -40,12 +40,19 @@ function printDoc(font,fontsize,orderLine)
 			var name = sectArray[i].trim().toLowerCase();
 			if(name === "") continue;
 
-			if(name.charAt(0) === '*') //just print the section name
+			if(name.charAt(0) === '^') //just print the section name
 			{
 				if(!sectionNameToNum[name.substring(1)]) 
 					result += "<p><span class='heading'>" + name.substring(1) +"</span><span class=\"lineerror\"> is not a recognized section.</span>\n<p>\n";
 				else
 					result += "<p><span class='heading'>"+sectionNumToName[sectionNameToNum[name.substring(1)]]+ "</span>\n<p>\n"
+			}
+			else if(name.charAt(0) === '*') //just print the section text
+			{
+				if(!sectionNameToNum[name.substring(1)]) 
+					result += "<p><span class='heading'>" + name.substring(1) +"</span><span class=\"lineerror\"> is not a recognized section.</span>\n<p>\n";
+				else
+					result += "<p>" + getSection(name.substring(1)) + "</p>\n"; 
 			}
 			else { //print section name and contents
 				if(!sectionNameToNum[name]) 

@@ -1,9 +1,9 @@
 <form class="sidebar-form" name="searchForm">
     <div class="input-group" ng-controller="SearchController">
-        <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" name="query"/>
+        <input type="text" name="query" class="form-control" placeholder="Search..." ng-model="query" type="text" class="form-control" id="query" name="query" style="border-top-left-radius:21px !important; border-bottom-left-radius:21px !important; color:#eee;"/>
         <input type="hidden" name="type" value="Both">
         <span class="input-group-btn">
-            <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search" style="line-height:2;"></i></button>
+            <button ng-click="search()" type='submit' name='search' id='search-btn' class="btn btn-flat" style="border-top-right-radius:21px !important; border-bottom-right-radius:21px !important;"><i class="fa fa-search" style="line-height:2;"></i></button>
         </span>
     </div>
 </form>

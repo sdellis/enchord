@@ -24,13 +24,13 @@
 
                     <!-- <span class="select">{{currentPage + 1}} of {{numberOfPages()}}</span> -->
 
-                    <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter by songs, artists, genre..." style="max-width: 30%; margin-left: 20%;color: #666;-webkit-border-top-left-radius: 2px !important;-webkit-border-top-right-radius: 2px !important;-webkit-border-bottom-right-radius: 2px !important;-webkit-border-bottom-left-radius: 2px !important;-moz-border-radius-topleft: 2px !important;-moz-border-radius-topright: 2px !important;-moz-border-radius-bottomright: 2px !important;-moz-border-radius-bottomleft: 2px !important;border-top-left-radius: 2px !important;border-top-right-radius: 2px !important;border-bottom-right-radius: 2px !important;border-bottom-left-radius: 2px !important;background:transparent; border-color:#555; border-width:2px;" />
+                    <input type="text" ng-show="addSongMode" name="query" ng-class="{ 'has-error' : addSongForm.query.$invalid && !addSongForm.query.$pristine }" ng-model="query" ng-minlength="1" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\']*$/" required class="form-control" placeholder="Filter by songs, artists, genre..." style="max-width: 30%; margin-left: 20%;color: #eee;-webkit-border-top-left-radius: 21px !important;-webkit-border-top-right-radius: 21px !important;-webkit-border-bottom-right-radius: 21px !important;-webkit-border-bottom-left-radius: 21px !important;-moz-border-radius-topleft: 21px !important;-moz-border-radius-topright: 21px !important;-moz-border-radius-bottomright: 21px !important;-moz-border-radius-bottomleft: 21px !important;border-top-left-radius: 21px !important;border-top-right-radius: 21px !important;border-bottom-right-radius: 21px !important;border-bottom-left-radius: 21px !important;background-color:#464646; border-color:#555; border-width:0px;" />
                 </ul>
             </div>
     <div ng-show="!addSongMode">
     <section class="content-header">
-        <h3>
-            Folder: {{foldername}}
+        <h3 style="padding-left:20px;">
+            {{foldername}}
             <small ng-show="foldersongs.length != 1">{{ foldersongs.length}} songs</small>
             <small ng-show="foldersongs.length == 1">{{ foldersongs.length}} song</small>
         </h3>

@@ -30,10 +30,26 @@ function printDoc(orderLine)
 		for( var i = 0; i <sectArray.length;i++) { 
 			var name = sectArray[i].trim().toLowerCase();
 			if(name === "") continue;
-			if(name.charAt(0) === '*') //just print the section name
-				result += sectionNumToName[sectionNameToNum[name.substring(1)]]+ "\n"
-			else //print section name and contents{
-				result += sectionNumToName[sectionNameToNum[name]]+ "\n" + getSection(name) + "\n"; 
+			if(name.charAt(0) === '^'){ //just print the section name
+				
+				if(!sectionNameToNum[name.substring(1)]) 
+					result += name.substring(1) +"is not a recognized section.\n";
+				else
+					result += sectionNumToName[sectionNameToNum[name.substring(1)]]+ "\n"
+			}
+			else if(name.charAt(0) === '*') //just print the section text
+			{
+				if(!sectionNameToNum[name.substring(1)]) 
+					result += name.substring(1) +"is not a recognized section.\n";
+				else
+					result += getSection(name.substring(1)) + "\n"
+			}
+			else { //print section name and contents
+				if(!sectionNameToNum[name]) 
+					result += name + "is not a recognized section.\n";
+				else
+					result += sectionNumToName[sectionNameToNum[name]]+ "\n" + getSection(name) + "\n"; 
+			}				
 		}
 	}
 	else //print off sections in order written
