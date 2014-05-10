@@ -1,7 +1,7 @@
 <aside class="right-side">
     <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
                 <!-- Make sure this has id = data -->
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; font-family:avenir; padding-left:10px;">
+                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%; padding-left:10px;">
                 <div style="float:right; margin-right:1.5%;">
                     <span class="select">DISPLAYING</span>
                     <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> 
@@ -14,7 +14,7 @@
             </div>
     <section class="content-header">
         <h1>
-            Artist: <%= artistname %>
+            <%= artistname %>
             <small ng-show="globalresults.length != 1">{{ artistsongs.length}} songs</small>
             <small ng-show="globalresults.length == 1">{{ artistsongs.length}} song</small>
         </h1>
