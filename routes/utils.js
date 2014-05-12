@@ -249,26 +249,26 @@ exports.downloadSongTxt = function(req, res) {
 
 //------------------------------------------------Search Songs functions ---------------------
 
-exports.searchSong = function(req, res) {//REMOVE QUERY2 LATER
+exports.searchSong = function(req, res) {
 	var query1 = {}; //do the global search; if song is in band, it is not searchable
-	//var query2 = {}; //break into 2 queries for easy or statement for Both
+	var query2 = {}; //break into 2 queries for easy or statement for Both
 	if (req.query.query == undefined) {
 		query1['search_string'] = '';
-		//query2['search_string'] = '';
+		query2['search_string'] = '';
 	}
 	else {
 		query1['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
-		//query2['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
+		query2['search_string'] = {$all: req.query.query.toLowerCase().split(' ')};
 	}
 	query1['pub'] = true;
-	//query2['pub'] = false;
-	/*
+	query2['pub'] = false;
+	
 	if (req.isAuthenticated()) {
 		query2['author_id'] = getAuthorId(req);
 	}
 	else {
 		query2 = {'search_string': ''}; //not logged in, do not search private songs
-	}*/
+	}
 
 	var originalQuery = {
 		query: req.query.query,
@@ -278,12 +278,14 @@ exports.searchSong = function(req, res) {//REMOVE QUERY2 LATER
 		author: "",
 	};
 	//var search_results = {global: [], local: []};
+	var query = {$or: [query1, query2]};
+
 	var search_results = {global: []};
 	if (query1['search_string'] == '') {
 		return;
 	}
 	else {
-		songSchema.find(query1, function(err, docs) {
+		songSchema.find(query, function(err, docs) {
 			search_results['global'] = docs;
 			searchResults(err, search_results, originalQuery, req, res);
 		});
@@ -322,34 +324,36 @@ exports.advancedSearch = function(req, res) { //REMOVE QUERY2 LATER
 	console.log(qAuthor);
 	
 	var query1 = {}; //if song belongs to a band, it is always not searchable
-	//var query2 = {};
+	var query2 = {};
 	
 	if (qTitle != '') {
 		query1['title_lower'] = qTitle;
-		//query2['title_lower'] = qTitle;
+		query2['title_lower'] = qTitle;
 	}
 	if (qArtist != '') {
 		query1['artist_lower'] = qArtist;
-		//query2['artist_lower'] = qArtist;
+		query2['artist_lower'] = qArtist;
 	}
 	if (qGenre != '') {
 		query1['genre_lower'] = qGenre;
-		//query2['genre_lower'] = qGenre;
+		query2['genre_lower'] = qGenre;
 	}
 	if (qAuthor != '') {
 		query1['author_lower'] = qAuthor;
-		//query2['author_lower'] = qAuthor;
+		query2['author_lower'] = qAuthor;
 	}
 	
 	query1['pub'] = true;
-	//query2['pub'] = false;
-	/*
+	query2['pub'] = false;
+	
 	if (req.isAuthenticated()) {
 		query2['author_id'] = getAuthorId(req);//this way a username search will not show local songs of another user
 	}
 	else {
 		query2['search_string'] = ''; //not logged in, do not search private songs
-	}*/
+	}
+
+	var query = {$or: [query1, query2]};
 	
 	var originalQuery = {
 		query: "",
@@ -358,7 +362,8 @@ exports.advancedSearch = function(req, res) { //REMOVE QUERY2 LATER
 		genre: req.query.genre,
 		author: req.query.author,
 	};
-	var search_results = {global: [], local: []};
+	//var search_results = {global: [], local: []};
+	var search_results = {global: []};
 	if (qTitle == '' && qArtist == '' && qGenre == '' && qAuthor == '')
 		res.render('results.ejs', {
 			isLoggedIn: req.isAuthenticated(),
@@ -373,7 +378,7 @@ exports.advancedSearch = function(req, res) { //REMOVE QUERY2 LATER
 		});
 	else
 	{
-		songSchema.find(query1, function(err, docs) {
+		songSchema.find(query, function(err, docs) {
 			search_results['global'] = docs;
 			searchResults(err, search_results, originalQuery, req, res);
 		});
