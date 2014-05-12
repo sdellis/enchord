@@ -522,6 +522,193 @@ enchordControllers.controller('SongViewController', [
 		}
 	}]);
 
+// Demo controller
+enchordControllers.controller('DemoController', [
+	'$scope', 
+	'$routeParams', 
+	'$http', 
+	'$window',
+	'$location',
+	'$sce',
+	'Side',
+	function($scope, $routeParams, $http, $window, $location, $sce, Side){ 
+		$scope.isNew = true;
+		$scope.hasError = false;
+		$scope.inSave = false;
+		$scope.song = {};
+		$scope.message = '';
+		$scope.font = "Helvetica";
+		$scope.fontsize = "14";
+		$scope.steps = "0";
+		$scope.preference = "♯"
+		$scope.reverseParseMode = false;
+		$scope.isSongSaved = false;
+		$scope.transposeMode = false;
+		$scope.isLoading = true;
+  		var win = $window;
+
+		$scope.parsehtml = function() {
+			var puredata = purify($scope.song.data, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
+			$http({
+				method  : 'POST',
+				url     : '/parsesonghtml',
+				data    : $.param({data: puredata, font: $scope.font, fontsize: $scope.fontsize}),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.result = data;
+				$scope.message = data.message;
+			});
+		}
+
+		// Guarantee that returned html is clean
+		$scope.parsedResult = function() {
+			return $sce.trustAsHtml($scope.song.result);
+		}
+
+		// $scope.init = function() {
+		// 	var _id = $routeParams._id;
+		$scope.init = function(_id) {
+			// if(_id == undefined)
+			// 	Side.setPagetype("createsong");
+			// else
+			// 	Side.setPagetype("editsong");
+			$(".help-popover").popover(); // show popover
+			if(_id != undefined && _id.length != 0) {
+				var getUrl = '/findsong/' + _id;
+				$http({
+					method  : 'GET',
+					url     : getUrl
+				}).success(function(data) {
+					console.log(data);
+					if (data.song == undefined) { // if song does not exist
+						console.log("Song not found");
+						$window.location.href='/members/createsong';
+						return;
+					}
+					$scope.song = data.song;
+					$scope.isNew = false;
+					$scope.parsehtml();
+					$scope.isLoading = false;
+				}).error(function(data, status) {
+					console.log(data);
+					console.log(status);
+					if (status == 500) {
+						console.log(status);
+						$scope.message = data.message;
+						$scope.hasError = data.hasError;
+					}
+				});
+			} else {
+				$scope.song = {
+					title: '',
+					artist: '',
+					genre: '',
+					data: '',
+					_id: '',
+					pub: true
+				};
+				$scope.parsehtml();
+				$scope.isLoading = false;
+			}
+			console.log($scope.isNew);
+		}
+
+		$scope.errorinfields = function() {
+			$scope.message = "";
+			if($scope.songEditForm.title.$error.required)
+				$scope.message = $scope.message.concat("Title field cannot be empty.<br><br>");
+			if($scope.songEditForm.title.$error.maxlength)
+				$scope.message = $scope.message.concat("Title field cannot be longer than 100 characters.<br><br>");
+			if(!$scope.songEditForm.title.$error.required && !$scope.songEditForm.title.$error.maxlength && $scope.songEditForm.title.$pattern)
+				$scope.message = $scope.message.concat("Title field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.songEditForm.artist.$error.required)
+				$scope.message = $scope.message.concat("Artist field cannot be empty.<br><br>");
+			if($scope.songEditForm.artist.$error.maxlength)
+				$scope.message = $scope.message.concat("Artist field cannot be longer than 100 characters.<br><br>");
+			if(!$scope.songEditForm.artist.$error.required && !$scope.songEditForm.artist.$error.maxlength && $scope.songEditForm.artist.$pattern)
+				$scope.message = $scope.message.concat("Artist field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.songEditForm.genre.$error.maxlength)
+				$scope.message = $scope.message.concat("Genre field cannot be longer than 100 characters.<br><br>");
+			if($scope.songEditForm.genre.$pattern)
+				$scope.message = $scope.message.concat("Genre field should only have the following characters:<br>A-Za-z0-9 $?!&-_\'()<br><br>");
+
+			if($scope.message != "")
+				$scope.message = "Error in inputs:<br><br>".concat($scope.message);
+			$scope.errorSetHTML();
+			$('.message-modal-sm').modal('show');
+
+			//alert('Error on inputs:\n-Song title and artists should only have the following characters:\n\t-A-Za-z0-9 $?!&-_\'()\n-Genre should only have the following characters:\n\t-A-Za-z0-9 $-_\'()\n\nTitle and Artist fields cannot be empty.');
+		}
+
+		$scope.errorSetHTML = function() {
+			return $sce.trustAsHtml($scope.message);
+		}
+
+		//transpose
+		$scope.transpose = function() {
+			console.log($scope.song);
+			var pref = ''
+			if ($scope.preference == '♯') {
+				pref = 's'
+			} else {
+				pref = 'f';
+			}
+			var puredata = purify($('#data').val(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
+			$scope.song.data = puredata;
+			$http({
+				method: 'POST',
+				url: '/edit/transpose',
+				data : $.param({data: puredata, step: $scope.steps, sf: pref}),
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.data = data.transposedSong;
+				$scope.parsehtml();
+				$scope.steps = 0;
+				$scope.leaveTranspose();
+				// $scope.transposed = $scope.transposed + $scope.steps;
+				// $scope.markupForm = data;
+			});
+		}
+
+		$scope.enterReverseParseMode = function() {
+			$scope.reverseParseMode = true;
+		}
+
+		$scope.leaveReverseParseMode = function() {
+			$scope.reverseParseMode = false;
+		}
+
+		$scope.enterTranspose = function() {
+			$scope.transposeMode = true;
+		}
+
+		$scope.leaveTranspose = function() {
+			$scope.transposeMode = false;
+		}
+
+		$scope.reverseParse = function() {
+			console.log($scope.reverseParseData);
+			var puredata = purify($scope.reverseParseData, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \$\?\!\&\-\_\,\.\;\:\(\)\{\}\[\]\<\>\n\t\'\"\‘\’\“\”\–\—\~\|\/\\\#\%\^\*\+\=');
+			$http({
+				method: 'POST',
+				url: '/reverseparse',
+				data: $.param({data: puredata}), 
+				headers : {'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function(data) {
+				console.log(data);
+				$scope.song.data = data.markup;
+				$scope.reverseParseMode = false;
+				$scope.parsehtml();
+			}).error(function(data, status){
+
+			})
+		}
+	}]);
+
 // Song page (edit) controller
 enchordControllers.controller('SongEditController', [
 	'$scope', 
@@ -741,6 +928,8 @@ enchordControllers.controller('SongEditController', [
 			if (!confirm("Are you sure you want to delete this song?")) {
 				return;
 			}
+			unWatch();
+			win.onbeforeunload = function(){};
 			console.log("delete " + $scope.song.title);
 			$http({
 				method  : 'POST',
