@@ -1,0 +1,25 @@
+<aside class="left-side sidebar-offcanvas">
+    <section class="sidebar">
+        <% include sidepartial_userinfo.ejs %>
+        <ul class="sidebar-menu">
+            <% include sidepartial_searchbar.ejs %>
+            <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Song Info</h5>
+            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Name: {{song.title}}</li>
+            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Artist: {{song.artist}}</li>
+            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Author: {{song.author_name}}</li>
+            <li style="color:#eee;padding: 12px 5px 12px 15px; display:block;">Genre: {{song.genre}}</li>
+        </ul>
+        <div class="modal fade message-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-body" ng-bind-html="errorSetHTML()">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+    </section>
+</aside> 
