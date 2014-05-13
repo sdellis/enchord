@@ -1574,7 +1574,9 @@ enchordControllers.controller('FolderViewController', [
 			});
 
 			$scope.filteredsongs = $scope.usersongs.filter(function(song) {
-				return foldersongsids.indexOf(song._id) == -1;
+				// return foldersongsids.indexOf(song._id) == -1 || song.folder_id == "";
+				console.log(song);
+				return song.folder_id == "";
 			});	
 			$scope.addSongMode = true;
 		}
