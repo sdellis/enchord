@@ -421,6 +421,10 @@ module.exports = function(app, passport, db) {
 	    app.post('/undovote', isLoggedIn, utils.undovote);
 	    app.get('/hasvoted', isLoggedIn, utils.hasvoted);
 
+	    /* --------------------- error route ---------------------------- */
+	    app.get('/errorpage', function(req, res){
+	    	res.render('error.ejs');
+	    })
 		
 	    // ?????
 		app.get('/partials/:filename', function(req, res){
@@ -431,6 +435,11 @@ module.exports = function(app, passport, db) {
 
 
 		app.get('/mysongs', isLoggedIn, utils.getUserSongs);
+
+		/* --------------------- default route ---------------------------- */
+		app.get('*', function(req, res){
+			res.render('error.ejs');
+		});
 
 	});
 }
