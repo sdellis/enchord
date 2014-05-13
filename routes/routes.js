@@ -202,7 +202,7 @@ module.exports = function(app, passport, db) {
 		});
 
 		// TODO: should check whether author of folder
-		app.get('/members/editfolder/:_id', isLoggedIn, function(req, res){
+		app.get('/members/editfolder/:_id', folderutils.ownsFolders, function(req, res){
 			res.render('editfolder.ejs', {
 				isLoggedIn: req.isAuthenticated(),
 				user: req.user, 
@@ -211,7 +211,7 @@ module.exports = function(app, passport, db) {
 			});
 		});
 
-		app.get('/members/viewfolder/:_id', isLoggedIn, function(req, res) {
+		app.get('/members/viewfolder/:_id', folderutils.ownsFolders, function(req, res) {
 			res.render('viewfolder.ejs', {
 				isLoggedIn: req.isAuthenticated(),
 				user: req.user, 
@@ -390,7 +390,7 @@ module.exports = function(app, passport, db) {
 		//folder testing stuff
 		app.get('/myfolders', isLoggedIn, folderutils.getUserFolders);
 		
-		app.get('/viewfoldersongs/:_id', isLoggedIn, folderutils.getFolderSongs);
+		app.get('/viewfoldersongs/:_id', folderutils.ownsFolders, folderutils.getFolderSongs);
 		
 		//app.get('/addsongtofolder/:folderid&:songid', isLoggedIn, folderutils.addSongToFolder);
 		app.get('/addsongtofolder/:songid', isLoggedIn, function(req, res) {
