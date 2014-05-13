@@ -132,6 +132,7 @@ enchordControllers.controller('ChangePasswordController', [
 				$scope.pass = {};
 				$scope.message = data.message;
 				$scope.success = data.success;
+				$scope.changePasswordForm.$setPristine();
 				$('.message-modal-sm').modal('show');
 
 				// Messages.setMessage(data.message, data.success);
