@@ -28,6 +28,14 @@ module.exports = function(app, passport, db) {
 	 		res.render('home', { title: 'Enchord' });
 		});
 
+		app.get('/demo', function(req, res){
+			res.render('tutorial.ejs', {
+				isLoggedIn: req.isAuthenticated(),
+				user: req.user, 
+				username: utils.getUsername(req)
+			});
+		})
+
 		/* ------------------------ login routes ---------------------------------- */
 
 		app.get('/login', protectLogin, function(req, res){
