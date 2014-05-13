@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang='en' ng-app='enchord'>
-  <head>
-    <% include head.ejs %>
-    <!-- Angular js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
-    <!-- Custom Angular js -->
-    <script src="/javascripts/app.js"></script>
-    <script src="/javascripts/animations.js"></script>
-    <script src="/javascripts/controllers.js"></script>
-    <script src="/javascripts/filters.js"></script>
-    <script src="/javascripts/services.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
-    <link href="/css/login.css" rel="stylesheet">
-    
-  </head>
-  <body ng-controller="ResetPasswordController">
+    <head>
+        <% include head.ejs %>
+        <!-- Angular js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
+        <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+        <!-- Custom Angular js -->
+        <script src="/javascripts/app.js"></script>
+        <script src="/javascripts/animations.js"></script>
+        <script src="/javascripts/controllers.js"></script>
+        <script src="/javascripts/filters.js"></script>
+        <script src="/javascripts/services.js"></script>
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
+        <link href="/css/login.css" rel="stylesheet">
+    </head>
+    <body ng-controller="ResetPasswordController">
         <div id='wrapper'>
             <div id='content'>
                 <form class="new_user" action="/reset/<%= tokens%>" method="POST" name="resetForm" novalidate>
@@ -48,10 +47,10 @@
             </div>
         </div>
         <% include scripts.ejs %>
-            <script type="text/javascript">
+        <script type="text/javascript">
             function submitOnClick(formName){
                 document.forms[formName].submit();
             }
         </script>
-  </body>
+    </body>
 </html>

@@ -1,63 +1,59 @@
 <aside class="right-side" style="background:#fff;">
     <form class="sidebar-form" name="markupForm" style="margin-top:0px; margin-left:0px; margin-bottom:0px;" novalidate>
-    <div class="row">
-        <!-- MARKUP -->
-
-        <!-- This is the reverse parse window -->
-          <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;width:100%;">
-            <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-            <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">           
-                <% include partialmini_transpose.ejs %>
-                <li ng-show='reverseParseMode' style="margin-left:1%;">
-                    <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
-                    <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
-                </li>                         
-            </ul>
-            <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="10000000" ng-model="reverseParseData" style="font-family:Courier; height:100vh; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px; padding-bottom:20px;" placeholder="Copy and paste your chord sheet here..."></textarea>
-            </div>
+        <div class="row">
+            <!-- This is the reverse parse window -->
+            <div ng-show='reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px;width:100%;">
+                <div class="form-group" style="margin-bottom:0px;" ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
+                    <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">           
+                        <% include partialmini_transpose.ejs %>
+                        <li ng-show='reverseParseMode' style="margin-left:1%;">
+                            <button ng-click='reverseParse()' class="btn-switch" style="margin-left: 5px; margin-right:25px; background-color: rgb(77, 144, 254) !important;">Submit</button>&nbsp;&nbsp;
+                            <button ng-click='leaveReverseParseMode()' class="btn-switch" style="margin-left: 15px; background-color: #d14836"><i class="fa fa-times"></i> Cancel</button>
+                        </li>                         
+                    </ul>
+                    <textarea id="reverseParseData" name="reverseParseData" class="form-control" ng-maxlength="10000000" ng-model="reverseParseData" style="font-family:Courier; height:100vh; resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px; padding-bottom:20px;" placeholder="Copy and paste your chord sheet here..."></textarea>
+                </div>
             </div>
 
-        <!-- Regular Editor -->
-        <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; ">
-            <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-                <!-- Make sure this has id = data -->
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">                           
-                    <% include partialmini_transpose.ejs %>
-                    <li style="display:inline-block;">
-                        <button ng-show='!reverseParseMode && !transposeMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>
-                    </li>  
-                </ul>
+            <!-- Regular Editor -->
+            <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; ">
+                <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
+                    <!-- Make sure this has id = data -->
+                    <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">                           
+                        <% include partialmini_transpose.ejs %>
+                        <li style="display:inline-block;">
+                            <button ng-show='!reverseParseMode && !transposeMode' ng-click='enterReverseParseMode()' class="btn-switch">Import</button>
+                        </li>  
+                    </ul>
 
-                <textarea id="data" name="data" class="form-control" ng-maxlength="10000000" ng-model="song.data" ng-change="parsehtml()" style="height:100vh; font-family:Courier;resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px; padding-bottom:20px;" spellcheck="false"></textarea>
-                <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" >-->
-                <span ng-show="markupForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
-                <span ng-show="markupForm.data.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<>'&#34;|~/\#%^*+=</span>
+                    <textarea id="data" name="data" class="form-control" ng-maxlength="10000000" ng-model="song.data" ng-change="parsehtml()" style="height:100vh; font-family:Courier;resize:none; background: #1d1f20; background: -webkit-linear-gradient(135deg, #1d1f20, #2f3031) !important; background: -o-linear-gradient(45deg, #1d1f20, #2f3031) !important; background: linear-gradient(45deg, #1d1f20, #2f3031) !important; color:#fff; top:0px; left:0px; border:#222; padding-top:15px; padding-bottom:20px;" spellcheck="false"></textarea>
+                    <!--<input type="text" name="artist" class="form-control" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" >-->
+                    <span ng-show="markupForm.data.$error.maxlength" class="help-block">Song is too long (sorry!)</span>
+                    <span ng-show="markupForm.data.$error.pattern" class="help-block">Invalid characters. Please use only alphanumeric characters or $?!&-_,.;:(){}[]<>'&#34;|~/\#%^*+=</span>
+                </div>
+            </div>
+
+            <!-- CHORD SHEET -->
+            <!-- <div class="col-md-6" style="background:#fff;">
+                <div class="form-group" style="background:#fff;" ng-class="{ 'has-error' : markupForm.result.$invalid && !markupForm.result.$pristine }">
+                    <label class="control-label" for="result">Live View</label>
+                    <textarea name="result" style="font-family:Courier; background:#fff; max-width:100%;" class="form-control" ng-model="song.result" disabled></textarea>
+                </div>
+            </div> -->
+
+            <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; padding-left:0px;">
+                <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
+                    <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
+                        <% include partialmini_fonts.ejs %>
+                        <li style="display:inline-block; float:right; margin-right:15px;" >
+                            <button class="btn-switch" onclick="window.open('http://www.enchord.me/demo');">Help</button> 
+                        </li>
+                    </ul>
+
+                    <div ng-show='!reverseParseMode' class="chordSheet col-md-6" ng-bind-html="parsedResult()" style="height:100vh; max-width:200px;min-width:100%;padding-top:15px; padding-right:0px; padding-bottom:20px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- CHORD SHEET -->
-        <!-- <div class="col-md-6" style="background:#fff;">
-            <div class="form-group" style="background:#fff;" ng-class="{ 'has-error' : markupForm.result.$invalid && !markupForm.result.$pristine }">
-                <label class="control-label" for="result">Live View</label>
-                <textarea name="result" style="font-family:Courier; background:#fff; max-width:100%;" class="form-control" ng-model="song.result" disabled></textarea>
-            </div>
-        </div> -->
-
-        <div ng-show='!reverseParseMode' class="col-md-6" style="top:0px; left:0px; padding-right:0px; padding-left:0px;">
-            <div class="form-group" style="margin-bottom:0px;"ng-class="{ 'has-error' : markupForm.data.$invalid && !markupForm.data.$pristine }">
-                <ul class="nav" style="background-color:#212327;display:inline-block; padding-top:10px; padding-bottom:10px; width:100%;">
-                    <% include partialmini_fonts.ejs %>
-                    <li style="display:inline-block; float:right; margin-right:15px;" >
-                        <button class="btn-switch" onclick="window.open('http://www.enchord.me/demo');">Help</button> 
-                    </li>
-                </ul>
-
-                <div ng-show='!reverseParseMode' class="chordSheet col-md-6" ng-bind-html="parsedResult()" style="height:100vh; max-width:200px;min-width:100%;padding-top:15px; padding-right:0px; padding-bottom:20px; background:#fff; overflow-x:scroll; overflow-y:scroll;">
-        </div>
-            </div>
-        </div>
-
-        
-    </div>
     </form>
 </aside>

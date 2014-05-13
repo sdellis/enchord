@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang='en' ng-app='enchord'>
+    <head>
+        <% include head.ejs %>
+        <% include css.ejs %>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="/css/test.css" rel="stylesheet" type="text/css"/>
+    </head>
 
-<head>
-    <% include head.ejs %>
-    <% include css.ejs %>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="/css/test.css" rel="stylesheet" type="text/css"/>
-</head>
-
-<body class="skin-black" ng-controller="SongEditController" style="font-family:'Proxima Nova', sans-serif;">
+    <body class="skin-black" ng-controller="SongEditController" style="font-family:'Proxima Nova', sans-serif;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="ArtistController" ng-init="init('<%= artistname %>')">
             <% include loading %>
@@ -16,6 +15,6 @@
             <% include partial_artistpage.ejs %>
         </div>
         <% include scripts.ejs %>
-</body>
+    </body>
 </html>
 

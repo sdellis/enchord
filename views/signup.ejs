@@ -1,84 +1,82 @@
 <!DOCTYPE html>
 <html lang='en' ng-app='enchord'>
 <!--<html lang='en'>-->
-  <head>
-    <% include head.ejs %>
-       <!-- Angular js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
-    <!-- Custom Angular js -->
-    <script src="/javascripts/app.js"></script>
-    <script src="/javascripts/animations.js"></script>
-    <script src="/javascripts/controllers.js"></script>
-    <script src="/javascripts/filters.js"></script>
-    <script src="/javascripts/services.js"></script>
+    <head>
+        <% include head.ejs %>
+           <!-- Angular js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
+        <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+        <!-- Custom Angular js -->
+        <script src="/javascripts/app.js"></script>
+        <script src="/javascripts/animations.js"></script>
+        <script src="/javascripts/controllers.js"></script>
+        <script src="/javascripts/filters.js"></script>
+        <script src="/javascripts/services.js"></script>
 
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
-    <link href="css/login.css" rel="stylesheet">
-  </head>
-  <body ng-controller="SignupController">
-  	<!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
-    <div id='wrapper'>
-        <div id='content'>
-    <form action="/signup" class="new_user" method="POST" name="signupForm" id="signupForm" novalidate>
-                <h1>Register</h1>
-                <div class="button facebook">
-                    <a href="/auth/facebook"><img src="./images/facebook.png" alt="facebook"></a>
-                </div>
-                <div class="button twitter">
-                    <a href="/auth/twitter"><img src="./images/twitter.png" alt="twitter"></a>
-                </div>
-                <div class="button google">
-                    <a href="/auth/google"><img src="./images/google.png" alt="google"></a>
-                </div>
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
+        <link href="css/login.css" rel="stylesheet">
+    </head>
+    <body ng-controller="SignupController">
+      	<!-- show any messages that come back with authentication -->
+    	<% if (message.length > 0) { %>
+    		<div class="alert alert-danger"><%= message %></div>
+    	<% } %>
+        <div id='wrapper'>
+            <div id='content'>
+                <form action="/signup" class="new_user" method="POST" name="signupForm" id="signupForm" novalidate>
+                    <h1>Register</h1>
+                    <div class="button facebook">
+                        <a href="/auth/facebook"><img src="./images/facebook.png" alt="facebook"></a>
+                    </div>
+                    <div class="button twitter">
+                        <a href="/auth/twitter"><img src="./images/twitter.png" alt="twitter"></a>
+                    </div>
+                    <div class="button google">
+                        <a href="/auth/google"><img src="./images/google.png" alt="google"></a>
+                    </div>
 
-                <div class="form-group" id="username_group" ng-class="{ 'has-error' : signupForm.username.$invalid && !signupForm.username.$pristine }">
-                    <input type="text" placeholder="Username" name="username" ng-model="user.username" ng-minlength="3" ng-maxlength="20" ng-pattern="/^[A-Za-z0-9-_]*$/" ng-class="{ 'has-error' : signupForm.username.$invalid && !signupForm.username.$pristine }" required>
-                    <p ng-show="signupForm.username.$error.required && !signupForm.username.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter a username</p>
-                    <p ng-show="signupForm.username.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Username is too short</p>
-                    <p ng-show="signupForm.username.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Username is too long</p>
-                    <p ng-show="signupForm.username.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or '-' or '_'</p>
-                </div>
+                    <div class="form-group" id="username_group" ng-class="{ 'has-error' : signupForm.username.$invalid && !signupForm.username.$pristine }">
+                        <input type="text" placeholder="Username" name="username" ng-model="user.username" ng-minlength="3" ng-maxlength="20" ng-pattern="/^[A-Za-z0-9-_]*$/" ng-class="{ 'has-error' : signupForm.username.$invalid && !signupForm.username.$pristine }" required>
+                        <p ng-show="signupForm.username.$error.required && !signupForm.username.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter a username</p>
+                        <p ng-show="signupForm.username.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Username is too short</p>
+                        <p ng-show="signupForm.username.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Username is too long</p>
+                        <p ng-show="signupForm.username.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or '-' or '_'</p>
+                    </div>
 
-                <div class="form-group" id="email_group" ng-class="{'has-error' : signupForm.email.$invalid && !signupForm.email.$pristine }">
-                    <input type="email" placeholder="Email Address" name="email" ng-model="user.email" class="form-control" required>
-                    <p ng-show="signupForm.email.$error.required && !signupForm.email.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your email</p>
-                    <p ng-show="signupForm.email.$error.email" class="help-block" style="margin-top:0px; color:red;">Enter a valid email</p>
-                </div> 
+                    <div class="form-group" id="email_group" ng-class="{'has-error' : signupForm.email.$invalid && !signupForm.email.$pristine }">
+                        <input type="email" placeholder="Email Address" name="email" ng-model="user.email" class="form-control" required>
+                        <p ng-show="signupForm.email.$error.required && !signupForm.email.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your email</p>
+                        <p ng-show="signupForm.email.$error.email" class="help-block" style="margin-top:0px; color:red;">Enter a valid email</p>
+                    </div> 
 
-                <div class="form-group" ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
-                    <input type="password" placeholder="Password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
-                    <p ng-show="signupForm.password.$error.required && !signupForm.password.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password</p>
-                    <p ng-show="signupForm.password.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Password is too short</p>
-                    <p ng-show="signupForm.password.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Password is too long</p>
-                    <p ng-show="signupForm.password.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
-                </div>
+                    <div class="form-group" ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
+                        <input type="password" placeholder="Password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
+                        <p ng-show="signupForm.password.$error.required && !signupForm.password.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password</p>
+                        <p ng-show="signupForm.password.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Password is too short</p>
+                        <p ng-show="signupForm.password.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Password is too long</p>
+                        <p ng-show="signupForm.password.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                    </div>
 
-                <div class="form-group" ng-class="{ 'has-error' : (signupForm.password_repeat.$invalid || (!passMatch && !signupForm.password.$invalid)) && !signupForm.password_repeat.$pristine}">
-                    <input type="password" placeholder="Confirm Password" name="password_repeat" ng-model="user.password_repeat" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }" required>
-                    <p ng-show="signupForm.password_repeat.$error.required && !signupForm.password_repeat.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password again</p>
-                    <p ng-show="signupForm.password_repeat.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Password is too short</p>
-                    <p ng-show="signupForm.password_repeat.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Password is too long</p>
-                    <p ng-show="!passMatch && !signupForm.password_repeat.$invalid && !signupForm.password.$invalid" class="help-block" style="margin-top:0px; color:red;">Passwords do not match</p>
-                    <p ng-show="signupForm.password_repeat.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
-                </div>
+                    <div class="form-group" ng-class="{ 'has-error' : (signupForm.password_repeat.$invalid || (!passMatch && !signupForm.password.$invalid)) && !signupForm.password_repeat.$pristine}">
+                        <input type="password" placeholder="Confirm Password" name="password_repeat" ng-model="user.password_repeat" ng-minlength="8" ng-maxlength="20" ng-change="checkPass()" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }" required>
+                        <p ng-show="signupForm.password_repeat.$error.required && !signupForm.password_repeat.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password again</p>
+                        <p ng-show="signupForm.password_repeat.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Password is too short</p>
+                        <p ng-show="signupForm.password_repeat.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Password is too long</p>
+                        <p ng-show="!passMatch && !signupForm.password_repeat.$invalid && !signupForm.password.$invalid" class="help-block" style="margin-top:0px; color:red;">Passwords do not match</p>
+                        <p ng-show="signupForm.password_repeat.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+                    </div>
 
-                <input name="commit" type="submit" value="Sign up" onclick="submitOnClick('signupForm')" ng-disabled="signupForm.$invalid || !passMatch"/>
+                    <input name="commit" type="submit" value="Sign up" onclick="submitOnClick('signupForm')" ng-disabled="signupForm.$invalid || !passMatch"/>
 
-                <div class='form-actions'>
-                            <a class="password-forgot" href="/login">Already have an account?</a><br>
-                </div>
-
-            </form>
+                    <div class='form-actions'>
+                        <a class="password-forgot" href="/login">Already have an account?</a><br>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
 
 	<!-- <form action="/signup" method="post" name="signupForm" novalidate> -->
 
@@ -125,10 +123,10 @@
 
 	<!-- <p>Already have an account? <a href="/login">Login</a></p>
 	<p>Or go <a href="/">home</a>.</p> -->
-    <script type="text/javascript">
-        function submitOnClick(formName){
-            document.forms[formName].submit();
-        }
-    </script>
-  </body>
+        <script type="text/javascript">
+            function submitOnClick(formName){
+                document.forms[formName].submit();
+            }
+        </script>
+    </body>
 </html>
