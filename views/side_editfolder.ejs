@@ -45,9 +45,9 @@
                   </div>
                   <div class="modal-body" style="padding-bottom:0px; width:100%;">
                   <form class="sidebar-form" name="folderForm">
-                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \$\!\-\_()]*$/" style="display: block;float: none;width: 560px;margin: 0 5%;font-size: 18px;padding: 10px 0px; margin-bottom:0px;box-shadow: none;border: none;overflow: hidden;width: 90%;font-weight: 400;font-smoothing: antialiased !important;-webkit-font-smoothing: antialiased; background-color:#fff; width:90%;" required/>
+                            <input type="text" name="name" class="form-control" placeholder="Enter new folder name" ng-model="folder.name" type="text" class="form-control" ng-pattern="/^[A-Za-z0-9 \@\$\!\-\_()]*$/" style="display: block;float: none;width: 560px;margin: 0 5%;font-size: 18px;padding: 10px 0px; margin-bottom:0px;box-shadow: none;border: none;overflow: hidden;width: 90%;font-weight: 400;font-smoothing: antialiased !important;-webkit-font-smoothing: antialiased; background-color:#fff; width:90%;" required/>
                             <p ng-show="folderForm.name.$error.required && !folderForm.name.$pristine" class="help-block" style="margin-top:0px; color:red;">Foldername cannot be empty</p>
-                            <p ng-show="folderForm.name.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or ! $ - _ ( )</p>
+                            <p ng-show="folderForm.name.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or @$!-_()</p>
                             </form>
                             <!-- it would look bad to have messages here -->
                   </div>

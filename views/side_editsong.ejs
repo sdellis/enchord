@@ -20,7 +20,7 @@
 
                     <input type="text" name="artist" class="form-control" placeholder="Artist*" ng-class="{ 'has-error' : songEditForm.artist.$invalid && !songEditForm.artist.$pristine }" ng-model="song.artist" ng-minlength="1" ng-maxlength="100" placeholder="Artist" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\'().,]*$/" style="color:#eee;" required /><br>
 
-                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9\-\_\' ().,&\/]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" style="color:#eee;"/>
+                    <input type="text" name="genre" class="form-control" placeholder="Genre" ng-model="song.genre" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9 \$\?\!\&\-\_\'().,\/]*$/" ng-class="{ 'has-error' : songEditForm.genre.$invalid && !songEditForm.genre.$pristine }" style="color:#eee;"/>
 
                     <!-- <h5 style="color:#fff; margin-left: 5%; margin-top:15%;">Transpose</h5>
                     <ul class="nav" style="display:inline-block; padding-top:10px; padding-bottom:30px; width:100%;">
