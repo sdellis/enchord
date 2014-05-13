@@ -6,6 +6,26 @@ var fs = require('fs');
 var utils = require('./utils');
 var ObjectId = require('mongoose/lib/types/objectid'); //for testing
 
+exports.ownsFolders = function(req, res, next) {
+	var folderid = req.params._id;
+	console.log("folderid " + folderid);
+	if (req.isAuthenticated()) {
+		folderSchema.findById(folderid, function(err, docs) {
+			console.log(docs)
+			console.log(docs.author_id)
+			if (!docs) {
+				res.redirect('/members');
+			} else if (docs.author_id == getAuthorId(req)) {
+				next();
+			} else {
+				res.redirect('/members');
+			}
+		})
+	} else {
+		res.redirect('/login');
+	}
+}
+
 exports.getUserFolders = function(req, res) { //can only get user's own folder
 	var authorid = getAuthorId(req);
 	var authorname = getAuthorName(req);
