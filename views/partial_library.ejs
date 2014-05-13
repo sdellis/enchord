@@ -13,15 +13,15 @@
             <input type="text" name="filter" ng-model="filter" required class="form-control" placeholder="Filter library by songs, artists, genre..." style="max-width: 30%; margin-left: 20%;color: #eee;-webkit-border-top-left-radius: 21px !important;-webkit-border-top-right-radius: 22px !important;-webkit-border-bottom-right-radius: 21px !important;-webkit-border-bottom-left-radius: 21px !important;-moz-border-radius-topleft: 21px !important;-moz-border-radius-topright: 21px !important;-moz-border-radius-bottomright: 21px !important;-moz-border-radius-bottomleft: 21px !important;border-top-left-radius: 21px !important;border-top-right-radius: 21px !important;border-bottom-right-radius: 21px !important;border-bottom-left-radius: 21px !important;background-color:#464646; border-color:#555; border-width:0px;" />
         </ul>
     </div>
-     <section class="content-header">
+    <section class="content-header">
         <h1>
             My Library
             <small ng-show="globalresults.length != 1">{{ usersongs.length}} songs</small>
             <small ng-show="globalresults.length == 1">{{ usersongs.length}} song</small>
         </h1>
     </section>
-<!--         <p>Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> songs per page</p>
- -->    <table class="table table-hover">
+    <!--         <p>Display <select ng-model="pageSize" ng-options="pageSize for pageSize in pageSizes"></select> songs per page</p> -->    
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th class="col-sm-2"><a href="" ng-click="setPredicate('upvote')"><i style="margin-left: 20px;" class="fa fa-star"></a></th>

@@ -20,48 +20,46 @@
   </head>
   <body ng-controller="LoginController">
     <div id='wrapper'>
-        <div id='content'>
-            <form class="new_user" action="/login" method="POST" name="loginForm" id="loginForm" novalidate>
-                        <h1>Welcome back!</h1>
-                        <div class="button facebook">
-                            <a href="auth/facebook"><img src="./images/facebook.png" alt="facebook"></a>
-                        </div>
-                        <div class="button twitter">
-                            <a href="auth/twitter"><img src="./images/twitter.png" alt="twitter"></a>
-                        </div>
-                        <div class="button google">
-                            <a href="auth/google"><img src="./images/google.png" alt="google"></a>
-                        </div>
+      <div id='content'>
+        <form class="new_user" action="/login" method="POST" name="loginForm" id="loginForm" novalidate>
+          <h1>Welcome back!</h1>
+          <div class="button facebook">
+            <a href="auth/facebook"><img src="./images/facebook.png" alt="facebook"></a>
+          </div>
+          <div class="button twitter">
+            <a href="auth/twitter"><img src="./images/twitter.png" alt="twitter"></a>
+          </div>
+          <div class="button google">
+            <a href="auth/google"><img src="./images/google.png" alt="google"></a>
+          </div>
 
-                    <!-- show any messages that come back with authentication -->
-                    <% if (message.length > 0) { %>
-                          <p style="text-align:center; color:red;"><%= message %></p>
-                    <% } %>
+          <!-- show any messages that come back with authentication -->
+          <% if (message.length > 0) { %>
+            <p style="text-align:center; color:red;"><%= message %></p>
+          <% } %>
 
-                    <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
-                        <input id="username_email" type="text" placeholder="Username or Email" name="username" class="form-control" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" ng-minlength="3" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_.@+%]*$/" ng-model="user.username" required><br/>
-                        <p ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your username</p>
-                        <!-- <p ng-show="loginForm.username.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Username is too short</p>
-                        <p ng-show="loginForm.username.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Username is too long</p> -->
-                        <p ng-show="loginForm.username.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or '.@-_+%'</p>
-                    </div>
+          <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
+            <input id="username_email" type="text" placeholder="Username or Email" name="username" class="form-control" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" ng-minlength="3" ng-maxlength="100" ng-pattern="/^[A-Za-z0-9-_.@+%]*$/" ng-model="user.username" required><br/>
+            <p ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your username</p>
+            <!-- <p ng-show="loginForm.username.$error.minlength" class="help-block" style="margin-top:0px; color:red;">Username is too short</p>
+            <p ng-show="loginForm.username.$error.maxlength" class="help-block" style="margin-top:0px; color:red;">Username is too long</p> -->
+            <p ng-show="loginForm.username.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or '.@-_+%'</p>
+          </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
-                        <input id="user_password" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" class="form-control" ng-model="user.password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
-                        <p ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password</p>
-                        <p ng-show="loginForm.password.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
-                    </div>
-
-
-                        <input name="commit" type="submit" value="Sign in" onclick="submitOnClick('loginForm')" ng-disabled="loginForm.$invalid"/>
+          <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+            <input id="user_password" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13) {this.form.submit(); return false; }" class="form-control" ng-model="user.password" ng-pattern="/^[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\.\,\;\:\?\-\_\+\=\<\>\~\`]*$/" required>
+            <p ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block" style="margin-top:0px; color:red;">Enter your password</p>
+            <p ng-show="loginForm.password.$error.pattern" class="help-block" style="margin-top:0px; color:red;">Invalid characters. Please use only alphanumeric characters or !@#$%^&*(){}[].,;:?-_+=<>~`</p>
+          </div>
+          <input name="commit" type="submit" value="Sign in" onclick="submitOnClick('loginForm')" ng-disabled="loginForm.$invalid"/>
 
 
-                        <div class='form-actions'>
-                            <a class="password-forgot" href="/signup">Don't have an account?</a><br>
-                            <a class="password-forgot" href="/forgot">Did you forget your password?</a>
-                        </div>
-            </form>
-        </div>
+          <div class='form-actions'>
+            <a class="password-forgot" href="/signup">Don't have an account?</a><br>
+            <a class="password-forgot" href="/forgot">Did you forget your password?</a>
+          </div>
+        </form>
+      </div>
     </div>
     <script type="text/javascript">
         function submitOnClick(formName){

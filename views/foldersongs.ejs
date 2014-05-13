@@ -7,11 +7,12 @@
   <body ng-controller="SongEditController" style="font-family:'Proxima Nova', sans-serif;">
   	<div class="container">
   		<h1><%= folderName %></h1>
-		<p> <%= results.length %> results </p>
-		
-  		<% for(var i = 0; i < results.length; i++) { %>
-			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artist/<%= results[i].artist %>"><%= results[i].artist %></a></li>
-		<% } %>
-		<a href="/members">Back to member page</a>
+  		<p> <%= results.length %> results </p>
+  		
+    	<% for(var i = 0; i < results.length; i++) { %>
+  			<li><a href="/viewsong/<%= results[i]._id %>"><%= results[i].title %></a> by <a href="/artist/<%= results[i].artist %>"><%= results[i].artist %></a></li>
+  		<% } %>
+  		<a href="/members">Back to member page</a>
   	</div>
   </body>
+</html>

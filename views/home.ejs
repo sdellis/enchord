@@ -3,132 +3,126 @@
 <html ng-app="enchord">
 <head>
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="#">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="#">
 
-        <!-- Angular js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
-    <!-- Custom Angular js -->
-    <script src="/javascripts/app.js"></script>
-    <script src="/javascripts/animations.js"></script>
-    <script src="/javascripts/controllers.js"></script>
-    <script src="/javascripts/filters.js"></script>
-    <script src="/javascripts/services.js"></script>
+  <!-- Angular js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-resource.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-sanitize.min.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+  <!-- Custom Angular js -->
+  <script src="/javascripts/app.js"></script>
+  <script src="/javascripts/animations.js"></script>
+  <script src="/javascripts/controllers.js"></script>
+  <script src="/javascripts/filters.js"></script>
+  <script src="/javascripts/services.js"></script>
 
-    <% include head.ejs %>
-    <link rel="stylesheet" href="css/elusive-iconfont-master/css/elusive-webfont.css">
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Montserrat' rel='stylesheet' type='text/css'>
-    <link href="/css/style.css" rel="stylesheet">
+  <% include head.ejs %>
+  <link rel="stylesheet" href="css/elusive-iconfont-master/css/elusive-webfont.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Montserrat' rel='stylesheet' type='text/css'>
+  <link href="/css/style.css" rel="stylesheet">
 
-    <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-50842151-1', 'enchord.me');
-  ga('send', 'pageview');
-
-</script>
+    ga('create', 'UA-50842151-1', 'enchord.me');
+    ga('send', 'pageview');
+  </script>
 </head>
 
 <body class="index">
-      <header class="masthead">
+  <header class="masthead">
+    <div class="toolbar">
+      <h1 class="logo"><a href="/">Enchord</a></h1>
+      <nav>
+        <span>Already have an account?</span>
+        <a class="button outline" href="/login">Login</a>
+      </nav>
+    </div>
 
-         <div class="toolbar">
-            <h1 class="logo"><a href="/">Enchord</a></h1>
-            <nav>
-               <span>Already have an account?</span>
-               <a class="button outline" href="/login">Login</a>
-            </nav>
-         </div>
-
-         <div class="inner">
-            <h1>Create chord sheets in minutes.</h1>
-            <p>Enchord is a simple and easy-to-use chord sheet editor and manager for musicians of all abilities.</p>
-            <a class="button large blue" href="/demo">Try It Now</a>
-            <a href="/signup"><h6 style="color: rgba(255, 255, 255, 0.4)">Sign up, it's free</h6></a>
-         </div>
-          <div style="display:inline;">
-              <form class="search" name="searchForm" ng-controller="SearchController">
-                  <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
-                  <input type="hidden" name="type" value="Global">
-                  <!-- <button ng-show="searchForm.$invalid" ng-click="errorpopup()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button> -->
-                  <button ng-click="search()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button>
-              </form>   
-          </div>
-         <img src="images/feature1.png" alt=""/>
-      </header>
-
-      <div>
-         <section class="content-mobile">
-            <div class="inner">
-               <h2>Beautiful chord sheets. Optimized for <span data-typer-targets="Desktop, iPad, Windows Phone, Android, PDF, .txt">Mobile</span>.</h2>
-               <p>Your chord sheet is automatically made to adapt itself to any device, font size, and most popular file formats. iPad, iPhone, Android, it doesn't matter. Your work will always look its absolute best. No coding or design skills required.</p>
-               <img src="images/mobile-friendly.png" alt="">
-            </div>
-         </section>
-
-         <section class="content-features">
-            <div class="inner">
-               <h2>So simple to use, even Nickelback could do it.</h2>
-               <p>Start writing and sharing songs in minutes. Find a song, customize it to your needs, and get back to the performance&mdash;all without missing a beat.</p>
-               <ul>
-                  <li>
-                     <i class="el-icon-screen animated tada" style="color: #a0d040"></i>
-                     <h4>Device agnostic</h4>
-                     <p>Enjoy your chord sheets at home and on the go, and in multiple file formats of your choice.</p>
-                  </li>
-                  <li>
-                     <i class="el-icon-asl animated tada"></i>
-                     <h4>Waiting to be discovered</h4>
-                     <p>Join a community of talented artists.</p>
-                  </li>
-                  <li>
-                     <i class="el-icon-smiley animated tada" style="color: #cb3e84"></i>
-                     <h4>Simple to use</h4>
-                     <p>Enchord's chord sheet editor couldn't be easier to use. Simply use our intuitive markup to write your songs. We'll take care of the rest.</p>
-                  </li>
-                  <li>
-                     <i class="el-icon-play-circle animated tada" style="color: #e6c840"></i>
-                     <h4>Easy to share</h4>
-                     <p> Contribute to our quickly growing collection of chord sheets.</p>
-                  </li>
-               </ul>
-            </div>
-         </section>
-      </div>
-
-      <section class="content-signup">
-         <div class="inner">
-            <h2>Sign up for early access to our beta</h2>
-            <p>In order to ensure we provide a quality service, we are signing people up on a first-come, first-served basis. Be among the first to access Enchord!</p>
-            <a class="button large blue" href="/signup">Get Started</a>
-         </div>
+    <div class="inner">
+      <h1>Create chord sheets in minutes.</h1>
+      <p>Enchord is a simple and easy-to-use chord sheet editor and manager for musicians of all abilities.</p>
+      <a class="button large blue" href="/demo">Try It Now</a>
+      <a href="/signup"><h6 style="color: rgba(255, 255, 255, 0.4)">Sign up, it's free</h6></a>
+    </div>
+    <div style="display:inline;">
+      <form class="search" name="searchForm" ng-controller="SearchController">
+          <input type="search" name="query" placeholder="Search for songs, artists, albums..." ng-model="query" autofocus>
+          <input type="hidden" name="type" value="Global">
+          <!-- <button ng-show="searchForm.$invalid" ng-click="errorpopup()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button> -->
+          <button ng-click="search()" type="submit" name="search" id="search-btn"><img src="../../images/search.png" style="width: 45%; height: auto; bottom:0; margin:0;"></button>
+      </form>   
+    </div>
+     <img src="images/feature1.png" alt=""/>
+  </header>
+    <div>
+      <section class="content-mobile">
+        <div class="inner">
+          <h2>Beautiful chord sheets. Optimized for <span data-typer-targets="Desktop, iPad, Windows Phone, Android, PDF, .txt">Mobile</span>.</h2>
+          <p>Your chord sheet is automatically made to adapt itself to any device, font size, and most popular file formats. iPad, iPhone, Android, it doesn't matter. Your work will always look its absolute best. No coding or design skills required.</p>
+          <img src="images/mobile-friendly.png" alt="">
+        </div>
       </section>
+      <section class="content-features">
+        <div class="inner">
+          <h2>So simple to use, even Nickelback could do it.</h2>
+          <p>Start writing and sharing songs in minutes. Find a song, customize it to your needs, and get back to the performance&mdash;all without missing a beat.</p>
+          <ul>
+            <li>
+               <i class="el-icon-screen animated tada" style="color: #a0d040"></i>
+               <h4>Device agnostic</h4>
+               <p>Enjoy your chord sheets at home and on the go, and in multiple file formats of your choice.</p>
+            </li>
+            <li>
+               <i class="el-icon-asl animated tada"></i>
+               <h4>Waiting to be discovered</h4>
+               <p>Join a community of talented artists.</p>
+            </li>
+            <li>
+               <i class="el-icon-smiley animated tada" style="color: #cb3e84"></i>
+               <h4>Simple to use</h4>
+               <p>Enchord's chord sheet editor couldn't be easier to use. Simply use our intuitive markup to write your songs. We'll take care of the rest.</p>
+            </li>
+            <li>
+               <i class="el-icon-play-circle animated tada" style="color: #e6c840"></i>
+               <h4>Easy to share</h4>
+               <p> Contribute to our quickly growing collection of chord sheets.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
 
-      <footer>
-         <nav>
-            <ul>
-               <li><a href="/signup">Sign Up</a></li>
-               <li><a href="/login">Login</a></li>
-            </ul>
-         </nav>
-         Made with &nbsp;<i class="el-icon-heart"></i>&nbsp; in Princeton.
-      </footer>
+    <section class="content-signup">
+      <div class="inner">
+        <h2>Sign up for early access to our beta</h2>
+        <p>In order to ensure we provide a quality service, we are signing people up on a first-come, first-served basis. Be among the first to access Enchord!</p>
+        <a class="button large blue" href="/signup">Get Started</a>
+       </div>
+    </section>
+    <footer>
+      <nav>
+        <ul>
+          <li><a href="/signup">Sign Up</a></li>
+          <li><a href="/login">Login</a></li>
+        </ul>
+      </nav>
+      Made with &nbsp;<i class="el-icon-heart"></i>&nbsp; in Princeton.
+    </footer>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-      <script src="/js/jquery.typer.js"></script>
-      <script>
-         $(function() { $('[data-typer-targets]').typer(); });
-      </script>
-
-   </body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/jquery.typer.js"></script>
+    <script>
+       $(function() { $('[data-typer-targets]').typer(); });
+    </script>
+  </body>
 </html>

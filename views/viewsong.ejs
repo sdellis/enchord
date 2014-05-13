@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang='en' ng-app='enchord'>
 
-<head>
-    <% include head.ejs %>
-    <% include css.ejs %>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="/css/test.css" rel="stylesheet" type="text/css"/>
-</head>
+    <head>
+        <% include head.ejs %>
+        <% include css.ejs %>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="/css/test.css" rel="stylesheet" type="text/css"/>
+    </head>
 
-<body class="skin-black" ng-controller="ProfileController" style="background:#fff;">
+    <body class="skin-black" ng-controller="ProfileController" style="background:#fff;">
         <% include pageheader.ejs %>
         <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SongViewController" ng-init="init('<%= _id %>', <%= isLoggedIn %>)">
             <% include loading.ejs %>
@@ -16,5 +16,5 @@
             <% include partial_viewsong.ejs %>
         </div>
         <% include scripts.ejs %>
-</body>
+    </body>
 </html>
