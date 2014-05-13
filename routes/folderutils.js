@@ -41,7 +41,7 @@ function getMyFolders(req, res, callback) {
 }
 
 function getSongs(req, res, folderid, callback) {
-	folderSchema.findById(folderid, function(err, folder) {
+	folderSchema.find({folder_id: folderid, author_id: getAuthorId(req)}, function(err, folder) {
 		console.log(folder);
 		var foldername = folder.name;
 		var songs = [];

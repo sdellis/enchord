@@ -450,6 +450,8 @@ enchordControllers.controller('SongViewController', [
 				console.log(data);
 				$scope.song.result = data;
 				$scope.message = data.message;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -510,6 +512,8 @@ enchordControllers.controller('SongViewController', [
 				// $scope.steps = 0;
 				// $scope.transposed = $scope.transposed + $scope.steps;
 				// $scope.markupForm = data;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -558,6 +562,8 @@ enchordControllers.controller('DemoController', [
 				console.log(data);
 				$scope.song.result = data;
 				$scope.message = data.message;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -598,6 +604,7 @@ enchordControllers.controller('DemoController', [
 						$scope.message = data.message;
 						$scope.hasError = data.hasError;
 					}
+					$window.location.href = '/errorpage';
 				});
 			} else {
 				$scope.song = {
@@ -671,6 +678,8 @@ enchordControllers.controller('DemoController', [
 				$scope.leaveTranspose();
 				// $scope.transposed = $scope.transposed + $scope.steps;
 				// $scope.markupForm = data;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -704,7 +713,9 @@ enchordControllers.controller('DemoController', [
 				$scope.reverseParseMode = false;
 				$scope.parsehtml();
 			}).error(function(data, status){
-
+				$scope.message = "Sorry, we were not able to convert your chord sheet into markup. We are constantly working on improving this feature. If you would like, please send your chord sheet to jemah.enchord@gmail.com to help us to improve.";
+				$scope.errorSetHTML();
+				$('.message-modal-sm').modal('show');
 			})
 		}
 	}]);
@@ -755,6 +766,8 @@ enchordControllers.controller('SongEditController', [
 				console.log(data);
 				$scope.song.result = data;
 				$scope.message = data.message;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -795,6 +808,7 @@ enchordControllers.controller('SongEditController', [
 						$scope.message = data.message;
 						$scope.hasError = data.hasError;
 					}
+					$window.location.href='/members/createsong';
 				});
 			} else {
 				$scope.song = {
@@ -980,6 +994,8 @@ enchordControllers.controller('SongEditController', [
 				$scope.leaveTranspose();
 				// $scope.transposed = $scope.transposed + $scope.steps;
 				// $scope.markupForm = data;
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 
@@ -1013,7 +1029,9 @@ enchordControllers.controller('SongEditController', [
 				$scope.reverseParseMode = false;
 				$scope.parsehtml();
 			}).error(function(data, status){
-
+				$scope.message = "Sorry, we were not able to convert your chord sheet into markup. We are constantly working on improving this feature. If you would like, please send your chord sheet to jemah.enchord@gmail.com to help us to improve.";
+				$scope.errorSetHTML();
+				$('.message-modal-sm').modal('show');
 			})
 		}
 	}]);
@@ -1166,6 +1184,8 @@ enchordControllers.controller('BandController', [
 				}).success(function(data){
 					console.log(data);
 					$scope.band = data.band;
+				}).error(function(data,status) {
+					$window.location.href = '/errorpage';
 				});
 			}
 		}
@@ -1217,6 +1237,8 @@ enchordControllers.controller('BandController', [
 					}).success(function(data){
 						console.log(data);
 						$scope.band = data.band;
+					}).error(function(data,status) {
+						$window.location.href = '/errorpage';
 					});
 				}
 			}).error(function(data, status) {
@@ -1242,6 +1264,8 @@ enchordControllers.controller('BandController', [
 						$window.location.href = '/errorpage';
 					});
 				}
+			}).error(function(data,status) {
+				$window.location.href = '/errorpage';
 			});
 		}
 	}]);
@@ -1488,7 +1512,9 @@ enchordControllers.controller('FolderViewController', [
 					}).error(function(data, status) {
 						$window.location.href = '/errorpage';
 					});	
-				});
+				}).error(function(data, status) {
+					$window.location.href = '/errorpage';
+				});	
 			console.log(songid);
 		}
 
