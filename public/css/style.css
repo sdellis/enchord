@@ -1,6 +1,19 @@
 @charset "UTF-8";
 /*! normalize.css v2.1.1 | MIT License | git.io/normalize */
 
+#chord_sheet p {
+  -moz-column-count: 3;
+  -moz-column-gap: 20px;
+  -webkit-column-count: 3;
+  -webkit-column-gap : 20px;
+  -moz-column-rule-color:  #ccc;
+  -moz-column-rule-style:  solid;
+  -moz-column-rule-width:  1px;
+  -webkit-column-rule-color:  #ccc;
+  -webkit-column-rule-style: solid ;
+  -webkit-column-rule-width:  1px;
+}
+
 #lean_overlay {
     position: fixed;
     z-index:100;
